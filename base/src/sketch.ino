@@ -19,7 +19,7 @@ RH_RF95 rf95;
 // Need this on Arduino Zero with SerialUSB port (eg RocketScream Mini Ultra Pro)
 //#define Serial SerialUSB
 
-int led = 9;
+int led = 8;
 
 void setup() 
 {
