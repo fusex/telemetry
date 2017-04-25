@@ -48,7 +48,8 @@ void setup()
 
 void loop()
 {
-  Serial.println("Sending to rf95_server");
+  Serial.print((float)millis()/1000,6);
+  Serial.println(": Sending to rf95_server");
   // Send a message to rf95_server
   uint8_t data[] = "Hello World!";
   rf95.send(data, sizeof(data));
@@ -60,22 +61,24 @@ void loop()
 
   if (rf95.waitAvailableTimeout(3000))
   { 
+    Serial.print((float)millis()/1000,6);
     // Should be a reply message for us now   
     if (rf95.recv(buf, &len))
    {
-      Serial.print("got reply: ");
+      Serial.print(": got reply: ");
       Serial.println((char*)buf);
 //      Serial.print("RSSI: ");
 //      Serial.println(rf95.lastRssi(), DEC);    
     }
     else
     {
-      Serial.println("recv failed");
+      Serial.println(": recv failed");
     }
   }
   else
   {
-    Serial.println("No reply, is rf95_server running?");
+    Serial.print((float)millis()/1000,6);
+    Serial.println(": No reply, is rf95_server running?");
   }
   delay(400);
 }
