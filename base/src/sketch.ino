@@ -1,85 +1,131 @@
-// rf95_server.pde
-// -*- mode: C++ -*-
-// Example sketch showing how to create a simple messageing server
-// with the RH_RF95 class. RH_RF95 class does not provide for addressing or
-// reliability, so you should only use RH_RF95  if you do not need the higher
-// level messaging abilities.
-// It is designed to work with the other example rf95_client
-// Tested with Anarduino MiniWirelessLoRa, Rocket Scream Mini Ultra Pro with
-// the RFM95W, Adafruit Feather M0 with RFM95
-
+#include <fusexconfig.h>
 #include <SPI.h>
 #include <RH_RF95.h>
+#include <fusexutil.h>
 
-// Singleton instance of the radio driver
 RH_RF95 rf95;
-//RH_RF95 rf95(5, 2); // Rocket Scream Mini Ultra Pro with the RFM95W
-//RH_RF95 rf95(8, 3); // Adafruit Feather M0 with RFM95 
-
-// Need this on Arduino Zero with SerialUSB port (eg RocketScream Mini Ultra Pro)
-//#define Serial SerialUSB
-
-int led = 8;
 
 void setup() 
 {
-  // Rocket Scream Mini Ultra Pro with the RFM95W only:
-  // Ensure serial flash is not interfering with radio communication on SPI bus
-//  pinMode(4, OUTPUT);
-//  digitalWrite(4, HIGH);
+    Serial.begin(9600);
+    while (!Serial) ; // Wait for serial port to be available
 
-  pinMode(led, OUTPUT);     
-  Serial.begin(9600);
-  while (!Serial) ; // Wait for serial port to be available
-  if (!rf95.init())
-    Serial.println("init failed");  
-  else
-    Serial.println("init Done");
-
-  // Defaults after init are 434.0MHz, 13dBm, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on
-
-  // The default transmitter power is 13dBm, using PA_BOOST.
-  // If you are using RFM95/96/97/98 modules which uses the PA_BOOST transmitter pin, then 
-  // you can set transmitter powers from 5 to 23 dBm:
-//  driver.setTxPower(23, false);
-  // If you are using Modtronix inAir4 or inAir9,or any other module which uses the
-  // transmitter RFO pins and not the PA_BOOST pins
-  // then you can configure the power transmitter power for -1 to 14 dBm and with useRFO true. 
-  // Failure to do that will result in extremely low transmit powers.
-//  driver.setTxPower(14, true);
+    if (!rf95.init())
+	TTRACE("init failed\n\r");
+    else
+	TTRACE("init Done\n\r");
 }
+
+void send_ready(unsigned int packetnbr)
+{
+    char buf[RH_RF95_MAX_MESSAGE_LEN];
+
+    sprintf(buf, "OK for %d", packetnbr);
+
+    DTTRACE("Send Ready command to requester\n\r");
+    rf95.send((uint8_t*)buf, sizeof(buf));
+    rf95.waitPacketSent();
+}
+
+void receivepacket(int crc, unsigned int packetnbr)
+{
+    uint8_t errors = 0;
+    int count = packetnbr;
+    uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
+
+    TTRACE("Start reception of packet\n\r");
+    long now = millis();
+    while (count--) {
+	if (rf95.waitAvailableTimeout(3000)) {
+	    uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
+	    if (rf95.recv(buf, &len))
+	    	DTTRACE("Received packet \n\r");
+		if(crc) {
+		    int ccrc = calcrc16(buf, len);
+		    if (crc != ccrc) {
+
+			TTRACE("ERROR: packet crc mismatch! ccrc: 0x");
+			Serial.print(crc, HEX);
+			TRACE(" ccrc: 0x");
+			Serial.print(ccrc, HEX);
+			TRACE("\n\r");
+
+			errors++;
+		    }
+		}
+	} else {
+	    TTRACE("ERROR: reception not completed ! ");
+	    TRACE(packetnbr-count-1);
+	    TRACE("/");
+	    TRACE(packetnbr);
+	    TRACE(" \n\r");
+	    break;
+        }
+    }
+    long delta = millis() - now;
+
+    unsigned long datasize = (packetnbr-count-1) * RH_RF95_MAX_MESSAGE_LEN;
+
+    TTRACE("Reception of ");
+    TRACE(packetnbr-count-1);
+    TRACE("/");
+    TRACE(packetnbr);
+    TRACE(" packet[s] completed in ");
+    TRACE(delta);
+    TRACE("ms ["); 
+    TRACE((float)datasize*8/delta);
+    TRACE( "kbps] with ");
+    TRACE(errors);
+    TRACE(" errors[s]\n\r");
+}
+
+
+uint16_t once = 0;
 
 void loop()
 {
-  if (rf95.available())
-  {
-    // Should be a message for us now   
-    uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
-    uint8_t len = sizeof(buf);
-    if (rf95.recv(buf, &len))
+    char buf[RH_RF95_MAX_MESSAGE_LEN];
+
+    if(!once++)
     {
-      digitalWrite(led, HIGH);
-//      RH_RF95::printBuffer("request: ", buf, len);
-      Serial.print((float)millis()/1000,6);
-      Serial.print(": got request: ");
-      Serial.println((char*)buf);
-//      Serial.print("RSSI: ");
-//      Serial.println(rf95.lastRssi(), DEC);
-      
-      // Send a reply
-      uint8_t data[] = "And hello back to you";
-      rf95.send(data, sizeof(data));
-      rf95.waitPacketSent();
-      Serial.print((float)millis()/1000,6);
-      Serial.println(": Sent a reply");
-       digitalWrite(led, LOW);
+	TTRACE("#########################\n\r");
+    	TTRACE("Waiting for Connection\n\r");
     }
-    else
+
+    if (rf95.available())
     {
-      Serial.print((float)millis()/1000,6);
-      Serial.println(": recv failed");
+	uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
+	once = 0;
+	if (rf95.recv((uint8_t*)buf, &len)) {
+	    unsigned int count = 0;
+	    int crc = 0;
+
+	    DTTRACE("Received command(len:");
+            DTRACE(len);
+	    DTRACE("): "); 
+	    if (len)
+	    	DTRACE(buf);
+	    else
+		DTRACE("- null - ");
+	    DTRACE(" from a peer\n\r");
+
+	    if(!strncmp(buf, "TEST BW for", 11)) {
+		sscanf(buf, "TEST BW for %i CRC:%x", &count, &crc);
+
+		TTRACE("Get Test Bandwidth command for ");
+		TRACE(count);
+		TRACE(" packet[s] with crc: 0x");
+		Serial.print(crc, HEX);
+		TRACE("\n\r");
+
+		if(count) {
+		    send_ready(count);
+		    if(!crc)
+		    	TTRACE("CRC check disabled!\n\r");
+		    receivepacket(crc, count);
+		}
+	    }
+	}
     }
-  }
+    delay(400);
 }
-
-

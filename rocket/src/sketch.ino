@@ -1,86 +1,105 @@
-// rf95_client.pde
-// -*- mode: C++ -*-
-// Example sketch showing how to create a simple messageing client
-// with the RH_RF95 class. RH_RF95 class does not provide for addressing or
-// reliability, so you should only use RH_RF95 if you do not need the higher
-// level messaging abilities.
-// It is designed to work with the other example rf95_server
-// Tested with Anarduino MiniWirelessLoRa, Rocket Scream Mini Ultra Pro with
-// the RFM95W, Adafruit Feather M0 with RFM95
-
+#include <fusexconfig.h>
 #include <SPI.h>
 #include <RH_RF95.h>
+#include <fusexutil.h>
 
-// Singleton instance of the radio driver
 RH_RF95 rf95;
-//RH_RF95 rf95(5, 2); // Rocket Scream Mini Ultra Pro with the RFM95W
-//RH_RF95 rf95(8, 3); // Adafruit Feather M0 with RFM95 
-
-// Need this on Arduino Zero with SerialUSB port (eg RocketScream Mini Ultra Pro)
-//#define Serial SerialUSB
 
 void setup() 
 {
-  // Rocket Scream Mini Ultra Pro with the RFM95W only:
-  // Ensure serial flash is not interfering with radio communication on SPI bus
-//  pinMode(4, OUTPUT);
-//  digitalWrite(4, HIGH);
+    randomSeed(analogRead(0));
+    Serial.begin(9600);
+    while (!Serial) ; // Wait for serial port to be available
 
-  Serial.begin(9600);
-  while (!Serial) ; // Wait for serial port to be available
-  if (!rf95.init())
-    Serial.println("init failed");
-  else
-    Serial.println("init Done");
+    if (!rf95.init())
+	TTRACE("init failed\n\r");
+    else
+	TTRACE("init Done\n\r");
+}
 
-  // Defaults after init are 434.0MHz, 13dBm, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on
+void gendata(uint8_t* data, unsigned int size)
+{
+    while (size--){
+	*data++ = random(32,126);
+    }
+}
 
-  // The default transmitter power is 13dBm, using PA_BOOST.
-  // If you are using RFM95/96/97/98 modules which uses the PA_BOOST transmitter pin, then 
-  // you can set transmitter powers from 5 to 23 dBm:
-//  driver.setTxPower(23, false);
-  // If you are using Modtronix inAir4 or inAir9,or any other module which uses the
-  // transmitter RFO pins and not the PA_BOOST pins
-  // then you can configure the power transmitter power for -1 to 14 dBm and with useRFO true. 
-  // Failure to do that will result in extremely low transmit powers.
-//  driver.setTxPower(14, true);
+void printdata(char* data, unsigned int size)
+{
+    for(int i=0;i<9;i++) {
+	Serial.print("byte ");
+	Serial.print(i);
+	Serial.print(" = ");
+	Serial.println(data[i]);
+    }
+}
+
+void send_testcmd(int crc, unsigned int packetnbr)
+{
+    bool replied = false;
+    char expected_rply[RH_RF95_MAX_MESSAGE_LEN];
+    char buf[RH_RF95_MAX_MESSAGE_LEN];
+
+    TTRACE("Preparing peer for transfer of ");
+    TRACE(packetnbr);
+    TRACE(" packet[s] of crc: 0x");
+    Serial.print(crc, HEX);
+    TRACE("\n\r");
+
+    do {
+	sprintf(buf, "TEST BW for %d CRC:0x%x", packetnbr, crc);
+	rf95.send((uint8_t*)buf, sizeof(buf));
+	rf95.waitPacketSent();
+
+	DTTRACE("send command: \"");
+	DTRACE(buf);
+	DTRACE("\"\n\r");
+
+	if (rf95.waitAvailableTimeout(3000)) { 
+	    uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
+	    memset(buf, 0, sizeof(buf));
+
+	    if (rf95.recv((uint8_t*)buf, &len)) {
+		sprintf(expected_rply, "OK for %d", packetnbr);
+		if(!strncmp(buf, expected_rply, len))
+		    replied = true;
+	    }
+	} else {
+	    TTRACE("still waiting for peer response !\n\r");
+	}
+    } while(!replied);
+
+    TTRACE("Peer is OK, start transfer!\n\r");
 }
 
 void loop()
 {
-  Serial.print((float)millis()/1000,6);
-  Serial.println(": Sending to rf95_server");
-  // Send a message to rf95_server
-  uint8_t data[] = "Hello World!";
-  rf95.send(data, sizeof(data));
-  
-  rf95.waitPacketSent();
-  // Now wait for a reply
-  uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
-  uint8_t len = sizeof(buf);
+    int crc = 0;
+    unsigned int packetnbr = CONFIG_PACKETNUMBER;
+    unsigned int count; 
+    uint8_t data[RH_RF95_MAX_MESSAGE_LEN];
 
-  if (rf95.waitAvailableTimeout(3000))
-  { 
-    Serial.print((float)millis()/1000,6);
-    // Should be a reply message for us now   
-    if (rf95.recv(buf, &len))
-   {
-      Serial.print(": got reply: ");
-      Serial.println((char*)buf);
-//      Serial.print("RSSI: ");
-//      Serial.println(rf95.lastRssi(), DEC);    
+    gendata(data, sizeof(data));
+    crc = calcrc16(data,sizeof(data));
+
+#ifdef CONFIG_CHECKCRC
+    send_testcmd(crc, packetnbr);
+#else
+    send_testcmd(0, packetnbr);
+#endif
+
+    count = packetnbr;
+    while (count--){
+	rf95.send(data, sizeof(data));
+	rf95.waitPacketSent();
     }
-    else
-    {
-      Serial.println(": recv failed");
-    }
-  }
-  else
-  {
-    Serial.print((float)millis()/1000,6);
-    Serial.println(": No reply, is rf95_server running?");
-  }
-  delay(400);
+
+    TTRACE("Transfer of ");
+    TRACE(packetnbr-count-1);
+    TRACE("/");
+    TRACE(packetnbr);
+    TRACE(" to peer finished!\n\r");
+
+    TTRACE("#########################\n\r");
+    delay(2000);
 }
-
-
