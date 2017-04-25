@@ -60,7 +60,8 @@ void loop()
     {
       digitalWrite(led, HIGH);
 //      RH_RF95::printBuffer("request: ", buf, len);
-      Serial.print("got request: ");
+      Serial.print((float)millis()/1000,6);
+      Serial.print(": got request: ");
       Serial.println((char*)buf);
 //      Serial.print("RSSI: ");
 //      Serial.println(rf95.lastRssi(), DEC);
@@ -69,12 +70,14 @@ void loop()
       uint8_t data[] = "And hello back to you";
       rf95.send(data, sizeof(data));
       rf95.waitPacketSent();
-      Serial.println("Sent a reply");
+      Serial.print((float)millis()/1000,6);
+      Serial.println(": Sent a reply");
        digitalWrite(led, LOW);
     }
     else
     {
-      Serial.println("recv failed");
+      Serial.print((float)millis()/1000,6);
+      Serial.println(": recv failed");
     }
   }
 }
