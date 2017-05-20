@@ -2,7 +2,7 @@
 #define CONFIG_DEBUG
 #endif
 
-#if 1
+#if 0
 #define CONFIG_CHECKCRC
 #endif
 

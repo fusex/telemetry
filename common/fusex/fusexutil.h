@@ -5,7 +5,7 @@
 	    Serial.print(x) ; \
     } while(0)
 
-#ifdef DEBUG
+#ifdef CONFIG_DEBUG
 #define DTRACE(x)  TRACE(x) 
 #define DTTRACE(x) TTRACE(x)  
 #else
