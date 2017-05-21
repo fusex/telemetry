@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include <Arduino.h>
+
 #define TRACE(x) Serial.print(x)
 #define TTRACE(x) do { \
 	    Serial.print((float)millis()/1000,6); \
@@ -44,17 +47,10 @@ uint16_t _gen_crc16(const uint8_t *data, uint16_t size)
     uint16_t out = 0;
     int bits_read = 0, bit_flag;
 
-    TTRACE("ZSK T1\n");
-
-TTRACE("ZSK T2 size:");
-    TRACE(size);
-    TRACE(" ... \n");
-
     /* Sanity check: */
     if(data == NULL)
         return 0;
 
-    TTRACE("ZSK T2\n");
     while(size > 0)
     {
         bit_flag = out >> 15;
@@ -70,11 +66,6 @@ TTRACE("ZSK T2 size:");
             bits_read = 0;
             data++;
             size--;
-        } else {
-    TTRACE("ZSK TXXXXX s:");
-    TRACE(size);
-    TRACE(" ... \n");
-
         }
 
         /* Cycle check: */
@@ -82,7 +73,6 @@ TTRACE("ZSK T2 size:");
             out ^= CRC16;
 
     }
-    TTRACE("ZSK T3\n");
 
     // item b) "push out" the last 16 bits
     int i;
@@ -93,7 +83,6 @@ TTRACE("ZSK T2 size:");
             out ^= CRC16;
     }
 
-    TTRACE("ZSK T4\n");
     // item c) reverse the bits
     uint16_t crc = 0;
     i = 0x8000;
@@ -101,7 +90,23 @@ TTRACE("ZSK T2 size:");
     for (; i != 0; i >>=1, j <<= 1) {
         if (i & out) crc |= j;
     }
-    TTRACE("ZSK T5\n");
 
     return crc;
+}
+
+#define myprintf(a, ...) _myprintf(F(a), ##__VA_ARGS__)
+void _myprintf(const __FlashStringHelper *fmt, ... )
+{
+    char buf[128]; // resulting string limited to 128 chars
+    va_list args;
+
+    va_start(args, fmt);
+#ifdef __AVR__
+    vsnprintf_P(buf, sizeof(buf), (const char *)fmt, args); // progmem for AVR
+#else
+    vsnprintf(buf, sizeof(buf), (const char *)fmt, args); // for the rest of the world
+#endif
+    va_end(args);
+
+    Serial.print(buf);
 }
