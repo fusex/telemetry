@@ -111,6 +111,9 @@ static void send_testcmd(int crc, unsigned int packetnbr)
 
 void setupRadio()
 {
+#ifndef CONFIG_RADIO
+    return;
+#endif
     if (!rf95.init())
 	TTRACE("Radio init failed\n\r");
     else
@@ -131,6 +134,9 @@ void setupRadio()
 
 void loopRadio()
 {
+#ifndef CONFIG_RADIO
+    return;
+#endif
     int crc = 0;
     unsigned int packetnbr = CONFIG_PACKETNUMBER;
     unsigned int count;

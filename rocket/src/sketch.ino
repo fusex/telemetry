@@ -1,17 +1,26 @@
 #include "common.h"
 #include "imu.h"
 #include "radio.h"
+#include "gps.h"
+#include "sdcard.h"
+#include "propellant.h"
 
 void setup()
 {
   setupCommon();
-  setupImu();
   setupRadio();
+  setupImu();
+  setupGps();
+  setupPropellant();
+  setupSdcard();
 }
 
 void loop()
 {
-  loopImu();
   loopRadio();
+  loopImu();
+  loopGps();
+  loopPropellant();
+  loopSdcard();
 }
 

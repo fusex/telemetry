@@ -27,6 +27,10 @@ int myLed  = 13;  // Set up pin 13 led for toggling
 
 void setupImu()
 {
+#ifndef CONFIG_IMU
+    return;
+#endif
+
   Wire.begin();
   // TWBR = 12;  // 400 kbit/sec I2C speed
 
@@ -136,6 +140,9 @@ void setupImu()
 
 void loopImu()
 {
+#ifndef CONFIG_IMU
+    return;
+#endif
   // If intPin goes high, all data registers have new data
   // On interrupt, check if data ready interrupt
   if (myIMU.readByte(MPU9250_ADDRESS, INT_STATUS) & 0x01)
