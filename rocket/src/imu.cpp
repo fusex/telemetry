@@ -15,6 +15,10 @@
  *
  * =====================================================================================
  */
+
+#include <fusexconfig.h>
+#include <fusexutil.h>
+
 #include "MPU9250.h"
 
 #define AHRS true         // Set to false for basic data read
@@ -79,7 +83,6 @@ void setupImu()
     Serial.print(d, HEX);
     Serial.print(" I should be ");
     Serial.println(0x48, HEX);
-
 
     // Get magnetometer calibration from AK8963 ROM
     myIMU.initAK8963(myIMU.factoryMagCalibration);
