@@ -1,3 +1,6 @@
+#ifndef FUSEXUTIL_H
+#define FUSEXUTIL_H
+
 #include <stdint.h>
 #include <Arduino.h>
 
@@ -111,3 +114,4 @@ void _myprintf(const __FlashStringHelper *fmt, ... )
 #define DTTRACE(x, ...) do {} while(0)
 #endif
 
+#endif // FUSEXUTIL_H
