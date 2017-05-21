@@ -122,7 +122,20 @@ void setupRadio()
     rf95.setTxPower(20,false);
     rf95.setFrequency(869.4);
     rf95.setModemConfig(RH_RF95::Bw500Cr45Sf128);
+#if 0
     setSpreadingFactor(10);
+#elif 1
+    setSpreadingFactor(9);
+#endif
+
+#if 0
+    RH_RF95::ModemConfig modem_config = {
+	0x78, // Reg 0x1D: BW=125kHz, Coding=4/8, Header=explicit
+	0xc4, // Reg 0x1E: Spread=4096chips/symbol, CRC=enable
+	0x0c  // Reg 0x26: LowDataRate=On, Agc=On
+    };
+    rf95.setModemRegisters(&modem_config);
+#endif
 
 //SF 6 does not works properly
 //SF 7 8 works properly
