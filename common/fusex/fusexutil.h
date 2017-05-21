@@ -96,9 +96,12 @@ void _myprintf(const __FlashStringHelper *fmt, ... )
 }
 
 #define myprintf(a, ...) _myprintf(F(a), ##__VA_ARGS__)
+
 #define TRACE(x, ...) myprintf(x, ##__VA_ARGS__)
-#define TTRACE(x, ...) \
-    myprintf("%6f:" x, (float)millis()/1000, ##__VA_ARGS__)
+#define TTRACE(x, ...) do { \
+    Serial.print((float)millis()/1000,6); \
+    myprintf(": " x, ##__VA_ARGS__); \
+} while(0)
 
 #ifdef CONFIG_DEBUG
 #define DTRACE(x, ...)  TRACE(x, ##__VA_ARGS__)
