@@ -24,7 +24,7 @@
 
 RH_RF95 rf95;
 
-boolean setSpreadingFactor(byte SF)
+static boolean setSpreadingFactor(byte SF)
 { // abort and return FALSE if new spreading factor not in acceptable range; otherwise, set spreading factor and return TRUE
   uint8_t currentSF, newLowerNibble, newUpperNibble, current_register_1E_value, new_register_1E_value;
 
@@ -50,7 +50,7 @@ boolean setSpreadingFactor(byte SF)
 }
 
 
-void gendata(uint8_t* data, unsigned int size)
+static void gendata(uint8_t* data, unsigned int size)
 {
     while (size--){
 	*data++ = random(32,126);
@@ -58,7 +58,7 @@ void gendata(uint8_t* data, unsigned int size)
 }
 
 #ifdef DEBUG
-void printdata(char* data, unsigned int size)
+static void printdata(char* data, unsigned int size)
 {
     for(int i=0;i<RH_RF95_MAX_MESSAGE_LEN;i++) {
 	Serial.print("byte ");
@@ -69,7 +69,7 @@ void printdata(char* data, unsigned int size)
 }
 #endif
 
-void send_testcmd(int crc, unsigned int packetnbr)
+static void send_testcmd(int crc, unsigned int packetnbr)
 {
     bool replied = false;
     char expected_rply[RH_RF95_MAX_MESSAGE_LEN];
