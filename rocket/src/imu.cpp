@@ -149,10 +149,16 @@ void loopImu()
   // On interrupt, check if data ready interrupt
   if (myIMU.readByte(MPU9250_ADDRESS, INT_STATUS) & 0x01)
   {
+
+      unsigned long time = micros();
+      unsigned long d1;
+
     myIMU.readAccelData(myIMU.accelCount);  // Read the x/y/z adc values
     myIMU.readGyroData(myIMU.gyroCount);  // Read the x/y/z adc values
     myIMU.readMagData(myIMU.magCount);  // Read the x/y/z adc values
     myIMU.tempCount = myIMU.readTempData();  // Read the adc values
+
+    d1 = micros() - time;
 
     // Now we'll calculate the accleration value into actual g's
     // This depends on scale being set
@@ -179,6 +185,8 @@ void loopImu()
 
     // Temperature in degrees Centigrade
     myIMU.temperature = ((float) myIMU.tempCount) / 333.87 + 21.0;
+
+    TRACE("ZSK packet acquired in:%ld and prepared in %ld us\r\n", d1, micros()-time);
 
     // Print acceleration values in milligs!
     Serial.print("X-acceleration: "); Serial.print(1000 * myIMU.ax);
