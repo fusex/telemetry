@@ -11,7 +11,7 @@
  *       Compiler:  gcc
  *
  *         Author:  Zakaria ElQotbi (zskdan), zakaria@derbsellicon.com
- *        Company:  Derb.io 
+ *        Company:  Derb.io
  *
  * =====================================================================================
  */
@@ -40,7 +40,7 @@ boolean setSpreadingFactor(byte SF)
     new_register_1E_value = (newUpperNibble + newLowerNibble);
     rf95.spiWrite(0x1E, new_register_1E_value);
 
-    TTRACE("New spreading factor = %d, New value of register 0x1E = ",
+    TTRACE("New spreading factor = %d, New value of register 0x1E = %x\r\n",
 	   SF, new_register_1E_value);
 
     return true;
@@ -50,26 +50,6 @@ boolean setSpreadingFactor(byte SF)
 }
 
 
-void setupRadio() 
-{
-    if (!rf95.init())
-	eTRACE("Radio init failed\n\r");
-    else
-	TTRACE("Radio init Done\n\r");
-
-    rf95.setTxPower(20,false);
-    rf95.setFrequency(869.4);
-    rf95.setModemConfig(RH_RF95::Bw500Cr45Sf128);
-    setSpreadingFactor(10);
-
-//SF 6 does not works properly
-//SF 7 8 works properly
-//SF 9 work with errors for 125khz and properly for 500khz!
-//SF 10 does not works properly for 125khz, and properly for 500khz
-//SF 11 does not works properly for 125khz, and works with errors for 500khz
-//SF 12 does not works properly for either 125khz and 500khz
-}
-
 void gendata(uint8_t* data, unsigned int size)
 {
     while (size--){
@@ -77,7 +57,7 @@ void gendata(uint8_t* data, unsigned int size)
     }
 }
 
-#define DEBUG
+#ifdef DEBUG
 void printdata(char* data, unsigned int size)
 {
     for(int i=0;i<RH_RF95_MAX_MESSAGE_LEN;i++) {
@@ -95,22 +75,17 @@ void send_testcmd(int crc, unsigned int packetnbr)
     char expected_rply[RH_RF95_MAX_MESSAGE_LEN];
     char buf[RH_RF95_MAX_MESSAGE_LEN];
 
-    TTRACE("Preparing peer for transfer of ");
-    TRACE(packetnbr);
-    TRACE(" packet[s] of crc: 0x");
-    Serial.print(crc, HEX);
-    TRACE("\n\r");
+    TTRACE("Preparing peer for transfer of %d packet[s] of crc: 0x%x\n\r",
+           packetnbr, crc);
 
     do {
 	sprintf(buf, "TEST BW for %d CRC:0x%x", packetnbr, crc);
 	rf95.send((uint8_t*)buf, sizeof(buf));
 	rf95.waitPacketSent();
 
-	DTTRACE("send command: \"");
-	DTRACE(buf);
-	DTRACE("\"\n\r");
+	DTTRACE("send command: \"%s\"\n\r",buf);
 
-	if (rf95.waitAvailableTimeout(3000)) { 
+	if (rf95.waitAvailableTimeout(3000)) {
 	    uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
 	    memset(buf, 0, sizeof(buf));
 
@@ -118,18 +93,10 @@ void send_testcmd(int crc, unsigned int packetnbr)
 		sprintf(expected_rply, "OK for %d", packetnbr);
 		if(!strncmp(buf, expected_rply, len))
 		    replied = true;
-		TTRACE("SNR: ");
-		Serial.println(rf95.lastSNR(), DEC);
-		TRACE("\r");
-		TTRACE("RSSI: ");
-		Serial.println(rf95.lastRssi(), DEC);
-		TRACE("\r");
-		TTRACE("Freq ERROR: ");
-		Serial.println(rf95.frequencyError(), DEC);
-		TRACE("\r");
-		TTRACE("max length: ");
-		Serial.println(rf95.maxMessageLength(), DEC);
-		TRACE("\r");
+		TTRACE("SNR:  %d\n\r", rf95.lastSNR());
+		TTRACE("RSSI: %d\n\r", rf95.lastRssi());
+		TTRACE("Freq ERROR: %d\n\r", rf95.frequencyError());
+		TTRACE("max length: %d\n\r", rf95.maxMessageLength());
 	    }
 	} else {
 	    TTRACE("still waiting for peer response !\n\r");
@@ -142,11 +109,31 @@ void send_testcmd(int crc, unsigned int packetnbr)
     TTRACE("Peer is OK, start transfer!\n\r");
 }
 
+void setupRadio()
+{
+    if (!rf95.init())
+	TTRACE("Radio init failed\n\r");
+    else
+	TTRACE("Radio init Done\n\r");
+
+    rf95.setTxPower(20,false);
+    rf95.setFrequency(869.4);
+    rf95.setModemConfig(RH_RF95::Bw500Cr45Sf128);
+    setSpreadingFactor(10);
+
+//SF 6 does not works properly
+//SF 7 8 works properly
+//SF 9 work with errors for 125khz and properly for 500khz!
+//SF 10 does not works properly for 125khz, and properly for 500khz
+//SF 11 does not works properly for 125khz, and works with errors for 500khz
+//SF 12 does not works properly for either 125khz and 500khz
+}
+
 void loopRadio()
 {
     int crc = 0;
     unsigned int packetnbr = CONFIG_PACKETNUMBER;
-    unsigned int count; 
+    unsigned int count;
     uint8_t data[RH_RF95_MAX_MESSAGE_LEN];
 
     gendata(data, sizeof(data));
@@ -172,12 +159,7 @@ void loopRadio()
 	rf95.waitPacketSent();
     }
 
-    TTRACE("Transfer of ");
-    TRACE(packetnbr-count-1);
-    TRACE("/");
-    TRACE(packetnbr);
-    TRACE(" to peer finished!\n\r");
-
+    TTRACE("Transfer of %d/%d to peer finished!\n\r", packetnbr-count-1, packetnbr);
     TTRACE("#########################\n\r");
     //delay(2000);
 }

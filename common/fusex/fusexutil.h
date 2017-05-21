@@ -1,21 +1,6 @@
 #include <stdint.h>
 #include <Arduino.h>
 
-#define TRACE(x) Serial.print(x)
-#define TTRACE(x) do { \
-	    Serial.print((float)millis()/1000,6); \
-	    Serial.print(": "); \
-	    Serial.print(x) ; \
-    } while(0)
-
-#ifdef CONFIG_DEBUG
-#define DTRACE(x)  TRACE(x) 
-#define DTTRACE(x) TTRACE(x)  
-#else
-#define DTRACE(x) do {} while(0)
-#define DTTRACE(x) do {} while(0)
-#endif
-
 #define CRC16 0x8005
 
 //Check routine taken from
@@ -94,7 +79,6 @@ uint16_t _gen_crc16(const uint8_t *data, uint16_t size)
     return crc;
 }
 
-#define myprintf(a, ...) _myprintf(F(a), ##__VA_ARGS__)
 void _myprintf(const __FlashStringHelper *fmt, ... )
 {
     char buf[128]; // resulting string limited to 128 chars
@@ -110,3 +94,17 @@ void _myprintf(const __FlashStringHelper *fmt, ... )
 
     Serial.print(buf);
 }
+
+#define myprintf(a, ...) _myprintf(F(a), ##__VA_ARGS__)
+#define TRACE(x, ...) myprintf(x, ##__VA_ARGS__)
+#define TTRACE(x, ...) \
+    myprintf("%6f:" x, (float)millis()/1000, ##__VA_ARGS__)
+
+#ifdef CONFIG_DEBUG
+#define DTRACE(x, ...)  TRACE(x, ##__VA_ARGS__)
+#define DTTRACE(x, ...) TTRACE(x, ##__VA_ARGS__)
+#else
+#define DTRACE(x, ...) do {} while(0)
+#define DTTRACE(x, ...) do {} while(0)
+#endif
+
