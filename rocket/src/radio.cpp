@@ -178,7 +178,12 @@ void loopRadio()
 	rf95.send(data, 36);
 	d1 = micros() - time;
 #endif
+
+#if 0
 	rf95.waitPacketSent();
+#else
+	while(rf95.mode() == RHGenericDriver::RHModeTx);
+#endif
 	TRACE("packet prepared in :%ld us and sent in: %ld us\r\n", d1, micros()-time);
     }
 
