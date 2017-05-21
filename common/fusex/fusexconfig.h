@@ -10,7 +10,7 @@
 #define CONFIG_DONT_WAIT
 #endif
 
-#define CONFIG_PACKETNUMBER 20
+#define CONFIG_PACKETNUMBER 1
 
 #define CONFIG_RADIO
 #if 0

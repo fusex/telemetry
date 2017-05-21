@@ -170,12 +170,16 @@ void loopRadio()
     count = packetnbr;
     while (count--){
     //while (1){
+	unsigned long time = micros();
+	unsigned long d1;
 #if 0
 	rf95.send(data, sizeof(data));
 #else
 	rf95.send(data, 36);
+	d1 = micros() - time;
 #endif
 	rf95.waitPacketSent();
+	TRACE("packet prepared in :%ld us and sent in: %ld us\r\n", d1, micros()-time);
     }
 
     TTRACE("Transfer of %d/%d to peer finished!\n\r", packetnbr-count-1, packetnbr);
