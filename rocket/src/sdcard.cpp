@@ -164,6 +164,7 @@ void setupSdcard()
 #endif
 
     pinMode(SD_CS_PIN, OUTPUT);
+    digitalWrite(SD_CS_PIN, HIGH);
 
     if (!SD.begin(SD_CS_PIN)) {
 	TTRACE("SDCard: initialization failed!\r\n");
