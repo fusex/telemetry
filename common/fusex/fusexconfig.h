@@ -19,3 +19,11 @@
 #define CONFIG_PROPELLANT
 #define CONFIG_GPS
 #endif
+
+#define CONFIG_TEST_SDCARD
+#if 0
+#define CONFIG_TEST_RADIO
+#define CONFIG_TEST_IMU
+#define CONFIG_TEST_PROPELLANT
+#define CONFIG_TEST_GPS
+#endif
