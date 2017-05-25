@@ -6,6 +6,7 @@
 int calcrc16(const uint8_t *ptr, uint16_t count);
 uint16_t _gen_crc16(const uint8_t *data, uint16_t size);
 void _myprintf(const __FlashStringHelper *fmt, ... );
+void gendata(uint8_t* data, unsigned int size);
 
 #define myprintf(a, ...) _myprintf(F(a), ##__VA_ARGS__)
 
@@ -18,6 +19,7 @@ void _myprintf(const __FlashStringHelper *fmt, ... );
 #ifdef CONFIG_DEBUG
 #define DTRACE(x, ...)  TRACE(x, ##__VA_ARGS__)
 #define DTTRACE(x, ...) TTRACE(x, ##__VA_ARGS__)
+void printdata(char* data, unsigned int size);
 #else
 #define DTRACE(x, ...) do {} while(0)
 #define DTTRACE(x, ...) do {} while(0)

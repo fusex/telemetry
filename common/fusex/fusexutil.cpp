@@ -112,3 +112,22 @@ void _myprintf(const __FlashStringHelper *fmt, ... )
     Serial.print(buf);
 }
 
+void gendata(uint8_t* data, unsigned int size)
+{
+    while (size--){
+	*data++ = random(32,126);
+    }
+}
+
+#ifdef DEBUG
+void printdata(char* data, unsigned int size)
+{
+    for(int i=0;i<RH_RF95_MAX_MESSAGE_LEN;i++) {
+	Serial.print("byte ");
+	Serial.print(i);
+	Serial.print(" = ");
+	Serial.println(data[i]);
+    }
+}
+#endif
+
