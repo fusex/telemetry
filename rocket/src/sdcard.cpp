@@ -143,16 +143,16 @@ void testSdCard()
 {
 #ifdef CONFIG_TEST_SDCARD
 # if 0
-testSdCard1();
+    testSdCard1();
 # endif
 # if 0
-testSdCard2();
+    testSdCard2();
 # endif
 # if 0
-testSdCard3();
+    testSdCard3();
 # endif
-# if 1
-testSdCard4();
+# if 0
+    testSdCard4();
 # endif
 #endif
 }
