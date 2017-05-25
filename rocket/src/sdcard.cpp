@@ -23,6 +23,8 @@
 #include <SPI.h>
 #include "SdFat.h"
 
+#include "trame.h"
+
 #if 0
 #define SD_CS_PIN SS
 #else
@@ -141,52 +143,6 @@ void testSdCard4()
 #endif
 #define FILE_BASE_NAME "adc4pin"
 
-#define HBITFILED 4
-#define SBITFILED 1
-
-typedef struct {
-    uint32_t timestamp;
-    int32_t  gpslt; 
-    int32_t  gpslg;
-
-    uint16_t gyrx;
-    uint16_t gyry;
-    uint16_t gyrz;
-
-    uint16_t accelx;
-    uint16_t accely;
-    uint16_t accelz;
-
-    uint16_t magnx;
-    uint16_t magny;
-    uint16_t magnz;
-
-    uint8_t  highgyrx:HBITFILED;
-    uint8_t  highgyry:HBITFILED;
-    uint8_t  highgyrz:HBITFILED;
-
-    uint8_t  highaccelx:HBITFILED;
-    uint8_t  highaccely:HBITFILED;
-    uint8_t  highaccelz:HBITFILED;
-
-    uint8_t  highmagnx:HBITFILED;
-    uint8_t  highmagny:HBITFILED;
-    uint8_t  highmagnz:HBITFILED;
-
-    uint8_t  signgyrx:SBITFILED;
-    uint8_t  signgyry:SBITFILED;
-    uint8_t  signgyrz:SBITFILED;
-
-    uint8_t  signaccelx:SBITFILED;
-    uint8_t  signaccely:SBITFILED;
-    uint8_t  signaccelz:SBITFILED;
-
-    uint8_t  signmagnx:SBITFILED;
-    uint8_t  signmagny:SBITFILED;
-    uint8_t  signmagnz:SBITFILED;
-
-} __attribute__((packed)) data_t;
-
 #define error(msg) {SD.errorPrint(&Serial, F(msg));while(1);}
 
 const uint32_t LOG_INTERVAL_USEC = 2000;
@@ -201,15 +157,15 @@ char binName[FILE_NAME_DIM] = FILE_BASE_NAME "00.bin";
 SdBaseFile binFile;
 
 // Number of data records in a block.
-const uint16_t DATA_DIM = (512 - 4)/sizeof(data_t);
+const uint16_t DATA_DIM = (512 - 4)/sizeof(fxtm_data_t);
 
 //Compute fill so block size is 512 bytes.  FILL_DIM may be zero.
-const uint16_t FILL_DIM = 512 - 4 - DATA_DIM*sizeof(data_t);
+const uint16_t FILL_DIM = 512 - 4 - DATA_DIM*sizeof(fxtm_data_t);
 
 struct block_t {
   uint16_t count;
   uint16_t overrun;
-  data_t data[DATA_DIM];
+  fxtm_data_t data[DATA_DIM];
   uint8_t fill[FILL_DIM];
 };
 
@@ -253,9 +209,9 @@ void createBinFile() {
 }
 
 // Acquire a data record.
-void acquireData(data_t* data) {
+void acquireData(fxtm_data_t* data) {
   uint8_t* p = (uint8_t*)data;
-  gendata(p,sizeof(data_t));
+  gendata(p,sizeof(fxtm_data_t));
   data->timestamp = micros();
 }
 
