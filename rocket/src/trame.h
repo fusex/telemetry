@@ -98,4 +98,24 @@ typedef struct {
     GET(tm, p##z, Z); \
 }
 
+#if 0
+enum fxtm_buff_status_e {
+    FXTM_NOTINIT,
+    FXTM_ACQUIRING,
+    FXTM_LOGING,
+    FXTM_SENDING
+};
+
+typedef struct {
+    fxtm_data_t* tm_data;
+    fxtm_buff_status_e status;
+    bool locked;
+} fxtm_buffer_t;
+
+fxtm_buffer_t fxtmbuff[3];
+
+int head = 0;
+#define NEXT() {head++; if(head==3) head = 0; }
+#endif
+
 #endif //define _TRAME_H
