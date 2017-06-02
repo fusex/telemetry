@@ -16,10 +16,10 @@
 
 #define CONFIG_PACKETNUMBER 1
 
-#define CONFIG_RADIO
-#if 0
-#define CONFIG_IMU
 #define CONFIG_SDCARD
+#if 0
+#define CONFIG_RADIO
+#define CONFIG_IMU
 #define CONFIG_PROPELLANT
 #define CONFIG_GPS
 #endif
