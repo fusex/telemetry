@@ -5,6 +5,10 @@
 #include "sdcard.h"
 #include "propellant.h"
 
+#include <fusexutil.h>
+#include "trame.h"
+#include "sdcard.h"
+
 #if 0
 #include <pt.h>   // include protothread library
 static struct pt pt1, pt2, pt3; // each protothread needs one of these
@@ -72,11 +76,34 @@ void loop()
 }
 #else
 
+#define DUMMY_ACQUIRING
+
+extern block_t   block;
+uint16_t         counter;
+
+// Acquire a data record.
+static void acquireData(fxtm_data_t* data)
+{
+    uint8_t* p = (uint8_t*)data;
+    gendata(p,sizeof(fxtm_data_t));
+    data->timestamp = micros();
+}
+
+static void dummyacquire() {
+    acquireData(&block.data);
+    block.count++;    
+}
+
 static int acquire()
 {
+#ifdef DUMMY_ACQUIRING
+    dummyacquire();
+    return 0;
+#endif
     loopPropellant();
     loopImu();
     loopGps();
+    return 0;
 }
 
 static int log()
@@ -84,9 +111,13 @@ static int log()
     loopSdcard();
 }
 
+
+uint32_t count = 0;
 static int send()
 {
-    loopRadio();
+//    loopRadio();
+    delay(90);
+    TRACE("sending %10d\r",count++);
 }
 
 void loop()

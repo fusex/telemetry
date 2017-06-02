@@ -18,6 +18,8 @@
 
 #include <Arduino.h>
 
+#include "trame.h"
+
 void setupCommon()
 {
     randomSeed(analogRead(0));

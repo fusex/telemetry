@@ -15,7 +15,7 @@
  *
  * =====================================================================================
  */
-
+#if 0
 #include <fusexconfig.h>
 #include <fusexutil.h>
 
@@ -163,12 +163,11 @@ const uint16_t DATA_DIM = (512 - 4)/sizeof(fxtm_data_t);
 const uint16_t FILL_DIM = 512 - 4 - DATA_DIM*sizeof(fxtm_data_t);
 
 struct block_t {
-  uint16_t count;
-  uint16_t overrun;
-  fxtm_data_t data[DATA_DIM];
-  uint8_t fill[FILL_DIM];
+  uint16_t     count;
+  uint16_t     overrun;
+  fxtm_data_t  data[DATA_DIM];
+  uint8_t      fill[FILL_DIM];
 };
-
 
 void createBinFile() {
   // max number of blocks to erase per erase call
@@ -210,150 +209,204 @@ void createBinFile() {
 
 // Acquire a data record.
 void acquireData(fxtm_data_t* data) {
-  uint8_t* p = (uint8_t*)data;
-  gendata(p,sizeof(fxtm_data_t));
-  data->timestamp = micros();
+    uint8_t* p = (uint8_t*)data;
+    gendata(p,sizeof(fxtm_data_t));
+    data->timestamp = micros();
 }
 
+uint32_t bn = 0;  
+uint32_t maxLatency = 0;
+bool     closed = false;
+block_t  block;
+
+void closeBinFile()
+{
+    if (closed == true)
+	return;
+
+    if (!SD.card()->writeStop()) {
+	error("writeStop failed");
+    }
+    Serial.print(F("Max block write usec: "));
+    Serial.println(maxLatency);
+    // Truncate file if recording stopped early.
+    if (bn != FILE_BLOCK_COUNT) {
+	Serial.println(F("Truncating file"));
+	if (!binFile.truncate(512L * bn)) {
+	    error("Can't truncate file");
+	}
+    }
+}
+
+void saveinBinFile()
+{
+    block_t* pBlock = &block;
+    if (!SD.card()->isBusy()) {
+	// Write block to SD.
+	uint32_t usec = micros();
+	if (!SD.card()->writeData((uint8_t*)pBlock)) {
+	    error("write data failed");
+	}
+	usec = micros() - usec;
+	if (usec > maxLatency) {
+	    maxLatency = usec;
+	}
+	bn++;
+	if (bn == FILE_BLOCK_COUNT) {
+	    // File full so stop
+	    closeBinFile();
+            closed = true;
+	}
+    }
+}
+
+void prepareBinFile()
+{
+    // Start a multiple block write.
+    if (!SD.card()->writeStart(binFile.firstBlock())) {
+	error("writeStart failed");
+    }
+}
+
+void testSdCard6() {
+    createBinFile();
+    prepareBinFile();
+
+    while(1) {
+	acquireData(block.data);
+	saveinBinFile();
+    }
+    closeBinFile();
+}
+
+
 //------------------------------------------------------------------------------
-void recordBinFile() {
-  const uint8_t QUEUE_DIM = BUFFER_BLOCK_COUNT + 1;
-  // Index of last queue location.
-  const uint8_t QUEUE_LAST = QUEUE_DIM - 1;
-  
-  // Allocate extra buffer space.
-  block_t block[BUFFER_BLOCK_COUNT - 1];
-  
-  block_t* curBlock = 0;
-  
-  block_t* emptyStack[BUFFER_BLOCK_COUNT];
-  uint8_t emptyTop;
-  uint8_t minTop;
+void recordBinFile()
+{
+    const uint8_t QUEUE_DIM = BUFFER_BLOCK_COUNT + 1;
+    // Index of last queue location.
+    const uint8_t QUEUE_LAST = QUEUE_DIM - 1;
 
-  block_t* fullQueue[QUEUE_DIM];
-  uint8_t fullHead = 0;
-  uint8_t fullTail = 0;  
+    // Allocate extra buffer space.
+    block_t block[BUFFER_BLOCK_COUNT - 1];
 
-  // Use SdFat's internal buffer.
-  emptyStack[0] = (block_t*)SD.vol()->cacheClear();
-  if (emptyStack[0] == 0) {
-    error("cacheClear failed");
-  }
-  // Put rest of buffers on the empty stack.
-  for (int i = 1; i < BUFFER_BLOCK_COUNT; i++) {
-    emptyStack[i] = &block[i - 1];
-  }
-  emptyTop = BUFFER_BLOCK_COUNT;
-  minTop = BUFFER_BLOCK_COUNT;
-  
-  // Start a multiple block write.
-  if (!SD.card()->writeStart(binFile.firstBlock())) {
-    error("writeStart failed");
-  }
-  Serial.print(F("FreeStack: "));
-  Serial.println(FreeStack());
-  Serial.println(F("Logging - type any character to stop"));
-  bool closeFile = false;
-  uint32_t bn = 0;  
-  uint32_t maxLatency = 0;
-  uint32_t overrun = 0;
-  uint32_t overrunTotal = 0;
-  uint32_t logTime = micros();
-  while(1) {
-     // Time for next data record.
-    logTime += LOG_INTERVAL_USEC;
-    if (Serial.available()) {
-      closeFile = true;
-    }  
-    if (closeFile) {
-      if (curBlock != 0) {
-        // Put buffer in full queue.
-        fullQueue[fullHead] = curBlock;
-        fullHead = fullHead < QUEUE_LAST ? fullHead + 1 : 0;
-        curBlock = 0;
-      }
-    } else {
-      if (curBlock == 0 && emptyTop != 0) {
-        curBlock = emptyStack[--emptyTop];
-        if (emptyTop < minTop) {
-          minTop = emptyTop;
-        }
-        curBlock->count = 0;
-        curBlock->overrun = overrun;
-        overrun = 0;
-      }
-      if ((int32_t)(logTime - micros()) < 0) {
-        //error("Rate too fast");             
-      }
-      int32_t delta;
-      do {
-        delta = micros() - logTime;
-      } while (delta < 0);
-      if (curBlock == 0) {
-        overrun++;
-        overrunTotal++;
+    block_t* curBlock = 0;
+
+    block_t* emptyStack[BUFFER_BLOCK_COUNT];
+    uint8_t emptyTop;
+    uint8_t minTop;
+
+    block_t* fullQueue[QUEUE_DIM];
+    uint8_t fullHead = 0;
+    uint8_t fullTail = 0;  
+
+    // Use SdFat's internal buffer.
+    emptyStack[0] = (block_t*)SD.vol()->cacheClear();
+    if (emptyStack[0] == 0) {
+	error("cacheClear failed");
+    }
+
+    // Put rest of buffers on the empty stack.
+    for (int i = 1; i < BUFFER_BLOCK_COUNT; i++) {
+	emptyStack[i] = &block[i - 1];
+    }
+    emptyTop = BUFFER_BLOCK_COUNT;
+    minTop = BUFFER_BLOCK_COUNT;
+
+    // Start a multiple block write.
+    if (!SD.card()->writeStart(binFile.firstBlock())) {
+	error("writeStart failed");
+    }
+
+    Serial.print(F("FreeStack: "));
+    Serial.println(FreeStack());
+    Serial.println(F("Logging - type any character to stop"));
+    bool closeFile = false;
+    uint32_t bn = 0;  
+    uint32_t maxLatency = 0;
+    uint32_t overrun = 0;
+    uint32_t overrunTotal = 0;
+    uint32_t logTime = micros();
+
+    while(1) {
+	// Time for next data record.
+	logTime += LOG_INTERVAL_USEC;
+	if (Serial.available()) {
+	    closeFile = true;
+	}  
+	if (closeFile) {
+	    if (curBlock != 0) {
+		// Put buffer in full queue.
+		fullQueue[fullHead] = curBlock;
+		fullHead = fullHead < QUEUE_LAST ? fullHead + 1 : 0;
+		curBlock = 0;
+	    }
+	} else {
+	    if (curBlock == 0 && emptyTop != 0) {
+		curBlock = emptyStack[--emptyTop];
+		if (emptyTop < minTop) {
+		    minTop = emptyTop;
+		}
+		curBlock->count = 0;
+		curBlock->overrun = overrun;
+		overrun = 0;
+	    }
+	    if ((int32_t)(logTime - micros()) < 0) {
+		//error("Rate too fast");             
+	    }
+	    int32_t delta;
+	    do {
+		delta = micros() - logTime;
+	    } while (delta < 0);
+	    if (curBlock == 0) {
+		overrun++;
+		overrunTotal++;
 #if ABORT_ON_OVERRUN
-        Serial.println(F("Overrun abort"));
-        break;
- #endif  // ABORT_ON_OVERRUN       
-      } else {
+		Serial.println(F("Overrun abort"));
+		break;
+#endif  // ABORT_ON_OVERRUN       
+	    } else {
 #if USE_SHARED_SPI
-        SD.card()->spiStop();
+		SD.card()->spiStop();
 #endif  // USE_SHARED_SPI   
-        acquireData(&curBlock->data[curBlock->count++]);
+		acquireData(&curBlock->data[curBlock->count++]);
 #if USE_SHARED_SPI
-        SD.card()->spiStart();
+		SD.card()->spiStart();
 #endif  // USE_SHARED_SPI      
-        if (curBlock->count == DATA_DIM) {
-          fullQueue[fullHead] = curBlock;
-          fullHead = fullHead < QUEUE_LAST ? fullHead + 1 : 0;
-          curBlock = 0;
-        } 
-      }
+		if (curBlock->count == DATA_DIM) {
+		    fullQueue[fullHead] = curBlock;
+		    fullHead = fullHead < QUEUE_LAST ? fullHead + 1 : 0;
+		    curBlock = 0;
+		} 
+	    }
+	}
+	if (fullHead == fullTail) {
+	    // Exit loop if done.
+	    if (closeFile) {
+		break;
+	    }
+	} else if (!SD.card()->isBusy()) {
+	    // Get address of block to write.
+	    block_t* pBlock = fullQueue[fullTail];
+	    fullTail = fullTail < QUEUE_LAST ? fullTail + 1 : 0;
+	    // Write block to SD.
+	    uint32_t usec = micros();
+	    if (!SD.card()->writeData((uint8_t*)pBlock)) {
+		error("write data failed");
+	    }
+	    usec = micros() - usec;
+	    if (usec > maxLatency) {
+		maxLatency = usec;
+	    }
+	    // Move block to empty queue.
+	    emptyStack[emptyTop++] = pBlock;
+	    bn++;
+	    if (bn == FILE_BLOCK_COUNT) {
+		// File full so stop
+		break;
+	    }
+	}
     }
-    if (fullHead == fullTail) {
-      // Exit loop if done.
-      if (closeFile) {
-        break;
-      }
-    } else if (!SD.card()->isBusy()) {
-      // Get address of block to write.
-      block_t* pBlock = fullQueue[fullTail];
-      fullTail = fullTail < QUEUE_LAST ? fullTail + 1 : 0;
-      // Write block to SD.
-      uint32_t usec = micros();
-      if (!SD.card()->writeData((uint8_t*)pBlock)) {
-        error("write data failed");
-      }
-      usec = micros() - usec;
-      if (usec > maxLatency) {
-        maxLatency = usec;
-      }
-      // Move block to empty queue.
-      emptyStack[emptyTop++] = pBlock;
-      bn++;
-      if (bn == FILE_BLOCK_COUNT) {
-        // File full so stop
-        break;
-      }
-    }
-  }
-  if (!SD.card()->writeStop()) {
-    error("writeStop failed");
-  }
-  Serial.print(F("Min Free buffers: "));
-  Serial.println(minTop);
-  Serial.print(F("Max block write usec: "));
-  Serial.println(maxLatency);
-  Serial.print(F("Overruns: "));
-  Serial.println(overrunTotal);
-  // Truncate file if recording stopped early.
-  if (bn != FILE_BLOCK_COUNT) {
-    Serial.println(F("Truncating file"));
-    if (!binFile.truncate(512L * bn)) {
-      error("Can't truncate file");
-    }
-  }
 }
 
 
@@ -379,14 +432,12 @@ void renameBinFile() {
   Serial.println(F(" blocks"));
 }
 
-
 // log data
-void logData() {
-  createBinFile();
-  recordBinFile();
-  renameBinFile();
+void testSdCard5() {
+    createBinFile(); 
+    recordBinFile();
+    renameBinFile();
 }
-
 
 void testSdCard()
 {
@@ -403,7 +454,12 @@ void testSdCard()
 # if 0
     testSdCard4();
 # endif
-    logData();
+# if 0
+    testSdCard5();
+# endif
+# if 1
+    testSdCard6();
+# endif
 #endif
 }
 
@@ -421,11 +477,13 @@ void setupSdcard()
 	return;
     }
     TTRACE("SDCard: initialization done.\r\n");
+#if 0
     myFile = SD.open(LOGFILENAME, FILE_WRITE);
     if (!myFile) {
-	TTRACE("SDCard: ERROR: Opening file %s !\r\n", LOGFILENAME);
-	return;
+       TTRACE("SDCard: ERROR: Opening file %s !\r\n", LOGFILENAME);
+       return;
     }
+#endif
 
     testSdCard();
 }
@@ -436,3 +494,4 @@ void loopSdcard()
     return;
 #endif
 }
+#endif
