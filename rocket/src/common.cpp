@@ -22,5 +22,8 @@ void setupCommon()
 {
     randomSeed(analogRead(0));
     Serial.begin(9600);
+
+#ifndef CONFIG_PROD
     while (!Serial) ; // Wait for serial port to be available
+#endif
 }

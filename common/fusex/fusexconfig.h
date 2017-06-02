@@ -1,4 +1,8 @@
 #if 0
+#define CONFIG_PROD
+#endif
+
+#if 0
 #define CONFIG_DEBUG
 #endif
 
