@@ -25,4 +25,13 @@ void printdata(char* data, unsigned int size);
 #define DTTRACE(x, ...) do {} while(0)
 #endif
 
+#ifdef CONFIG_TRACES
+#define WTRACE(x, ...)  TRACE(x, ##__VA_ARGS__)
+#define WTTRACE(x, ...) TTRACE(x, ##__VA_ARGS__)
+void printdata(char* data, unsigned int size);
+#else
+#define WTRACE(x, ...) do {} while(0)
+#define WTTRACE(x, ...) do {} while(0)
+#endif
+
 #endif // FUSEXUTIL_H
