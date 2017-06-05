@@ -78,7 +78,7 @@ void loop()
 
 #define DUMMY_ACQUIRING
 
-extern block_t   block;
+block_t   block;
 uint16_t         counter;
 
 // Acquire a data record.

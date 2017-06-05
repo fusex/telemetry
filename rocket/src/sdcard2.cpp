@@ -47,7 +47,7 @@ SdBaseFile binFile;
 
 uint32_t bn = 0;  
 uint32_t maxLatency = 0;
-block_t  block;
+extern block_t  block;
 
 void createBinFile()
 {
