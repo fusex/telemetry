@@ -100,7 +100,7 @@ void setupLowSD()
 
     if (!SD.begin(SD_CS_PIN)) {
 	TTRACE("SDCard: initialization failed!\r\n");
-	return;
+	while(1);
     }
     TTRACE("SDCard: initialization done.\r\n");
 }
