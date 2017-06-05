@@ -30,17 +30,18 @@ static boolean setSpreadingFactor(byte SF)
 
   if ((SF >= 6) && (SF <= 12)) {// only set if the spreading factor is in the proper range
     current_register_1E_value = rf95.spiRead(0x1E);
-    TTRACE("Current value of RF95 register 0x1E = 0x%x\r\n",current_register_1E_value);
+
+    DTTRACE("Current value of RF95 register 0x1E = 0x%x\r\n",current_register_1E_value);
 
     currentSF = current_register_1E_value >> 4;  //upper nibble of register 0x1E
-    TTRACE("Current spreading factor = 0x%x\r\n", current_register_1E_value);
+    DTTRACE("Current spreading factor = 0x%x\r\n", current_register_1E_value);
 
     newLowerNibble = (current_register_1E_value & 0x0F); //same as old lower nibble
     newUpperNibble = (SF << 4); // upper nibble equals new spreading factor
     new_register_1E_value = (newUpperNibble + newLowerNibble);
     rf95.spiWrite(0x1E, new_register_1E_value);
 
-    TTRACE("New spreading factor = %d, New value of register 0x1E = %x\r\n",
+    DTTRACE("New spreading factor = %d, New value of register 0x1E = %x\r\n",
 	   SF, new_register_1E_value);
 
     return true;
