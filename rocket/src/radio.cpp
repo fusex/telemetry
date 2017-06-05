@@ -96,9 +96,10 @@ void setupRadio()
 #ifndef CONFIG_RADIO
     return;
 #endif
-    if (!rf95.init())
+    if (!rf95.init()) {
 	TTRACE("Radio init failed\n\r");
-    else
+	while(1);
+    } else
 	TTRACE("Radio init Done\n\r");
 
     rf95.setTxPower(20,false);
