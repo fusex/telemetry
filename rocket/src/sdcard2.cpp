@@ -109,6 +109,7 @@ void recordBinFile()
 {
     block_t* pBlock = &block;
     TTRACE("b----------------------------------\r\n");
+    SD.card()->spiStart();
     if (!SD.card()->isBusy()) {
 	// Write block to SD.
 	uint32_t usec = micros();
@@ -134,6 +135,7 @@ void recordBinFile()
 	TTRACE("SDCard busy\r\n");
 
     TTRACE("e----------------------------------\r\n");
+    SD.card()->spiStop();
 }
 
 //TODO rotate filelog
