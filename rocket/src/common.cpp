@@ -28,4 +28,6 @@ void setupCommon()
 #ifndef CONFIG_PROD
     while (!Serial) ; // Wait for serial port to be available
 #endif
+
+    TTRACE("Common Initialised !");
 }
