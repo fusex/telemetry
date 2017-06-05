@@ -22,80 +22,47 @@
 #include <SPI.h>
 #include <RH_RF95.h>
 
+#include "trame.h"
+
 RH_RF95 rf95;
 
+extern block_t fxtmblock;
+
 static boolean setSpreadingFactor(byte SF)
-{ // abort and return FALSE if new spreading factor not in acceptable range; otherwise, set spreading factor and return TRUE
-  uint8_t currentSF, newLowerNibble, newUpperNibble, current_register_1E_value, new_register_1E_value;
-
-  if ((SF >= 6) && (SF <= 12)) {// only set if the spreading factor is in the proper range
-    current_register_1E_value = rf95.spiRead(0x1E);
-
-    DTTRACE("Current value of RF95 register 0x1E = 0x%x\r\n",current_register_1E_value);
-
-    currentSF = current_register_1E_value >> 4;  //upper nibble of register 0x1E
-    DTTRACE("Current spreading factor = 0x%x\r\n", current_register_1E_value);
-
-    newLowerNibble = (current_register_1E_value & 0x0F); //same as old lower nibble
-    newUpperNibble = (SF << 4); // upper nibble equals new spreading factor
-    new_register_1E_value = (newUpperNibble + newLowerNibble);
-    rf95.spiWrite(0x1E, new_register_1E_value);
-
-    DTTRACE("New spreading factor = %d, New value of register 0x1E = %x\r\n",
-	   SF, new_register_1E_value);
-
-    return true;
-  }
-
-  return false;
-}
-
-
-static void send_testcmd(int crc, unsigned int packetnbr)
 {
-    bool replied = false;
-    char expected_rply[RH_RF95_MAX_MESSAGE_LEN];
-    char buf[RH_RF95_MAX_MESSAGE_LEN];
+    // abort and return FALSE if new spreading factor not in acceptable range;
+    // otherwise, set spreading factor and return TRUE
+    uint8_t currentSF, newLowerNibble, newUpperNibble, current_register_1E_value, new_register_1E_value;
 
-    TTRACE("Preparing peer for transfer of %d packet[s] of crc: 0x%x\n\r",
-           packetnbr, crc);
+    if ((SF >= 6) && (SF <= 12)) {
+	// only set if the spreading factor is in the proper range
+	current_register_1E_value = rf95.spiRead(0x1E);
 
-    do {
-	sprintf(buf, "TEST BW for %d CRC:0x%x", packetnbr, crc);
-	rf95.send((uint8_t*)buf, sizeof(buf));
-	rf95.waitPacketSent();
+	DTTRACE("Current value of RF95 register 0x1E = 0x%x\r\n",current_register_1E_value);
 
-	DTTRACE("send command: \"%s\"\n\r",buf);
+	//upper nibble of register 0x1E
+	currentSF = current_register_1E_value >> 4;
+	DTTRACE("Current spreading factor = 0x%x\r\n", current_register_1E_value);
 
-	if (rf95.waitAvailableTimeout(3000)) {
-	    uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
-	    memset(buf, 0, sizeof(buf));
+	//same as old lower nibble
+	newLowerNibble = (current_register_1E_value & 0x0F);
 
-	    if (rf95.recv((uint8_t*)buf, &len)) {
-		sprintf(expected_rply, "OK for %d", packetnbr);
-		if(!strncmp(buf, expected_rply, len))
-		    replied = true;
-		TTRACE("SNR:  %d\n\r", rf95.lastSNR());
-		TTRACE("RSSI: %d\n\r", rf95.lastRssi());
-		TTRACE("Freq ERROR: %d\n\r", rf95.frequencyError());
-		TTRACE("max length: %d\n\r", rf95.maxMessageLength());
-	    }
-	} else {
-	    TTRACE("still waiting for peer response !\n\r");
-#ifdef CONFIG_DONT_WAIT
-	    replied = true;
-#endif
-	}
-    } while(!replied);
+	// upper nibble equals new spreading factor
+	newUpperNibble = (SF << 4);
+	new_register_1E_value = (newUpperNibble + newLowerNibble);
+	rf95.spiWrite(0x1E, new_register_1E_value);
 
-    TTRACE("Peer is OK, start transfer!\n\r");
+	DTTRACE("New spreading factor = %d, New value of register 0x1E = %x\r\n",
+		SF, new_register_1E_value);
+
+	return true;
+    }
+
+    return false;
 }
 
 void setupRadio()
 {
-#ifndef CONFIG_RADIO
-    return;
-#endif
     if (!rf95.init()) {
 	TTRACE("Radio init failed\n\r");
 	while(1);
@@ -105,6 +72,7 @@ void setupRadio()
     rf95.setTxPower(20,false);
     rf95.setFrequency(869.4);
     rf95.setModemConfig(RH_RF95::Bw500Cr45Sf128);
+
 #if 0
     setSpreadingFactor(10);
 #elif 1
@@ -130,48 +98,23 @@ void setupRadio()
 
 void loopRadio()
 {
-#ifndef CONFIG_RADIO
-    return;
-#endif
-    int crc = 0;
     unsigned int packetnbr = CONFIG_PACKETNUMBER;
-    unsigned int count;
-    uint8_t data[RH_RF95_MAX_MESSAGE_LEN];
+    unsigned int count     = packetnbr;
 
-    gendata(data, sizeof(data));
-#if 0
-    printdata((char*)data, sizeof(data));
-#endif
-    crc = calcrc16(data,sizeof(data));
+    fxtm_data_t* fxtmdata = (fxtm_data_t*) &fxtmblock;
 
-#ifdef CONFIG_CHECKCRC
-    send_testcmd(crc, packetnbr);
-#else
-    send_testcmd(0, packetnbr);
-#endif
+    WTTRACE("b######################################\n\r");
 
-    count = packetnbr;
-    TTRACE("b########################\n\r");
     while (count--){
-    //while (1){
-	unsigned long time = micros();
-	unsigned long d1;
-#if 0
-	rf95.send(data, sizeof(data));
-#else
-	rf95.send(data, 36);
-	d1 = micros() - time;
-#endif
+	uint32_t time = micros();
 
-#if 0
-	rf95.waitPacketSent();
-#else
-	while(rf95.mode() == RHGenericDriver::RHModeTx);
-#endif
-	TTRACE("packet prepared in :%ld and sent in: %ld \r\n", d1, micros()-time);
+	rf95.send((uint8_t*)fxtmdata, sizeof(fxtm_data_t));
+
+	WTTRACE("packet sent to in :%ld\r\n", micros()-time);
     }
 
-    //TTRACE("Transfer of %d/%d to peer finished!\n\r", packetnbr-count-1, packetnbr);
-    TTRACE("e########################\n\r");
-    delay(2000);
+    //rf95.setModeIdle(); //TODO:
+
+    DTTRACE("Transfer of %d/%d to peer finished!\n\r", packetnbr-count-1, packetnbr);
+    WTTRACE("e######################################\n\r");
 }

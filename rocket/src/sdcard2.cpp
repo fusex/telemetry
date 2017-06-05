@@ -42,12 +42,13 @@
 #define FILE_BLOCK_COUNT (60*10L)    // 01 minutes logging
 #endif
 
-SdFat SD;
+SdFat      SD;
 SdBaseFile binFile;
 
-uint32_t bn = 0;  
-uint32_t maxLatency = 0;
-extern block_t  block;
+uint32_t   bn = 0;  
+uint32_t   maxLatency = 0;
+
+extern block_t fxtmblock;
 
 void createBinFile()
 {
@@ -107,8 +108,8 @@ void setupLowSD()
 
 void recordBinFile()
 {
-    block_t* pBlock = &block;
-    TTRACE("b----------------------------------\r\n");
+    block_t* pBlock = &fxtmblock;
+    WTTRACE("b--------------------------------------\r\n");
     SD.card()->spiStart();
     if (!SD.card()->isBusy()) {
 	// Write block to SD.
@@ -120,7 +121,7 @@ void recordBinFile()
 	if (usec > maxLatency) {
 	    maxLatency = usec;
 	}
-	TTRACE("Block writed in usec: %ld\r\n", usec);
+	WTTRACE("Block writed in usec: %ld\r\n", usec);
 	bn++;
 	if (bn == FILE_BLOCK_COUNT) {
 	    // File full so stop
@@ -131,28 +132,22 @@ void recordBinFile()
 	    TTRACE("File limit reached ! abort\r\n");
 	    while(1);
 	}
-    }else
+    } else
 	TTRACE("SDCard busy\r\n");
 
-    TTRACE("e----------------------------------\r\n");
     SD.card()->spiStop();
+    WTTRACE("e--------------------------------------\r\n");
 }
 
 //TODO rotate filelog
 
 void setupSdcard()
 {
-#ifndef CONFIG_SDCARD
-    return;
-#endif
     setupLowSD();
     createBinFile(); 
 }
 
 void loopSdcard()
 {
-#ifndef CONFIG_SDCARD
-    return;
-#endif
     recordBinFile();
 }

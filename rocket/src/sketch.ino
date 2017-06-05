@@ -9,10 +9,7 @@
 #include "trame.h"
 #include "sdcard.h"
 
-#if 0
-#include <pt.h>   // include protothread library
-static struct pt pt1, pt2, pt3; // each protothread needs one of these
-#endif
+block_t fxtmblock;
 
 void setup()
 {
@@ -24,110 +21,28 @@ void setup()
     setupSdcard();
 }
 
-#if 0
-static int acquire(struct pt* pt, int interval)
+static void acquire()
 {
-    static unsigned long timestamp = 0;
-    PT_BEGIN(pt);
-    while(1) {
-        PT_WAIT_UNTIL(pt, millis() - timestamp > interval );
-        timestamp = millis();
-	loopPropellant();
-	loopImu();
-	loopGps();
-
-    }
-    PT_END(pt);
-}
-
-static int log(struct pt* pt, int interval)
-{
-    static unsigned long timestamp = 0;
-    PT_BEGIN(pt);
-    while(1) {
-        PT_WAIT_UNTIL(pt, millis() - timestamp > interval );
-        timestamp = millis();
-	loopSdcard();
-    }
-    PT_END(pt);
-#}
-
-static int send(struct pt* pt, int interval)
-{
-    static unsigned long timestamp = 0;
-    PT_BEGIN(pt);
-    while(1) {
-       // PT_WAIT_UNTIL(pt, millis() - timestamp > interval );
-        //	timestamp = millis();
-        int idx = 2;  
-        PT_WAIT_UNTIL(pt, !fxtmbuff[idx].locked );
-        fxtmbuff[idx].status = FXTM_SENDING;
-	loopRadio();
-        fxtmbuff[idx].locked = false;
-    }
-    PT_END(pt);
-}
-
-void loop()
-{
-  acquire(&pt1, 10);
-  log(&pt2, 10);
-  send(&pt3, 80);
-}
-#else
-
-//#define DUMMY_ACQUIRING
-
-block_t   block;
-uint16_t  counter;
-
-// Acquire a data record.
-static void acquireData(fxtm_data_t* data)
-{
-    uint8_t* p = (uint8_t*)data;
-    gendata(p,sizeof(fxtm_data_t));
-    data->timestamp = micros();
-}
-
-static void dummyacquire() {
-    acquireData(&block.data);
-    block.count++;    
-}
-
-static int acquire()
-{
-#ifdef DUMMY_ACQUIRING
-    dummyacquire();
-    return 0;
-#endif
     loopPropellant();
     loopImu();
     loopGps();
-    return 0;
 }
 
-static int log()
+static void log()
 {
-    delay(1000);
     loopSdcard();
-    delay(1000);
 }
 
-static int send()
+static void send()
 {
     loopRadio();
-
-#ifdef DUMMY_ACQUIRING
-    static uint32_t count = 0;
-    delay(90);
-    TRACE("sending %10d\r",count++);
-#endif
 }
 
 void loop()
 {
-  acquire();
-  log();
-  send();
+    uint32_t time = micros();
+    acquire();
+    log();
+    send();
+    TTRACE("loop in :%ld\r\n", micros()-time);
 }
-#endif
