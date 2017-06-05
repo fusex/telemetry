@@ -15,7 +15,7 @@
  *
  * =====================================================================================
  */
-
+#if 0
 #include <fusexconfig.h>
 #include <fusexutil.h>
 
@@ -222,3 +222,4 @@ void loopImu()
   } // if (readByte(MPU9250_ADDRESS, INT_STATUS) & 0x01)
 
 }
+#endif 
