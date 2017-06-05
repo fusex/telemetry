@@ -81,7 +81,7 @@ typedef struct {
     }
 
 #define GET(tm, comp, val) { \
-	val = tm->comp + (tm->high##comp<<16); \
+	val = tm->comp + (((uint16_t)tm->high##comp)<<16); \
 	if(tm->sign##comp) \
 	val = -val; \
     }
