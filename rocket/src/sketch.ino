@@ -76,10 +76,10 @@ void loop()
 }
 #else
 
-#define DUMMY_ACQUIRING
+//#define DUMMY_ACQUIRING
 
 block_t   block;
-uint16_t         counter;
+uint16_t  counter;
 
 // Acquire a data record.
 static void acquireData(fxtm_data_t* data)
@@ -108,16 +108,20 @@ static int acquire()
 
 static int log()
 {
+    delay(1000);
     loopSdcard();
+    delay(1000);
 }
 
-
-uint32_t count = 0;
 static int send()
 {
-//    loopRadio();
+    loopRadio();
+
+#ifdef DUMMY_ACQUIRING
+    static uint32_t count = 0;
     delay(90);
     TRACE("sending %10d\r",count++);
+#endif
 }
 
 void loop()
