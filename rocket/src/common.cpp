@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 
+
+#include <fusexutil.h>
 #include <Arduino.h>
 
 #include "trame.h"
@@ -29,5 +31,5 @@ void setupCommon()
     while (!Serial) ; // Wait for serial port to be available
 #endif
 
-    TTRACE("Common Initialised !");
+    TTRACE("Common init Done\r\n");
 }
