@@ -57,13 +57,13 @@ void createBinFile()
 
     // Delete old tmp file.
     if (SD.exists(LOGFILENAME)) {
-	TTRACE("Deleting tmp file " LOGFILENAME);
+	TTRACE("Deleting tmp file " LOGFILENAME "\r\n");
 	if (!SD.remove(LOGFILENAME)) {
 	    error("Can't remove tmp file");
 	}
     }
     // Create new file.
-    TTRACE("\nCreating new file");
+    TTRACE("Creating new file\r\n");
     binFile.close();
     if (!binFile.createContiguous(LOGFILENAME, 512 * FILE_BLOCK_COUNT)) {
 	error("createContiguous failed");
@@ -74,7 +74,7 @@ void createBinFile()
     }
 
     // Flash erase all data in the file.
-    TTRACE("Erasing all data");
+    TTRACE("Erasing all data\r\n");
     uint32_t bgnErase = bgnBlock;
     uint32_t endErase;
     while (bgnErase < endBlock) {
@@ -108,6 +108,7 @@ void setupLowSD()
 void recordBinFile()
 {
     block_t* pBlock = &block;
+    TTRACE("b----------------------------------\r\n");
     if (!SD.card()->isBusy()) {
 	// Write block to SD.
 	uint32_t usec = micros();
@@ -118,17 +119,21 @@ void recordBinFile()
 	if (usec > maxLatency) {
 	    maxLatency = usec;
 	}
+	TTRACE("Block writed in usec: %ld\r\n", usec);
 	bn++;
 	if (bn == FILE_BLOCK_COUNT) {
 	    // File full so stop
 	    if (!SD.card()->writeStop()) {
 		error("writeStop failed");
 	    }
-	    TTRACE("Max block write usec: %ld\n", maxLatency);
-	    TTRACE("File limit reached ! abort\n");
+	    TTRACE("Max block write usec: %ld\r\n", maxLatency);
+	    TTRACE("File limit reached ! abort\r\n");
 	    while(1);
 	}
-    }
+    }else
+	TTRACE("SDCard busy\r\n");
+
+    TTRACE("e----------------------------------\r\n");
 }
 
 //TODO rotate filelog

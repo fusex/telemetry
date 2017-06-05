@@ -151,6 +151,7 @@ void loopRadio()
 #endif
 
     count = packetnbr;
+    TTRACE("b########################\n\r");
     while (count--){
     //while (1){
 	unsigned long time = micros();
@@ -167,10 +168,10 @@ void loopRadio()
 #else
 	while(rf95.mode() == RHGenericDriver::RHModeTx);
 #endif
-	TRACE("packet prepared in :%ld us and sent in: %ld us\r\n", d1, micros()-time);
+	TTRACE("packet prepared in :%ld and sent in: %ld \r\n", d1, micros()-time);
     }
 
-    TTRACE("Transfer of %d/%d to peer finished!\n\r", packetnbr-count-1, packetnbr);
-    TTRACE("#########################\n\r");
-    //delay(2000);
+    //TTRACE("Transfer of %d/%d to peer finished!\n\r", packetnbr-count-1, packetnbr);
+    TTRACE("e########################\n\r");
+    delay(2000);
 }
