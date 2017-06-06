@@ -29,6 +29,9 @@ typedef struct {
     int32_t  gpslt; 
     int32_t  gpslg;
 
+    uint16_t id;
+    uint16_t rawpressure;
+
     uint16_t gyrx;
     uint16_t gyry;
     uint16_t gyrz;
@@ -65,6 +68,8 @@ typedef struct {
     uint8_t  signmagny:SBITFILED;
     uint8_t  signmagnz:SBITFILED;
 
+    int8_t temperature;
+
 } __attribute__((packed)) fxtm_data_t;
 
 #define MASK0 0x0000ffff
@@ -81,7 +86,7 @@ typedef struct {
     }
 
 #define GET(tm, comp, val) { \
-	val = tm->comp + (((uint16_t)tm->high##comp)<<16); \
+	val = tm->comp + (((uint32_t)tm->high##comp)<<16); \
 	if(tm->sign##comp) \
 	val = -val; \
     }
@@ -125,9 +130,34 @@ const uint16_t DATA_DIM = (512 - 4)/sizeof(fxtm_data_t);
 const uint16_t FILL_DIM = 512 - 4 - DATA_DIM*sizeof(fxtm_data_t);
 
 struct block_t {
-  uint16_t     count;
   fxtm_data_t  data;
   uint8_t      fill[FILL_DIM];
 };
+
+#define PRESSURE_AT_SEALEVEL (101325)
+#define GET_RAWPRESSURE(p) (uint16_t)(PRESSURE_AT_SEALEVEL - p)
+#define GET_PRESSURE(raw)  (uint32_t)(PRESSURE_AT_SEALEVEL - raw)
+
+static inline void fxtmdump(void* data)
+{
+    fxtm_data_t* tm = (fxtm_data_t*)data;
+
+    int32_t accel[3] = {0,0,0};
+    int32_t magn[3]  = {0,0,0};
+    int32_t gyr[3]   = {0,0,0};
+
+    GETT(accel, tm, accel[0], accel[1], accel[2]);
+    GETT(magn,  tm, magn[0],  magn[1],  magn[2]);
+    GETT(gyr,   tm, gyr[0],   gyr[1],   gyr[2]);
+
+    TTRACE("id: %u at ts: %u\r\n", tm->id, tm->timestamp);
+    TRACE("\tgps: %d,%d\r\n",tm->gpslt, tm->gpslg);
+    TRACE("\ttemperature: %d C, rawpressure:%u pressure:%lu pa\r\n",
+	  tm->temperature, tm->rawpressure, GET_PRESSURE(tm->rawpressure));
+
+    TRACE("\taccel[0]: %6d, accel[1]: %6d, accel[2]: %6d\r\n", accel[0], accel[1], accel[2]);
+    TRACE("\t magn[0]: %6d,  magn[1]: %6d,  magn[2]: %6d\r\n", magn[0], magn[1], magn[2]);
+    TRACE("\t  gyr[0]: %6d,   gyr[1]: %6d,   gyr[2]: %6d\r\n", gyr[0], gyr[1], gyr[2]);
+}
 
 #endif //define _TRAME_H

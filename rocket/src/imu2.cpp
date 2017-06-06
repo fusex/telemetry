@@ -66,8 +66,6 @@ void loopImu()
     uint32_t lastMicros;
     fxtm_data_t* fxtmdata = (fxtm_data_t*) &fxtmblock;
 
-    WTTRACE("b++++++++++++++++++++++++++++++++++++++\r\n");
-
     now = micros();
     accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
     mag.getHeading(&mx, &my, &mz);
@@ -86,23 +84,28 @@ void loopImu()
     SETT(magn,  fxtmdata, mx, my, mz);
     SETT(gyr,   fxtmdata, gx, gy, gz);
 
-    WTTRACE("IMU data acquired in %ld\r\n", micros() - now); 
+    fxtmdata->temperature = (int) temperature;
+    fxtmdata->rawpressure = GET_RAWPRESSURE((int)pressure);
 
 #if 0
+    TTRACE("b++++++++++++++++++++++++++++++++++++++\r\n");
+    WTTRACE("IMU data acquired in %ld\r\n", micros() - now); 
  #define TOSTR0(x) dtostrf(x,2,2,tmp0)
  #define TOSTR1(x) dtostrf(x,2,2,tmp1)
  #define TOSTR2(x) dtostrf(x,2,2,tmp2)
     char tmp0[16];
     char tmp1[16];
     char tmp2[16];
-    TTRACE("Temp:%s Pression:%s altitude:%s\r\n", TOSTR0(temperature), TOSTR1(pressure/100), TOSTR2(barometer.getAltitude(pressure)));
+    TTRACE("Temp:%s Pression:%s altitude:%s\r\n", TOSTR0(temperature), TOSTR1(pressure), TOSTR2(barometer.getAltitude(pressure)));
     TTRACE("ax:%s ay:%s az:%s\r\n", TOSTR0((float)ax/ACCEL_SENS), TOSTR1((float)ay/ACCEL_SENS), TOSTR2((float)az/ACCEL_SENS));
-    TTRACE("gx:%s gy:%s gz:%s\r\n", TOSTR0(gx/GYRO_SENS), TOSTR1(gy/GYRO_SENS), TOSTR2(gz/GYRO_SENS));
     TTRACE("mx:%s my:%s mz:%s\r\n", TOSTR0(mx), TOSTR1(my),TOSTR2(mz));
+    TTRACE("gx:%s gy:%s gz:%s\r\n", TOSTR0(gx/GYRO_SENS), TOSTR1(gy/GYRO_SENS), TOSTR2(gz/GYRO_SENS));
 
     float heading = atan2(my, mx);
     if(heading < 0) heading += 2 * M_PI;
     TTRACE("heading: %s degree\r\n", TOSTR0(heading * 180/M_PI));
+
+    TTRACE("++++++++++++++++++++++++++++++++++++++\r\n");
 #endif
 
     WTTRACE("e++++++++++++++++++++++++++++++++++++++\r\n");

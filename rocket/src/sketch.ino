@@ -9,7 +9,8 @@
 #include "trame.h"
 #include "sdcard.h"
 
-block_t fxtmblock;
+block_t  fxtmblock;
+uint16_t idCounter = 0;
 
 void setup()
 {
@@ -23,9 +24,15 @@ void setup()
 
 static void acquire()
 {
+    fxtmblock.data.timestamp = millis();
+    fxtmblock.data.id        = idCounter++; 
+
     loopPropellant();
     loopImu();
     loopGps();
+#if 0 
+    fxtmdump(&fxtmblock.data); 
+#endif
 }
 
 static void log()
@@ -44,5 +51,8 @@ void loop()
     acquire();
     log();
     send();
-    TTRACE("loop in :%ld\r\n", micros()-time);
+#if 0
+    TTRACE("id:%u loop in :%ld\r\n", fxtmblock.data.id, micros()-time);
+    delay(100);
+#endif
 }

@@ -34,7 +34,7 @@
 #define SD_CS_PIN 4
 #endif
 
-#define LOGFILENAME "fusex.txt"
+#define LOGFILENAME "fusex02.txt"
 #define error(msg) {SD.errorPrint(&Serial, F(msg));while(1);}
 #if 0
 #define FILE_BLOCK_COUNT (60*60*10L) // 60 minutes logging
