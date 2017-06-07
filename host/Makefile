@@ -1,9 +1,12 @@
-BIN := fxdecode
+BIN1 := fxdecode
+BIN2 := serialread
 BUILDDIR := .build
 CFLAGS := -ggdb
-.DEFAULT_GOAL := $(BUILDDIR)/$(BIN)
+.DEFAULT_GOAL := all
 
-$(BUILDDIR)/$(BIN): $(BIN).c
+all: $(BUILDDIR)/$(BIN1) $(BUILDDIR)/$(BIN2)
+
+$(BUILDDIR)/%: %.c
 	@mkdir -p $(BUILDDIR)
 	@cc $< -o $@
 

@@ -10,8 +10,8 @@
 *       Revision:  none
 *       Compiler:  gcc
 *
-*         Author:  Zakaria ElQotbi (zakariae), zakaria.elqotbi@harman.com
-*        Company:  Harman
+*         Author:  Zakaria ElQotbi (zakariae), zakaria.elqotbi@derbsellicon.com
+*        Company:  Derb.io 
 *
 * =====================================================================================
 */
