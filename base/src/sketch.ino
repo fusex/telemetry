@@ -116,7 +116,9 @@ void loop()
 	once = false;
     }
 
+    uint32_t now = micros();
     if (rf95.available()) {
+        uint32_t d1 = micros() - now;
 	if(receivepacket(CONFIG_PACKETNUMBER)) {
 #if 0
 	    fxtmdump(&buf[0]);
