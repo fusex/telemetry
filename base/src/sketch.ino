@@ -95,7 +95,7 @@ void fxtmcheck(void* data)
 {
     fxtm_data_t* tm = (fxtm_data_t*)data;
 
-    if (tm->id != (lastid +1)) {
+    if (tm->id != (lastid +1) && tm->id != 0) {
 	WTTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
 	       tm->id, tm->timestamp, lastid, lastts);
 	WTTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
