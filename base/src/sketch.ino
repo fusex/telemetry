@@ -10,15 +10,16 @@ RH_RF95 rf95;
 
 void setup() 
 {
-    Serial.begin(9600);
+    //Serial.begin(9600);
+    Serial.begin(115200);
     while (!Serial) ; // Wait for serial port to be available
 
     if (!rf95.init()){
-	TTRACE("Radio init failed\n\r");
+	WTTRACE("Radio init failed\n\r");
 	while(1);
     }
     else
-	TTRACE("Radio init Done with packet size:%d\n\r",sizeof(fxtm_data_t));
+	WTTRACE("Radio init Done with packet size:%d\n\r",sizeof(fxtm_data_t));
 
     rf95.setTxPower(20,false);
     rf95.setFrequency(869.4);
@@ -82,7 +83,7 @@ int receivepacket(unsigned int packetnbr)
 	    if (rf95.recv(buf, &len))
 	    	DTTRACE("Received packet \n\r");
 	} else {
-	    TTRACE("ERROR: reception Error at %d/%d! Timeout !\n\r", packetnbr-count-1, packetnbr);
+	    WTTRACE("ERROR: reception Error at %d/%d! Timeout !\n\r", packetnbr-count-1, packetnbr);
 	    break;
         }
     }
@@ -95,9 +96,9 @@ void fxtmcheck(void* data)
     fxtm_data_t* tm = (fxtm_data_t*)data;
 
     if (tm->id != (lastid +1)) {
-	TTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
+	WTTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
 	       tm->id, tm->timestamp, lastid, lastts);
-	TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
+	WTTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
 	       rf95.lastSNR(),
 	       rf95.lastRssi(),
 	       rf95.frequencyError()
@@ -110,8 +111,8 @@ void fxtmcheck(void* data)
 void loop()
 {
     if (once) {
-	TTRACE("#########################\n\r");
-    	TTRACE("Waiting for Connection\n\r");
+	WTTRACE("#########################\n\r");
+	WTTRACE("Waiting for Connection\n\r");
 	once = false;
     }
 
@@ -121,7 +122,9 @@ void loop()
 	    fxtmdump(&buf[0]);
 #endif
 	    fxtmcheck(&buf[0]);
+	    Serial.write(buf, sizeof(fxtm_data_t));
 	}
-
+	
+	WTTRACE("d1:%lu d2:%lu\r\n", d1, micros() - now);
     }
 }
