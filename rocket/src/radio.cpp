@@ -15,6 +15,7 @@
  *
  * =====================================================================================
  */
+#define TAG "RADIO"
 
 #include <fusexconfig.h>
 #include <fusexutil.h>
@@ -64,10 +65,10 @@ static boolean setSpreadingFactor(byte SF)
 void setupRadio()
 {
     if (!rf95.init()) {
-	TTRACE("Radio init failed\n\r");
+	TTRACE("init failed ! Fatal !!!\n\r");
 	while(1);
     } else
-	TTRACE("Radio init Done\n\r");
+	TTRACE("init Done\n\r");
 
     rf95.setTxPower(20,false);
     rf95.setFrequency(869.4);

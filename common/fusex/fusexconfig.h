@@ -47,4 +47,12 @@
 #define CONFIG_TEST_GPS
 #endif
 
+#ifdef CONFIG_PROD
+#define DEBUGDevice Serial1
+#define GPSdevice   Serial
+#else
+#define DEBUGDevice Serial
+#define GPSdevice   Serial1
+#endif
+
 #endif // _FUSEXCONFIG_H

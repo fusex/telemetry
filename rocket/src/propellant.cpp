@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 
+#define TAG "PROPEL"
+
 #include <Arduino.h>
 #include <fusexutil.h>
 #include <fusexconfig.h>
@@ -24,7 +26,7 @@ const int thresholdvalue=490; //The threshold
 
 void setupPropellant()
 {
-   TTRACE("propellant: Engine sound detector init\n\r");
+   TTRACE("Engine sound detector init\n\r");
 }
 
 void loopPropellant()

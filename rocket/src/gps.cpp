@@ -17,18 +17,17 @@
  */
 
 #include <Arduino.h>
+#define TAG "GPS"
+
 #include <fusexutil.h>
 #include <fusexconfig.h>
 
 void setupGps()
 {
-#ifndef CONFIG_GPS
-    return;
-#endif
-    Serial.println("init GPS on Serial1");
-    Serial1.begin(9600);
-    while (!Serial1);
-    Serial.println("init GPS on Serial1 Done");
+    GPSdevice.begin(9600);
+    while (!GPSdevice);
+
+    TTRACE("init Done\r\n");
 }
 
 void loopGps()

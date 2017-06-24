@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 
+#define TAG "SDCARD"
+
 #include <fusexconfig.h>
 #include <fusexutil.h>
 

@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 
+#define TAG "IMU"
+
 #include <fusexconfig.h>
 #include <fusexutil.h>
 
@@ -52,9 +54,10 @@ void setupImu()
   if(!mag.testConnection() || 
      !barometer.testConnection() ||
      !accelgyro.testConnection()) {
-	TTRACE("IMU: initialization failed! fatal !!!\r\n");
-	while(1);
+	TTRACE("initialization failed! fatal !!!\r\n");
+	//while(1);
   }
+  TTRACE("initialization Done.\r\n");
 }
 
 #define ACCEL_SENS (16384) // Accel Sensitivity with default +/- 2g scale

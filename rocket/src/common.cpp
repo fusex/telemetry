@@ -16,6 +16,7 @@
  * =====================================================================================
  */
 
+#define TAG "COMMON"
 
 #include <fusexutil.h>
 #include <Arduino.h>
@@ -25,11 +26,11 @@
 void setupCommon()
 {
     randomSeed(analogRead(0));
-    Serial.begin(9600);
+    DEBUGDevice.begin(9600);
 
 #ifndef CONFIG_PROD
-    while (!Serial) ; // Wait for serial port to be available
+    while (!DEBUGDevice) ; // Wait for DEBUG serial port to be available
 #endif
 
-    TTRACE("Common init Done\r\n");
+    TTRACE("init Done\r\n");
 }

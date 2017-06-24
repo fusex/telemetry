@@ -1,7 +1,10 @@
 #ifndef FUSEXUTIL_H
 #define FUSEXUTIL_H
+
 #include <stdint.h>
 #include <Arduino.h>
+
+#include <fusexconfig.h>
 
 int calcrc16(const uint8_t *ptr, uint16_t count);
 uint16_t _gen_crc16(const uint8_t *data, uint16_t size);
@@ -10,10 +13,14 @@ void gendata(uint8_t* data, unsigned int size);
 
 #define myprintf(a, ...) _myprintf(F(a), ##__VA_ARGS__)
 
+#ifndef TAG
+#define TAG "unknown-module"
+#endif
+
 #define TRACE(x, ...) myprintf(x, ##__VA_ARGS__)
 #define TTRACE(x, ...) do { \
-    Serial.print((float)millis()/1000,6); \
-    myprintf(": " x, ##__VA_ARGS__); \
+    DEBUGDevice.print((float)millis()/1000,6); \
+    myprintf(":" TAG "\t: " x, ##__VA_ARGS__); \
 } while(0)
 
 #ifdef CONFIG_DEBUG
