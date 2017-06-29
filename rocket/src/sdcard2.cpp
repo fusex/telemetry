@@ -18,6 +18,7 @@
 
 #define TAG "SDCARD"
 
+#if 0
 #include <fusexconfig.h>
 #include <fusexutil.h>
 
@@ -153,3 +154,12 @@ void loopSdcard()
 {
     recordBinFile();
 }
+#else
+void setupSdcard()
+{
+}
+
+void loopSdcard()
+{
+}
+#endif
