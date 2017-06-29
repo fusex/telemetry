@@ -56,14 +56,13 @@ void loop()
     acquire();
     log();
     send();
-    d1 = micros() - time;
 
+    d1 = micros() - time;
     if(d1>max) max = d1; 
     avg += d1;
 
-#define LOOP 1
+#define LOOP 200000UL
 
-	while(1);
     if(count++>LOOP) {
 	TTRACE("%d loop in:%lu (avg:%lu, max:%lu)\r\n", LOOP, d1 ,avg/(LOOP+1), max);
 	while(1);
