@@ -16,11 +16,23 @@
  * =====================================================================================
  */
 
-#include <Arduino.h>
 #define TAG "GPS"
 
+#include <NMEAGPS.h>
 #include <fusexutil.h>
-#include <fusexconfig.h>
+
+#include "trame.h"
+
+NMEAGPS  gps; // This parses the GPS characters
+gps_fix  fix; // This holds on to the latest values
+
+extern block_t fxtmblock;
+
+void serialEvent()
+{
+    char inChar = (char)GPSdevice.read();
+    gps.handle(inChar);
+}
 
 void setupGps()
 {
@@ -30,17 +42,40 @@ void setupGps()
     TTRACE("init Done\r\n");
 }
 
+uint32_t time = 0;
+
 void loopGps()
 {
-#ifndef CONFIG_GPS
-    return;
+#if 0
+    if((millis() - time)<1000)
+	return;
+
+    time = millis();
 #endif
 
-#if 1
- if (Serial1.available()) {
-    int inByte = Serial1.read();
-    Serial.write(inByte);
-  }
+    fxtm_data_t* fxtmdata = (fxtm_data_t*) &fxtmblock;
+#if 0
+//while(1) {
+   TTRACE("GPSTRY\r\n");
+   int co = 0;
+retry:
+    while(gps.available(GPSdevice)) {
 #endif
 
+    if(gps.available()) {
+	fix = gps.read();
+	TTRACE("GPSIN\r\n");
+	if (fix.valid.location) {
+	    TTRACE("Location: %6f, %6f alt:%2f\r\n",fix.latitude(), fix.longitude(), fix.valid.altitude);
+	    fxtmdata->gpslt = (uint32_t)(fix.latitude()*1000000);
+	    fxtmdata->gpslg = (uint32_t)(fix.longitude()*1000000);
+	    //break;
+	}
+    }
+#if 0
+    if (co++ <10)
+    goto retry;
+//}
+    //TRACE("BREAK\r\n");
+#endif
 }
