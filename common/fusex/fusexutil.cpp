@@ -103,6 +103,56 @@ uint16_t _gen_crc16(const uint8_t *data, uint16_t size)
     return crc;
 }
 
+char* mystrchr(char* fmt)
+{
+    char* n = fmt;
+    while(1){
+	if(*n == '%' &&
+	    ( *(n+1) == 'f' ||
+	      ( *(n+2) == 'f' && isdigit(*(n+1)))
+            )
+          )
+        {
+	   return n;
+	}
+	if(*n==0)
+	    return NULL;
+        n++;
+    }
+}
+
+void _myprintf2(const char *fmt, ... )
+{
+    char *p = (char*)fmt;
+    char bufString[128]; // resulting string limited to 128 chars
+    char* buf = bufString;
+    va_list args;
+
+    va_start(args, fmt);
+    do {
+	unsigned int factor = 100;
+        char *q = mystrchr(p);
+        if (q) {
+            *q++ = '\0';
+            char f = *q++;
+            if(isdigit(f)) {
+		factor = pow(10, f-'0');
+		q++;
+	    }
+        }
+	buf += vsnprintf(buf, sizeof(buf), (const char *)fmt, args); // for the rest of the world
+        if (q) {
+	    double f = va_arg(args, double);
+            buf += sprintf(buf, "%d.%d", (int)f,(int)(f*factor)%factor);
+        }
+        p = q;
+    } while (p);
+
+    va_end(args);
+
+    DEBUGdevice.print(buf);
+}
+
 void _myprintf(const __FlashStringHelper *fmt, ... )
 {
     char buf[128]; // resulting string limited to 128 chars

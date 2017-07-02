@@ -9,6 +9,7 @@
 int calcrc16(const uint8_t *ptr, uint16_t count);
 uint16_t _gen_crc16(const uint8_t *data, uint16_t size);
 void _myprintf(const __FlashStringHelper *fmt, ... );
+void _myprintf2(const char* fmt, ... );
 void gendata(uint8_t* data, unsigned int size);
 void fatal(void);
 
