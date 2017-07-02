@@ -26,10 +26,10 @@
 void setupCommon()
 {
     randomSeed(analogRead(0));
-    DEBUGDevice.begin(9600);
+    DEBUGdevice.begin(9600);
 
 #ifndef CONFIG_PROD
-    while (!DEBUGDevice) ; // Wait for DEBUG serial port to be available
+    while (!DEBUGdevice) ; // Wait for DEBUG serial port to be available
 #endif
 
     TTRACE("init Done\r\n");

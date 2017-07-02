@@ -68,7 +68,8 @@ typedef struct {
     uint8_t  signmagny:SBITFILED;
     uint8_t  signmagnz:SBITFILED;
 
-    int8_t temperature;
+    int8_t   temperature;
+    uint8_t  soundlvl;
 
 } __attribute__((packed)) fxtm_data_t;
 

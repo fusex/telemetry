@@ -50,26 +50,9 @@ void setupImu()
 
     // Start by performing self test and reporting values
     myIMU.MPU9250SelfTest(myIMU.SelfTest);
-    Serial.print("x-axis self test: acceleration trim within : ");
-    Serial.print(myIMU.SelfTest[0],1); Serial.println("% of factory value");
-    Serial.print("y-axis self test: acceleration trim within : ");
-    Serial.print(myIMU.SelfTest[1],1); Serial.println("% of factory value");
-    Serial.print("z-axis self test: acceleration trim within : ");
-    Serial.print(myIMU.SelfTest[2],1); Serial.println("% of factory value");
-    Serial.print("x-axis self test: gyration trim within : ");
-    Serial.print(myIMU.SelfTest[3],1); Serial.println("% of factory value");
-    Serial.print("y-axis self test: gyration trim within : ");
-    Serial.print(myIMU.SelfTest[4],1); Serial.println("% of factory value");
-    Serial.print("z-axis self test: gyration trim within : ");
-    Serial.print(myIMU.SelfTest[5],1); Serial.println("% of factory value");
-
-    // Calibrate gyro and accelerometers, load biases in bias registers
     myIMU.calibrateMPU9250(myIMU.gyroBias, myIMU.accelBias);
 
     myIMU.initMPU9250();
-    // Initialize device for active mode read of acclerometer, gyroscope, and
-    // temperature
-    Serial.println("MPU9250 initialized for active data mode....");
 
     // Read the WHO_AM_I register of the magnetometer, this is a good test of
     // communication
@@ -80,51 +63,34 @@ void setupImu()
     Serial.print(" I should be ");
     Serial.println(0x48, HEX);
 
-    // Get magnetometer calibration from AK8963 ROM
-    myIMU.initAK8963(myIMU.factoryMagCalibration);
-    // Initialize device for active mode read of magnetometer
-    Serial.println("AK8963 initialized for active data mode....");
-
-    if (SerialDebug)
-    {
-      //  Serial.println("Calibration values: ");
-      Serial.print("X-Axis factory sensitivity adjustment value ");
-      Serial.println(myIMU.factoryMagCalibration[0], 2);
-      Serial.print("Y-Axis factory sensitivity adjustment value ");
-      Serial.println(myIMU.factoryMagCalibration[1], 2);
-      Serial.print("Z-Axis factory sensitivity adjustment value ");
-      Serial.println(myIMU.factoryMagCalibration[2], 2);
-    }
+    return true;
+}
 
 
-    // Get sensor resolutions, only need to do this once
-    myIMU.getAres();
-    myIMU.getGres();
     myIMU.getMres();
 
-    // The next call delays for 4 seconds, and then records about 15 seconds of
-    // data to calculate bias and scale.
+#if IMU_CALIBRATION
+    TTRACE("calibrating AK ....\r\n");
     myIMU.magCalMPU9250(myIMU.magBias, myIMU.magScale);
-    Serial.println("AK8963 mag biases (mG)");
-    Serial.println(myIMU.magBias[0]);
-    Serial.println(myIMU.magBias[1]);
-    Serial.println(myIMU.magBias[2]);
+#endif
 
-    Serial.println("AK8963 mag scale (mG)");
-    Serial.println(myIMU.magScale[0]);
-    Serial.println(myIMU.magScale[1]);
-    Serial.println(myIMU.magScale[2]);
-    delay(2000); // Add delay to see results before serial spew of data
+    return true;
+}
 
-    if(SerialDebug)
-    {
-      Serial.println("Magnetometer:");
-      Serial.print("X-Axis sensitivity adjustment value ");
-      Serial.println(myIMU.factoryMagCalibration[0], 2);
-      Serial.print("Y-Axis sensitivity adjustment value ");
-      Serial.println(myIMU.factoryMagCalibration[1], 2);
-      Serial.print("Z-Axis sensitivity adjustment value ");
-      Serial.println(myIMU.factoryMagCalibration[2], 2);
+void setupIMU()
+{
+    Wire.begin();
+    if(!initMPU()){
+	TTRACE("initialization failed! fatal !!!\r\n");
+	fatal();
+    }
+    if(!initAK()){
+	TTRACE("initialization failed! fatal !!!\r\n");
+	fatal();
+    }
+    if(!initBMP()){
+	TTRACE("initialization failed! fatal !!!\r\n");
+	fatal();
     }
 
   } // if (c == 0x71)
@@ -161,16 +127,10 @@ void loopImu()
     myIMU.ay = (float)myIMU.accelCount[1] * myIMU.aRes; // - myIMU.accelBias[1];
     myIMU.az = (float)myIMU.accelCount[2] * myIMU.aRes; // - myIMU.accelBias[2];
 
-    // Calculate the gyro value into actual degrees per second
-    // This depends on scale being set
     myIMU.gx = (float)myIMU.gyroCount[0] * myIMU.gRes;
     myIMU.gy = (float)myIMU.gyroCount[1] * myIMU.gRes;
     myIMU.gz = (float)myIMU.gyroCount[2] * myIMU.gRes;
 
-    // Calculate the magnetometer values in milliGauss
-    // Include factory calibration per data sheet and user environmental
-    // corrections
-    // Get actual magnetometer value, this depends on scale being set
     myIMU.mx = (float)myIMU.magCount[0] * myIMU.mRes
                * myIMU.factoryMagCalibration[0] - myIMU.magBias[0];
     myIMU.my = (float)myIMU.magCount[1] * myIMU.mRes
@@ -178,7 +138,6 @@ void loopImu()
     myIMU.mz = (float)myIMU.magCount[2] * myIMU.mRes
                * myIMU.factoryMagCalibration[2] - myIMU.magBias[2];
 
-    // Temperature in degrees Centigrade
     myIMU.temperature = ((float) myIMU.tempCount) / 333.87 + 21.0;
 
     TRACE("ZSK packet acquired in:%ld and prepared in %ld us\r\n", d1, micros()-time);

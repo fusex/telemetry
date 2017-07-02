@@ -44,6 +44,13 @@ int calcrc16(const uint8_t *ptr, uint16_t count)
     return (crc);
 }
 
+void fatal()
+{
+#if CONFIG_FATAL
+    while(1);
+#endif
+}
+
 uint16_t _gen_crc16(const uint8_t *data, uint16_t size)
 {
     uint16_t out = 0;
@@ -109,7 +116,21 @@ void _myprintf(const __FlashStringHelper *fmt, ... )
 #endif
     va_end(args);
 
-    Serial.print(buf);
+    DEBUGdevice.print(buf);
+}
+
+char *ftoa(char *a, double f, int precision = 100)
+{
+    long p[] = {0,10,100,1000,10000,100000,1000000,10000000,100000000};
+
+    char *ret = a;
+    long heiltal = (long)f;
+    itoa(heiltal, a, 10);
+    while (*a != '\0') a++;
+    *a++ = '.';
+    long desimal = abs((long)((f - heiltal) * p[precision]));
+    itoa(desimal, a, 10);
+    return ret;
 }
 
 void gendata(uint8_t* data, unsigned int size)
@@ -123,10 +144,10 @@ void gendata(uint8_t* data, unsigned int size)
 void printdata(char* data, unsigned int size)
 {
     for(int i=0;i<RH_RF95_MAX_MESSAGE_LEN;i++) {
-	Serial.print("byte ");
-	Serial.print(i);
-	Serial.print(" = ");
-	Serial.println(data[i]);
+	DEBUGdevice.print("byte ");
+	DEBUGdevice.print(i);
+	DEBUGdevice.print(" = ");
+	DEBUGdevice.println(data[i]);
     }
 }
 #endif

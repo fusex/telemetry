@@ -27,22 +27,35 @@ NMEAGPS  gps; // This parses the GPS characters
 gps_fix  fix; // This holds on to the latest values
 
 extern block_t fxtmblock;
+uint8_t ms = 0;
 
-void serialEvent()
+SIGNAL(TIMER0_COMPA_vect)
 {
-    char inChar = (char)GPSdevice.read();
-    gps.handle(inChar);
+    if(ms++<10) return;
+    ms = 0;
+    while (GPSdevice.available()) {
+	char inChar = (char)GPSdevice.read();
+	gps.handle(inChar);
+    }
 }
 
 void setupGps()
 {
     GPSdevice.begin(9600);
-    while (!GPSdevice);
+    while (!GPSdevice){
+	TTRACE("init failed ! Retrying !\n\r");
+	delay(2000);
+    }
 
     TTRACE("init Done\r\n");
+
+    OCR0A = 0xAF;
+    TIMSK0 |= _BV(OCIE0A);
 }
 
 uint32_t time = 0;
+
+#include <Streamers.h>
 
 void loopGps()
 {
@@ -55,27 +68,27 @@ void loopGps()
 
     fxtm_data_t* fxtmdata = (fxtm_data_t*) &fxtmblock;
 #if 0
-//while(1) {
-   TTRACE("GPSTRY\r\n");
-   int co = 0;
-retry:
-    while(gps.available(GPSdevice)) {
+    trace_all(DEBUGdevice, gps, gps.read());
+    TRACE("\r\n");
 #endif
 
-    if(gps.available()) {
-	fix = gps.read();
-	TTRACE("GPSIN\r\n");
-	if (fix.valid.location) {
-	    TTRACE("Location: %6f, %6f alt:%2f\r\n",fix.latitude(), fix.longitude(), fix.valid.altitude);
-	    fxtmdata->gpslt = (uint32_t)(fix.latitude()*1000000);
-	    fxtmdata->gpslg = (uint32_t)(fix.longitude()*1000000);
-	    //break;
+    if (fix.valid.satellites){
+	TTRACE("Satellites: %d/%d)\r\n", fix.satellites, gps.sat_count);
+	for (uint8_t i=0; i < gps.sat_count; i++) {
+	    TRACE("\tid: %d\tsnr: %d\ttracked: %s\r\n",
+		  gps.satellites[i].id,
+                  gps.satellites[i].snr,
+		  gps.satellites[i].tracked?"Yes":"NO");
 	}
     }
-#if 0
-    if (co++ <10)
-    goto retry;
-//}
-    //TRACE("BREAK\r\n");
-#endif
+
+    if (fix.valid.location) {
+	#define TOSTR0(x) dtostrf(x,3,6,tmp0)
+	#define TOSTR1(x) dtostrf(x,3,6,tmp1)
+	#define TOSTR2(x) dtostrf(x,3,6,tmp2)
+	char tmp0[16];
+	char tmp1[16];
+	char tmp2[16];
+	TTRACE("Location: %s, %s alt:%s\r\n",TOSTR0(fix.latitude()), TOSTR1(fix.longitude()), TOSTR2(fix.valid.altitude));
+    }
 }
