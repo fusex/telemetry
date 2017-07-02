@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 
+
+#if 0
 #define TAG "GPS"
 
 #include <NMEAGPS.h>
@@ -30,8 +32,10 @@ uint8_t ms = 0;
 
 SIGNAL(TIMER0_COMPA_vect)
 {
+#if 0
     if(ms++<10) return;
     ms = 0;
+#endif
     while (GPSdevice.available()) {
 	char inChar = (char)GPSdevice.read();
 	gps.handle(inChar);
@@ -71,10 +75,9 @@ void loopGps()
 
     fix = gps.read();
 
-#if 0
+#if 1
     trace_all(DEBUGdevice, gps, gps.read());
     TRACE("\r\n");
-#endif
 
     if (fix.valid.satellites){
 	TTRACE("Satellites: %d/%d)\r\n", fix.satellites, gps.sat_count);
@@ -85,8 +88,10 @@ void loopGps()
 		  gps.satellites[i].tracked?"Yes":"NO");
 	}
     }
+#endif
 
     if (fix.valid.location) {
+#if 1
 	#define TOSTR0(x) dtostrf(x,3,6,tmp0)
 	#define TOSTR1(x) dtostrf(x,3,6,tmp1)
 	#define TOSTR2(x) dtostrf(x,3,6,tmp2)
@@ -94,6 +99,8 @@ void loopGps()
 	char tmp1[16];
 	char tmp2[16];
 	TTRACE("Location: %s, %s alt:%s\r\n",TOSTR0(fix.latitude()), TOSTR1(fix.longitude()), TOSTR2(fix.valid.altitude));
+#endif
 	fxtm_setgps(fix.latitude(), fix.longitude());
     }
 }
+#endif
