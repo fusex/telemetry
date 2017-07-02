@@ -24,13 +24,15 @@ void fatal(void);
     DEBUGdevice.print((float)millis()/1000,6); \
     myprintf(":" TAG "\t: " x, ##__VA_ARGS__); \
 } while(0)
+#define PRINT(x, ...)   DEBUGdevice.print(x, ##__VA_ARGS__)
+#define PRINTLN(x, ...) DEBUGdevice.println(x, ##__VA_ARGS__)
 
 #ifdef CONFIG_DEBUG
 #define DTRACE(x, ...)  TRACE(x, ##__VA_ARGS__)
 #define DTTRACE(x, ...) TTRACE(x, ##__VA_ARGS__)
 void printdata(char* data, unsigned int size);
 #else
-#define DTRACE(x, ...) do {} while(0)
+#define DTRACE(x, ...)  do {} while(0)
 #define DTTRACE(x, ...) do {} while(0)
 #endif
 
