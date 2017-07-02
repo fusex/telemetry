@@ -27,8 +27,6 @@
 
 RH_RF95 rf95;
 
-extern block_t fxtmblock;
-
 static boolean setSpreadingFactor(byte SF)
 {
     // abort and return FALSE if new spreading factor not in acceptable range;
@@ -102,16 +100,20 @@ void loopRadio()
     unsigned int packetnbr = CONFIG_PACKETNUMBER;
     unsigned int count     = packetnbr;
 
-    fxtm_data_t* fxtmdata = (fxtm_data_t*) &fxtmblock;
-
     WTTRACE("b######################################\n\r");
 
     while (count--){
 	uint32_t time = micros();
 
-	rf95.send((uint8_t*)fxtmdata, sizeof(fxtm_data_t));
+	rf95.send((uint8_t*)fxtm_getdata(), fxtm_getsize());
+#if 0
+	rf95.waitPacketSent();
+	rf95.setModeIdle();
+	rf95.sleep();
+#endif
 
 	WTTRACE("packet sent to in :%ld\r\n", micros()-time);
+	//TTRACE("rxbad:%d\r\n", rf95.rxBad());
     }
 
     //rf95.setModeIdle(); //TODO:

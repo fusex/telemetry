@@ -51,8 +51,6 @@ SdBaseFile binFile;
 uint32_t   bn = 0;  
 uint32_t   maxLatency = 0;
 
-extern block_t fxtmblock;
-
 void createBinFile()
 {
     // max number of blocks to erase per erase call
@@ -111,7 +109,7 @@ void setupLowSD()
 
 void recordBinFile()
 {
-    block_t* pBlock = &fxtmblock;
+    fxtm_block_t* pBlock = fxtm_getblock();
     WTTRACE("b--------------------------------------\r\n");
     SD.card()->spiStart();
     if (!SD.card()->isBusy()) {

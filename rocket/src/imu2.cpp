@@ -16,6 +16,7 @@
  * =====================================================================================
  */
 
+#if 0
 #define TAG "IMU"
 
 #include <fusexconfig.h>
@@ -32,8 +33,6 @@
 HMC5883L mag;
 MPU6050  accelgyro;
 BMP085   barometer;
-
-extern block_t fxtmblock;
 
 float temperature;
 float pressure;
@@ -67,7 +66,6 @@ void loopImu()
 {
     uint32_t now;
     uint32_t lastMicros;
-    fxtm_data_t* fxtmdata = (fxtm_data_t*) &fxtmblock;
 
     now = micros();
     accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
@@ -83,13 +81,14 @@ void loopImu()
     while (micros() - lastMicros < barometer.getMeasureDelayMicroseconds());
     pressure = barometer.getPressure();
 
-    SETT(accel, fxtmdata, ax, ay, az);
-    SETT(magn,  fxtmdata, mx, my, mz);
-    SETT(gyr,   fxtmdata, gx, gy, gz);
+    int16_t a[] = {(int16_t)ax, (int16_t)ay, (int16_t)az};
+    int16_t m[] = {(int16_t)mx, (int16_t)my, (int16_t)mz}; 
+    int16_t g[] = {(int16_t)gx, (int16_t)gy, (int16_t)gz};
 
-    fxtmdata->temperature = (int) temperature;
-    fxtmdata->rawpressure = GET_RAWPRESSURE((int)pressure);
-
+    fxtm_setimu(a, m, g);
+    fxtm_settemperature((int8_t)temperature);
+    fxtm_setpressure(GET_RAWPRESSURE((int)pressure));
+ 
 #if 0
     TTRACE("b++++++++++++++++++++++++++++++++++++++\r\n");
     WTTRACE("IMU data acquired in %ld\r\n", micros() - now); 
@@ -113,3 +112,15 @@ void loopImu()
 
     WTTRACE("e++++++++++++++++++++++++++++++++++++++\r\n");
 }
+
+#else
+#if 0
+void setupImu()
+{
+}
+
+void loopImu()
+{
+}
+#endif
+#endif

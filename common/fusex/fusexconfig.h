@@ -47,12 +47,22 @@
 #define CONFIG_TEST_GPS
 #endif
 
+
 #ifdef CONFIG_PROD
-#define DEBUGDevice Serial1
+#define DEBUGdevice Serial1
 #define GPSdevice   Serial
+#define IMU_CALIBRATION 1
+#define CONFIG_FATAL 1
 #else
-#define DEBUGDevice Serial
+#if 0
+#define DEBUGdevice Serial
 #define GPSdevice   Serial1
+#else
+#define DEBUGdevice Serial1
+#define GPSdevice   Serial
+#endif
+#define IMU_CALIBRATION 0
+#define CONFIG_FATAL 0
 #endif
 
 #endif // _FUSEXCONFIG_H

@@ -26,7 +26,6 @@
 NMEAGPS  gps; // This parses the GPS characters
 gps_fix  fix; // This holds on to the latest values
 
-extern block_t fxtmblock;
 uint8_t ms = 0;
 
 SIGNAL(TIMER0_COMPA_vect)
@@ -60,13 +59,18 @@ uint32_t time = 0;
 void loopGps()
 {
 #if 0
-    if((millis() - time)<1000)
-	return;
-
-    time = millis();
+    if (gps.overrun()) {
+	gps.overrun( false );
+	TRACE("DATA OVERRUN\r\n");
+    }
 #endif
 
-    fxtm_data_t* fxtmdata = (fxtm_data_t*) &fxtmblock;
+    if(!gps.available()) {
+	return;
+    }
+
+    fix = gps.read();
+
 #if 0
     trace_all(DEBUGdevice, gps, gps.read());
     TRACE("\r\n");
@@ -90,5 +94,6 @@ void loopGps()
 	char tmp1[16];
 	char tmp2[16];
 	TTRACE("Location: %s, %s alt:%s\r\n",TOSTR0(fix.latitude()), TOSTR1(fix.longitude()), TOSTR2(fix.valid.altitude));
+	fxtm_setgps(fix.latitude(), fix.longitude());
     }
 }

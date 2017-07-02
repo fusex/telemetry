@@ -22,6 +22,9 @@
 #include <fusexutil.h>
 #include <fusexconfig.h>
 
+#include "pinout.h"
+#include "trame.h"
+
 const int thresholdvalue=490; //The threshold
 
 void setupPropellant()
@@ -31,11 +34,11 @@ void setupPropellant()
 
 void loopPropellant()
 {
-    int sensorValue = analogRead(A13); //use A0 to read the electrical signal
+    int sensorValue = analogRead(SOUND_SENSOR); //use A0 to read the electrical signal
     if(sensorValue>thresholdvalue)
     {
 	TTRACE("Propellant detect:%d\r\n", sensorValue);
     }
+    fxtm_setsoundlvl(sensorValue);
     //delay(200);
 }
-
