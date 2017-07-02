@@ -106,14 +106,7 @@ void loopRadio()
 	uint32_t time = micros();
 
 	rf95.send((uint8_t*)fxtm_getdata(), fxtm_getsize());
-#if 0
-	rf95.waitPacketSent();
-	rf95.setModeIdle();
-	rf95.sleep();
-#endif
-
 	WTTRACE("packet sent to in :%ld\r\n", micros()-time);
-	//TTRACE("rxbad:%d\r\n", rf95.rxBad());
     }
 
     //rf95.setModeIdle(); //TODO:
