@@ -137,9 +137,15 @@ struct fxtm_block_t {
   uint8_t      fill[FILL_DIM];
 };
 
+#if 0
 #define PRESSURE_AT_SEALEVEL (101325)
 #define GET_RAWPRESSURE(p) (uint16_t)(PRESSURE_AT_SEALEVEL - p)
 #define GET_PRESSURE(raw)  (uint32_t)(PRESSURE_AT_SEALEVEL - raw)
+#else
+#define MAX_PRESSURE_AT_SEALEVEL (103000)
+#define GET_RAWPRESSURE(p) (uint16_t)(MAX_PRESSURE_AT_SEALEVEL - p)
+#define GET_PRESSURE(raw)  (uint32_t)(MAX_PRESSURE_AT_SEALEVEL - raw)
+#endif
 
 void fxtm_reset(void);
 void fxtm_setsoundlvl(unsigned int level);
@@ -153,5 +159,8 @@ fxtm_block_t* fxtm_getblock();
 
 size_t fxtm_getsize();
 void fxtm_dump();
+
+#define GPSFACTOR 1000000 
+#define IMUFACTOR     100 
 
 #endif //define _TRAME_H

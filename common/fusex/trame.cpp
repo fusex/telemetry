@@ -40,9 +40,9 @@ void fxtm_setsoundlvl(unsigned int level)
 void fxtm_setimu(float a[], float m[], float g[])
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    SETT(accel, tm, (int16_t)a[0], (int16_t)a[1], (int16_t)a[2]);
-    SETT(magn,  tm, (int16_t)m[0], (int16_t)m[1], (int16_t)m[2]);
-    SETT(gyr,   tm, (int16_t)g[0], (int16_t)g[1], (int16_t)g[2]);
+    SETT(accel, tm, (int32_t)(a[0]*IMUFACTOR), (int32_t)(a[1]*IMUFACTOR), (int32_t)(a[2]*IMUFACTOR));
+    SETT(magn,  tm, (int32_t)(m[0]*IMUFACTOR), (int32_t)(m[1]*IMUFACTOR), (int32_t)(m[2]*IMUFACTOR));
+    SETT(gyr,   tm, (int32_t)(g[0]*IMUFACTOR), (int32_t)(g[1]*IMUFACTOR), (int32_t)(g[2]*IMUFACTOR));
 }
 
 void fxtm_settemperature(float temperature)
@@ -61,8 +61,8 @@ void fxtm_setgps(float latitude, float longitude)
 {
     fxtm_data_t* tm = &fxtmblock.data;
 
-    tm->gpslt = (int32_t)(latitude*100000);
-    tm->gpslg = (int32_t)(longitude*100000);
+    tm->gpslt = (int32_t)(latitude*GPSFACTOR);
+    tm->gpslg = (int32_t)(longitude*GPSFACTOR);
 }
 
 fxtm_data_t* fxtm_getdata()
@@ -80,13 +80,8 @@ size_t fxtm_getsize()
     return sizeof(fxtm_data_t);
 }
 
-int m = 0;
 void fxtm_dump()
 {
-    if(m++<50)
-	return;
-    m=0;
-
     fxtm_data_t* tm = &fxtmblock.data;
 
     int32_t accel[3] = {0,0,0};
@@ -104,6 +99,6 @@ void fxtm_dump()
 	  tm->temperature, tm->rawpressure, GET_PRESSURE(tm->rawpressure));
 
     TRACE("\taccel[0]: %6ld, accel[1]: %6ld, accel[2]: %6ld\r\n", accel[0], accel[1], accel[2]);
-    TRACE("\t magn[0]: %6ld,  magn[1]: %6ld,  magn[2]: %6ld\r\n", magn[0], magn[1], magn[2]);
     TRACE("\t  gyr[0]: %6ld,   gyr[1]: %6ld,   gyr[2]: %6ld\r\n", gyr[0], gyr[1], gyr[2]);
+    TRACE("\t magn[0]: %6ld,  magn[1]: %6ld,  magn[2]: %6ld\r\n", magn[0], magn[1], magn[2]);
 }

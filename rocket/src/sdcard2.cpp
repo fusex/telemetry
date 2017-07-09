@@ -27,15 +27,8 @@
 #include "SdFat.h"
 
 #include "trame.h"
+#include "pinout.h"
 #include "sdcard.h"
-
-#if 0
-#define SD_CS_PIN SS
-#elif 0
-#define SD_CS_PIN 10
-#else
-#define SD_CS_PIN 4
-#endif
 
 #define LOGFILENAME "fusex02.txt"
 #define error(msg) {SD.errorPrint(&Serial, F(msg));while(1);}

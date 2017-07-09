@@ -19,8 +19,16 @@
 #ifndef _PINOUT_H
 #define _PINOUT_H
 
-#define SOUND_SENSOR A13
+#define SOUND_SENSOR 3
 #define IMU_INTR     12
+#if 0
+#define SD_CS_PIN SS
+#elif 0
+#define SD_CS_PIN 10
+#else
+#define SD_CS_PIN 4
+#endif
+
 
 #endif //_PINOUT_H
 

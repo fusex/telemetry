@@ -1,3 +1,5 @@
+#define BOARD_UNO 1
+
 #include <fusexconfig.h>
 #include <fusexutil.h>
 #include <trame.h>
@@ -10,16 +12,16 @@ RH_RF95 rf95;
 
 void setup() 
 {
-    //Serial.begin(9600);
-    Serial.begin(115200);
+    Serial.begin(9600);
+    //Serial.begin(115200);
     while (!Serial) ; // Wait for serial port to be available
 
     if (!rf95.init()){
-	WTTRACE("Radio init failed\n\r");
+	TTRACE("Radio init failed\n\r");
 	while(1);
     }
     else
-	WTTRACE("Radio init Done with packet size:%d\n\r",sizeof(fxtm_data_t));
+	TTRACE("Radio init Done with packet size:%d\n\r",sizeof(fxtm_data_t));
 
     rf95.setTxPower(20,false);
     rf95.setFrequency(869.4);
@@ -66,7 +68,7 @@ static boolean setSpreadingFactor(byte SF)
 }
 
 bool     once = true;
-uint8_t  buf[RH_RF95_MAX_MESSAGE_LEN];
+//uint8_t  buf[RH_RF95_MAX_MESSAGE_LEN];
 uint16_t lastid = 0;
 uint32_t lastts = 0;
 
@@ -80,7 +82,7 @@ int receivepacket(unsigned int packetnbr)
     while (count--) {
 	if (rf95.waitAvailableTimeout(10000)) {
 	    uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
-	    if (rf95.recv(buf, &len))
+	    if (rf95.recv((uint8_t*)fxtm_getdata(), &len))
 	    	DTTRACE("Received packet \n\r");
 	} else {
 	    WTTRACE("ERROR: reception Error at %d/%d! Timeout !\n\r", packetnbr-count-1, packetnbr);
@@ -91,14 +93,14 @@ int receivepacket(unsigned int packetnbr)
     return count;
 }
 
-void fxtmcheck(void* data)
+void fxtmcheck()
 {
-    fxtm_data_t* tm = (fxtm_data_t*)data;
+    fxtm_data_t* tm = fxtm_getdata();
 
     if (tm->id != (lastid +1) && tm->id != 0) {
-	WTTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
+	TTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
 	       tm->id, tm->timestamp, lastid, lastts);
-	WTTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
+	TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
 	       rf95.lastSNR(),
 	       rf95.lastRssi(),
 	       rf95.frequencyError()
@@ -111,8 +113,8 @@ void fxtmcheck(void* data)
 void loop()
 {
     if (once) {
-	WTTRACE("#########################\n\r");
-	WTTRACE("Waiting for Connection\n\r");
+	TTRACE("#########################\n\r");
+	TTRACE("Waiting for Connection\n\r");
 	once = false;
     }
 
@@ -120,11 +122,11 @@ void loop()
     if (rf95.available()) {
         uint32_t d1 = micros() - now;
 	if(receivepacket(CONFIG_PACKETNUMBER)) {
-#if 0
-	    fxtmdump(&buf[0]);
+#if 1
+	    fxtm_dump();
 #endif
-	    fxtmcheck(&buf[0]);
-	    Serial.write(buf, sizeof(fxtm_data_t));
+	    fxtmcheck();
+	    //Serial.write(buf, sizeof(fxtm_data_t));
 	}
 	
 	WTTRACE("d1:%lu d2:%lu\r\n", d1, micros() - now);

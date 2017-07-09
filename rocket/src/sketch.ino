@@ -1,3 +1,5 @@
+#define BOARD_MEGA 1
+
 #include "common.h"
 #include "imu.h"
 #include "radio.h"
@@ -8,6 +10,8 @@
 #include <fusexutil.h>
 #include "trame.h"
 #include "sdcard.h"
+
+int dump = 0;
 
 void setup()
 {
@@ -27,9 +31,7 @@ static void acquire()
     loopIMU();
     loopGps();
 
-#if 1
-    fxtm_dump(); 
-#endif
+    if(dump) fxtm_dump(); 
 }
 
 static void log()
@@ -45,27 +47,36 @@ static void send()
 uint32_t max = 0;
 uint32_t avg = 0;
 uint16_t count = 0;
+uint32_t timer = millis();
 
 void loop()
 {
 #if 0
-    loopGps();
-#else
     uint32_t time = micros();
     uint32_t d1 = 0;
+#endif
+
+    if (timer > millis())  timer = millis();
+    if (millis() - timer > 2000) {
+	timer = millis(); // reset the timer
+	dump = 1;
+    }
 
     acquire();
     log();
     send();
+    dump = 0;
+
     return;
 
+#if 0
     d1 = micros() - time;
     if(d1>max) max = d1; 
     avg += d1;
 
 #define LOOP 200000UL
 //#define LOOP 1000
-    //delay(1000);
+delay(1000);
 
     if(count++>LOOP) {
 	TTRACE("%ld loop in:%lu (avg:%lu, max:%lu)\r\n", LOOP, d1 ,avg/(LOOP+1), max);

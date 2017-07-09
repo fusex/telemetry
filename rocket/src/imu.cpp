@@ -115,6 +115,9 @@ int intrIMU()
     return (myIMU.readByte(MPU9250_ADDRESS, INT_STATUS) & 0x01);
 }
 
+extern int dump;
+#define IMU_DEBUG 1 
+
 void loopIMU()
 {
     if(!intrIMU()) return;
@@ -153,8 +156,37 @@ void loopIMU()
 #endif
     pressure = bmp.readPressure();
 
+#if IMU_DEBUG
+    if (dump) {
+	PRINT("Temperature: "); PRINTLN(temperature,2);
+	PRINT("Pressure: "); PRINTLN(pressure,2);
+	PRINT("Altitude: "); PRINTLN(bmp.readAltitude(1024.3));
+
+	PRINT("X-acceleration: "); PRINT(myIMU.ax);
+	PRINT(" mg ");
+	PRINT("Y-acceleration: "); PRINT(myIMU.ay);
+	PRINT(" mg ");
+	PRINT("Z-acceleration: "); PRINT(myIMU.az);
+	PRINTLN(" mg ");
+
+	PRINT("X-gyro rate: "); PRINT(myIMU.gx, 3);
+	PRINT(" degrees/sec ");
+	PRINT("Y-gyro rate: "); PRINT(myIMU.gy, 3);
+	PRINT(" degrees/sec ");
+	PRINT("Z-gyro rate: "); PRINT(myIMU.gz, 3);
+	PRINTLN(" degrees/sec");
+
+	PRINT("X-mag field: "); PRINT(myIMU.mx/1000);
+	PRINT(" mG ");
+	PRINT("Y-mag field: "); PRINT(myIMU.my/1000);
+	PRINT(" mG ");
+	PRINT("Z-mag field: "); PRINT(myIMU.mz/1000);
+	PRINTLN(" mG");
+    }
+#endif
+
     float a[] = {myIMU.ax, myIMU.ay, myIMU.az};
-    float m[] = {myIMU.mx, myIMU.my, myIMU.mz}; 
+    float m[] = {myIMU.mx/1000, myIMU.my/1000, myIMU.mz/1000}; 
     float g[] = {myIMU.gx, myIMU.gy, myIMU.gz};
 
     fxtm_setimu(a, m, g);

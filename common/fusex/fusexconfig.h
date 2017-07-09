@@ -54,10 +54,10 @@
 #define IMU_CALIBRATION 1
 #define CONFIG_FATAL 1
 #else
-#if 0
+#if BOARD_UNO
 #define DEBUGdevice Serial
 #define GPSdevice   Serial1
-#else
+#elif BOARD_MEGA
 #define DEBUGdevice Serial1
 #define GPSdevice   Serial
 #endif

@@ -47,12 +47,10 @@ void setupGps()
   GPSdevice.println(PMTK_Q_RELEASE);
 }
 
-#define GPS_DEBUG 0
+#define GPS_DEBUG 1
 #define GPS_DEBUG2 0
 
-#if GPS_DEBUG
-uint32_t timer = millis();
-#endif
+extern int dump;
 
 void loopGps()
 {
@@ -68,12 +66,10 @@ void loopGps()
     }
 
 #if GPS_DEBUG
-    if (timer > millis())  timer = millis();
-    if (millis() - timer > 2000) {
-	timer = millis(); // reset the timer
+    if(dump) {
 	TRACE("\nTime: %d:%d:%d\r\n", GPS.hour, GPS.minute, GPS.seconds, GPS.milliseconds);
 	TRACE("Date: %d/%d/20%d\r\n", GPS.day, GPS.month, GPS.year);
-	TRACE("Satellites: %d Fix: %d Quality:%d\r\n", GPS.satellites, (int)GPS.fix, (int)GPS.fixquality);
+	TRACE("Satellites: %d Fix: %d Quality: %d\r\n", GPS.satellites, (int)GPS.fix, (int)GPS.fixquality);
 	if (GPS.fix) {
 	    PRINT("Location: ");
 	    PRINT(GPS.latitude, 4); PRINT(GPS.lat);
