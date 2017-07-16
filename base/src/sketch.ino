@@ -110,6 +110,12 @@ void fxtmcheck()
     lastts = tm->timestamp;
 }
 
+void dumpstat()
+{
+    fxtm_dump(); 
+}
+
+uint32_t timer = millis();
 void loop()
 {
     if (once) {
@@ -117,12 +123,17 @@ void loop()
 	TTRACE("Waiting for Connection\n\r");
 	once = false;
     }
+    if (timer > millis())  timer = millis();
+    if (millis() - timer > 2000) {
+	timer = millis(); // reset the timer
+	dumpstat();
+    }
 
     uint32_t now = micros();
     if (rf95.available()) {
         uint32_t d1 = micros() - now;
 	if(receivepacket(CONFIG_PACKETNUMBER)) {
-#if 1
+#if 0
 	    fxtm_dump();
 #endif
 	    fxtmcheck();
