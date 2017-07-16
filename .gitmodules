@@ -8,3 +8,6 @@
 [submodule "common/SdFat"]
 	path = common/SdFat
 	url = https://github.com/greiman/SdFat/
+[submodule "common/Adafruit_GPS"]
+	path = common/Adafruit_GPS
+	url = https://github.com/adafruit/Adafruit_GPS
