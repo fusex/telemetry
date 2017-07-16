@@ -11,3 +11,6 @@
 [submodule "common/Adafruit_GPS"]
 	path = common/Adafruit_GPS
 	url = https://github.com/adafruit/Adafruit_GPS
+[submodule "common/BMP280"]
+	path = common/BMP280
+	url = https://github.com/adafruit/Adafruit_BMP280_Library
