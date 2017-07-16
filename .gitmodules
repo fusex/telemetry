@@ -3,7 +3,7 @@
 	url = https://github.com/zskdan/RadioHead
 	branch = fusex/master
 [submodule "common/MPU-9250"]
-	path = common/MPU-9250
+	path = common/MPU9250/
 	url = https://github.com/fusex/SparkFun_MPU-9250_Breakout_Arduino_Library
 [submodule "common/SdFat"]
 	path = common/SdFat
