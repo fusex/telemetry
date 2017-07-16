@@ -47,19 +47,21 @@
 #define CONFIG_TEST_GPS
 #endif
 
-
 #ifdef CONFIG_PROD
 #define DEBUGdevice Serial1
 #define GPSdevice   Serial
 #define IMU_CALIBRATION 1
 #define CONFIG_FATAL 1
 #else
-#if BOARD_UNO
-#define DEBUGdevice Serial
-#define GPSdevice   Serial1
-#elif BOARD_MEGA
+#if defined(__AVR_ATmega2560__)
+#warning this is the Mega board
 #define DEBUGdevice Serial1
 #define GPSdevice   Serial
+#elif defined(__AVR_ATmega328P__)
+#warning this is the UNO board
+#define DEBUGdevice Serial
+#else
+#error unknown board
 #endif
 #define IMU_CALIBRATION 0
 #define CONFIG_FATAL 0

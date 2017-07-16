@@ -1,5 +1,3 @@
-#define BOARD_UNO 1
-
 #include <fusexconfig.h>
 #include <fusexutil.h>
 #include <trame.h>
