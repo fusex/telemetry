@@ -132,10 +132,10 @@ int head = 0;
 //const uint16_t FILL_DIM = 512 - 4 - DATA_DIM*sizeof(fxtm_data_t);
 #define FILL_DIM (512 - 4 - DATA_DIM*sizeof(fxtm_data_t))
 
-struct fxtm_block_t {
+typedef struct {
   fxtm_data_t  data;
   uint8_t      fill[FILL_DIM];
-};
+} fxtm_block_t;
 
 #if 0
 #define PRESSURE_AT_SEALEVEL (101325)
@@ -158,7 +158,7 @@ fxtm_data_t*  fxtm_getdata();
 fxtm_block_t* fxtm_getblock();
 
 size_t fxtm_getsize();
-void fxtm_dump();
+void   fxtm_dump();
 
 #define GPSFACTOR 1000000 
 #define IMUFACTOR     100 
