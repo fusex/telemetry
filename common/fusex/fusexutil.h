@@ -73,4 +73,8 @@ void printdata(char* data, unsigned int size);
 # define WTTRACE(x, ...) do {} while(0)
 #endif
 
+#define PCSERIALBAUD   115200
+#define DEBUGSERIALBAUD  9600
+#define GPSSERIALBAUD    9600
+
 #endif // FUSEXUTIL_H

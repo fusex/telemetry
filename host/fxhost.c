@@ -25,6 +25,7 @@
 #include <errno.h>
 #include <fcntl.h> 
 
+#include "fusexutil.h"
 #include "trame.h"
 
 int set_interface_attribs(int fd, int speed)
@@ -94,6 +95,8 @@ int openregular(int argc,char** argv)
     return fd;
 }
 
+#define SERIALBAUD B115200
+
 int openserial(int argc, char** argv)
 {
     int  fd;
@@ -106,9 +109,7 @@ int openserial(int argc, char** argv)
         printf("Error opening %s: %s\n", portname, strerror(errno));
         return -1;
     }
-    /*baudrate 115200, 8 bits, no parity, 1 stop bit */
-    //set_interface_attribs(fd, B115200);
-    set_interface_attribs(fd, B9600);
+    set_interface_attribs(fd, SERIALBAUD);
     return fd;
 }
 

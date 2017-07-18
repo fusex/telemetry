@@ -26,7 +26,7 @@
 void setupCommon()
 {
     randomSeed(analogRead(0));
-    DEBUGdevice.begin(9600);
+    DEBUGdevice.begin(DEBUGSERIALBAUD);
 
 #ifndef CONFIG_PROD
     while (!DEBUGdevice) ; // Wait for DEBUG serial port to be available

@@ -35,7 +35,7 @@ void useInterrupt() {
 
 void setupGps()
 {
-  GPS.begin(9600);
+  GPS.begin(GPSSERIALBAUD);
   
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate

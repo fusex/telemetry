@@ -6,18 +6,13 @@
 #include <SPI.h>
 #include <RH_RF95.h>
 
-#if 0
-#define SERIALBAUD 9600
-#else
-#define SERIALBAUD 115200
-#endif
-
 RH_RF95 rf95;
 
 void setup() 
 {
-    DEBUGdevice.begin(9600);
-    PCdevice.begin(SERIALBAUD);
+    DEBUGdevice.begin(DEBUGSERIALBAUD);
+    PCdevice.begin(PCSERIALBAUD);
+
     while (!PCdevice) ; // Wait for serial port to be available
 
     if (!rf95.init()){
