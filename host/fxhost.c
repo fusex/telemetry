@@ -131,11 +131,13 @@ void thread_acquisition(int fd)
 {
     size_t rb = 0;
     int    finish = 0;
+    FILE* file = fdopen(fd,"ro");
+
     do {
         uint8_t buf[512];
         int rdlen;
 
-        rdlen = read(fd, fxtm_getblock(), fxtm_getblocksize());
+        rdlen = fread(fxtm_getdata(), 1, fxtm_getdatasize(), file);
         if (rdlen > 0) {
 #if HEX_DUMP
             unsigned char *p;

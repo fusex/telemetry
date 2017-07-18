@@ -117,7 +117,11 @@ void fxtm_dump()
     GETT(gyr,   tm, gyr[0],   gyr[1],   gyr[2]);
 
     TTRACE("\r\n\tid: %u at ts: %lu\r\n", tm->id, tm->timestamp);
+#if _IS_PC 
+    TRACE("\tgps: %d,%d\r\n",tm->gpslt, tm->gpslg);
+#else
     TRACE("\tgps: %ld,%ld\r\n",tm->gpslt, tm->gpslg);
+#endif
     TRACE("\tsound level: %u\r\n",tm->soundlvl);
     TRACE("\ttemperature: %d C, rawpressure:%u pressure:%lu pa\r\n",
 	  tm->temperature, tm->rawpressure, GET_PRESSURE(tm->rawpressure));
