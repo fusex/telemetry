@@ -1,21 +1,23 @@
-BIN1 := fxdecode
-BIN2 := serialread
+#BIN1 := fxdecode
+#BIN2 := serialread
 BIN3 := fxhost
 
 BUILDDIR := .build
-CFLAGS := -ggdb
+CFLAGS := -ggdb -std=c++11 -pthread
 .DEFAULT_GOAL := all
-LDFLAGS := -lm
-LD := cc
+LDFLAGS := -lm -lpthread
+LD := g++
+CXX := g++
 
-COMMON := $(BUILDDIR)/trame.o $(BUILDDIR)/fusexutil.o
+COMMON := $(BUILDDIR)/logger.o $(BUILDDIR)/trame.o $(BUILDDIR)/fusexutil.o
 
-all: $(BUILDDIR)/$(BIN1) $(BUILDDIR)/$(BIN2) $(BUILDDIR)/$(BIN3)
+#all: $(BUILDDIR)/$(BIN1) $(BUILDDIR)/$(BIN2) $(BUILDDIR)/$(BIN3)
+all: $(BUILDDIR)/$(BIN3)
 
 $(BUILDDIR)/$(BIN3): $(COMMON) $(BUILDDIR)/$(BIN3).o
 	$(LD) $^ $(LDFLAGS) -o $@
 
-$(BUILDDIR)/%.o: %.c 
+$(BUILDDIR)/%.o: %.cpp 
 	@mkdir -p $(BUILDDIR)
 	cc $(CFLAGS) -c $< -o $@
 
