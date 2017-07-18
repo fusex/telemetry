@@ -1,5 +1,6 @@
 #include <fusexconfig.h>
 #include <fusexutil.h>
+#include <radioparam.h>
 #include <trame.h>
 
 #include <SPI.h>
@@ -19,50 +20,12 @@ void setup()
 	while(1);
     }
     else
-	TTRACE("Radio init Done with packet size:%d\n\r",sizeof(fxtm_data_t));
+	TTRACE("Radio init Done with packet size:%d\n\r",fxtm_getdatasize());
 
-    rf95.setTxPower(20,false);
-    rf95.setFrequency(869.4);
-    rf95.setModemConfig(RH_RF95::Bw500Cr45Sf128);
-
-#if 0
-    setSpreadingFactor(10);
-#elif 1
-    setSpreadingFactor(9);
-#endif
-}
-
-static boolean setSpreadingFactor(byte SF)
-{
-    // abort and return FALSE if new spreading factor not in acceptable range;
-    // otherwise, set spreading factor and return TRUE
-    uint8_t currentSF, newLowerNibble, newUpperNibble, cur_reg_val, new_reg_val;
-
-    if ((SF >= 6) && (SF <= 12)) {
-	// only set if the spreading factor is in the proper range
-	cur_reg_val = rf95.spiRead(0x1E);
-
-	DTTRACE("Current value of RF95 register 0x1E = 0x%x\r\n",cur_reg_val);
-
-	//upper nibble of register 0x1E
-	currentSF = cur_reg_val >> 4;
-	DTTRACE("Current spreading factor = 0x%x\r\n", cur_reg_val);
-
-	//same as old lower nibble
-	newLowerNibble = (cur_reg_val & 0x0F);
-
-	// upper nibble equals new spreading factor
-	newUpperNibble = (SF << 4);
-	new_reg_val = (newUpperNibble + newLowerNibble);
-	rf95.spiWrite(0x1E, new_reg_val);
-
-	DTTRACE("New spreading factor = %d, New value of register 0x1E = %x\r\n",
-		SF, new_reg_val);
-
-	return true;
-    }
-
-    return false;
+    //fx_setTxPower();
+    fx_setFrequency();
+    fx_setModemConfig();
+    fx_setSpreadingFactor();
 }
 
 bool     once = true;
