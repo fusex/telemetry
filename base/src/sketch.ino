@@ -48,7 +48,7 @@ int receivepacket(unsigned int packetnbr)
 	    if (rf95.recv((uint8_t*)fxtm_getdata(), &len))
 	    	DTTRACE("Received packet \n\r");
 	} else {
-	    WTTRACE("ERROR: reception Error at %d/%d! Timeout !\n\r", packetnbr-count-1, packetnbr);
+	    TTRACE("ERROR: reception Error at %d/%d! Timeout !\n\r", packetnbr-count-1, packetnbr);
 	    break;
         }
     }
