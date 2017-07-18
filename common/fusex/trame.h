@@ -159,7 +159,7 @@ fxtm_block_t* fxtm_getblock();
 
 size_t fxtm_getblocksize();
 size_t fxtm_getdatasize();
-void   fxtm_dump();
+void   fxtm_dump(fxtm_data_t*);
 int    fxtm_check();
 
 #define GPSFACTOR 1000000 

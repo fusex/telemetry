@@ -104,9 +104,10 @@ int fxtm_check()
     return ret;
 }
 
-void fxtm_dump()
+void fxtm_dump(fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
+    if(tm == NULL)
+	tm = &fxtmblock.data;
 
     int32_t accel[3] = {0,0,0};
     int32_t magn[3]  = {0,0,0};

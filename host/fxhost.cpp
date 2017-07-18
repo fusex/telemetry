@@ -148,7 +148,7 @@ void thread_acquisition(int fd)
                 printf(" 0x%x", *p);
             printf("\n");
 #elif TRAME_DUMP
-	    fxtm_dump();
+	    fxtm_dump(NULL);
 #endif
         } else if (rdlen < 0) {
             printf("Error from read: %d: %s\n", rdlen, strerror(errno));

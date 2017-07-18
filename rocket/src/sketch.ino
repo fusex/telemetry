@@ -31,7 +31,7 @@ static void acquire()
     loopIMU();
     loopGps();
 
-    if(dump) fxtm_dump(); 
+    if(dump) fxtm_dump(NULL); 
 }
 
 static void log()

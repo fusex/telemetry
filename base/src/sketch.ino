@@ -57,7 +57,7 @@ void dumpstat()
     if (timer > millis())  timer = millis();
     if (millis() - timer > 2000) {
 	timer = millis(); // reset the timer
-	fxtm_dump(); 
+	fxtm_dump(NULL); 
     }
 }
 
@@ -115,7 +115,7 @@ void loop()
 
 #else
 /* ZSK TOREMOVE */
-	    fxtm_dump();
+	    fxtm_dump(NULL);
 	    while(1) {
 		int bytesSent = PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
 		TTRACE("PLOP sent:%d, expected:%d\r\n",bytesSent, fxtm_getdatasize()); 
