@@ -122,8 +122,11 @@ void do_usage(char** argv)
 #if 1
 # define HEX_DUMP   0
 # define TRAME_DUMP 1
-#else
+#elif 0
 # define HEX_DUMP   1
+# define TRAME_DUMP 0
+#else
+# define HEX_DUMP   0
 # define TRAME_DUMP 0
 #endif
 
@@ -151,6 +154,13 @@ void thread_acquisition(int fd)
             printf("Error from read: %d: %s\n", rdlen, strerror(errno));
 	    finish = 1;
         }
+
+#if 0
+/* ZSK DEBUG TOREMOVE */
+	printf("rdlen: %d expected:%ld\n", rdlen, fxtm_getdatasize());
+/* ZSK END*/
+#endif
+
 	rb += fxtm_getblocksize();
     } while (!finish);
 }

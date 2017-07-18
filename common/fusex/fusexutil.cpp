@@ -125,6 +125,7 @@ char* mystrchr(char* fmt)
     }
 }
 
+
 void _myprintf2(const char *fmt, ... )
 {
     char *p = (char*)fmt;

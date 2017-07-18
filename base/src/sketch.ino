@@ -62,6 +62,12 @@ void dumpstat()
 }
 
 
+#undef DEBUG
+#if 0
+#define DEBUG 1
+#else
+#define DEBUG 0
+#endif
 
 void loop()
 {
@@ -76,9 +82,24 @@ void loop()
 #endif
    
     uint32_t now = micros();
+#if 0
     if (rf95.available()) {
         uint32_t d1 = micros() - now;
 	if(receivepacket(CONFIG_PACKETNUMBER)) {
+#else
+/* ZSK TOREMOVE */
+	if(1) {
+	    if(1) {
+		fxtm_data_t* tm = fxtm_getdata();
+		tm->timestamp = 48232; 
+		tm->id = 104; 
+		fxtm_setgps(43.242376,-0.039298);
+		fxtm_setpressure(96646);
+		fxtm_settemperature(40);
+		fxtm_setsoundlvl(512);
+/* ZSK END */
+#endif
+    
 #if DEBUG
 	    if(fxtm_check()) {
 		TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
@@ -88,9 +109,22 @@ void loop()
 		      );
 	    }
 #else
+
+#if 0
 	    PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
 
+#else
+/* ZSK TOREMOVE */
 	    fxtm_dump();
+	    while(1) {
+		int bytesSent = PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
+		TTRACE("PLOP sent:%d, expected:%d\r\n",bytesSent, fxtm_getdatasize()); 
+		delay(30000);
+	    } ;
+#endif
+
+/* ZSK END */
+
 #endif
 	}
 	
