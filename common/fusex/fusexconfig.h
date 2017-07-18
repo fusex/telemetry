@@ -54,12 +54,17 @@
 #define CONFIG_FATAL 1
 #else
 #if defined(__AVR_ATmega2560__)
-#warning this is the Mega board
+#define _IS_ROCKET 1
+//#pragma message ("this is the Mega board")
 #define DEBUGdevice Serial1
 #define GPSdevice   Serial
 #elif defined(__AVR_ATmega328P__)
-#warning this is the UNO board
-#define DEBUGdevice Serial
+#define _IS_BASE 1
+//#pragma message ("this is the UNO board")
+#define PCdevice    Serial
+#define DEBUGdevice SWSerial
+#elif defined(__i386__) || defined( __x86_64__)
+#define _IS_PC 1 
 #else
 #error unknown board
 #endif

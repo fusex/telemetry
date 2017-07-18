@@ -5,15 +5,20 @@
 
 #include <SPI.h>
 #include <RH_RF95.h>
-#include <fusexutil.h>
+
+#if 0
+#define SERIALBAUD 9600
+#else
+#define SERIALBAUD 115200
+#endif
 
 RH_RF95 rf95;
 
 void setup() 
 {
-    Serial.begin(9600);
-    //Serial.begin(115200);
-    while (!Serial) ; // Wait for serial port to be available
+    DEBUGdevice.begin(9600);
+    PCdevice.begin(SERIALBAUD);
+    while (!PCdevice) ; // Wait for serial port to be available
 
     if (!rf95.init()){
 	TTRACE("Radio init failed\n\r");
@@ -30,9 +35,6 @@ void setup()
 
 bool     once = true;
 //uint8_t  buf[RH_RF95_MAX_MESSAGE_LEN];
-uint16_t lastid = 0;
-uint32_t lastts = 0;
-
 int receivepacket(unsigned int packetnbr)
 {
     uint8_t errors = 0;
@@ -54,29 +56,18 @@ int receivepacket(unsigned int packetnbr)
     return count;
 }
 
-void fxtmcheck()
-{
-    fxtm_data_t* tm = fxtm_getdata();
-
-    if (tm->id != (lastid +1) && tm->id != 0) {
-	TTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
-	       tm->id, tm->timestamp, lastid, lastts);
-	TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
-	       rf95.lastSNR(),
-	       rf95.lastRssi(),
-	       rf95.frequencyError()
-	);
-    }
-    lastid = tm->id;
-    lastts = tm->timestamp;
-}
-
+uint32_t timer = millis();
 void dumpstat()
 {
-    fxtm_dump(); 
+    if (timer > millis())  timer = millis();
+    if (millis() - timer > 2000) {
+	timer = millis(); // reset the timer
+	fxtm_dump(); 
+    }
 }
 
-uint32_t timer = millis();
+
+
 void loop()
 {
     if (once) {
@@ -84,21 +75,28 @@ void loop()
 	TTRACE("Waiting for Connection\n\r");
 	once = false;
     }
-    if (timer > millis())  timer = millis();
-    if (millis() - timer > 2000) {
-	timer = millis(); // reset the timer
-	dumpstat();
-    }
 
+#if DEBUG
+    dumpstat();
+#endif
+   
     uint32_t now = micros();
     if (rf95.available()) {
         uint32_t d1 = micros() - now;
 	if(receivepacket(CONFIG_PACKETNUMBER)) {
-#if 0
+#if DEBUG
+	    if(fxtm_check()) {
+		TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
+			rf95.lastSNR(),
+			rf95.lastRssi(),
+			rf95.frequencyError()
+		      );
+	    }
+#else
+	    PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
+
 	    fxtm_dump();
 #endif
-	    fxtmcheck();
-	    //Serial.write(buf, sizeof(fxtm_data_t));
 	}
 	
 	WTTRACE("d1:%lu d2:%lu\r\n", d1, micros() - now);

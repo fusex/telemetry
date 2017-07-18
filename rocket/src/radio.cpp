@@ -52,11 +52,9 @@ void loopRadio()
     while (count--){
 	uint32_t time = micros();
 
-	rf95.send((uint8_t*)fxtm_getdata(), fxtm_getsize());
+	rf95.send((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
 	WTTRACE("packet sent to in :%ld\r\n", micros()-time);
     }
-
-    //rf95.setModeIdle(); //TODO:
 
     DTTRACE("Transfer of %d/%d to peer finished!\n\r", packetnbr-count-1, packetnbr);
     WTTRACE("e######################################\n\r");

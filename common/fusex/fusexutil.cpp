@@ -18,6 +18,10 @@
 
 #include "fusexutil.h"
 
+#if _IS_BASE
+SoftwareSerial SWSerial(2, 3);
+#endif
+
 #define CRC16 0x8005
 
 //Check routine taken from
@@ -150,10 +154,30 @@ void _myprintf2(const char *fmt, ... )
 
     va_end(args);
 
-    DEBUGdevice.print(buf);
+    PRINTS(buf);
 }
 
-void _myprintf(const __FlashStringHelper *fmt, ... )
+long _myrandom(long min, long max)
+{
+#if defined(_IS_PC)
+   return min + random()%(max-min);
+#else
+   return random(min,max);
+#endif
+}
+
+unsigned long _mymillis()
+{
+#if defined(_IS_PC)
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    return (tp.tv_sec * 1000000 + tp.tv_usec)/1000;
+#else
+   return millis();
+#endif
+}
+
+void _myprintf(const _FMT_FLASH_TYPE *fmt, ... )
 {
     char buf[128]; // resulting string limited to 128 chars
     va_list args;
@@ -166,9 +190,10 @@ void _myprintf(const __FlashStringHelper *fmt, ... )
 #endif
     va_end(args);
 
-    DEBUGdevice.print(buf);
+    PRINTS(buf);
 }
 
+#if 0
 char *ftoa(char *a, double f, int precision = 100)
 {
     long p[] = {0,10,100,1000,10000,100000,1000000,10000000,100000000};
@@ -182,11 +207,12 @@ char *ftoa(char *a, double f, int precision = 100)
     itoa(desimal, a, 10);
     return ret;
 }
+#endif
 
 void gendata(uint8_t* data, unsigned int size)
 {
     while (size--){
-	*data++ = random(32,126);
+	*data++ = _myrandom(32,126);
     }
 }
 

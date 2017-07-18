@@ -157,8 +157,10 @@ void fxtm_setgps(float latitude, float longitude);
 fxtm_data_t*  fxtm_getdata();
 fxtm_block_t* fxtm_getblock();
 
-size_t fxtm_getsize();
+size_t fxtm_getblocksize();
+size_t fxtm_getdatasize();
 void   fxtm_dump();
+int    fxtm_check();
 
 #define GPSFACTOR 1000000 
 #define IMUFACTOR     100 

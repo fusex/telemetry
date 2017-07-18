@@ -17,7 +17,8 @@
  */
 #define TAG "FXTM"
 
-#include <fusexutil.h>
+#include <stddef.h>
+#include "fusexutil.h"
 #include "trame.h"
 
 fxtm_block_t  fxtmblock;
@@ -27,7 +28,7 @@ void fxtm_reset()
 {
     fxtm_data_t* tm = &fxtmblock.data;
 
-    tm->timestamp = millis();
+    tm->timestamp = _mymillis();
     tm->id        = idCounter++; 
 }
 
@@ -75,9 +76,32 @@ fxtm_block_t* fxtm_getblock()
     return &fxtmblock;
 }
 
-size_t fxtm_getsize()
+size_t fxtm_getdatasize()
 {
     return sizeof(fxtm_data_t);
+}
+
+size_t fxtm_getblocksize()
+{
+    return sizeof(fxtm_block_t);
+}
+
+uint16_t lastid = 0;
+uint32_t lastts = 0;
+
+int fxtm_check()
+{
+    fxtm_data_t* tm = fxtm_getdata();
+    int ret = 0;
+    if (tm->id != (lastid +1) && tm->id != 0) {
+	TTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
+	       tm->id, tm->timestamp, lastid, lastts);
+	ret = 1;
+    }
+    lastid = tm->id;
+    lastts = tm->timestamp;
+
+    return ret;
 }
 
 void fxtm_dump()
