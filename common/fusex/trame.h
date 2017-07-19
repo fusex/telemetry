@@ -161,6 +161,13 @@ size_t fxtm_getblocksize();
 size_t fxtm_getdatasize();
 void   fxtm_dump(fxtm_data_t*);
 int    fxtm_check();
+void fxtm_getimu(float* imu);
+void fxtm_getgps(float* gps);
+void fxtm_getpressure(int32_t* ppressure);
+void fxtm_getts(uint32_t* pts);
+void fxtm_getid(uint16_t* pid);
+void fxtm_getsoundlvl(uint8_t* psndlvl);
+void fxtm_gettemperature(int8_t* ptemp);
 
 #define GPSFACTOR 1000000 
 #define IMUFACTOR     100 

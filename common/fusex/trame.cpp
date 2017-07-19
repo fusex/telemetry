@@ -86,6 +86,68 @@ size_t fxtm_getblocksize()
     return sizeof(fxtm_block_t);
 }
 
+void fxtm_getimu(float* imu)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+
+    int32_t accel[3] = {0,0,0};
+    int32_t magn[3]  = {0,0,0};
+    int32_t gyr[3]   = {0,0,0};
+
+    GETT(accel, tm, accel[0], accel[1], accel[2]);
+    GETT(magn,  tm, magn[0],  magn[1],  magn[2]);
+    GETT(gyr,   tm, gyr[0],   gyr[1],   gyr[2]);
+
+    imu[0] = (float)accel[0]/IMUFACTOR; 
+    imu[1] = (float)accel[0]/IMUFACTOR; 
+    imu[2] = (float)accel[0]/IMUFACTOR; 
+    imu[3] = (float)gyr[0]/IMUFACTOR; 
+    imu[4] = (float)gyr[1]/IMUFACTOR;
+    imu[5] = (float)gyr[2]/IMUFACTOR; 
+    imu[6] = (float)magn[0]/IMUFACTOR; 
+    imu[7] = (float)magn[1]/IMUFACTOR;
+    imu[8] = (float)magn[2]/IMUFACTOR;
+}
+
+void fxtm_getgps(float* gps)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+
+    gps[0] = (float)tm->gpslt/GPSFACTOR;
+    gps[1] = (float)tm->gpslg/GPSFACTOR;
+}
+
+void fxtm_getpressure(int32_t* ppressure)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+
+    *ppressure = GET_PRESSURE(tm->rawpressure);
+}
+
+void fxtm_getts(uint32_t* pts)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    *pts = tm->timestamp;
+}
+
+void fxtm_getid(uint16_t* pid)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    *pid = tm->id;
+}
+
+void fxtm_getsoundlvl(uint8_t* psndlvl)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    *psndlvl = tm->soundlvl;
+}
+
+void fxtm_gettemperature(int8_t* ptemp)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    *ptemp = tm->temperature;
+}
+
 uint16_t lastid = 0;
 uint32_t lastts = 0;
 

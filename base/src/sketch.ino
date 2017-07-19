@@ -69,6 +69,45 @@ void dumpstat()
 #define DEBUG 0
 #endif
 
+
+typedef struct {
+    float imu[9];
+    float gps[2];
+
+    int32_t  pressure;
+    uint32_t ts;
+    uint16_t id;
+    uint8_t  sndlvl;
+    int8_t   temp;
+} __attribute__((packed)) vivien_trame_t;
+
+
+vivien_trame_t vt;
+
+void vt_prepare()
+{
+   fxtm_getimu(vt.imu);
+   fxtm_getgps(vt.gps);
+   fxtm_getpressure(&vt.pressure);
+   fxtm_getts(&vt.ts);
+   fxtm_getid(&vt.id);
+   fxtm_getsoundlvl(&vt.sndlvl);
+   fxtm_gettemperature(&vt.temp);
+}
+
+void vt_send()
+{
+    vt_prepare();
+    PCdevice.write('$');
+    PCdevice.write((uint8_t*)&vt, sizeof(vivien_trame_t));
+    PCdevice.println('$');
+}
+
+void raw_send()
+{
+    PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
+}
+
 void loop()
 {
     if (once) {
@@ -110,9 +149,10 @@ void loop()
 	    }
 #else
 
-#if 0
-	    PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
+#if 1
 
+	   //raw_send();
+	   vt_send();
 #else
 /* ZSK TOREMOVE */
 	    fxtm_dump(NULL);
