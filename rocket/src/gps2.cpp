@@ -45,6 +45,8 @@ void setupGps()
   delay(1000);
   // Ask for firmware version
   GPSdevice.println(PMTK_Q_RELEASE);
+
+  TTRACE("init Done\r\n");
 }
 
 #define GPS_DEBUG 1

@@ -18,7 +18,7 @@
 
 #define TAG "SDCARD"
 
-#if 0
+#if 1
 #include <fusexconfig.h>
 #include <fusexutil.h>
 
@@ -30,12 +30,12 @@
 #include "pinout.h"
 #include "sdcard.h"
 
-#define LOGFILENAME "fusex02.txt"
-#define error(msg) {SD.errorPrint(&Serial, F(msg));while(1);}
-#if 0
+#define LOGFILENAME "fusexlog"
+#define error(msg) {SD.errorPrint(&Serial, F(msg));}
+#if 1
 #define FILE_BLOCK_COUNT (60*60*10L) // 60 minutes logging
 #else
-#define FILE_BLOCK_COUNT (60*10L)    // 01 minutes logging
+#define FILE_BLOCK_COUNT (5*60*10L)    // 01 minutes logging
 #endif
 
 SdFat      SD;
@@ -43,24 +43,36 @@ SdBaseFile binFile;
 
 uint32_t   bn = 0;  
 uint32_t   maxLatency = 0;
+uint16_t   fileid = 0;
+uint16_t   filepart = 0;
+
+void genfileid()
+{
+    fileid = _myrandom(0,0xffff);
+}
 
 void createBinFile()
 {
     // max number of blocks to erase per erase call
     const uint32_t ERASE_SIZE = 262144L;
     uint32_t bgnBlock, endBlock;
+    char filename[128];
+    memset(filename,0,128);
+
+    sprintf(filename,"%s-%x-%d.txt",LOGFILENAME, fileid, filepart++,".txt");
 
     // Delete old tmp file.
-    if (SD.exists(LOGFILENAME)) {
-	TTRACE("Deleting tmp file " LOGFILENAME "\r\n");
-	if (!SD.remove(LOGFILENAME)) {
-	    error("Can't remove tmp file");
-	}
+    if (SD.exists(filename)) {
+#if 1
+	TTRACE("Deleting tmp file:%s\r\n",filename);
+	if (!SD.remove(filename))
+#endif
+	    error("filename already exist");
     }
     // Create new file.
-    TTRACE("Creating new file\r\n");
+    WTTRACE("Creating new file\r\n");
     binFile.close();
-    if (!binFile.createContiguous(LOGFILENAME, 512 * FILE_BLOCK_COUNT)) {
+    if (!binFile.createContiguous(filename, 512 * FILE_BLOCK_COUNT)) {
 	error("createContiguous failed");
     }
     // Get the address of the file on the SD.
@@ -69,7 +81,7 @@ void createBinFile()
     }
 
     // Flash erase all data in the file.
-    TTRACE("Erasing all data\r\n");
+    WTTRACE("Erasing all data\r\n");
     uint32_t bgnErase = bgnBlock;
     uint32_t endErase;
     while (bgnErase < endBlock) {
@@ -86,6 +98,7 @@ void createBinFile()
     if (!SD.card()->writeStart(binFile.firstBlock())) {
 	error("writeStart failed");
     }
+    bn = 0;  
 }
 
 void setupLowSD()
@@ -95,7 +108,7 @@ void setupLowSD()
 
     if (!SD.begin(SD_CS_PIN)) {
 	TTRACE("SDCard: initialization failed!\r\n");
-	while(1);
+	//while(1);
     }
     TTRACE("SDCard: initialization done.\r\n");
 }
@@ -123,11 +136,11 @@ void recordBinFile()
 		error("writeStop failed");
 	    }
 	    TTRACE("Max block write usec: %ld\r\n", maxLatency);
-	    TTRACE("File limit reached ! abort\r\n");
-	    while(1);
+	    TTRACE("File limit reached ! recycle\r\n");
+	    createBinFile(); 
 	}
     } else
-	TTRACE("SDCard busy\r\n");
+	WTTRACE("SDCard busy\r\n");
 
     SD.card()->spiStop();
     WTTRACE("e--------------------------------------\r\n");
@@ -137,6 +150,7 @@ void recordBinFile()
 
 void setupSdcard()
 {
+    genfileid();
     setupLowSD();
     createBinFile(); 
 }

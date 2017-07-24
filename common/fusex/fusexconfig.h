@@ -56,8 +56,8 @@
 #if defined(__AVR_ATmega2560__)
 #define _IS_ROCKET 1
 //#pragma message ("this is the Mega board")
-#define DEBUGdevice Serial1
-#define GPSdevice   Serial
+#define DEBUGdevice Serial
+#define GPSdevice   Serial1
 #elif defined(__AVR_ATmega328P__)
 #define _IS_BASE 1
 //#pragma message ("this is the UNO board")

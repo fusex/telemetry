@@ -100,7 +100,7 @@ void vt_send()
     vt_prepare();
     PCdevice.write('$');
     PCdevice.write((uint8_t*)&vt, sizeof(vivien_trame_t));
-    PCdevice.println('$');
+    PCdevice.println();
 }
 
 void raw_send()
@@ -110,18 +110,21 @@ void raw_send()
 
 void loop()
 {
+#if 1
     if (once) {
 	TTRACE("#########################\n\r");
 	TTRACE("Waiting for Connection\n\r");
+	TTRACE("pc transfer packet size: %d\n\r",sizeof(vivien_trame_t));
 	once = false;
     }
+#endif
 
 #if DEBUG
     dumpstat();
 #endif
    
     uint32_t now = micros();
-#if 0
+#if 1
     if (rf95.available()) {
         uint32_t d1 = micros() - now;
 	if(receivepacket(CONFIG_PACKETNUMBER)) {
@@ -153,6 +156,8 @@ void loop()
 
 	   //raw_send();
 	   vt_send();
+	   fxtm_dump(NULL);
+           //delay(100);
 #else
 /* ZSK TOREMOVE */
 	    fxtm_dump(NULL);

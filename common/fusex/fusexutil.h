@@ -24,6 +24,7 @@ extern SoftwareSerial SWSerial;
 
 void _myprintf(const  _FMT_FLASH_TYPE *fmt, ... );
 unsigned long _mymillis();
+long _myrandom(long min, long max);
 
 int calcrc16(const uint8_t *ptr, uint16_t count);
 uint16_t _gen_crc16(const uint8_t *data, uint16_t size);

@@ -12,6 +12,7 @@
 #include "sdcard.h"
 
 int dump = 0;
+int once = 1;
 
 void setup()
 {
@@ -41,6 +42,10 @@ static void log()
 
 static void send()
 {
+    if(once){
+	TTRACE("Start transfer packet size:%d\r\n",fxtm_getdatasize());
+        once = 0;
+    }
     loopRadio();
 }
 
@@ -56,16 +61,18 @@ void loop()
     uint32_t d1 = 0;
 #endif
 
+#if 0
     if (timer > millis())  timer = millis();
     if (millis() - timer > 2000) {
 	timer = millis(); // reset the timer
 	dump = 1;
     }
+#endif
 
     acquire();
     log();
     send();
-    dump = 0;
+    //fxtm_dump(NULL); 
 
     return;
 
