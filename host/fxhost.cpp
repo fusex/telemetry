@@ -82,11 +82,11 @@ void set_mincount(int fd, int mcount)
 int openregular(int argc,char** argv)
 {
     int fd;
-    if(argc<2){
+    if(argc<3){
 	printf("please provide file\n");
 	exit(1);
     }
-    fd = open(argv[1], O_RDONLY);
+    fd = open(argv[2], O_RDONLY);
     if (fd < 0) {
         printf("Error opening %s: %s\n", argv[1], strerror(errno));
         return -1;
@@ -100,7 +100,7 @@ int openregular(int argc,char** argv)
 int openserial(int argc, char** argv)
 {
     int  fd;
-    char *portname = "/dev/ttyACM1";
+    const char *portname = "/dev/ttyACM1";
     if(argc > 1)
 	portname = argv[1];
 
@@ -176,7 +176,7 @@ int main(int argc, char** argv)
 
     if(argc > 1 && !strncmp("-l",argv[1],2))
 	fd = openregular(argc,argv);
-    if(argc > 1 && !strncmp("-h",argv[1],2))
+    else if(argc > 1 && !strncmp("-h",argv[1],2))
  	do_usage(argv);	
     else
 	fd = openserial(argc,argv);
