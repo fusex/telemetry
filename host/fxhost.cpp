@@ -28,6 +28,8 @@
 #include "fusexutil.h"
 #include "trame.h"
 
+size_t readsize = 0;
+
 int set_interface_attribs(int fd, int speed)
 {
     struct termios tty;
@@ -92,6 +94,8 @@ int openregular(int argc,char** argv)
         return -1;
     }
 
+    readsize = fxtm_getblocksize();
+
     return fd;
 }
 
@@ -110,6 +114,9 @@ int openserial(int argc, char** argv)
         return -1;
     }
     set_interface_attribs(fd, SERIALBAUD);
+
+    readsize = fxtm_getdatasize();
+
     return fd;
 }
 
@@ -140,7 +147,7 @@ void thread_acquisition(int fd)
         uint8_t buf[512];
         int rdlen;
 
-        rdlen = fread(fxtm_getdata(), 1, fxtm_getdatasize(), file);
+        rdlen = fread(fxtm_getdata(), 1, readsize, file);
         if (rdlen > 0) {
 #if HEX_DUMP
             unsigned char *p;
@@ -161,7 +168,8 @@ void thread_acquisition(int fd)
 /* ZSK END*/
 #endif
 
-	rb += fxtm_getblocksize();
+	//rb += fxtm_getblocksize();
+	rb += readsize;
     } while (!finish);
 }
 

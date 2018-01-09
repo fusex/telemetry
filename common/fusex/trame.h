@@ -124,6 +124,7 @@ int head = 0;
 #define NEXT() {head++; if(head==3) head = 0; }
 #endif
 
+#if 0
 // Number of data records in a block.
 //const uint16_t DATA_DIM = (512 - 4)/sizeof(fxtm_data_t);
 #define DATA_DIM ((512 - 4)/sizeof(fxtm_data_t))
@@ -131,6 +132,9 @@ int head = 0;
 //Compute fill so block size is 512 bytes.  FILL_DIM may be zero.
 //const uint16_t FILL_DIM = 512 - 4 - DATA_DIM*sizeof(fxtm_data_t);
 #define FILL_DIM (512 - 4 - DATA_DIM*sizeof(fxtm_data_t))
+#else
+#define FILL_DIM (512 - sizeof(fxtm_data_t))
+#endif
 
 typedef struct {
   fxtm_data_t  data;
