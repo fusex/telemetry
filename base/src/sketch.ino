@@ -17,7 +17,11 @@ void setup()
 
     if (!rf95.init()){
 	TTRACE("Radio init failed\n\r");
+#if 0
 	while(1);
+#else
+	return;
+#endif
     }
     else
 	TTRACE("Radio init Done with packet size:%d\n\r",fxtm_getdatasize());
@@ -124,7 +128,7 @@ void loop()
 #endif
    
     uint32_t now = micros();
-#if 1
+#if 0
     if (rf95.available()) {
         uint32_t d1 = micros() - now;
 	if(receivepacket(CONFIG_PACKETNUMBER)) {
@@ -152,7 +156,7 @@ void loop()
 	    }
 #else
 
-#if 1
+#if 0
 
 	   //raw_send();
 	   vt_send();
