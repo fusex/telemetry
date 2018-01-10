@@ -136,10 +136,12 @@ void loop()
 #else
 /* ZSK TOREMOVE */
 	if(1) {
+	    static uint32_t id = 0;
 	    if(1) {
 		fxtm_data_t* tm = fxtm_getdata();
-		tm->timestamp = 48232; 
-		tm->id = 104; 
+		//tm->timestamp = 48232; 
+		tm->timestamp = _mymillis(); 
+		tm->id = id++; 
 		fxtm_setgps(43.242376,-0.039298);
 		fxtm_setpressure(96646);
 		fxtm_settemperature(40);
@@ -166,11 +168,14 @@ void loop()
 #else
 /* ZSK TOREMOVE */
 	    fxtm_dump(NULL);
-	    while(1) {
-		int bytesSent = PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
-		TTRACE("PLOP sent:%d, expected:%d\r\n",bytesSent, fxtm_getdatasize()); 
-		delay(30000);
-	    } ;
+	    int bytesSent = PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
+	    TTRACE("PLOP sent:%d, expected:%d\r\n",bytesSent, fxtm_getdatasize()); 
+	    if(id==4)
+	    while(1) 
+	    ;
+	    {
+	       delay(3000);
+	    }
 #endif
 
 /* ZSK END */
