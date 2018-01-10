@@ -118,7 +118,8 @@ void loop()
     if (once) {
 	TTRACE("#########################\n\r");
 	TTRACE("Waiting for Connection\n\r");
-	TTRACE("pc transfer packet size: %d\n\r",sizeof(vivien_trame_t));
+	//TTRACE("pc transfer packet size: %d\n\r",sizeof(vivien_trame_t));
+	TTRACE("pc transfer packet size: %d\n\r",sizeof(fxtm_data_t));
 	once = false;
     }
 #endif
