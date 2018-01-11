@@ -91,7 +91,7 @@ void logger::hup()
 
 void logger::canread()
 {
-    return;
+    //return;
     rnotified = true;
     canreadIt.notify_one(); 
 }

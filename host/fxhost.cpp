@@ -24,9 +24,13 @@
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h> 
+//#include <assert.h>
+
+#include <time.h>
 
 #include "fusexutil.h"
 #include "trame.h"
+#include "logger.h"
 
 size_t readsize = 0;
 
@@ -137,26 +141,25 @@ void do_usage(char** argv)
 # define TRAME_DUMP 0
 #endif
 
-void thread_acquisition(int fd)
+int getlogfile(char* filename)
+{
+    struct tm *t;
+    time_t now = time(NULL);
+    t = gmtime(&now);
+    strftime(filename, sizeof(filename), "fusexlog-%Y-%m-%d-%H-%M-%S", t);
+}
+
+void thread_acquisition(int fd, logger* l)
 {
     size_t rb = 0;
     int    finish = 0;
-    FILE* file = fdopen(fd,"ro");
-
+    FILE*  file = fdopen(fd,"ro");
     do {
-        uint8_t buf[512];
         int rdlen;
 
         rdlen = fread(fxtm_getdata(), 1, readsize, file);
         if (rdlen > 0) {
-#if HEX_DUMP
-            unsigned char *p;
-            for (p = buf; rdlen-- > 0; p++)
-                printf(" 0x%x", *p);
-            printf("\n");
-#elif TRAME_DUMP
-	    fxtm_dump(NULL);
-#endif
+	    l->wlog((uint8_t*)fxtm_getdata(),fxtm_getdatasize());
         } else if (rdlen < 0) {
             printf("Error from read: %d: %s\n", rdlen, strerror(errno));
 	    finish = 1;
@@ -167,20 +170,37 @@ void thread_acquisition(int fd)
 	printf("rdlen: %d expected:%ld\n", rdlen, fxtm_getdatasize());
 /* ZSK END*/
 #endif
-
 	//rb += fxtm_getblocksize();
 	rb += readsize;
     } while (!finish);
 }
 
-void thread_dumper()
+void thread_dumper(logger* l)
 {
-
+    uint8_t buf[512];
+    int    finish = 0;
+    do {
+	int rd = l->rlog(buf, fxtm_getdatasize());
+	if(rd == fxtm_getdatasize()) {
+#if HEX_DUMP
+	    unsigned char *p;
+	    rdlen = rd;
+	    for (p = buf; rdlen-- > 0; p++)
+		printf(" 0x%x", *p);
+	    printf("\n");
+#elif TRAME_DUMP
+	    fxtm_dump((fxtm_data_t*)buf);
+#endif
+	}
+    } while (!finish);
 }
 
 int main(int argc, char** argv)
 {
-    int fd;
+    int  fd;
+    char logfilename[128];
+    std::thread acqtask;
+    std::thread dumptask;
 
     if(argc > 1 && !strncmp("-l",argv[1],2))
 	fd = openregular(argc,argv);
@@ -191,7 +211,19 @@ int main(int argc, char** argv)
 
     if(fd<0) return -1;
 
-    thread_acquisition(fd);
+    memset(logfilename,0,128);
+    getlogfile(logfilename);
+    //assert(strlen(logfilename)>0);
+
+    logger* l = new logger(logfilename);
+
+    acqtask = std::thread(thread_acquisition,fd,l);
+    dumptask = std::thread(thread_dumper,l);
+    //thread_acquisition(fd, l);
+    //thread_dumper(l);
+
+    dumptask.join();
+    acqtask.join();
 
     close(fd);
 }
