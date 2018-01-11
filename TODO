@@ -1,0 +1,7 @@
+features: 
+	[doing]	 host should save in a file as well as display dumps simultanously
+	[done]   host should support open a localfile instead of live serial
+	[notyet] if localfile no save is required
+bugs: 
+	host(multithreads) dumped packets are wrong and there is a missing dump.
+	if half read one packet, all next packets are wrong
