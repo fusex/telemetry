@@ -174,6 +174,10 @@ void fxtm_dump(fxtm_data_t* tm)
     int32_t accel[3] = {0,0,0};
     int32_t magn[3]  = {0,0,0};
     int32_t gyr[3]   = {0,0,0};
+   
+    float gps[2] = {0,0};
+
+    fxtm_getgps(gps); 
 
     GETT(accel, tm, accel[0], accel[1], accel[2]);
     GETT(magn,  tm, magn[0],  magn[1],  magn[2]);
@@ -181,9 +185,31 @@ void fxtm_dump(fxtm_data_t* tm)
 
     TTRACE("\r\n\tid: %u at ts: %lu\r\n", tm->id, tm->timestamp);
 #if _IS_PC 
-    TRACE("\tgps: %d,%d\r\n",tm->gpslt, tm->gpslg);
+    TRACE("\tgps: %f,%f\r\n",gps[0], gps[1]);
 #else
-    TRACE("\tgps: %ld,%ld\r\n",tm->gpslt, tm->gpslg);
+    //TRACE("\tgps: %ld.%ld,%ld.%ld\r\n",abs((int)gps[0]), (int)(gps[0]*GPSFACTOR)%GPSFACTOR, abs((int)gps[1]),(int)(gps[1]*GPSFACTOR)%GPSFACTOR);
+{
+    long   i,d;
+    double u;
+
+    i = abs((int)gps[0]);
+    u = (double)(gps[0]-i);
+    if (gps[0]<0) u = -u;
+    d = u*GPSFACTOR;
+
+    TRACE("\tgps: %s%ld.%0" GPSFACTORPOW "ld, ", gps[0]<0?"-":"", i, d);
+}
+{
+    long   i,d;
+    double u;
+
+    i = abs((int)gps[1]);
+    u = (double)(gps[1]-i);
+    if (gps[1]<0) u = -u;
+    d = u*GPSFACTOR;
+
+    TRACE("%s%ld.%0" GPSFACTORPOW "ld\r\n", gps[1]<0?"-":"", i, d);
+}
 #endif
     TRACE("\tsound level: %u\r\n",tm->soundlvl);
     TRACE("\ttemperature: %d C, rawpressure:%u pressure:%lu pa\r\n",

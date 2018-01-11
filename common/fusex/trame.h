@@ -173,6 +173,7 @@ void fxtm_getid(uint16_t* pid);
 void fxtm_getsoundlvl(uint8_t* psndlvl);
 void fxtm_gettemperature(int8_t* ptemp);
 
+#define GPSFACTORPOW   "6" 
 #define GPSFACTOR 1000000 
 #define IMUFACTOR     100 
 
