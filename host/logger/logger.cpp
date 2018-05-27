@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <string.h> 
 #include <stdarg.h> 
+
 #include "logger.h"
 
 #define INC_P() { \
@@ -27,6 +28,7 @@
     if ((p - c) == SLOT_MAX) flush(); \
     if (p == SLOT_MAX) { p = 0 ; gcount++; } \
     dtrace("ring status %d/%d\n", c,p); \
+    canread();\
 }
 
 #define INC_C() { \
@@ -87,6 +89,12 @@ void logger::hup()
     processIt.notify_one(); 
 }
 
+void logger::canread()
+{
+    //return;
+    rnotified = true;
+    canreadIt.notify_one(); 
+}
 
 void logger::flush()
 {
@@ -112,7 +120,7 @@ void logger::lprintf(const char* fmt, ...)
    INC_P();
 }
 
-void logger::wlog(char* buf, size_t size)
+void logger::wlog(uint8_t* buf, size_t size)
 {
    myassert(abs(p - c) < SLOT_MAX);
    assert(size < MSG_SIZE);
@@ -123,13 +131,24 @@ void logger::wlog(char* buf, size_t size)
    INC_P();
 }
 
-size_t logger::rlog(char* buf, size_t size)
+size_t logger::rlog(uint8_t* buf, size_t size)
 {
     size_t s = size;  
-    if((SLOT_MAX*gcount)<readp)
-	memcpy(buf, cloglist[p].logmsg, size);
-    else
+ 
+    myassert(readp<=(SLOT_MAX*gcount+p));
+
+    if(readp == (SLOT_MAX*gcount+p)) {
+        std::unique_lock<std::mutex> locker(mLock);
+         while(!rnotified) {
+             canreadIt.wait(locker);
+         }
+         rnotified = false;
+    }
+
+    if((SLOT_MAX*gcount)>readp)
 	s = fread(buf, size, 1, readfile);
+    else
+	memcpy(buf, cloglist[p].logmsg, size);
 
     readp++;
 
@@ -142,6 +161,7 @@ logger::~logger()
     mustDied = true;
     flush();
     fclose(logfile);
+    fclose(readfile);
     free(cloglist);
 }
 
@@ -153,7 +173,7 @@ logger::logger(const char* filename)
     logfile = fopen(logfilename,"w+");
     assert(logfile);
 
-    cloglist = (log*) malloc(sizeof(log)*SLOT_MAX);
+    cloglist = (fxlog*) malloc(sizeof(fxlog)*SLOT_MAX);
     assert(cloglist);
 
     readfile = fopen(logfilename,"ro");

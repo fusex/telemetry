@@ -3,7 +3,7 @@
 BIN3 := fxhost
 
 BUILDDIR := .build
-CFLAGS := -ggdb -std=c++11 -pthread
+CFLAGS := -Wall -ggdb -std=c++11 -pthread
 .DEFAULT_GOAL := all
 LDFLAGS := -lm -lpthread
 LD := g++

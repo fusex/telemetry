@@ -141,7 +141,7 @@ void do_usage(char** argv)
 # define TRAME_DUMP 0
 #endif
 
-int getlogfile(char* filename)
+void getlogfile(char* filename)
 {
     struct tm *t;
     time_t now = time(NULL);
@@ -155,13 +155,13 @@ void thread_acquisition(int fd, logger* l)
     int    finish = 0;
     FILE*  file = fdopen(fd,"ro");
     do {
-        int rdlen;
+        size_t rdlen;
 
         rdlen = fread(fxtm_getdata(), 1, readsize, file);
         if (rdlen > 0) {
 	    l->wlog((uint8_t*)fxtm_getdata(),fxtm_getdatasize());
-        } else if (rdlen < 0) {
-            printf("Error from read: %d: %s\n", rdlen, strerror(errno));
+        } else {
+            //printf("Error from read %s\n", strerror(errno));
 	    finish = 1;
         }
 
@@ -180,7 +180,7 @@ void thread_dumper(logger* l)
     uint8_t buf[512];
     int    finish = 0;
     do {
-	int rd = l->rlog(buf, fxtm_getdatasize());
+	size_t rd = l->rlog(buf, fxtm_getdatasize());
 	if(rd == fxtm_getdatasize()) {
 #if HEX_DUMP
 	    unsigned char *p;

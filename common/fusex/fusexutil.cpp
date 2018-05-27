@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 
+#include <string.h>
+
 #include "fusexutil.h"
 
 #if _IS_BASE
@@ -145,7 +147,7 @@ void _myprintf2(const char *fmt, ... )
 		q++;
 	    }
         }
-	buf += vsnprintf(buf, sizeof(buf), (const char *)fmt, args); // for the rest of the world
+	buf += vsnprintf(buf, strlen(buf), (const char *)fmt, args); // for the rest of the world
         if (q) {
 	    double f = va_arg(args, double);
             buf += sprintf(buf, "%d.%d", (int)f,(int)(f*factor)%factor);

@@ -14,6 +14,9 @@
 * =====================================================================================
 */
 
+#ifndef _LOGGER_H
+#define _LOGGER_H
+
 #include <thread>
 #include <mutex>
 #include <unistd.h>
@@ -40,14 +43,12 @@
 #define dtrace(f, ...) do {} while(0);
 #endif
 
-#define trace(f,...) printf(f , ##__VA_ARGS__ )
-
 typedef struct {
   char     header[HDR_SIZE];
   char     logmsg[MSG_SIZE];
   uint32_t id;
-} log;
-#define BUILD_BUG_ON (sizeof(log)%512);
+} fxlog;
+#define BUILD_BUG_ON (sizeof(fxlog)%512);
 
 #define PERIODIC_SYNC 2
 
@@ -56,11 +57,14 @@ class logger {
     std::thread             periodicT;
     std::mutex              mLock;
     std::condition_variable processIt;
+    std::condition_variable canreadIt;
     bool                    notified;
+    bool                    rnotified;
     bool                    mustDied = false;
     FILE*                   logfile;
+    FILE*                   readfile;
     char                    logfilename[MAX_FILE_PATH];
-    log*                    cloglist;
+    fxlog*                  cloglist;
     
     volatile uint32_t p;
     volatile uint32_t c;
@@ -81,7 +85,9 @@ public:
     ~logger();
 
     void hup(void);
+    void canread(void);
     void lprintf(const char* fmt, ...);
-    void rlog();
-    void wlog(char* buf, size_t size);
+    size_t rlog(uint8_t* buf, size_t size);
+    void wlog(uint8_t* buf, size_t size);
 };
+#endif // _LOGGER_H
