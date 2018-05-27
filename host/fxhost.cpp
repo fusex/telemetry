@@ -146,7 +146,7 @@ int getlogfile(char* filename)
     struct tm *t;
     time_t now = time(NULL);
     t = gmtime(&now);
-    strftime(filename, sizeof(filename), "fusexlog-%Y-%m-%d-%H-%M-%S", t);
+    strftime(filename, 128, "fusexlog-%Y-%m-%d-%H-%M-%S", t);
 }
 
 void thread_acquisition(int fd, logger* l)
