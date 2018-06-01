@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h> 
+#include <signal.h>
 //#include <assert.h>
 
 #include <time.h>
@@ -149,6 +150,8 @@ void getlogfile(char* filename)
     strftime(filename, 128, "fusexlog-%Y-%m-%d-%H-%M-%S", t);
 }
 
+int asktoterm = 0;
+
 void thread_acquisition(int fd, logger* l)
 {
     size_t rb = 0;
@@ -164,7 +167,6 @@ void thread_acquisition(int fd, logger* l)
             //printf("Error from read %s\n", strerror(errno));
 	    finish = 1;
         }
-
 #if 0
 /* ZSK DEBUG TOREMOVE */
 	printf("rdlen: %d expected:%ld\n", rdlen, fxtm_getdatasize());
@@ -172,7 +174,7 @@ void thread_acquisition(int fd, logger* l)
 #endif
 	//rb += fxtm_getblocksize();
 	rb += readsize;
-    } while (!finish);
+    } while (!finish && !asktoterm);
 }
 
 void thread_dumper(logger* l)
@@ -192,38 +194,54 @@ void thread_dumper(logger* l)
 	    fxtm_dump((fxtm_data_t*)buf);
 #endif
 	}
-    } while (!finish);
+    } while (!finish && !asktoterm);
+}
+
+typedef struct {
+    int  fd;
+    std::thread acqtask;
+    std::thread dumptask;
+    logger* l;
+} thr;
+thr  t; 
+
+void sig_handler(int signo)
+{
+    if (signo == SIGINT) { 
+	printf("SigInt catched! terminating ...\n");
+	asktoterm = 1;
+	delete t.l;
+	close(t.fd);
+    }
 }
 
 int main(int argc, char** argv)
 {
-    int  fd;
     char logfilename[128];
-    std::thread acqtask;
-    std::thread dumptask;
 
     if(argc > 1 && !strncmp("-l",argv[1],2))
-	fd = openregular(argc,argv);
+	t.fd = openregular(argc,argv);
     else if(argc > 1 && !strncmp("-h",argv[1],2))
  	do_usage(argv);	
     else
-	fd = openserial(argc,argv);
+	t.fd = openserial(argc,argv);
 
-    if(fd<0) return -1;
+    if(t.fd<0) return -1;
 
     memset(logfilename,0,128);
     getlogfile(logfilename);
     //assert(strlen(logfilename)>0);
 
-    logger* l = new logger(logfilename);
+#if 0
+    if(signal(SIGINT, sig_handler)==SIG_ERR)
+	printf("cannot catch SIGINT\n");
+#endif
 
-    acqtask = std::thread(thread_acquisition,fd,l);
-    dumptask = std::thread(thread_dumper,l);
-    //thread_acquisition(fd, l);
-    //thread_dumper(l);
+    t.l = new logger(logfilename);
 
-    dumptask.join();
-    acqtask.join();
+    t.acqtask = std::thread(thread_acquisition,t.fd,t.l);
+    t.dumptask = std::thread(thread_dumper,t.l);
 
-    close(fd);
+    t.dumptask.join();
+    t.acqtask.join();
 }
