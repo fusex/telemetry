@@ -23,12 +23,12 @@
 #include "logger.h"
 
 #define INC_P() { \
-    dtrace("message id:%4d pushed into ring buffer\n", SLOT_MAX*gcount+p);  \
+    dtrace("message id:%4d pushed into ring buffer\n", SLOT_MAX*gcount+p); \
     p++; \
+    canread(); \
     if ((p - c) == SLOT_MAX) flush(); \
     if (p == SLOT_MAX) { p = 0 ; gcount++; } \
     dtrace("ring status %d/%d\n", c,p); \
-    canread();\
 }
 
 #define INC_C() { \
@@ -39,7 +39,7 @@
 
 #define myassert(cond) { \
     if(!(cond)) \
-        trace("asserting at id:%d p:%d c:%d\n", SLOT_MAX*gcount+p ,p,c); \
+        trace("asserting at id:%d p:%d c:%d readp:%ld\n", SLOT_MAX*gcount+p,p,c,readp); \
     assert(cond); \
 }
 
@@ -137,18 +137,16 @@ size_t logger::rlog(uint8_t* buf, size_t size)
  
     myassert(readp<=(SLOT_MAX*gcount+p));
 
-    if(readp == (SLOT_MAX*gcount+p)) {
-        std::unique_lock<std::mutex> locker(mLock);
-         while(!rnotified) {
-             canreadIt.wait(locker);
-         }
-         rnotified = false;
+    std::unique_lock<std::mutex> locker(mLock);
+    while(!rnotified) {
+	canreadIt.wait(locker);
     }
+    rnotified = false;
 
     if((SLOT_MAX*gcount)>readp)
 	s = fread(buf, size, 1, readfile);
     else
-	memcpy(buf, cloglist[p].logmsg, size);
+	memcpy(buf, cloglist[readp].logmsg, size);
 
     readp++;
 
