@@ -52,16 +52,10 @@ typedef struct {
 } fxlog;
 #define BUILD_BUG_ON (sizeof(fxlog)%512);
 
-#define PERIODIC_SYNC 2
-
 class logger {
     std::thread             task;
-    std::thread             periodicT;
     std::mutex              mLock;
     std::condition_variable processIt;
-    std::condition_variable canreadIt;
-    bool                    notified;
-    bool                    rnotified;
     bool                    mustDied = false;
     FILE*                   logfile;
     FILE*                   readfile;
@@ -78,7 +72,6 @@ class logger {
     void logthread(void);
     long long gettimestamp();
     void logfilewriter();
-    void periodicthread();
     void flush();
 
 public:
@@ -87,7 +80,6 @@ public:
     ~logger();
 
     void hup(void);
-    void canread(void);
     void lprintf(const char* fmt, ...);
     size_t rlog(uint8_t* buf, size_t size);
     void wlog(uint8_t* buf, size_t size);

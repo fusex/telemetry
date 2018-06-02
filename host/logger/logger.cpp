@@ -25,15 +25,26 @@
 #define INC_P() { \
     ddtrace("message id:%4d pushed into ring buffer\n", SLOT_MAX*gcount+p); \
     p++; \
-    canread(); \
-    if ((p - c) == SLOT_MAX-1) flush(); \
+    hup(); \
+    if ((p - c) == SLOT_MAX) { \
+	dtrace("ring full\n"); \
+	full = true; \
+	while(full); \
+	dtrace("ring not more full\n"); \
+    }; \
     if (p == SLOT_MAX) { p = 0 ; gcount++; } \
     dtrace("P ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
 }
 
 #define INC_C() { \
     c++; \
-    if (c == SLOT_MAX) {c = 0;} \
+    if (c == SLOT_MAX) {full = false; c = 0;} \
+    dtrace("C ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
+}
+
+#define INC_READP() { \
+    readp++; \
+    dtrace("READP ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
 }
 
 #define myassert(cond) { \
@@ -42,24 +53,13 @@
     assert(cond); \
 }
 
-void logger::periodicthread()
-{
-    while(!mustDied) {
-        sleep(PERIODIC_SYNC);
-        hup();
-    }
-}
-
 void logger::logthread()
 {
     while(!mustDied) {
-        std::unique_lock<std::mutex> locker(mLock);
-         while(!notified) {
-             processIt.wait(locker);
-         }
-         dtrace("get a hup\n");
-         logfilewriter();
-         notified = false;
+	std::unique_lock<std::mutex> locker(mLock);
+	processIt.wait(locker);
+	ddtrace("get a hup\n");
+	logfilewriter();
     }
 }
 
@@ -73,10 +73,10 @@ void logger::logfilewriter()
 	do_fflush = true;
     }
 
-    if(do_fflush)
+    if(do_fflush) {
 	fflush(logfile);
+    }
     ddtrace("vfsynced p:%d/c:%d/readp:%ld\n", c, p, readp);
-    full = false;
 }
 
 long long logger::gettimestamp()
@@ -89,24 +89,7 @@ long long logger::gettimestamp()
 
 void logger::hup()
 {
-    notified = true;
-    processIt.notify_one(); 
-}
-
-void logger::canread()
-{
-    //return;
-    rnotified = true;
-    canreadIt.notify_one(); 
-}
-
-void logger::flush()
-{
-    dtrace("flush ing\n");
-    full = true;
-    hup();
-    while(full);
-    dtrace("finished\n");
+    processIt.notify_all(); 
 }
 
 void logger::lprintf(const char* fmt, ...)
@@ -143,10 +126,7 @@ size_t logger::rlog(uint8_t* buf, size_t size)
 
     while(readp == (SLOT_MAX*gcount+p)) {
 	std::unique_lock<std::mutex> locker(mLock);
-	while(!rnotified) {
-	    canreadIt.wait(locker);
-	}
-	rnotified = false;
+	processIt.wait(locker);
     }
 
     if((SLOT_MAX*gcount)>readp)
@@ -158,7 +138,7 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     } else
 	memcpy(buf, cloglist[readp%SLOT_MAX].logmsg, size);
 
-    readp++;
+    INC_READP();
 
     return s;
 }
@@ -167,7 +147,6 @@ logger::~logger()
 {
     dtrace("calling dtor\n");
     mustDied = true;
-    flush();
     fclose(logfile);
     fclose(readfile);
     free(cloglist);
@@ -189,7 +168,4 @@ logger::logger(const char* filename)
 
     task = std::thread(&logger::logthread,this);
     task.detach();
-
-    periodicT = std::thread(&logger::periodicthread,this);
-    periodicT.detach();
 }
