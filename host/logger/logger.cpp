@@ -66,12 +66,17 @@ void logger::logthread()
 
 void logger::logfilewriter()
 {
+    bool do_fflush = false;
     dtrace("writing logs %d/%d\n", c, p);
     while(p-c) {
         fwrite(&cloglist[c], 512, 1, logfile);
         INC_C();
+	do_fflush = true;
     }
-    dtrace("vfsynced %d/%d\n", c, p);
+
+    if(do_fflush)
+	fflush(logfile);
+    dtrace("vfsynced p:%d/c:%d/readp:%ld\n", c, p, readp);
     full = false;
 }
 
