@@ -28,11 +28,11 @@
     canread(); \
     if ((p - c) == SLOT_MAX-1) flush(); \
     if (p == SLOT_MAX) { p = 0 ; gcount++; } \
-    dtrace("ring status %d/%d\n", c,p); \
+    dtrace("P ring status %d/%d/%ld\n",c,p,readp); \
 }
 
 #define INC_C() { \
-    dtrace("%d/%d\n", c, p); \
+    dtrace("C ring status %d/%d/%ld\n",c,p,readp); \
     c++; \
     if (c == SLOT_MAX) {c = 0;} \
 }
