@@ -23,23 +23,22 @@
 #include "logger.h"
 
 #define INC_P() { \
-    dtrace("message id:%4d pushed into ring buffer\n", SLOT_MAX*gcount+p); \
+    ddtrace("message id:%4d pushed into ring buffer\n", SLOT_MAX*gcount+p); \
     p++; \
     canread(); \
     if ((p - c) == SLOT_MAX-1) flush(); \
     if (p == SLOT_MAX) { p = 0 ; gcount++; } \
-    dtrace("P ring status %d/%d/%ld/%d\n",p,c,readp,gcount); \
+    dtrace("P ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
 }
 
 #define INC_C() { \
-    dtrace("C ring status %d/%d/%ld/%d\n",p,c,readp,gcount); \
     c++; \
     if (c == SLOT_MAX) {c = 0;} \
 }
 
 #define myassert(cond) { \
     if(!(cond)) \
-        trace("asserting at id:%d p:%d c:%d readp:%ld\n", SLOT_MAX*gcount+p,p,c,readp); \
+        trace("asserting at p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
     assert(cond); \
 }
 
@@ -67,7 +66,7 @@ void logger::logthread()
 void logger::logfilewriter()
 {
     bool do_fflush = false;
-    dtrace("writing logs %d/%d\n", c, p);
+    ddtrace("writing logs %d/%d\n", c, p);
     while(p-c) {
         fwrite(&cloglist[c], 512, 1, logfile);
         INC_C();
@@ -76,7 +75,7 @@ void logger::logfilewriter()
 
     if(do_fflush)
 	fflush(logfile);
-    dtrace("vfsynced p:%d/c:%d/readp:%ld\n", c, p, readp);
+    ddtrace("vfsynced p:%d/c:%d/readp:%ld\n", c, p, readp);
     full = false;
 }
 

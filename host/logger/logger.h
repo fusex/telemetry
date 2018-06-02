@@ -32,15 +32,17 @@
 #define MSG_SIZE 476
 
 #if 0
-#define DEBUG
+#define DEBUG 1
 #endif
 
 #define trace(f,...) printf(f , ##__VA_ARGS__ )
 
 #ifdef DEBUG
 #define dtrace(f,...) printf(f , ##__VA_ARGS__ )
+#define ddtrace(f,...) { if(DEBUG>1) printf(f , ##__VA_ARGS__ );}
 #else
 #define dtrace(f, ...) do {} while(0);
+#define ddtrace dtrace
 #endif
 
 typedef struct {
