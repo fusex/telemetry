@@ -142,11 +142,13 @@ size_t logger::rlog(uint8_t* buf, size_t size)
  
     myassert(readp<=(SLOT_MAX*gcount+p));
 
-    std::unique_lock<std::mutex> locker(mLock);
-    while(!rnotified) {
-	canreadIt.wait(locker);
+    while(readp == (SLOT_MAX*gcount+p)) {
+	std::unique_lock<std::mutex> locker(mLock);
+	while(!rnotified) {
+	    canreadIt.wait(locker);
+	}
+	rnotified = false;
     }
-    rnotified = false;
 
     if((SLOT_MAX*gcount)>readp)
 	s = fread(buf, size, 1, readfile);
