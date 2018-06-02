@@ -151,9 +151,13 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     }
 
     if((SLOT_MAX*gcount)>readp)
-	s = fread(buf, size, 1, readfile);
-    else
-	memcpy(buf, cloglist[readp].logmsg, size);
+    {
+	int err= fseek(readfile, (readp*512)+(HDR_SIZE), SEEK_SET);
+	myassert(err==0);
+	s = fread(buf, size, 1, readfile); //TODO check this
+	s *= size;
+    } else
+	memcpy(buf, cloglist[readp%SLOT_MAX].logmsg, size);
 
     readp++;
 
