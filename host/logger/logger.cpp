@@ -26,7 +26,7 @@
     dtrace("message id:%4d pushed into ring buffer\n", SLOT_MAX*gcount+p); \
     p++; \
     canread(); \
-    if ((p - c) == SLOT_MAX) flush(); \
+    if ((p - c) == SLOT_MAX-1) flush(); \
     if (p == SLOT_MAX) { p = 0 ; gcount++; } \
     dtrace("ring status %d/%d\n", c,p); \
 }
