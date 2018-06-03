@@ -29,6 +29,9 @@
 #define INC_P() { \
     ddtrace("message id:%4d pushed into ring buffer\n", p); \
     p++; \
+    flag.store(0, std::memory_order_release); \
+    int g = flag.load(std::memory_order_acquire); \
+    if(g != 0) \
     if ((p - c) == SLOT_MAX) { \
 	dtrace("ring full\n"); \
 	full = true; \
@@ -36,19 +39,25 @@
 	while(full); \
 	dtrace("ring not more full\n"); \
     }; \
+    g = flag.load(std::memory_order_acquire); \
     if ((p - c) > 0) { \
 	hup(); \
     } \
+    g = flag.load(std::memory_order_acquire); \
     dtrace("P ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
 }
 
 #define INC_C() { \
     c++; \
+    flag.store(1, std::memory_order_release); \
+    flag.load(std::memory_order_acquire); \
     dtrace("C ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
 }
 
 #define INC_READP() { \
     readp++; \
+    flag.store(2, std::memory_order_release); \
+    flag.load(std::memory_order_acquire); \
     dtrace("READP ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
 }
 
@@ -80,10 +89,12 @@ void logger::logfilewriter()
 {
     bool do_fflush = false;
     ddtrace("writing logs %d/%d\n", c, p);
+    flag.load(std::memory_order_acquire); \
     while(p-c) {
         fwrite(&cloglist[c], 512, 1, logfile);
         INC_C();
 	do_fflush = true;
+	flag.load(std::memory_order_acquire); \
     }
 
     if(full) full = false;
@@ -145,6 +156,7 @@ size_t logger::rlog(uint8_t* buf, size_t size)
  
     myassert(readp<=p);
 
+    flag.load(std::memory_order_acquire);
     while(readp == p) {
 	std::unique_lock<std::mutex> locker(mLock);
 	dtrace("rlog wait for hup\n");
@@ -152,8 +164,10 @@ size_t logger::rlog(uint8_t* buf, size_t size)
 	processIt.wait(locker);
 	dtrace("rlog get a hup\n");
 	debug();
+	flag.load(std::memory_order_acquire);
     }
 
+   flag.load(std::memory_order_acquire);
     if(p - readp > SLOT_MAX) {
 	int err= fseek(readfile, readp*512, SEEK_SET);
 	myassert(err==0);

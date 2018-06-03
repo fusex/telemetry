@@ -22,6 +22,7 @@
 #include <unistd.h>
 
 #include <condition_variable>
+#include <atomic>
 
 #include <sys/time.h>
 
@@ -56,15 +57,18 @@ class logger {
     std::thread             task;
     std::mutex              mLock;
     std::condition_variable processIt;
+
     bool                    mustDied = false;
     FILE*                   logfile;
     FILE*                   readfile;
     char                    logfilename[MAX_FILE_PATH];
     fxlog*                  cloglist;
-    
+
+    std::atomic<int>  flag = {0};
     volatile uint32_t p;
     volatile uint32_t c;
     volatile uint32_t readp = 0;
+
     volatile bool full;
     uint64_t ids = 0;
 
