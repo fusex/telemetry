@@ -46,8 +46,8 @@
 #endif
 
 typedef struct {
-  char     header[HDR_SIZE];
   char     logmsg[MSG_SIZE];
+  char     header[HDR_SIZE];
   uint32_t id;
 } fxlog;
 #define BUILD_BUG_ON (sizeof(fxlog)%512);

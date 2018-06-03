@@ -22,6 +22,10 @@
 
 #include "logger.h"
 
+#if 1
+#define LOG_SAME
+#endif
+
 #define INC_P() { \
     ddtrace("message id:%4d pushed into ring buffer\n", SLOT_MAX*gcount+p); \
     p++; \
@@ -97,12 +101,14 @@ void logger::lprintf(const char* fmt, ...)
    va_list ap;
    myassert(abs(p - c) < SLOT_MAX);
 
+#ifndef LOG_SAME 
    sprintf(cloglist[p].header, "  [%20lld]: ", gettimestamp());
+   cloglist[p].id = ids++;
+#endif
 
    va_start(ap,fmt);
    vsprintf(cloglist[p].logmsg, fmt, ap);
    va_end(ap);
-   cloglist[p].id = ids++;
 
    INC_P();
 }
@@ -111,9 +117,13 @@ void logger::wlog(uint8_t* buf, size_t size)
 {
    myassert(abs(p - c) < SLOT_MAX);
    assert(size < MSG_SIZE);
+
+#ifndef LOG_SAME 
    sprintf(cloglist[p].header, "  [%20lld]: ", gettimestamp());
-   memcpy(cloglist[p].logmsg, buf, size);
    cloglist[p].id = ids++;
+#endif
+
+   memcpy(cloglist[p].logmsg, buf, size);
 
    INC_P();
 }
@@ -131,7 +141,7 @@ size_t logger::rlog(uint8_t* buf, size_t size)
 
     if((SLOT_MAX*gcount)>readp)
     {
-	int err= fseek(readfile, (readp*512)+(HDR_SIZE), SEEK_SET);
+	int err= fseek(readfile, readp*512, SEEK_SET);
 	myassert(err==0);
 	s = fread(buf, size, 1, readfile); //TODO check this
 	s *= size;
