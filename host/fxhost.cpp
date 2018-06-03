@@ -25,7 +25,7 @@
 #include <errno.h>
 #include <fcntl.h> 
 #include <signal.h>
-//#include <assert.h>
+#include <assert.h>
 
 #include <time.h>
 

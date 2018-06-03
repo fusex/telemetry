@@ -29,19 +29,6 @@
 
 #include "fusexutil.h"
 #include "trame.h"
-#include "logger.h"
-
-#if 1
-# define HEX_DUMP   0
-# define TRAME_DUMP 1
-#elif 0
-# define HEX_DUMP   1
-# define TRAME_DUMP 0
-#else
-# define HEX_DUMP   0
-# define TRAME_DUMP 0
-#endif
-
 
 void do_usage(char** argv)
 {

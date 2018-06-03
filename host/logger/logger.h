@@ -83,5 +83,6 @@ public:
     void lprintf(const char* fmt, ...);
     size_t rlog(uint8_t* buf, size_t size);
     void wlog(uint8_t* buf, size_t size);
+    void debug();
 };
 #endif // _LOGGER_H

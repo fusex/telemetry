@@ -67,6 +67,11 @@ void logger::logthread()
     }
 }
 
+void logger::debug()
+{
+    trace("X ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p);
+}
+
 void logger::logfilewriter()
 {
     bool do_fflush = false;
