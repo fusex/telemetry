@@ -64,10 +64,9 @@ class logger {
     
     volatile uint32_t p;
     volatile uint32_t c;
+    volatile uint32_t readp = 0;
     volatile bool full;
-    uint32_t gcount = 0;
     uint64_t ids = 0;
-    uint64_t readp = 0;
 
     void logthread(void);
     long long gettimestamp();

@@ -175,6 +175,7 @@ void thread_acquisition(int fd, logger* l)
 	//rb += fxtm_getblocksize();
 	rb += readsize;
     } while (!finish && !asktoterm);
+    sleep(2);
 }
 
 void thread_dumper(logger* l)
@@ -239,10 +240,11 @@ int main(int argc, char** argv)
 #endif
 
     t.l = new logger(logfilename);
-
-    t.acqtask = std::thread(thread_acquisition,t.fd,t.l);
     t.dumptask = std::thread(thread_dumper,t.l);
 
-    t.dumptask.join();
+    sleep(2);
+    t.acqtask = std::thread(thread_acquisition,t.fd,t.l);
+
     t.acqtask.join();
+    t.dumptask.join();
 }

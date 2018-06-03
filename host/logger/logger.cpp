@@ -27,33 +27,34 @@
 #endif
 
 #define INC_P() { \
-    ddtrace("message id:%4d pushed into ring buffer\n", SLOT_MAX*gcount+p); \
+    ddtrace("message id:%4d pushed into ring buffer\n", p); \
     p++; \
-    hup(); \
     if ((p - c) == SLOT_MAX) { \
 	dtrace("ring full\n"); \
 	full = true; \
+	hup(); \
 	while(full); \
 	dtrace("ring not more full\n"); \
     }; \
-    if (p == SLOT_MAX) { p = 0 ; gcount++; } \
-    dtrace("P ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
+    if ((p - c) > 0) { \
+	hup(); \
+    } \
+    dtrace("P ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
 }
 
 #define INC_C() { \
     c++; \
-    if (c == SLOT_MAX) {full = false; c = 0;} \
-    dtrace("C ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
+    dtrace("C ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
 }
 
 #define INC_READP() { \
     readp++; \
-    dtrace("READP ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
+    dtrace("READP ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
 }
 
 #define myassert(cond) { \
     if(!(cond)) \
-        trace("asserting at p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p); \
+        trace("asserting at p:%d/c:%d/readp:%d\n",p,c,readp); \
     assert(cond); \
 }
 
@@ -61,15 +62,18 @@ void logger::logthread()
 {
     while(!mustDied) {
 	std::unique_lock<std::mutex> locker(mLock);
+	dtrace("logthread wait for hup\n");
+	debug();
 	processIt.wait(locker);
-	ddtrace("get a hup\n");
+	dtrace("logthread get a hup\n");
+	debug();
 	logfilewriter();
     }
 }
 
 void logger::debug()
 {
-    trace("X ring status p:%d/c:%d/readp:%ld/id:%d\n",p,c,readp,SLOT_MAX*gcount+p);
+    trace("X ring status p:%d/c:%d/readp:%d\n",p,c,readp);
 }
 
 void logger::logfilewriter()
@@ -82,10 +86,12 @@ void logger::logfilewriter()
 	do_fflush = true;
     }
 
+    if(full) full = false;
+
     if(do_fflush) {
 	fflush(logfile);
     }
-    ddtrace("vfsynced p:%d/c:%d/readp:%ld\n", c, p, readp);
+    ddtrace("vfsynced p:%d/c:%d/readp:%d\n", c, p, readp);
 }
 
 long long logger::gettimestamp()
@@ -137,15 +143,18 @@ size_t logger::rlog(uint8_t* buf, size_t size)
 {
     size_t s = size;  
  
-    myassert(readp<=(SLOT_MAX*gcount+p));
+    myassert(readp<=p);
 
-    while(readp == (SLOT_MAX*gcount+p)) {
+    while(readp == p) {
 	std::unique_lock<std::mutex> locker(mLock);
+	dtrace("rlog wait for hup\n");
+	debug();
 	processIt.wait(locker);
+	dtrace("rlog get a hup\n");
+	debug();
     }
 
-    if((SLOT_MAX*gcount)>readp)
-    {
+    if(p - readp > SLOT_MAX) {
 	int err= fseek(readfile, readp*512, SEEK_SET);
 	myassert(err==0);
 	s = fread(buf, size, 1, readfile); //TODO check this
