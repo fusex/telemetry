@@ -193,6 +193,7 @@ void thread_dumper(logger* l)
 #elif TRAME_DUMP
 	    fxtm_dump((fxtm_data_t*)buf);
 #endif
+	    assert(fxtm_check((fxtm_data_t*)buf)==0);
 	}
     } while (!finish && !asktoterm);
 }
