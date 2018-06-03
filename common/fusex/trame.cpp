@@ -35,7 +35,7 @@ void fxtm_reset()
 void fxtm_setsoundlvl(unsigned int level)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->soundlvl = (uint8_t)level; 
+    tm->soundlvl = (uint8_t)(level/4);
 }
 
 void fxtm_setimu(float a[], float m[], float g[])

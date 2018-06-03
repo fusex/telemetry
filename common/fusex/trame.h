@@ -146,7 +146,7 @@ typedef struct {
 #define GET_RAWPRESSURE(p) (uint16_t)(PRESSURE_AT_SEALEVEL - p)
 #define GET_PRESSURE(raw)  (uint32_t)(PRESSURE_AT_SEALEVEL - raw)
 #else
-#define MAX_PRESSURE_AT_SEALEVEL (103000)
+#define MAX_PRESSURE_AT_SEALEVEL (10300)
 #define GET_RAWPRESSURE(p) (uint16_t)(MAX_PRESSURE_AT_SEALEVEL - p)
 #define GET_PRESSURE(raw)  (uint32_t)(MAX_PRESSURE_AT_SEALEVEL - raw)
 #endif
@@ -176,5 +176,8 @@ void fxtm_gettemperature(int8_t* ptemp);
 #define GPSFACTORPOW   "6" 
 #define GPSFACTOR 1000000 
 #define IMUFACTOR     100 
+
+#define MAX_SOUND_LEVEL 1024
+#define MAX_TEMPERATURE  256
 
 #endif //define _TRAME_H
