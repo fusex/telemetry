@@ -86,9 +86,10 @@ size_t fxtm_getblocksize()
     return sizeof(fxtm_block_t);
 }
 
-void fxtm_getimu(float* imu)
+void fxtm_getimu(fxtm_data_t* tm, float* imu)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
+    if(tm == NULL)
+	tm = &fxtmblock.data;
 
     int32_t accel[3] = {0,0,0};
     int32_t magn[3]  = {0,0,0};
@@ -109,51 +110,59 @@ void fxtm_getimu(float* imu)
     imu[8] = (float)magn[2]/IMUFACTOR;
 }
 
-void fxtm_getgps(float* gps)
+void fxtm_getgps(fxtm_data_t* tm, float* gps)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
+    if(tm == NULL)
+	tm = &fxtmblock.data;
 
     gps[0] = (float)tm->gpslt/GPSFACTOR;
     gps[1] = (float)tm->gpslg/GPSFACTOR;
 }
 
-void fxtm_getpressure(int32_t* ppressure)
+void fxtm_getpressure(fxtm_data_t* tm, int32_t* ppressure)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
+    if(tm == NULL)
+	tm = &fxtmblock.data;
 
     *ppressure = GET_PRESSURE(tm->rawpressure);
 }
 
-void fxtm_getts(uint32_t* pts)
+void fxtm_getts(fxtm_data_t* tm, uint32_t* pts)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
+    if(tm == NULL)
+	tm = &fxtmblock.data;
     *pts = tm->timestamp;
 }
 
-void fxtm_getid(uint16_t* pid)
+void fxtm_getid(fxtm_data_t* tm, uint16_t* pid)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
+    if(tm == NULL)
+	tm = &fxtmblock.data;
     *pid = tm->id;
 }
 
-void fxtm_getsoundlvl(uint8_t* psndlvl)
+void fxtm_getsoundlvl(fxtm_data_t* tm, uint8_t* psndlvl)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
+    if(tm == NULL)
+	tm = &fxtmblock.data;
     *psndlvl = tm->soundlvl;
 }
 
-void fxtm_gettemperature(int8_t* ptemp)
+void fxtm_gettemperature(fxtm_data_t* tm, int8_t* ptemp)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
+    if(tm == NULL)
+	tm = &fxtmblock.data;
     *ptemp = tm->temperature;
 }
 
 uint16_t lastid = 0;
 uint32_t lastts = 0;
 
-int fxtm_check()
+int fxtm_check(fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = fxtm_getdata();
+    if(tm == NULL)
+	tm = &fxtmblock.data;
+
     int ret = 0;
     if (tm->id != (lastid +1) && tm->id != 0) {
 	TTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
@@ -177,7 +186,7 @@ void fxtm_dump(fxtm_data_t* tm)
    
     float gps[2] = {0,0};
 
-    fxtm_getgps(gps); 
+    fxtm_getgps(tm, gps); 
 
     GETT(accel, tm, accel[0], accel[1], accel[2]);
     GETT(magn,  tm, magn[0],  magn[1],  magn[2]);

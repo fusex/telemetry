@@ -164,14 +164,15 @@ fxtm_block_t* fxtm_getblock();
 size_t fxtm_getblocksize();
 size_t fxtm_getdatasize();
 void   fxtm_dump(fxtm_data_t*);
-int    fxtm_check();
-void fxtm_getimu(float* imu);
-void fxtm_getgps(float* gps);
-void fxtm_getpressure(int32_t* ppressure);
-void fxtm_getts(uint32_t* pts);
-void fxtm_getid(uint16_t* pid);
-void fxtm_getsoundlvl(uint8_t* psndlvl);
-void fxtm_gettemperature(int8_t* ptemp);
+int    fxtm_check(fxtm_data_t* tm);
+
+void fxtm_getimu(fxtm_data_t* tm, float* imu);
+void fxtm_getgps(fxtm_data_t* tm, float* gps);
+void fxtm_getpressure(fxtm_data_t* tm, int32_t* ppressure);
+void fxtm_getts(fxtm_data_t* tm, uint32_t* pts);
+void fxtm_getid(fxtm_data_t* tm, uint16_t* pid);
+void fxtm_getsoundlvl(fxtm_data_t* tm, uint8_t* psndlvl);
+void fxtm_gettemperature(fxtm_data_t* tm, int8_t* ptemp);
 
 #define GPSFACTORPOW   "6" 
 #define GPSFACTOR 1000000 
