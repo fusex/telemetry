@@ -5,3 +5,13 @@ features:
 bugs: 
 	host(multithreads) dumped packets are wrong and there is a missing dump.
 	if half read one packet, all next packets are wrong
+
+1. host correct dump.       .... done 
+2. propellant/sound level   .... done
+3. host file write          .... failed
+4. embedded high resolution 
+5. button gps .
+6. souder le pin            .... done
+7. canal de transmission    .... done
+8. batterie                 .... done
+
