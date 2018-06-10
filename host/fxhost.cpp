@@ -131,7 +131,7 @@ void do_usage(char** argv)
     exit(-2);
 }
 
-#if 1
+#if 0
 # define HEX_DUMP   0
 # define TRAME_DUMP 1
 #elif 0
@@ -147,7 +147,8 @@ void getlogfile(char* filename)
     struct tm *t;
     time_t now = time(NULL);
     t = gmtime(&now);
-    strftime(filename, 128, "fusexlog-%Y-%m-%d-%H-%M-%S", t);
+    //strftime(filename, 128, "fusexlog-%Y-%m-%d-%H-%M-%S", t);
+    strftime(filename, 128, "fusexlog-%Y-%m-%d", t);
 }
 
 int asktoterm = 0;
@@ -197,6 +198,8 @@ void thread_dumper(logger* l)
 	    assert(fxtm_check((fxtm_data_t*)buf)==0);
 	}
     } while (!finish && !asktoterm);
+
+    l->flush(); 
 }
 
 typedef struct {

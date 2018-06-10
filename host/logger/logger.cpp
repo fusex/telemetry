@@ -27,74 +27,76 @@
 #endif
 
 #define INC_P() { \
-    ddtrace("message id:%4d pushed into ring buffer\n", p); \
-    p++; \
-    flag.store(0, std::memory_order_release); \
-    int g = flag.load(std::memory_order_acquire); \
-    if(g != 0) \
-    if ((p - c) == SLOT_MAX) { \
+    p.fetch_add(1, std::memory_order_relaxed); \
+    std::atomic_thread_fence(std::memory_order_release); \
+    if ((p.load(std::memory_order_relaxed) - c.load(std::memory_order_relaxed)) == SLOT_MAX) { \
 	dtrace("ring full\n"); \
 	full = true; \
 	hup(); \
 	while(full); \
 	dtrace("ring not more full\n"); \
     }; \
-    g = flag.load(std::memory_order_acquire); \
-    if ((p - c) > 0) { \
+    std::atomic_thread_fence(std::memory_order_release); \
+    if ( \
+        ((p.load(std::memory_order_release) - c.load(std::memory_order_release)) == 1) || \
+        ((p.load(std::memory_order_release) - x.load(std::memory_order_release)) == 1)) \
+    { \
+	dtrace("send hup1\n"); \
 	hup(); \
     } \
-    g = flag.load(std::memory_order_acquire); \
-    dtrace("P ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
+    debug("P"); \
 }
 
 #define INC_C() { \
-    c++; \
-    flag.store(1, std::memory_order_release); \
-    flag.load(std::memory_order_acquire); \
-    dtrace("C ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
+    c.fetch_add(1, std::memory_order_relaxed); \
+    std::atomic_thread_fence(std::memory_order_release); \
+    debug("C"); \
 }
 
-#define INC_READP() { \
-    readp++; \
-    flag.store(2, std::memory_order_release); \
-    flag.load(std::memory_order_acquire); \
-    dtrace("READP ring status p:%d/c:%d/readp:%d\n",p,c,readp); \
+#define INC_X() { \
+    x.fetch_add(1, std::memory_order_relaxed); \
+    std::atomic_thread_fence(std::memory_order_release); \
+    debug("X"); \
 }
 
 #define myassert(cond) { \
+    std::atomic_thread_fence(std::memory_order_release); \
     if(!(cond)) \
-        trace("asserting at p:%d/c:%d/readp:%d\n",p,c,readp); \
+        debug("asserting at"); \
     assert(cond); \
 }
 
 void logger::logthread()
 {
     while(!mustDied) {
-	std::unique_lock<std::mutex> locker(mLock);
-	dtrace("logthread wait for hup\n");
-	debug();
-	processIt.wait(locker);
-	dtrace("logthread get a hup\n");
-	debug();
+	while(c.load(std::memory_order_release) == p.load(std::memory_order_release)) {
+	    std::unique_lock<std::mutex> locker(mLock);
+	    debug("logthread wait for hup at");
+	    processIt.wait(locker);
+	}
+	debug("logthread get a hup at");
 	logfilewriter();
     }
 }
 
-void logger::debug()
+void logger::debug(const char* h)
 {
-    trace("X ring status p:%d/c:%d/readp:%d\n",p,c,readp);
+    std::atomic_thread_fence(std::memory_order_release);
+    trace("%s ring status p:%d/c:%d/x:%d\n", h, 
+	    p.load(std::memory_order_relaxed),
+            c.load(std::memory_order_relaxed),
+            x.load(std::memory_order_relaxed));
 }
 
 void logger::logfilewriter()
 {
     bool do_fflush = false;
-    ddtrace("writing logs %d/%d\n", c, p);
-    flag.load(std::memory_order_acquire); \
-    while(p-c) {
+    std::atomic_thread_fence(std::memory_order_release);
+    while(p.load(std::memory_order_release) - c.load(std::memory_order_release)) {
         fwrite(&cloglist[c], 512, 1, logfile);
         INC_C();
 	do_fflush = true;
-	flag.load(std::memory_order_acquire); \
+	std::atomic_thread_fence(std::memory_order_release);
     }
 
     if(full) full = false;
@@ -102,7 +104,13 @@ void logger::logfilewriter()
     if(do_fflush) {
 	fflush(logfile);
     }
-    ddtrace("vfsynced p:%d/c:%d/readp:%d\n", c, p, readp);
+    std::atomic_thread_fence(std::memory_order_release);
+    //ddebug("vfsynced");
+}
+
+void logger::flush()
+{
+    hup();
 }
 
 long long logger::gettimestamp()
@@ -124,12 +132,12 @@ void logger::lprintf(const char* fmt, ...)
    myassert(abs(p - c) < SLOT_MAX);
 
 #ifndef LOG_SAME 
-   sprintf(cloglist[p].header, "  [%20lld]: ", gettimestamp());
-   cloglist[p].id = ids++;
+   sprintf(cloglist[p.load(std::memory_order_release)].header, "  [%20lld]: ", gettimestamp());
+   cloglist[p.load(std::memory_order_release)].id = ids++;
 #endif
 
    va_start(ap,fmt);
-   vsprintf(cloglist[p].logmsg, fmt, ap);
+   vsprintf(cloglist[p.load(std::memory_order_release)].logmsg, fmt, ap);
    va_end(ap);
 
    INC_P();
@@ -141,11 +149,11 @@ void logger::wlog(uint8_t* buf, size_t size)
    assert(size < MSG_SIZE);
 
 #ifndef LOG_SAME 
-   sprintf(cloglist[p].header, "  [%20lld]: ", gettimestamp());
-   cloglist[p].id = ids++;
+   sprintf(cloglist[p.load(std::memory_order_release)].header, "  [%20lld]: ", gettimestamp());
+   cloglist[p.load(std::memory_order_release)].id = ids++;
 #endif
 
-   memcpy(cloglist[p].logmsg, buf, size);
+   memcpy(cloglist[p.load(std::memory_order_release)].logmsg, buf, size);
 
    INC_P();
 }
@@ -154,29 +162,27 @@ size_t logger::rlog(uint8_t* buf, size_t size)
 {
     size_t s = size;  
  
-    myassert(readp<=p);
+    myassert(x<=p);
 
-    flag.load(std::memory_order_acquire);
-    while(readp == p) {
+    std::atomic_thread_fence(std::memory_order_release);
+    while(x.load(std::memory_order_release) == p.load(std::memory_order_release)) {
 	std::unique_lock<std::mutex> locker(mLock);
-	dtrace("rlog wait for hup\n");
-	debug();
+	debug("rlog wait for hup at");
 	processIt.wait(locker);
-	dtrace("rlog get a hup\n");
-	debug();
-	flag.load(std::memory_order_acquire);
+	debug("rlog get a hup at");
+	std::atomic_thread_fence(std::memory_order_release);
     }
 
-   flag.load(std::memory_order_acquire);
-    if(p - readp > SLOT_MAX) {
-	int err= fseek(readfile, readp*512, SEEK_SET);
+    std::atomic_thread_fence(std::memory_order_release);
+    if(p.load(std::memory_order_release) - x.load(std::memory_order_release)> SLOT_MAX) {
+	int err= fseek(readfile, x.load(std::memory_order_release)*512, SEEK_SET);
 	myassert(err==0);
 	s = fread(buf, size, 1, readfile); //TODO check this
 	s *= size;
     } else
-	memcpy(buf, cloglist[readp%SLOT_MAX].logmsg, size);
+	memcpy(buf, cloglist[x.load(std::memory_order_release)%SLOT_MAX].logmsg, size);
 
-    INC_READP();
+    INC_X();
 
     return s;
 }

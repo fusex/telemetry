@@ -32,7 +32,7 @@
 #define HDR_SIZE  32
 #define MSG_SIZE 476
 
-#if 0
+#if 1
 #define DEBUG 1
 #endif
 
@@ -64,10 +64,9 @@ class logger {
     char                    logfilename[MAX_FILE_PATH];
     fxlog*                  cloglist;
 
-    std::atomic<int>  flag = {0};
-    volatile uint32_t p;
-    volatile uint32_t c;
-    volatile uint32_t readp = 0;
+    std::atomic<uint32_t> p;
+    std::atomic<uint32_t> c;
+    std::atomic<uint32_t> x;
 
     volatile bool full;
     uint64_t ids = 0;
@@ -75,7 +74,6 @@ class logger {
     void logthread(void);
     long long gettimestamp();
     void logfilewriter();
-    void flush();
 
 public:
     logger(const char*);
@@ -86,6 +84,7 @@ public:
     void lprintf(const char* fmt, ...);
     size_t rlog(uint8_t* buf, size_t size);
     void wlog(uint8_t* buf, size_t size);
-    void debug();
+    void debug(const char*);
+    void flush();
 };
 #endif // _LOGGER_H
