@@ -176,7 +176,7 @@ void thread_acquisition(int fd, logger* l)
 	//rb += fxtm_getblocksize();
 	rb += readsize;
     } while (!finish && !asktoterm);
-    sleep(2);
+    l->flush(); 
 }
 
 void thread_dumper(logger* l)
@@ -195,11 +195,9 @@ void thread_dumper(logger* l)
 #elif TRAME_DUMP
 	    fxtm_dump((fxtm_data_t*)buf);
 #endif
-	    assert(fxtm_check((fxtm_data_t*)buf)==0);
+	    //assert(fxtm_check((fxtm_data_t*)buf)==0);
 	}
     } while (!finish && !asktoterm);
-
-    l->flush(); 
 }
 
 typedef struct {
@@ -245,7 +243,6 @@ int main(int argc, char** argv)
     t.l = new logger(logfilename);
     t.dumptask = std::thread(thread_dumper,t.l);
 
-    sleep(2);
     t.acqtask = std::thread(thread_acquisition,t.fd,t.l);
 
     t.acqtask.join();
