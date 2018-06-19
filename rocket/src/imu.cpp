@@ -15,9 +15,9 @@
  *
  * =====================================================================================
  */
-#if 1
 #define TAG "IMU"
 
+#include "common.h"
 #include <fusexconfig.h>
 #include <fusexutil.h>
 
@@ -39,6 +39,7 @@ float   pressure;
 #define MPU_AM_I_RET 0x73
 #endif
 
+#define IMU_DEBUG 1 
 #define AK_AM_I_RET 0x48
 
 static int initBMP()
@@ -95,15 +96,17 @@ void setupIMU()
     Wire.begin();
     if(!initMPU()){
 	TTRACE("initialization failed! fatal !!!\r\n");
-	fatal();
+	setupSetFailed();
+	return;
     }
     if(!initAK()){
 	TTRACE("initialization failed! fatal !!!\r\n");
-	fatal();
+	setupSetFailed();
+	return;
     }
     if(!initBMP()){
-	TTRACE("initialization failed! fatal !!!\r\n");
-	fatal();
+	setupSetFailed();
+	return;
     }
 
     delay(2000);
@@ -115,8 +118,6 @@ int intrIMU()
     return (myIMU.readByte(MPU9250_ADDRESS, INT_STATUS) & 0x01);
 }
 
-extern int dump;
-#define IMU_DEBUG 1 
 
 void loopIMU()
 {
@@ -157,7 +158,6 @@ void loopIMU()
     pressure = bmp.readPressure();
 
 #if IMU_DEBUG
-    if (dump) {
 	PRINT("Temperature: "); PRINTLN(temperature,2);
 	PRINT("Pressure: "); PRINTLN(pressure,2);
 	PRINT("Altitude: "); PRINTLN(bmp.readAltitude(1024.3));
@@ -182,7 +182,6 @@ void loopIMU()
 	PRINT(" mG ");
 	PRINT("Z-mag field: "); PRINT(myIMU.mz/1000);
 	PRINTLN(" mG");
-    }
 #endif
 
     float a[] = {myIMU.ax, myIMU.ay, myIMU.az};
@@ -198,4 +197,3 @@ void loopIMU()
     myIMU.updateTime();
     myIMU.count = millis();
 }
-#endif 

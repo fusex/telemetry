@@ -18,7 +18,6 @@
 
 #define TAG "SDCARD"
 
-#if 1
 #include <fusexconfig.h>
 #include <fusexutil.h>
 
@@ -26,6 +25,7 @@
 #include <SPI.h>
 #include "SdFat.h"
 
+#include "common.h"
 #include "trame.h"
 #include "pinout.h"
 #include "sdcard.h"
@@ -46,12 +46,12 @@ uint32_t   maxLatency = 0;
 uint16_t   fileid = 0;
 uint16_t   filepart = 0;
 
-void genfileid()
+static void genfileid()
 {
     fileid = _myrandom(0,0xffff);
 }
 
-void createBinFile()
+static void createBinFile()
 {
     // max number of blocks to erase per erase call
     const uint32_t ERASE_SIZE = 262144L;
@@ -101,19 +101,18 @@ void createBinFile()
     bn = 0;  
 }
 
-void setupLowSD()
+static int setupLowSD()
 {
     pinMode(SD_CS_PIN, OUTPUT);
     digitalWrite(SD_CS_PIN, HIGH);
 
     if (!SD.begin(SD_CS_PIN)) {
-	TTRACE("SDCard: initialization failed!\r\n");
-	//while(1);
+	return -1;
     }
-    TTRACE("SDCard: initialization done.\r\n");
+    return 0;
 }
 
-void recordBinFile()
+static void recordBinFile()
 {
     fxtm_block_t* pBlock = fxtm_getblock();
     WTTRACE("b--------------------------------------\r\n");
@@ -151,20 +150,17 @@ void recordBinFile()
 void setupSdcard()
 {
     genfileid();
-    setupLowSD();
+
+    if(setupLowSD()) {
+	setupSetFailed();
+	TTRACE("initialization failed!\r\n");
+	return;
+    }
     createBinFile(); 
+    TTRACE("initialization done.\r\n");
 }
 
 void loopSdcard()
 {
     recordBinFile();
 }
-#else
-void setupSdcard()
-{
-}
-
-void loopSdcard()
-{
-}
-#endif

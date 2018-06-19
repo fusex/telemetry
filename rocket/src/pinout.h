@@ -29,6 +29,7 @@
 #define SD_CS_PIN 4
 #endif
 
+#define LEDFATAL 13
 
 #endif //_PINOUT_H
 

@@ -1,5 +1,3 @@
-#define BOARD_MEGA 1
-
 #include "common.h"
 #include "imu.h"
 #include "radio.h"
@@ -11,18 +9,15 @@
 #include "trame.h"
 #include "sdcard.h"
 
-int dump = 0;
-int once = 1;
+static bool once = true;
 
-void setup()
-{
-    setupCommon();
-    setupRadio();
-    setupIMU();
-    setupGps();
-    setupPropellant();
-    setupSdcard();
-}
+#ifdef PROFILING
+static uint32_t max = 0;
+static uint32_t avg = 0;
+static uint32_t count = 0;
+#define LOOP 200000UL
+//#define LOOP 1000
+#endif
 
 static void acquire()
 {
@@ -32,7 +27,9 @@ static void acquire()
     loopIMU();
     loopGps();
 
-    if(dump) fxtm_dump(NULL); 
+#ifdef DEBUG
+    fxtm_dump(NULL); 
+#endif
 }
 
 static void log()
@@ -42,56 +39,44 @@ static void log()
 
 static void send()
 {
-    if(once){
-	TTRACE("Start transfer packet size:%d\r\n",fxtm_getdatasize());
-        once = 0;
-    }
     loopRadio();
 }
 
-uint32_t max = 0;
-uint32_t avg = 0;
-uint16_t count = 0;
-uint32_t timer = millis();
+void setup()
+{
+    setupCommon();
+    setupRadio();
+    setupIMU();
+    setupGps();
+    setupPropellant();
+    setupSdcard();
+    setupFinishCommon();
+}
+
 
 void loop()
 {
-#if 0
-    uint32_t time = micros();
-    uint32_t d1 = 0;
-#endif
-
-#if 0
-    if (timer > millis())  timer = millis();
-    if (millis() - timer > 2000) {
-	timer = millis(); // reset the timer
-	dump = 1;
+    if(once){
+	TTRACE("#########################\n\r");
+	TTRACE("Start transfer packet size:%d\r\n",fxtm_getdatasize());
+        once = false;
     }
+
+#ifdef PROFILING
+    uint32_t time = micros();
 #endif
 
     acquire();
     log();
     send();
-    //fxtm_dump(NULL); 
 
-    return;
-
-#if 0
-    d1 = micros() - time;
+#ifdef PROFILING 
+    uint32_t d1 = micros() - time;
     if(d1>max) max = d1; 
     avg += d1;
 
-#define LOOP 200000UL
-//#define LOOP 1000
-delay(1000);
-
     if(count++>LOOP) {
-	TTRACE("%ld loop in:%lu (avg:%lu, max:%lu)\r\n", LOOP, d1 ,avg/(LOOP+1), max);
-	while(1);
+	TTRACE("%ld loop in:%lu (avg:%lu, max:%lu)\r\n", count, d1 ,avg/(count+1), max);
     }
-#if 0
-    TTRACE("id:%u loop in :%ld\r\n", fxtmblock.data.id, micros()-time);
-    delay(100);
-#endif
 #endif
 }

@@ -45,14 +45,12 @@ void setupGps()
   delay(1000);
   // Ask for firmware version
   GPSdevice.println(PMTK_Q_RELEASE);
-
-  TTRACE("init Done\r\n");
+  //TODO : check something before mark init done
+  TTRACE("initialization done.\r\n");
 }
 
 #define GPS_DEBUG 1
 #define GPS_DEBUG2 0
-
-extern int dump;
 
 void loopGps()
 {
@@ -68,7 +66,6 @@ void loopGps()
     }
 
 #if GPS_DEBUG
-    if(dump) {
 	TRACE("\nTime: %d:%d:%d\r\n", GPS.hour, GPS.minute, GPS.seconds, GPS.milliseconds);
 	TRACE("Date: %d/%d/20%d\r\n", GPS.day, GPS.month, GPS.year);
 	TRACE("Satellites: %d Fix: %d Quality: %d\r\n", GPS.satellites, (int)GPS.fix, (int)GPS.fixquality);
@@ -86,6 +83,5 @@ void loopGps()
 	    PRINT("Altitude: "); PRINTLN(GPS.altitude);
 	    PRINT("Satellites: "); PRINTLN((int)GPS.satellites);
 	}
-    }
 #endif
 }

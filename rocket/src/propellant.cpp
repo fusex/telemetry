@@ -29,7 +29,7 @@ const int thresholdvalue=490; //The threshold
 
 void setupPropellant()
 {
-   TTRACE("Engine sound detector init\n\r");
+   TTRACE("initialization done\n\r");
 }
 
 void loopPropellant()
