@@ -8,6 +8,7 @@
 
 RH_RF95 rf95;
 static bool once = true;
+#define DEBUG
 
 static unsigned int receivepacket(unsigned int packetnbr)
 {
@@ -32,6 +33,13 @@ static unsigned int receivepacket(unsigned int packetnbr)
 void setup() 
 {
     DEBUGdevice.begin(DEBUGSERIALBAUD);
+    TTRACE("--------------------------------------\n\r");
+    TTRACE("--------------------------------------\n\r");
+    TTRACE("--------------------------------------\n\r");
+    TTRACE("Fusex base Receiver Start\n\r");
+    TTRACE("--------------------------------------\n\r");
+    TTRACE("--------------------------------------\n\r");
+
     PCdevice.begin(PCSERIALBAUD);
 
     while (!PCdevice) ; // Wait for serial port to be available
@@ -42,7 +50,7 @@ void setup()
     } else
 	TTRACE("Radio init Done with packet size:%d\n\r",fxtm_getdatasize());
 
-    fx_setTxPower();
+    //fx_setTxPower();
     fx_setFrequency();
     fx_setModemConfig();
     fx_setSpreadingFactor();
@@ -66,7 +74,7 @@ void loop()
             uint32_t d1 = micros() - now;
 #endif
 #ifdef DEBUG 
-	    if(fxtm_check()) {
+	    if(fxtm_check(NULL)) {
 		TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n",
 			rf95.lastSNR(),
 			rf95.lastRssi(),
@@ -75,7 +83,7 @@ void loop()
 	    }
 	    fxtm_dump(NULL);
 #endif
-	    int bytesSent = PCdevice.write((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
+	    int bytesSent = PCdevice.write((char*)fxtm_getdata(), fxtm_getdatasize());
 #ifdef DEBUG
 	    TTRACE("PLOP sent:%d, expected:%d\r\n",bytesSent, fxtm_getdatasize()); 
 #endif

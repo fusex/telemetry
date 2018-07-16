@@ -6,7 +6,7 @@ TERMINAL     := picocom
 serial-port ?= /dev/ttyACM0
 board-model ?= uno
 
-ARDUINO_CMD := $(ARDUINO_PATH)/arduino --port $(serial-port) --board arduino:avr:$(board-model) --pref build.path=$(BUILD_PATH) --pref sketchbook.path=.  
+ARDUINO_CMD := $(ARDUINO_PATH)/arduino -v --port $(serial-port) --board arduino:avr:$(board-model) --pref build.path=$(BUILD_PATH) --pref sketchbook.path=.  
 
 .DEFAULT_GOAL := compile
 

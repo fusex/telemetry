@@ -23,6 +23,8 @@ static void acquire()
 {
     fxtm_reset();
 
+    return;
+
     loopPropellant();
     loopIMU();
     loopGps();
@@ -46,10 +48,12 @@ void setup()
 {
     setupCommon();
     setupRadio();
+#if 0
     setupIMU();
     setupGps();
     setupPropellant();
     setupSdcard();
+#endif
     setupFinishCommon();
 }
 
@@ -67,7 +71,9 @@ void loop()
 #endif
 
     acquire();
+#if 0
     log();
+#endif
     send();
 
 #ifdef PROFILING 

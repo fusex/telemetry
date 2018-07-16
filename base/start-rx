@@ -1,0 +1,11 @@
+#!/bin/bash
+
+trap 'kill $(jobs -p)' EXIT
+packetsize=48
+format=$(date +%d-%m-%Y-%Hh%M.dump)
+logfile=rx-$format
+ttyfile=${1:-/dev/ttyACM2}
+
+stdbuf -oL -eL cat $ttyfile > $logfile &
+sleep 1
+tail -f $logfile | xxd -c packetsize
