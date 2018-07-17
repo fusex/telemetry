@@ -46,10 +46,10 @@ void setupGps()
   // Ask for firmware version
   GPSdevice.println(PMTK_Q_RELEASE);
   //TODO : check something before mark init done
-  TTRACE("initialization done.\r\n");
+  TTRACE("init Done.\r\n");
 }
 
-#define GPS_DEBUG 1
+#define GPS_DEBUG 0
 #define GPS_DEBUG2 0
 
 void loopGps()

@@ -39,7 +39,9 @@ float   pressure;
 #define MPU_AM_I_RET 0x73
 #endif
 
+#if 0
 #define IMU_DEBUG 1 
+#endif
 #define AK_AM_I_RET 0x48
 
 static int initBMP()
@@ -110,7 +112,7 @@ void setupIMU()
     }
 
     delay(2000);
-    TTRACE("initialization Done.\r\n");
+    TTRACE("init Done.\r\n");
 }
 
 int intrIMU()

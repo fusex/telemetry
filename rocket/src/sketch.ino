@@ -22,12 +22,10 @@ static uint32_t count = 0;
 static void acquire()
 {
     fxtm_reset();
-
-    return;
-
-    loopPropellant();
     loopIMU();
     loopGps();
+
+    loopPropellant();
 
 #ifdef DEBUG
     fxtm_dump(NULL); 
@@ -48,10 +46,10 @@ void setup()
 {
     setupCommon();
     setupRadio();
-#if 0
     setupIMU();
     setupGps();
     setupPropellant();
+#if 0
     setupSdcard();
 #endif
     setupFinishCommon();
