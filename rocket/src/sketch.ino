@@ -70,9 +70,7 @@ void loop()
 #endif
 
     acquire();
-#if 0
     log();
-#endif
     send();
 
 #ifdef PROFILING 

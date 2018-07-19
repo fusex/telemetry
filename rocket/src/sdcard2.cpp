@@ -51,6 +51,8 @@ uint16_t   filepart = 0;
 #define BOOTID_DEFAULT_MASK 0xffff0000
 #define BOOTID_DEFAULT      0xfc00
 
+#define DEBUG
+
 static void createBinFile()
 {
     // max number of blocks to erase per erase call
@@ -58,6 +60,7 @@ static void createBinFile()
     uint32_t bgnBlock, endBlock;
     char filename[128];
     memset(filename,0,128);
+    TTRACE("End createbinfile\r\n");
 
     if(isGPSFixed){
         char date[32]; 
@@ -79,7 +82,7 @@ static void createBinFile()
 	    error("filename already exist");
     }
     // Create new file.
-    WTTRACE("Creating new file\r\n");
+    TTRACE("Creating new file\r\n");
     binFile.close();
     if (!binFile.createContiguous(filename, 512 * FILE_BLOCK_COUNT)) {
 	error("createContiguous failed");
@@ -90,7 +93,7 @@ static void createBinFile()
     }
 
     // Flash erase all data in the file.
-    WTTRACE("Erasing all data\r\n");
+    TTRACE("Erasing all data\r\n");
     uint32_t bgnErase = bgnBlock;
     uint32_t endErase;
     while (bgnErase < endBlock) {
@@ -108,23 +111,27 @@ static void createBinFile()
 	error("writeStart failed");
     }
     bn = 0;  
+    TTRACE("End createbinfile\r\n");
 }
 
 static int setupLowSD()
 {
+    TTRACE("Start setuplowsd\r\n");
     pinMode(SD_CS_PIN, OUTPUT);
     digitalWrite(SD_CS_PIN, HIGH);
 
     if (!SD.begin(SD_CS_PIN)) {
+	TTRACE("end -1 setuplowsd\r\n");
 	return -1;
     }
+    TTRACE("end 0 setuplowsd\r\n");
     return 0;
 }
 
 static void recordBinFile()
 {
     fxtm_block_t* pBlock = fxtm_getblock();
-    WTTRACE("b--------------------------------------\r\n");
+    TTRACE("b--------------------------------------\r\n");
     SD.card()->spiStart();
     if (!SD.card()->isBusy()) {
 	// Write block to SD.
@@ -136,7 +143,7 @@ static void recordBinFile()
 	if (usec > maxLatency) {
 	    maxLatency = usec;
 	}
-	WTTRACE("Block writed in usec: %ld\r\n", usec);
+	TTRACE("Block writed in usec: %ld\r\n", usec);
 	bn++;
 	if (bn == FILE_BLOCK_COUNT) {
 	    // File full so stop
@@ -151,7 +158,7 @@ static void recordBinFile()
 	WTTRACE("SDCard busy\r\n");
 
     SD.card()->spiStop();
-    WTTRACE("e--------------------------------------\r\n");
+    TTRACE("e--------------------------------------\r\n");
 }
 
 //TODO rotate filelog
@@ -161,10 +168,12 @@ void setupSdcard()
     if(setupLowSD()) {
 	setupSetSemiFatal();
 	TTRACE("init Failed!\r\n");
+	SD.card()->spiStop();
 	return;
     }
     createBinFile(); 
     TTRACE("init Done.\r\n");
+    SD.card()->spiStop();
 }
 
 void loopSdcard()
