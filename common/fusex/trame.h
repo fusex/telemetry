@@ -25,7 +25,7 @@
 #define SBITFILED 1
 
 typedef struct {
-    char     magic[6] = "FUSEX0";
+    char     magic[6] = {'F','U','S','E','X','0'};
     uint32_t timestamp;
     int32_t  gpslt; 
     int32_t  gpslg;

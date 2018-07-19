@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 
-#define TAG "PROPEL"
+#define TAG "SND"
 
 #include <Arduino.h>
 #include <fusexutil.h>
@@ -27,11 +27,13 @@
 
 const int thresholdvalue=490; //The threshold
 
+#if 0
 #define SOUNDSENSOR_DEBUG
+#endif
 
 void setupPropellant()
 {
-   TTRACE("initialization done\n\r");
+   TTRACE("init Done\n\r");
 }
 
 void loopPropellant()

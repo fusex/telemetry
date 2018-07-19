@@ -97,12 +97,12 @@ void setupIMU()
 {
     Wire.begin();
     if(!initMPU()){
-	TTRACE("initialization failed! fatal !!!\r\n");
-	setupSetFailed();
+	TTRACE("init Failed! fatal !!!\r\n");
+	setupSetSemiFatal();
 	return;
     }
     if(!initAK()){
-	TTRACE("initialization failed! fatal !!!\r\n");
+	TTRACE("init Failed! fatal !!!\r\n");
 	setupSetFailed();
 	return;
     }

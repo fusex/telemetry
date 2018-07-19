@@ -4,6 +4,7 @@
 #include "gps.h"
 #include "sdcard.h"
 #include "propellant.h"
+#include "rtc.h"
 
 #include <fusexutil.h>
 #include "trame.h"
@@ -26,6 +27,7 @@ static void acquire()
     loopGps();
 
     loopPropellant();
+    loopRTC();
 
 #ifdef DEBUG
     fxtm_dump(NULL); 
@@ -45,13 +47,12 @@ static void send()
 void setup()
 {
     setupCommon();
+    setupRTC();
     setupRadio();
     setupIMU();
     setupGps();
     setupPropellant();
-#if 0
     setupSdcard();
-#endif
     setupFinishCommon();
 }
 

@@ -33,7 +33,7 @@ void setupRadio()
 {
     if (!rf95.init()) {
 	TTRACE("init failed ! Fatal !!!\n\r");
-	setupSetFailed();
+	setupSetFatal();
 	return;
     } else {
 	TTRACE("init Done\n\r");

@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 
-#define TAG "SDCARD"
+#define TAG "SD"
 
 #include <fusexconfig.h>
 #include <fusexutil.h>
@@ -29,6 +29,8 @@
 #include "trame.h"
 #include "pinout.h"
 #include "sdcard.h"
+#include "rtc.h"
+#include "gps.h"
 
 #define LOGFILENAME "fusexlog"
 #define error(msg) {SD.errorPrint(&Serial, F(msg));}
@@ -46,10 +48,8 @@ uint32_t   maxLatency = 0;
 uint16_t   fileid = 0;
 uint16_t   filepart = 0;
 
-static void genfileid()
-{
-    fileid = _myrandom(0,0xffff);
-}
+#define BOOTID_DEFAULT_MASK 0xffff0000
+#define BOOTID_DEFAULT      0xfc00
 
 static void createBinFile()
 {
@@ -59,7 +59,16 @@ static void createBinFile()
     char filename[128];
     memset(filename,0,128);
 
-    sprintf(filename,"%s-%x-%d.txt",LOGFILENAME, fileid, filepart++,".txt");
+    if(isGPSFixed){
+        char date[32]; 
+	getGPSDateTime(date);
+        sprintf(filename,"%s-%s-%d.txt",LOGFILENAME, date, filepart++,".txt");
+    } else {
+	fileid = (uint16_t)(getBootID() & 0x0000ffff);
+	if((fileid & BOOTID_DEFAULT) == BOOTID_DEFAULT)
+	    fileid = _myrandom(0,0xffff);
+	sprintf(filename,"%s-%x-%d.txt",LOGFILENAME, fileid, filepart++,".txt");
+    }
 
     // Delete old tmp file.
     if (SD.exists(filename)) {
@@ -149,15 +158,13 @@ static void recordBinFile()
 
 void setupSdcard()
 {
-    genfileid();
-
     if(setupLowSD()) {
-	setupSetFailed();
-	TTRACE("initialization failed!\r\n");
+	setupSetSemiFatal();
+	TTRACE("init Failed!\r\n");
 	return;
     }
     createBinFile(); 
-    TTRACE("initialization done.\r\n");
+    TTRACE("init Done.\r\n");
 }
 
 void loopSdcard()

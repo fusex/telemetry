@@ -33,7 +33,11 @@
 //SF 12 does not works properly for either 125khz and 500khz
 
 #define FX_TXPOWER      20
+#if 0
 #define FX_FREQUENCY    869.4
+#else
+#define FX_FREQUENCY    434.0
+#endif
 #define FX_MODEMCONFIG  RH_RF95::Bw500Cr45Sf128
 
 RH_RF95::ModemConfig modem_config = {
