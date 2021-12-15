@@ -59,58 +59,66 @@ static void createBinFile()
     const uint32_t ERASE_SIZE = 262144L;
     uint32_t bgnBlock, endBlock;
     char filename[128];
-    memset(filename,0,128);
+    memset(filename, 0, 128);
     TTRACE("End createbinfile\r\n");
 
-    if(isGPSFixed){
-        char date[32]; 
-	getGPSDateTime(date);
-        sprintf(filename,"%s-%s-%d.txt",LOGFILENAME, date, filepart++,".txt");
+    if (isGPSFixed)
+    {
+        char date[32];
+        getGPSDateTime(date);
+        sprintf(filename, "%s-%s-%d.txt", LOGFILENAME, date, filepart++, ".txt");
     } else {
-	fileid = (uint16_t)(getBootID() & 0x0000ffff);
-	if((fileid & BOOTID_DEFAULT) == BOOTID_DEFAULT)
-	    fileid = _myrandom(0,0xffff);
-	sprintf(filename,"%s-%x-%d.txt",LOGFILENAME, fileid, filepart++,".txt");
+        fileid = (uint16_t)(RTC_GetBootID() & 0x0000ffff);
+        if ((fileid & BOOTID_DEFAULT) == BOOTID_DEFAULT)
+            fileid = _myrandom(0, 0xffff);
+        sprintf(filename, "%s-%x-%d.txt", LOGFILENAME, fileid, filepart++, ".txt");
     }
 
     // Delete old tmp file.
-    if (SD.exists(filename)) {
+    if (SD.exists(filename))
+    {
 #if 1
-	TTRACE("Deleting tmp file:%s\r\n",filename);
-	if (!SD.remove(filename))
+        TTRACE("Deleting tmp file:%s\r\n", filename);
+        if (!SD.remove(filename))
 #endif
-	    error("filename already exist");
+            error("filename already exist");
     }
     // Create new file.
     TTRACE("Creating new file\r\n");
     binFile.close();
-    if (!binFile.createContiguous(filename, 512 * FILE_BLOCK_COUNT)) {
-	error("createContiguous failed");
+    if (!binFile.createContiguous(filename, 512 * FILE_BLOCK_COUNT))
+    {
+        error("createContiguous failed");
     }
     // Get the address of the file on the SD.
-    if (!binFile.contiguousRange(&bgnBlock, &endBlock)) {
-	error("contiguousRange failed");
+    if (!binFile.contiguousRange(&bgnBlock, &endBlock))
+    {
+        error("contiguousRange failed");
     }
 
     // Flash erase all data in the file.
     TTRACE("Erasing all data\r\n");
     uint32_t bgnErase = bgnBlock;
     uint32_t endErase;
-    while (bgnErase < endBlock) {
-	endErase = bgnErase + ERASE_SIZE;
-	if (endErase > endBlock) {
-	    endErase = endBlock;
-	}
-	if (!SD.card()->erase(bgnErase, endErase)) {
-	    error("erase failed");
-	}
-	bgnErase = endErase + 1;
+    while (bgnErase < endBlock)
+    {
+        endErase = bgnErase + ERASE_SIZE;
+        if (endErase > endBlock)
+        {
+            endErase = endBlock;
+        }
+        if (!SD.card()->erase(bgnErase, endErase))
+        {
+            error("erase failed");
+        }
+        bgnErase = endErase + 1;
     }
 
-    if (!SD.card()->writeStart(binFile.firstBlock())) {
-	error("writeStart failed");
+    if (!SD.card()->writeStart(binFile.firstBlock()))
+    {
+        error("writeStart failed");
     }
-    bn = 0;  
+    bn = 0;
     TTRACE("End createbinfile\r\n");
 }
 

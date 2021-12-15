@@ -54,12 +54,12 @@ void setupInit()
 
 void Init_Finish()
 {
-    uint16_t rid = getResetID();
+    uint16_t rid = RTC_GetResetID();
 
     if(rid>MAXRESET)
-	    setResetResetID();
+	    RTC_ResetResetID();
 
-    rid = getResetID();
+    rid = RTC_GetResetID();
 
     if(!initfailed) {
 	    digitalWrite(LEDFATAL, LOW);
@@ -76,7 +76,7 @@ void Init_Finish()
 	    TTRACE("rid :%d and semifatalcount:%d!\r\n",rid,semifatalcount);
 
 	    if(semifatalcount==MAXFATAL && rid<MAXRESET) {
-	        setResetID();
+	        RTC_SetResetID();
 	        TTRACE("FATAL init detected! reset !\r\n");
 	        wdt_enable(WDTO_15MS); //turn on the WatchDog and don't stroke it.
 	        while(1);

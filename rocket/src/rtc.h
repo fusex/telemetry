@@ -20,9 +20,9 @@
 
 void setupRTC();
 void loopRTC();
-void setResetResetID();
-void setResetID();
-uint32_t getBootID();
-uint16_t getResetID();
+void RTC_ResetResetID();
+void RTC_SetResetID();
+uint32_t RTC_GetBootID();
+uint16_t RTC_GetResetID();
 
 #endif //define _RTC_H

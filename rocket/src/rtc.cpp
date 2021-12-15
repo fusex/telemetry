@@ -5,10 +5,6 @@
 #include "RTClib.h"
 #include "init.h"
 
-RTC_DS1307 rtc;
-
-char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-
 #if 0
 #define RTC_DEBUG
 #endif
@@ -19,33 +15,35 @@ char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 static uint32_t bootID  = 0;
 static uint16_t resetID = 0;
 
-uint32_t getBootID()
+RTC_DS1307 rtc;
+
+uint32_t RTC_GetBootID()
 {
   return bootID; 
 }
 
-uint16_t getResetID()
+uint16_t RTC_GetResetID()
 {
   return resetID; 
 }
 
-void setResetResetID()
+void RTC_ResetResetID()
 {
    resetID = 0;
    rtc.writenvram(EEPROM_RESET_OFFSET, (uint8_t*)&resetID, sizeof(resetID));
 }
 
-void setResetID()
+void RTC_SetResetID()
 {
     resetID++; 
     rtc.writenvram(EEPROM_RESET_OFFSET, (uint8_t*)&resetID, sizeof(resetID));
 }
 
-static void debugRTC()
+static void RTC_debugDUMP()
 {
-#if RTC_DEBUG
     DateTime now = rtc.now();
-    
+    char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
     PRINT(now.year(), DEC);
     PRINT('/');
     PRINT(now.month(), DEC);
@@ -96,7 +94,6 @@ static void debugRTC()
     PRINTLN(readData[5], HEX);
     PRINTLN(readData[6], HEX);
     PRINTLN(readData[7], HEX);
-#endif
 }
 
 void setupRTC()
@@ -115,7 +112,11 @@ void setupRTC()
       // January 21, 2014 at 3am you would call:
       // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
   }
-  debugRTC();
+
+#if RTC_DEBUG
+  RTC_debugDUMP();
+#endif
+
   uint8_t* ptr;
 
   ptr = (uint8_t*)&resetID;
@@ -131,14 +132,21 @@ void setupRTC()
   rtc.writenvram(EEPROM_BOOT_OFFSET, ptr, sizeof(bootID));
 
   TTRACE("init Done.\r\n");
-  debugRTC();
+#if RTC_DEBUG
+  RTC_debugDUMP();
+#endif
+
 }
 
 static uint32_t rtcloop = 0;
 
 void loopRTC()
 {
-    debugRTC();
+
+#if RTC_DEBUG
+  RTC_debugDUMP();
+#endif
+
 #if 0
     if(!(rtcloop&0xff)) {
 	uint32_t time = micros();
