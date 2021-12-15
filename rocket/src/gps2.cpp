@@ -21,7 +21,7 @@
 #include <fusexutil.h>
 #include <Adafruit_GPS.h>
 #include "trame.h"
-#include "common.h"
+#include "init.h"
 
 #if 0
 #define GPS_DEBUG 1
@@ -120,7 +120,7 @@ void setupGps()
   //
   if(!GPS.fix){
       TTRACE("init Failed ! retry later.\r\n");
-      setupSetFailed();
+      Init_SetFailed();
   } else
       TTRACE("init Done: retry:%d\r\n",retry);
 }

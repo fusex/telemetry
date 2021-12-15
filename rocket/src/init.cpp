@@ -100,5 +100,5 @@ void Init_SetFatal()
 {
     initfailed = true;
     semifatalcount = MAXFATAL;
-    STP_Finish();
+    Init_Finish();
 }

@@ -25,7 +25,7 @@
 #include <SPI.h>
 #include "SdFat.h"
 
-#include "common.h"
+#include "init.h"
 #include "trame.h"
 #include "pinout.h"
 #include "sdcard.h"
@@ -166,7 +166,7 @@ static void recordBinFile()
 void setupSdcard()
 {
     if(setupLowSD()) {
-	setupSetSemiFatal();
+	Init_SetSemiFatal();
 	TTRACE("init Failed!\r\n");
 	SD.card()->spiStop();
 	return;

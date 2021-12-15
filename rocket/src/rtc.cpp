@@ -3,7 +3,7 @@
 #include <fusexutil.h>
 #include <Wire.h>
 #include "RTClib.h"
-#include "common.h"
+#include "init.h"
 
 RTC_DS1307 rtc;
 
@@ -104,7 +104,7 @@ void setupRTC()
   if (!rtc.begin()) {
       PRINTLN("Couldn't find RTC");
       TTRACE("init failed ! \n\r");
-      setupSetFailed();
+      Init_SetFailed();
       return;
   }
   if (!rtc.isrunning()) {

@@ -1,4 +1,4 @@
-#include "common.h"
+#include "init.h"
 #include "imu.h"
 #include "radio.h"
 #include "gps.h"
@@ -37,15 +37,15 @@ static void send()
 
 void setup()
 {
-    setupCommon();
+    setupInit();
     setupRTC();
     setupRadio();
     setupIMU();
     setupGps();
     setupPropellant();
     setupSdcard();
-    setupFinishCommon();
 
+    Init_Finish();
     TTRACE("#########################\n\r");
 	TTRACE("Start transfer packet size:%d\r\n",fxtm_getdatasize());
 }

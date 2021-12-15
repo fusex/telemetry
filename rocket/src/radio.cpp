@@ -25,7 +25,7 @@
 #include <RH_RF95.h>
 
 #include "trame.h"
-#include "common.h"
+#include "init.h"
 
 RH_RF95 rf95;
 
@@ -33,7 +33,7 @@ void setupRadio()
 {
     if (!rf95.init()) {
 	TTRACE("init failed ! Fatal !!!\n\r");
-	setupSetFatal();
+	Init_SetFatal();
 	return;
     } else {
 	TTRACE("init Done\n\r");

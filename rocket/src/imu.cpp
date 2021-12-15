@@ -17,7 +17,7 @@
  */
 #define TAG "IMU"
 
-#include "common.h"
+#include "init.h"
 #include <fusexconfig.h>
 #include <fusexutil.h>
 
@@ -98,16 +98,16 @@ void setupIMU()
     Wire.begin();
     if(!initMPU()){
 	TTRACE("init Failed! fatal !!!\r\n");
-	setupSetSemiFatal();
+	Init_SetSemiFatal();
 	return;
     }
     if(!initAK()){
 	TTRACE("init Failed! fatal !!!\r\n");
-	setupSetFailed();
+	Init_SetFailed();
 	return;
     }
     if(!initBMP()){
-	setupSetFailed();
+	Init_SetFailed();
 	return;
     }
 
