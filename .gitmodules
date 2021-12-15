@@ -17,3 +17,6 @@
 [submodule "common/SPIMemory"]
 	path = common/SPIMemory
 	url = https://github.com/Marzogh/SPIMemory/
+[submodule "common/RTClib"]
+	path = common/RTClib
+	url = https://github.com/adafruit/RTClib
