@@ -26,3 +26,6 @@
 [submodule "common/Adafruit_BusIO"]
 	path = common/Adafruit_BusIO
 	url = https://github.com/adafruit/Adafruit_BusIO/
+[submodule "common/bgc-library"]
+	path = common/bgc-library
+	url = git@code.federation-openspacemakers.com:p/P0048/bgc-library.git
