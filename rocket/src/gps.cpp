@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  gps.cpp
+ *       Filename:  gps2.cpp
  *
  *    Description:  
  *
  *        Version:  1.0
- *        Created:  20/05/2017 17:23:34
+ *        Created:  02/07/2017 16:49:42
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,91 +16,116 @@
  * =====================================================================================
  */
 
-
-#if 0
 #define TAG "GPS"
 
-#include <NMEAGPS.h>
 #include <fusexutil.h>
-
+#include <Adafruit_GPS.h>
 #include "trame.h"
+#include "init.h"
 
-NMEAGPS  gps; // This parses the GPS characters
-gps_fix  fix; // This holds on to the latest values
-
-uint8_t ms = 0;
-
-SIGNAL(TIMER0_COMPA_vect)
-{
 #if 0
-    if(ms++<10) return;
-    ms = 0;
+#define GPS_DEBUG 1
 #endif
-    while (GPSdevice.available()) {
-	char inChar = (char)GPSdevice.read();
-	gps.handle(inChar);
-    }
+
+#if 0
+#define GPS_DEBUG2 1
+#endif
+
+#define RETRYMAX 22000
+
+Adafruit_GPS GPS(&GPSdevice);
+
+SIGNAL(TIMER0_COMPA_vect) {
+    GPS.read();
 }
 
-void setupGps()
-{
-    GPSdevice.begin(9600);
-    while (!GPSdevice){
-	TTRACE("init failed ! Retrying !\n\r");
-	delay(2000);
-    }
-
-    TTRACE("init Done\r\n");
-
+static void useInterrupt() {
     OCR0A = 0xAF;
     TIMSK0 |= _BV(OCIE0A);
 }
 
-uint32_t time = 0;
+void getGPSDateTime(char* str)
+{
+    sprintf(str,"%d-%d-%d-%dh%dm%d", GPS.year, GPS.month, GPS.day, GPS.hour, GPS.minute, GPS.seconds);
+}
 
-#include <Streamers.h>
+bool isGPSFixed()
+{
+  return !!GPS.fix;
+}
+
+void debugGPS()
+{
+    TRACE("\nTime: %d:%d:%d\r\n", GPS.hour, GPS.minute, GPS.seconds, GPS.milliseconds);
+    TRACE("Date: %d/%d/20%d\r\n", GPS.day, GPS.month, GPS.year);
+    TRACE("Satellites: %d Fix: %d Quality: %d\r\n", GPS.satellites, (int)GPS.fix, (int)GPS.fixquality);
+    if (GPS.fix) {
+	PRINT("Location: ");
+	PRINT(GPS.latitude, 4); PRINT(GPS.lat);
+	PRINT(", ");
+	PRINT(GPS.longitude, 4); PRINTLN(GPS.lon);
+	PRINT("Location (in degrees, works with Google Maps): ");
+	PRINT(GPS.latitudeDegrees, 5);
+	PRINT(", "); 
+	PRINTLN(GPS.longitudeDegrees, 5);
+	TRACE("Speed (knots): %d.%d\r\n", (int)GPS.speed, (int)(GPS.speed*100)%100);
+	PRINT("Angle: "); PRINTLN(GPS.angle);
+	PRINT("Altitude: "); PRINTLN(GPS.altitude);
+	PRINT("Satellites: "); PRINTLN((int)GPS.satellites);
+    }
+}
+
+void receiveGPS()
+{
+    if (GPS.newNMEAreceived()) {
+#ifdef GPS_DEBUG2
+	PRINTLN(GPS.lastNMEA());
+#endif
+	if (!GPS.parse(GPS.lastNMEA()))
+	    return;
+    }
+    if (GPS.fix) {
+	fxtm_setgps(GPS.latitudeDegrees, GPS.longitudeDegrees);
+    }
+
+#ifdef GPS_DEBUG
+    debugGPS();
+#endif
+}
+
+void setupGps()
+{
+  GPS.begin(GPSSERIALBAUD);
+  
+  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
+  GPS.sendCommand(PGCMD_ANTENNA);
+  useInterrupt();
+
+  delay(1000);
+  // Ask for firmware version
+  GPSdevice.println(PMTK_Q_RELEASE);
+  //TODO : check something before mark init done
+
+  // WARNING !!! NO delay() should be called in the next loop from here !
+  int retry = 0;
+  while(retry++ < RETRYMAX) {
+      receiveGPS();
+      if(GPS.fix){
+	  debugGPS();
+	  break;
+      }
+      TTRACE("....... synchro failed! retry\r\n");
+  }
+  //
+  if(!GPS.fix){
+      TTRACE("init Failed ! retry later.\r\n");
+      Init_SetFailed();
+  } else
+      TTRACE("init Done: retry:%d\r\n",retry);
+}
 
 void loopGps()
 {
-#if 0
-    if (gps.overrun()) {
-	gps.overrun( false );
-	TRACE("DATA OVERRUN\r\n");
-    }
-#endif
-
-    if(!gps.available()) {
-	return;
-    }
-
-    fix = gps.read();
-
-#if 1
-    trace_all(DEBUGdevice, gps, gps.read());
-    TRACE("\r\n");
-
-    if (fix.valid.satellites){
-	TTRACE("Satellites: %d/%d)\r\n", fix.satellites, gps.sat_count);
-	for (uint8_t i=0; i < gps.sat_count; i++) {
-	    TRACE("\tid: %d\tsnr: %d\ttracked: %s\r\n",
-		  gps.satellites[i].id,
-                  gps.satellites[i].snr,
-		  gps.satellites[i].tracked?"Yes":"NO");
-	}
-    }
-#endif
-
-    if (fix.valid.location) {
-#if 1
-	#define TOSTR0(x) dtostrf(x,3,6,tmp0)
-	#define TOSTR1(x) dtostrf(x,3,6,tmp1)
-	#define TOSTR2(x) dtostrf(x,3,6,tmp2)
-	char tmp0[16];
-	char tmp1[16];
-	char tmp2[16];
-	TTRACE("Location: %s, %s alt:%s\r\n",TOSTR0(fix.latitude()), TOSTR1(fix.longitude()), TOSTR2(fix.valid.altitude));
-#endif
-	fxtm_setgps(fix.latitude(), fix.longitude());
-    }
+    receiveGPS();	
 }
-#endif
