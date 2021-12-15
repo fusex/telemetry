@@ -22,7 +22,7 @@
 #include <fusexutil.h>
 #include <fusexconfig.h>
 
-#include "pinout.h"
+#include "BGC_Pinout.h"
 #include "trame.h"
 
 const int thresholdvalue=490; //The threshold
@@ -38,7 +38,7 @@ void setupPropellant()
 
 void loopPropellant()
 {
-    int sensorValue = analogRead(SOUND_SENSOR); //use A0 to read the electrical signal
+    int sensorValue = analogRead(BGC_SOUND_SENSOR); //use A0 to read the electrical signal
     if(sensorValue>thresholdvalue)
 	TTRACE("Propellant detect:%d\r\n", sensorValue);
 #ifdef SOUNDSENSOR_DEBUG

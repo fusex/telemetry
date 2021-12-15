@@ -27,7 +27,7 @@
 
 #include "init.h"
 #include "trame.h"
-#include "pinout.h"
+#include "BGC_Pinout.h"
 #include "sdcard.h"
 #include "rtc.h"
 #include "gps.h"
@@ -125,10 +125,10 @@ static void createBinFile()
 static int setupLowSD()
 {
     TTRACE("Start setuplowsd\r\n");
-    pinMode(SD_CS_PIN, OUTPUT);
-    digitalWrite(SD_CS_PIN, HIGH);
+    pinMode(BGC_SD_CS, OUTPUT);
+    digitalWrite(BGC_SD_CS, HIGH);
 
-    if (!SD.begin(SD_CS_PIN)) {
+    if (!SD.begin(BGC_SD_CS)) {
 	TTRACE("end -1 setuplowsd\r\n");
 	return -1;
     }

@@ -25,7 +25,7 @@
 #include <Adafruit_BMP280.h>
 #include "Wire.h"
 
-#include "pinout.h"
+#include "BGC_Pinout.h"
 #include "trame.h"
 
 Adafruit_BMP280 bmp;

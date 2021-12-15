@@ -23,7 +23,7 @@
 #include <stdbool.h>
 
 #include "trame.h"
-#include "pinout.h"
+#include "BGC_Pinout.h"
 #include "rtc.h"
 
 #define MAXFATAL  4
@@ -42,8 +42,8 @@ void setupInit()
     MCUSR = 0; // clear out any flags of prior resets.
     randomSeed(analogRead(0));
     DEBUGdevice.begin(DEBUGSERIALBAUD);
-    pinMode(LEDFATAL, OUTPUT);
-    digitalWrite(LEDFATAL, HIGH);
+    pinMode(BGC_LED4_FERROR, OUTPUT);
+    digitalWrite(BGC_LED4_FERROR, HIGH);
 
 #ifndef CONFIG_PROD
     while (!DEBUGdevice) ; // Wait for DEBUG serial port to be available
@@ -62,14 +62,14 @@ void Init_Finish()
     rid = RTC_GetResetID();
 
     if(!initfailed) {
-	    digitalWrite(LEDFATAL, LOW);
+	    digitalWrite(BGC_LED4_FERROR, LOW);
 	    TTRACE("Rocket init Done\r\n");
      } else {
 	    TTRACE("Rocket init failed !\r\n");
 	    for(int i=0;i<100;i++) {
-	        digitalWrite(LEDFATAL, LOW);
+	        digitalWrite(BGC_LED4_FERROR, LOW);
 	        delay(100);
-	        digitalWrite(LEDFATAL, HIGH);
+	        digitalWrite(BGC_LED4_FERROR, HIGH);
 	        delay(100);
 	    }
 
