@@ -1,0 +1,18 @@
+ $ cu -lttyUSB0 -s115200 -f
+Connected.           
+......OK                 
+I2C device Scanning ... 0x40 .. 0x57 .. 0x58 .. 0x68 .. 0x69 .. 0x6f .. 0x76 .. OK
+Rocket SPI (Flash Memory) test ..Chip Diagnostics initiated.
+
+No Chip size defined by user. Checking library support.
+Chip identified. This chip is fully supported by the library.
+..
+SPIMemory Library version: < 2.5.0
+
+JEDEC ID: 0xEF4019
+Man ID: 0xEF
+Memory ID: 0x40
+Capacity: 33554432
+Max Pages: 131072
+Unique ID: 3417724843666432, 0x698C32E7133F2C00 OK
+All tests done successfully!
