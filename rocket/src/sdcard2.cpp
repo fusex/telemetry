@@ -62,10 +62,10 @@ static void createBinFile()
     memset(filename, 0, 128);
     TTRACE("End createbinfile\r\n");
 
-    if (isGPSFixed)
+    if (GPS_isFixed())
     {
         char date[32];
-        getGPSDateTime(date);
+        GPS_getDateTime(date);
         sprintf(filename, "%s-%s-%d.txt", LOGFILENAME, date, filepart++, ".txt");
     } else {
         fileid = (uint16_t)(RTC_GetBootID() & 0x0000ffff);

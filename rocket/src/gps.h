@@ -20,7 +20,7 @@
 
 void setupGps();
 void loopGps();
-void getGPSDateTime(char* str);
-bool  isGPSFixed();
+void GPS_getDateTime(char* str);
+bool GPS_isFixed();
 
 #endif //define _GPS_H
