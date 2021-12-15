@@ -1,22 +1,21 @@
 /*
  * =====================================================================================
  *
- *       Filename:  common.cpp
+ *       Filename:  init.cpp
  *
- *    Description:  
+ *    Description:  Board low level initialization
  *
  *        Version:  1.0
  *        Created:  20/05/2017 17:44:59
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  Zakaria ElQotbi (zskdan), zakaria@derbsellicon.com
- *        Company:  Derb.io 
+ *         Author:  Zakaria ElQotbi (zskdan), zakaria@elqotbi.com
  *
  * =====================================================================================
  */
 
-#define TAG "CMN"
+#define TAG "INI"
 
 #include <fusexutil.h>
 #include <Arduino.h>
@@ -31,14 +30,14 @@
 #define MAXRESET 10
 
 #if 1
-#define COMMON_DEBUG 
+#define STP_DEBUG 
 #endif
 
-bool initfailed = false;
-uint8_t semifatalcount = 0;
-bool skip = true;
+static bool initfailed = false;
+static uint8_t semifatalcount = 0;
+static bool skip = true;
 
-void setupCommon()
+void setupInit()
 {
     MCUSR = 0; // clear out any flags of prior resets.
     randomSeed(analogRead(0));
@@ -53,53 +52,53 @@ void setupCommon()
     TTRACE("Rocket init Start\r\n");
 }
 
-void setupFinishCommon()
+void Init_Finish()
 {
     uint16_t rid = getResetID();
+
     if(rid>MAXRESET)
-	setResetResetID();
+	    setResetResetID();
 
     rid = getResetID();
 
     if(!initfailed) {
-	digitalWrite(LEDFATAL, LOW);
-	TTRACE("Rocket init Done\r\n");
+	    digitalWrite(LEDFATAL, LOW);
+	    TTRACE("Rocket init Done\r\n");
      } else {
-	TTRACE("Rocket init failed !\r\n");
-	for(int i=0;i<100;i++) {
-	   digitalWrite(LEDFATAL, LOW);
-	   delay(100);
-	   digitalWrite(LEDFATAL, HIGH);
-	   delay(100);
-	}
-#ifdef COMMON_DEBUG
-	TTRACE("rid :%d and semifatalcount:%d!\r\n",rid,semifatalcount);
-#endif
+	    TTRACE("Rocket init failed !\r\n");
+	    for(int i=0;i<100;i++) {
+	        digitalWrite(LEDFATAL, LOW);
+	        delay(100);
+	        digitalWrite(LEDFATAL, HIGH);
+	        delay(100);
+	    }
 
-	if(semifatalcount==MAXFATAL && rid<MAXRESET) {
-	    setResetID();
-	    TTRACE("FATAL init detected! reset !\r\n");
-	    wdt_enable(WDTO_15MS); //turn on the WatchDog and don't stroke it.
-	    while(1);
-	}
-     }
-     TTRACE("#######################\r\n");
+	    TTRACE("rid :%d and semifatalcount:%d!\r\n",rid,semifatalcount);
+
+	    if(semifatalcount==MAXFATAL && rid<MAXRESET) {
+	        setResetID();
+	        TTRACE("FATAL init detected! reset !\r\n");
+	        wdt_enable(WDTO_15MS); //turn on the WatchDog and don't stroke it.
+	        while(1);
+	    }
+    }
+    TTRACE("#######################\r\n");
 }
 
-void setupSetFailed()
+void Init_SetFailed()
 {
     initfailed = true;
 }
 
-void setupSetSemiFatal()
+void Init_SetSemiFatal()
 {
     initfailed = true;
     semifatalcount++;
 }
 
-void setupSetFatal()
+void Init_SetFatal()
 {
     initfailed = true;
     semifatalcount = MAXFATAL;
-    setupFinishCommon();
+    STP_Finish();
 }
