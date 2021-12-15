@@ -20,3 +20,9 @@
 [submodule "common/RTClib"]
 	path = common/RTClib
 	url = https://github.com/adafruit/RTClib
+[submodule "common/Adafruit_Sensor"]
+	path = common/Adafruit_Sensor
+	url = https://github.com/adafruit/Adafruit_Sensor
+[submodule "common/Adafruit_BusIO"]
+	path = common/Adafruit_BusIO
+	url = https://github.com/adafruit/Adafruit_BusIO/
