@@ -15,8 +15,8 @@
 #define CONFIG_TEST
 #endif
 
-#if 0
-#define CONFIG_POFILING
+#if 1
+#define CONFIG_PROFILING
 #endif
 
 #if 0
