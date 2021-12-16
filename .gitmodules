@@ -29,3 +29,6 @@
 [submodule "common/bgc-library"]
 	path = common/bgc-library
 	url = git@code.federation-openspacemakers.com:p/P0048/bgc-library.git
+[submodule "common/RTCx"]
+	path = common/RTCx
+	url = https://github.com/stevemarple/RTCx
