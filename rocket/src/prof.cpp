@@ -1,3 +1,5 @@
+#define TAG "PROF"
+
 #include <Arduino.h>
 #include <stdint.h>
 #include "fusexconfig.h"
