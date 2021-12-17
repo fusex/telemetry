@@ -17,9 +17,6 @@
 [submodule "common/SPIMemory"]
 	path = common/SPIMemory
 	url = https://github.com/Marzogh/SPIMemory/
-[submodule "common/RTClib"]
-	path = common/RTClib
-	url = https://github.com/adafruit/RTClib
 [submodule "common/Adafruit_Sensor"]
 	path = common/Adafruit_Sensor
 	url = https://github.com/adafruit/Adafruit_Sensor
@@ -29,9 +26,6 @@
 [submodule "common/bgc-library"]
 	path = common/bgc-library
 	url = git@code.federation-openspacemakers.com:p/P0048/bgc-library.git
-[submodule "common/RTCx"]
-	path = common/RTCx
-	url = https://github.com/stevemarple/RTCx
 [submodule "common/MCP79412RTC"]
 	path = common/MCP79412RTC
 	url = https://github.com/JChristensen/MCP79412RTC
