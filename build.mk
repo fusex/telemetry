@@ -18,6 +18,8 @@ compile:
 	$(ARDUINO_CMD) --verify $(ENTRY_POINY) 
 
 upload:
+	fuser -k -15 $(serial-port) || true
+	sleep 2
 	$(ARDUINO_CMD) --upload $(ENTRY_POINY) 
 
 serial:
