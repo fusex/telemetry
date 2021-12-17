@@ -1,25 +1,27 @@
 #define TAG "RTC"
 
-#include <fusexutil.h>
 #include <Wire.h>
-#include "RTClib.h"
+#include <MCP79412RTC.h>    // http://github.com/JChristensen/MCP79412RTC
+#include <TimeLib.h>        // https://www.pjrc.com/teensy/td_libs_DS1307RTC.html
+#include <fusexutil.h>
 #include "init.h"
 
-#if 0
-#define RTC_DEBUG
+#if 1
+#define RTC_DEBUG 1
 #endif
 
-#define EEPROM_BOOT_OFFSET 2
+#define EEPROM_BOOT_OFFSET  2
 #define EEPROM_RESET_OFFSET 0
+
+#define SRAM_BOOT_OFFSET 10
+#define SRAM_RESET_OFFSET 0
 
 static uint32_t bootID  = 0;
 static uint16_t resetID = 0;
 
-RTC_DS1307 rtc;
-
 uint32_t RTC_GetBootID()
 {
-  return bootID; 
+    return bootID;
 }
 
 uint16_t RTC_GetResetID()
@@ -29,130 +31,94 @@ uint16_t RTC_GetResetID()
 
 void RTC_ResetResetID()
 {
-   resetID = 0;
-   rtc.writenvram(EEPROM_RESET_OFFSET, (uint8_t*)&resetID, sizeof(resetID));
+    RTC.sramWrite(SRAM_RESET_OFFSET, 0);
 }
 
 void RTC_SetResetID()
 {
-    resetID++; 
-    rtc.writenvram(EEPROM_RESET_OFFSET, (uint8_t*)&resetID, sizeof(resetID));
+    //TODO maybe we can standardize the resetID to an enum
+    RTC.sramWrite(SRAM_RESET_OFFSET, resetID+1);
 }
 
-static void RTC_debugDUMP()
+// Print an integer in "00" format (with leading zero),
+// followed by a delimiter.
+// Input value assumed to be between 0 and 99.
+static void RTC_PrintI00(int val, char delim)
 {
-    DateTime now = rtc.now();
-    char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    if (val < 10) Serial.print('0');
+    Serial.print(val);
+    Serial.print(delim);
+    return;
+}
 
-    PRINT(now.year(), DEC);
-    PRINT('/');
-    PRINT(now.month(), DEC);
-    PRINT('/');
-    PRINT(now.day(), DEC);
-    PRINT(" (");
-    PRINT(daysOfTheWeek[now.dayOfTheWeek()]);
-    PRINT(") ");
-    PRINT(now.hour(), DEC);
-    PRINT(':');
-    PRINT(now.minute(), DEC);
-    PRINT(':');
-    PRINT(now.second(), DEC);
-    PRINTLN();
-    
-    PRINT(" since midnight 1/1/1970 = ");
-    PRINT(now.unixtime());
-    PRINT("s = ");
-    PRINT(now.unixtime() / 86400L);
-    PRINTLN("d");
-    
-    // calculate a date which is 7 days and 30 seconds into the future
-    DateTime future (now + TimeSpan(7,12,30,6));
-    
-    PRINT(" now + 7d + 30s: ");
-    PRINT(future.year(), DEC);
-    PRINT('/');
-    PRINT(future.month(), DEC);
-    PRINT('/');
-    PRINT(future.day(), DEC);
-    PRINT(' ');
-    PRINT(future.hour(), DEC);
-    PRINT(':');
-    PRINT(future.minute(), DEC);
-    PRINT(':');
-    PRINT(future.second(), DEC);
-    PRINTLN();
-    
-    PRINTLN();
-    uint8_t readData[8];
-    rtc.readnvram(readData, 8, 0);
-    PRINTLN("Reading NVRAM values:");
-    PRINTLN(readData[0], HEX);
-    PRINTLN(readData[1], HEX);
-    PRINTLN(readData[2], HEX);
-    PRINTLN(readData[3], HEX);
-    PRINTLN(readData[4], HEX);
-    PRINTLN(readData[5], HEX);
-    PRINTLN(readData[6], HEX);
-    PRINTLN(readData[7], HEX);
+// Print time (and date) given a time_t value
+static void RTC_PrintTime(time_t t)
+{
+    RTC_PrintI00(hour(t), ':');
+    RTC_PrintI00(minute(t), ':');
+    RTC_PrintI00(second(t), ' ');
+    Serial.print(dayShortStr(weekday(t)));
+    Serial.print(' ');
+    RTC_PrintI00(day(t), ' ');
+    Serial.print(monthShortStr(month(t)));
+    Serial.print(' ');
+    Serial.println(year(t));
+}
+
+static void RTC_DumpDebug()
+{
+    TTRACE("resetId: %d.\r\n", resetID);
+    TTRACE("bootId: %d.\r\n", bootID);
+    TTRACE("date and time: "); RTC_PrintTime(now());
+}
+
+static time_t RTC_GetCompileTime()
+{
+    const uint32_t FUDGE(15);        // fudge factor to allow for compile time (seconds, YMMV)
+    const char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
+    char chMon[3], *m;
+    tmElements_t tm;
+    time_t t;
+
+    strncpy(chMon, compDate, 3);
+    chMon[3] = '\0';
+    m = strstr(months, chMon);
+    tm.Month = ((m - months) / 3 + 1);
+
+    tm.Day = atoi(compDate + 4);
+    tm.Year = atoi(compDate + 7) - 1970;
+    tm.Hour = atoi(compTime);
+    tm.Minute = atoi(compTime + 3);
+    tm.Second = atoi(compTime + 6);
+    t = makeTime(tm);
+    return t + FUDGE;        // add fudge factor to allow for compile time
 }
 
 void setupRTC()
 {
-  if (!rtc.begin()) {
-      PRINTLN("Couldn't find RTC");
-      TTRACE("init failed ! \n\r");
-      Init_SetFailed();
-      return;
-  }
-  if (!rtc.isrunning()) {
-      PRINTLN("RTC is NOT running!");
-      rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-      // following line sets the RTC to the date & time this sketch was compiled
-      // This line sets the RTC with an explicit date & time, for example to set
-      // January 21, 2014 at 3am you would call:
-      // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
-  }
-
-#if RTC_DEBUG
-  RTC_debugDUMP();
+#if 1
+    setSyncProvider(RTC.get); // the function to get the time from the RTC
+#else
+    setTime(RTC_GetCompileTime());    // set the system time to the sketch compile time
+    RTC.set(now());            // set the RTC from the system time
+    RTC.sramWrite(SRAM_RESET_OFFSET, 0);
+    RTC.sramWrite(SRAM_BOOT_OFFSET, 0);
 #endif
 
-  uint8_t* ptr;
+    RTC.vbaten(true);
 
-  ptr = (uint8_t*)&resetID;
-  rtc.readnvram(ptr, sizeof(resetID), EEPROM_RESET_OFFSET);
-  TTRACE("RESET Id: 0x%x.\r\n", resetID);
+    bootID  = RTC.sramRead(SRAM_BOOT_OFFSET);
+    resetID = RTC.sramRead(SRAM_RESET_OFFSET);
 
-  ptr = (uint8_t*)&bootID;
-  rtc.readnvram(ptr, sizeof(bootID), EEPROM_BOOT_OFFSET);
-  TTRACE("Boot Id: 0x%lx.\r\n", bootID);
+    RTC.sramWrite(SRAM_BOOT_OFFSET, bootID+1);
 
-
-  bootID++;
-  rtc.writenvram(EEPROM_BOOT_OFFSET, ptr, sizeof(bootID));
-
-  TTRACE("init Done.\r\n");
 #if RTC_DEBUG
-  RTC_debugDUMP();
+    RTC_DumpDebug();
 #endif
 
+    TTRACE("init Done.\r\n");
 }
-
-static uint32_t rtcloop = 0;
 
 void loopRTC()
 {
-
-#if RTC_DEBUG
-  RTC_debugDUMP();
-#endif
-
-#if 0
-    if(!(rtcloop&0xff)) {
-	uint32_t time = micros();
-	rtc.adjust(rtc.now());
-	uint32_t d1 = micros() - time;
-	TTRACE("adjust in:%lu\r\n", d1);
-    }
-#endif
 }
