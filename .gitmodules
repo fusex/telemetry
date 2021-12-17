@@ -32,3 +32,9 @@
 [submodule "common/RTCx"]
 	path = common/RTCx
 	url = https://github.com/stevemarple/RTCx
+[submodule "common/MCP79412RTC"]
+	path = common/MCP79412RTC
+	url = https://github.com/JChristensen/MCP79412RTC
+[submodule "common/Time"]
+	path = common/Time
+	url = https://github.com/PaulStoffregen/Time
