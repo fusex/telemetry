@@ -24,26 +24,21 @@
 #define HBITFILED 4
 #define SBITFILED 1
 
+#define MAX_SENSORS 2
+
+// IT SHOULD 52
+
 typedef struct {
-    char     magic[6] = {'F','U','S','E','X','0'};
-    uint32_t timestamp;
+    char     magic[4] = {'B','G','C','0'};
+    uint16_t id;
+    uint16_t rawpressure[MAX_SENSORS];
+    int8_t   temperature[MAX_SENSORS];
+
+    int8_t   humidity;
+    uint8_t  soundlvl;
+
     int32_t  gpslt; 
     int32_t  gpslg;
-
-    uint16_t id;
-    uint16_t rawpressure;
-
-    uint16_t gyrx;
-    uint16_t gyry;
-    uint16_t gyrz;
-
-    uint16_t accelx;
-    uint16_t accely;
-    uint16_t accelz;
-
-    uint16_t magnx;
-    uint16_t magny;
-    uint16_t magnz;
 
     uint8_t  highgyrx:HBITFILED;
     uint8_t  highgyry:HBITFILED;
@@ -69,9 +64,21 @@ typedef struct {
     uint8_t  signmagny:SBITFILED;
     uint8_t  signmagnz:SBITFILED;
 
-    int8_t   temperature;
-    uint8_t  soundlvl;
+    uint8_t  highgyr2x:HBITFILED;
+    uint8_t  highgyr2y:HBITFILED;
+    uint8_t  highgyr2z:HBITFILED;
 
+    uint8_t  highaccel2x:HBITFILED;
+    uint8_t  highaccel2y:HBITFILED;
+    uint8_t  highaccel2z:HBITFILED;
+
+    uint8_t  signgyr2x:SBITFILED;
+    uint8_t  signgyr2y:SBITFILED;
+    uint8_t  signgyr2z:SBITFILED;
+
+    uint8_t  signaccel2x:SBITFILED;
+    uint8_t  signaccel2y:SBITFILED;
+    uint8_t  signaccel2z:SBITFILED;
 } __attribute__((packed)) fxtm_data_t;
 
 #define MASK0 0x0000ffff
