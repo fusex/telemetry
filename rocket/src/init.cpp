@@ -29,7 +29,7 @@
 #define MAXFATAL  4
 #define MAXRESET 10
 
-#if 1
+#if 0
 #define STP_DEBUG 
 #endif
 
