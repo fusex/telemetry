@@ -21,95 +21,71 @@
 
 #include <stdint.h>
 
+
 #define HBITFILED 4
 #define SBITFILED 1
 
-#define MAX_SENSORS 2
-
-// IT SHOULD 52
+typedef struct {
+    uint8_t  low;
+    uint8_t  high:HBITFILED;
+    uint8_t  sign:SBITFILED;
+} imu_pack_t;
 
 typedef struct {
-    char     magic[4] = {'B','G','C','0'};
-    uint16_t id;
-    uint16_t rawpressure[MAX_SENSORS];
-    int8_t   temperature[MAX_SENSORS];
+    imu_pack_t x;
+    imu_pack_t y;
+    imu_pack_t z;
+} imu_sensor_t;
 
-    int8_t   humidity;
-    uint8_t  soundlvl;
+#define MAX_SENSORS 2
+// IT SHOULD 52
+typedef struct {
+    char          magic[4] = {'B','G','C','0'};
+    uint16_t      id;
+    uint16_t      pressure[MAX_SENSORS];
+    int8_t        temperature[MAX_SENSORS];
 
-    int32_t  gpslt; 
-    int32_t  gpslg;
+    int8_t        humidity;
+    uint8_t       soundLevel;
 
-    uint8_t  highgyrx:HBITFILED;
-    uint8_t  highgyry:HBITFILED;
-    uint8_t  highgyrz:HBITFILED;
-
-    uint8_t  highaccelx:HBITFILED;
-    uint8_t  highaccely:HBITFILED;
-    uint8_t  highaccelz:HBITFILED;
-
-    uint8_t  highmagnx:HBITFILED;
-    uint8_t  highmagny:HBITFILED;
-    uint8_t  highmagnz:HBITFILED;
-
-    uint8_t  signgyrx:SBITFILED;
-    uint8_t  signgyry:SBITFILED;
-    uint8_t  signgyrz:SBITFILED;
-
-    uint8_t  signaccelx:SBITFILED;
-    uint8_t  signaccely:SBITFILED;
-    uint8_t  signaccelz:SBITFILED;
-
-    uint8_t  signmagnx:SBITFILED;
-    uint8_t  signmagny:SBITFILED;
-    uint8_t  signmagnz:SBITFILED;
-
-    uint8_t  highgyr2x:HBITFILED;
-    uint8_t  highgyr2y:HBITFILED;
-    uint8_t  highgyr2z:HBITFILED;
-
-    uint8_t  highaccel2x:HBITFILED;
-    uint8_t  highaccel2y:HBITFILED;
-    uint8_t  highaccel2z:HBITFILED;
-
-    uint8_t  signgyr2x:SBITFILED;
-    uint8_t  signgyr2y:SBITFILED;
-    uint8_t  signgyr2z:SBITFILED;
-
-    uint8_t  signaccel2x:SBITFILED;
-    uint8_t  signaccel2y:SBITFILED;
-    uint8_t  signaccel2z:SBITFILED;
+    int32_t       gpsLt; 
+    int32_t       gpsLg;
+    imu_sensor_t  accel;
+    imu_sensor_t  gyro;
+    imu_sensor_t  magn;
+    imu_sensor_t  accel2;
+    imu_sensor_t  gyro2;
 } __attribute__((packed)) fxtm_data_t;
 
 #define MASK0 0x0000ffff
 #define MASK1 0x000f0000
 
-#define SET(tm, comp, val) { \
-	int32_t tval = val; \
-        if(val<0){ \
-            tm->sign##comp = 1; \
-            tval = -val; \
-        } \
-        tm->comp       = tval&MASK0; \
-        tm->high##comp = (tval&MASK1)>>16; \
-    }
-
-#define GET(tm, comp, val) { \
-	val = tm->comp + (((uint32_t)tm->high##comp)<<16); \
-	if(tm->sign##comp) \
-	val = -val; \
-    }
-
-#define SETT(p, tm, X, Y, Z) { \
-    SET(tm, p##x, X); \
-    SET(tm, p##y, Y); \
-    SET(tm, p##z, Z); \
+#define IMU_PACK_SET(comp, val) {  \
+	int32_t tval = val;            \
+    if (val<0) {                   \
+        comp.sign = 1;             \
+        tval = -val;               \
+    }                              \
+    comp.low   = tval&MASK0;       \
+    comp.high  = (tval&MASK1)>>16; \
 }
 
-#define GETT(p, tm, X, Y, Z) { \
-    GET(tm, p##x, X); \
-    GET(tm, p##y, Y); \
-    GET(tm, p##z, Z); \
+#define IMU_PACK_GET(comp, val) {                 \
+	val = comp.low + (((uint32_t)comp.high)<<16); \
+	if (comp.sign)                                \
+	    val = -val;                               \
+}
+
+#define IMU_SENSOR_SET(p, tm, X, Y, Z) { \
+    IMU_PACK_SET(tm->p.x, X); \
+    IMU_PACK_SET(tm->p.y, Y); \
+    IMU_PACK_SET(tm->p.z, Z); \
+}
+
+#define IMU_SENSOR_GET(p, tm, X, Y, Z) { \
+    IMU_PACK_GET(tm->p.x, X);            \
+    IMU_PACK_GET(tm->p.y, Y);            \
+    IMU_PACK_GET(tm->p.z, Z);            \
 }
 
 #if 0
@@ -132,32 +108,12 @@ int head = 0;
 #define NEXT() {head++; if(head==3) head = 0; }
 #endif
 
-#if 0
-// Number of data records in a block.
-//const uint16_t DATA_DIM = (512 - 4)/sizeof(fxtm_data_t);
-#define DATA_DIM ((512 - 4)/sizeof(fxtm_data_t))
-
-//Compute fill so block size is 512 bytes.  FILL_DIM may be zero.
-//const uint16_t FILL_DIM = 512 - 4 - DATA_DIM*sizeof(fxtm_data_t);
-#define FILL_DIM (512 - 4 - DATA_DIM*sizeof(fxtm_data_t))
-#else
-#define FILL_DIM (512 - sizeof(fxtm_data_t))
-#endif
-
+#define FILL_DIM (512 - 4 - sizeof(fxtm_data_t))
 typedef struct {
   fxtm_data_t  data;
+  uint32_t     timestamp; 
   uint8_t      fill[FILL_DIM];
 } fxtm_block_t;
-
-#if 0
-#define PRESSURE_AT_SEALEVEL (101325)
-#define GET_RAWPRESSURE(p) (uint16_t)(PRESSURE_AT_SEALEVEL - p)
-#define GET_PRESSURE(raw)  (uint32_t)(PRESSURE_AT_SEALEVEL - raw)
-#else
-#define MAX_PRESSURE_AT_SEALEVEL (10300)
-#define GET_RAWPRESSURE(p) (uint16_t)(MAX_PRESSURE_AT_SEALEVEL - p)
-#define GET_PRESSURE(raw)  (uint32_t)(MAX_PRESSURE_AT_SEALEVEL - raw)
-#endif
 
 void fxtm_reset(void);
 void fxtm_setsoundlvl(unsigned int level);

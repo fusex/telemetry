@@ -127,7 +127,6 @@ char* mystrchr(char* fmt)
     }
 }
 
-
 void _myprintf2(const char *fmt, ... )
 {
     char *p = (char*)fmt;
@@ -215,7 +214,7 @@ char *ftoa(char *a, double f, int precision = 100)
 void gendata(uint8_t* data, unsigned int size)
 {
     while (size--){
-	*data++ = _myrandom(32,126);
+        *data++ = _myrandom(32, 126);
     }
 }
 
@@ -230,4 +229,3 @@ void printdata(char* data, unsigned int size)
     }
 }
 #endif
-
