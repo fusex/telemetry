@@ -33,7 +33,7 @@
 //SF 12 does not works properly for either 125khz and 500khz
 
 #define FX_TXPOWER      20
-#if 0
+#if 1
 #define FX_FREQUENCY    869.4
 #else
 #define FX_FREQUENCY    434.0
@@ -57,15 +57,15 @@ RH_RF95::ModemConfig modem_config = {
     byte SF = FX_SF; \
     uint8_t currentSF, newLowerNibble, newUpperNibble, cur_reg_val, new_reg_val; \
     if ((SF < 6) || (SF > 12)) { \
-	TRACE("Invalid SF :0x%x",SF); \
+	    TRACE("Invalid SF :0x%x",SF); \
         fatal(); \
-    } else {\
-	cur_reg_val = rf95.spiRead(0x1E); \
-	currentSF = cur_reg_val >> 4; \
-	newLowerNibble = (cur_reg_val & 0x0F); \
-	newUpperNibble = (SF << 4); \
-	new_reg_val = (newUpperNibble + newLowerNibble); \
-	rf95.spiWrite(0x1E, new_reg_val); \
+    } else { \
+	    cur_reg_val = rf95.spiRead(0x1E); \
+	    currentSF = cur_reg_val >> 4; \
+	    newLowerNibble = (cur_reg_val & 0x0F); \
+	    newUpperNibble = (SF << 4); \
+	    new_reg_val = (newUpperNibble + newLowerNibble); \
+	    rf95.spiWrite(0x1E, new_reg_val); \
     } \
 }
 
