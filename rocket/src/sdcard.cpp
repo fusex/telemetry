@@ -24,6 +24,7 @@
 #include "FreeStack.h"
 #include <SPI.h>
 #include "SdFat.h"
+#include <TimeLib.h>        // https://www.pjrc.com/teensy/td_libs_DS1307RTC.html
 
 #include "init.h"
 #include "trame.h"
@@ -53,7 +54,7 @@ uint16_t   filepart = 0;
 
 #define DEBUG
 
-static void createBinFile()
+static void SD_CreateBinFile()
 {
     // max number of blocks to erase per erase call
     const uint32_t ERASE_SIZE = 262144L;
@@ -62,17 +63,22 @@ static void createBinFile()
     memset(filename, 0, 128);
     TTRACE("End createbinfile\r\n");
 
+    sprintf(filename, "%d-%d-%d-%d-%d-%d.txt", LOGFILENAME,
+            hour(), minute(), second(), day(), month(), year(),
+            filepart++, ".txt");
+
+#if 0
     if (GPS_isFixed())
     {
-        char date[32];
-        GPS_getDateTime(date);
-        sprintf(filename, "%s-%s-%d.txt", LOGFILENAME, date, filepart++, ".txt");
-    } else {
+    }
+    else
+    {
         fileid = (uint16_t)(RTC_GetBootID() & 0x0000ffff);
         if ((fileid & BOOTID_DEFAULT) == BOOTID_DEFAULT)
             fileid = _myrandom(0, 0xffff);
         sprintf(filename, "%s-%x-%d.txt", LOGFILENAME, fileid, filepart++, ".txt");
     }
+    #endif
 
     // Delete old tmp file.
     if (SD.exists(filename))
@@ -115,55 +121,57 @@ static void createBinFile()
     }
 
     if (!SD.card()->writeStart(binFile.firstBlock()))
-    {
         error("writeStart failed");
-    }
+
     bn = 0;
     TTRACE("End createbinfile\r\n");
 }
 
-static int setupLowSD()
+static int SD_Init()
 {
-    TTRACE("Start setuplowsd\r\n");
     pinMode(BGC_SD_CS, OUTPUT);
     digitalWrite(BGC_SD_CS, HIGH);
 
-    if (!SD.begin(BGC_SD_CS)) {
-	TTRACE("end -1 setuplowsd\r\n");
-	return -1;
-    }
-    TTRACE("end 0 setuplowsd\r\n");
+    if (!SD.begin(BGC_SD_CS))
+        return -1;
+
     return 0;
 }
 
-static void recordBinFile()
+static void SD_RecordBinFile()
 {
-    fxtm_block_t* pBlock = fxtm_getblock();
+    fxtm_block_t *pBlock = fxtm_getblock();
     TTRACE("b--------------------------------------\r\n");
     SD.card()->spiStart();
-    if (!SD.card()->isBusy()) {
-	// Write block to SD.
-	uint32_t usec = micros();
-	if (!SD.card()->writeData((uint8_t*)pBlock)) {
-	    error("write data failed");
-	}
-	usec = micros() - usec;
-	if (usec > maxLatency) {
-	    maxLatency = usec;
-	}
-	TTRACE("Block writed in usec: %ld\r\n", usec);
-	bn++;
-	if (bn == FILE_BLOCK_COUNT) {
-	    // File full so stop
-	    if (!SD.card()->writeStop()) {
-		error("writeStop failed");
-	    }
-	    TTRACE("Max block write usec: %ld\r\n", maxLatency);
-	    TTRACE("File limit reached ! recycle\r\n");
-	    createBinFile(); 
-	}
-    } else
-	WTTRACE("SDCard busy\r\n");
+    if (!SD.card()->isBusy())
+    {
+        // Write block to SD.
+        uint32_t usec = micros();
+        if (!SD.card()->writeData((uint8_t *)pBlock))
+        {
+            error("write data failed");
+        }
+        usec = micros() - usec;
+        if (usec > maxLatency)
+        {
+            maxLatency = usec;
+        }
+        TTRACE("Block writed in usec: %ld\r\n", usec);
+        bn++;
+        if (bn == FILE_BLOCK_COUNT)
+        {
+            // File full so stop
+            if (!SD.card()->writeStop())
+            {
+                error("writeStop failed");
+            }
+            TTRACE("Max block write usec: %ld\r\n", maxLatency);
+            TTRACE("File limit reached ! recycle\r\n");
+            SD_CreateBinFile();
+        }
+    }
+    else
+        WTTRACE("SDCard busy\r\n");
 
     SD.card()->spiStop();
     TTRACE("e--------------------------------------\r\n");
@@ -173,18 +181,18 @@ static void recordBinFile()
 
 void setupSdcard()
 {
-    if(setupLowSD()) {
-	Init_SetSemiFatal();
-	TTRACE("init Failed!\r\n");
-	SD.card()->spiStop();
-	return;
+    if (SD_Init() != 0)
+    {
+        Init_SetSemiFatal();
+        TTRACE("init Failed!\r\n");
+    } else {
+        SD_CreateBinFile();
+        TTRACE("init Done.\r\n");
     }
-    createBinFile(); 
-    TTRACE("init Done.\r\n");
     SD.card()->spiStop();
 }
 
 void loopSdcard()
 {
-    recordBinFile();
+    SD_RecordBinFile();
 }
