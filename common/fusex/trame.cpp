@@ -52,16 +52,16 @@ void fxtm_setimu2 (float a[], float g[])
     IMU_SENSOR_SET(gyro2,  tm, (int32_t)(g[0]*IMUFACTOR), (int32_t)(g[1]*IMUFACTOR), (int32_t)(g[2]*IMUFACTOR));
 }
 
-void fxtm_settemperature (uint8_t idx, float temperature)
+void fxtm_settemperature (float temperature)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->temperature[idx] = (int8_t) temperature;
+    tm->temperature = (int8_t) temperature;
 }
 
-void fxtm_setpressure (uint8_t idx, float pressure)
+void fxtm_setpressure (float pressure)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->pressure[idx] = (int)pressure;
+    tm->pressure = (int)pressure;
 }
 
 void fxtm_setgps (float latitude, float longitude)

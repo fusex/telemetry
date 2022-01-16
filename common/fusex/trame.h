@@ -42,9 +42,11 @@ typedef struct {
 typedef struct {
     char          magic[4] = {'B','G','C','0'};
     uint16_t      id;
-    uint16_t      pressure[MAX_SENSORS];
-    int8_t        temperature[MAX_SENSORS];
 
+    uint16_t      pressure;
+    uint16_t      diffpressure;
+
+    int8_t        temperature;
     int8_t        humidity;
     uint8_t       soundLevel;
 
@@ -118,8 +120,8 @@ typedef struct {
 void fxtm_reset(void);
 void fxtm_setsoundlvl(unsigned int level);
 void fxtm_setimu(float a[], float m[], float g[]);
-void fxtm_settemperature(uint8_t idx, float temperature);
-void fxtm_setpressure(uint8_t idx, float pressure);
+void fxtm_settemperature(float temperature);
+void fxtm_setpressure(float pressure);
 void fxtm_setgps(float latitude, float longitude);
 
 fxtm_data_t*  fxtm_getdata();

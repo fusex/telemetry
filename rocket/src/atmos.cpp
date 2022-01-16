@@ -47,8 +47,8 @@ void loopAtmos()
     temperature = bmp.readTemperature();
     pressure = bmp.readPressure();
 
-    fxtm_settemperature(0, temperature);
-    fxtm_setpressure(0, pressure);
+    fxtm_settemperature(temperature);
+    fxtm_setpressure(pressure);
 
     DTRACE("ZSK packet acquired in:%ld and prepared in %ld us\r\n", d1, micros()-time);
 }
