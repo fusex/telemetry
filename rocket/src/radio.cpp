@@ -19,33 +19,23 @@
 
 #include <fusexconfig.h>
 #include <fusexutil.h>
-#include <radioparam.h>
 
-#include <SPI.h>
-#include <RH_RF95.h>
+#include <BGC_Lora.h> 
 
 #include "trame.h"
 #include "init.h"
 
-RH_RF95 rf95;
+BGC_Lora lora(BGC_LORA_SS, true); 
 
 void setupRadio()
 {
-    if (!rf95.init())
-    {
+    if (!lora.init()) {
         TTRACE("init failed ! Fatal !!!\n\r");
         Init_SetFatal();
         return;
-    }
-    else
-    {
+    } else {
         TTRACE("init Done\n\r");
     }
-
-    fx_setTxPower();
-    fx_setFrequency();
-    fx_setModemConfig();
-    fx_setSpreadingFactor();
 }
 
 void loopRadio()
@@ -59,7 +49,7 @@ void loopRadio()
     {
         uint32_t time = micros();
 
-        rf95.send((uint8_t *)fxtm_getdata(), fxtm_getdatasize());
+        lora.send((uint8_t *)fxtm_getdata(), fxtm_getdatasize());
         WTTRACE("packet sent to in :%ld\r\n", micros() - time);
     }
 
