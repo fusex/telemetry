@@ -1,11 +1,12 @@
+#include <Arduino.h>
 #include <Wire.h>
+#include <fusexutil.h>
 
 void i2c_scanner() {
   int nDevices = 0;
-
   Wire.begin();
 
-  Serial.println("Scanning...");
+  TTRACE("Scanning...");
 
   for (byte address = 1; address < 127; ++address) {
     // The i2c_scanner uses the return value of
@@ -15,26 +16,16 @@ void i2c_scanner() {
     byte error = Wire.endTransmission();
 
     if (error == 0) {
-      Serial.print("I2C device found at address 0x");
-      if (address < 16) {
-        Serial.print("0");
-      }
-      Serial.print(address, HEX);
-      Serial.println("  !");
-
+      TTRACE("I2C device found at address 0x%0x!\n", address);
       ++nDevices;
     } else if (error == 4) {
-      Serial.print("Unknown error at address 0x");
-      if (address < 16) {
-        Serial.print("0");
-      }
-      Serial.println(address, HEX);
+      TTRACE("Unknown error at address 0x%0x!\n", address);
     }
   }
   if (nDevices == 0) {
-    Serial.println("No I2C devices found\n");
+    TTRACE("No I2C devices found\n");
   } else {
-    Serial.println("done\n");
+    TTRACE("done\n");
   }
   delay(5000); // Wait 5 seconds for next scan
 }
