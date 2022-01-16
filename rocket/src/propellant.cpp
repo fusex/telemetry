@@ -38,14 +38,14 @@ void setupPropellant()
 
 void loopPropellant()
 {
-    int sensorValue = analogRead(BGC_SOUND_SENSOR); //use A0 to read the electrical signal
+    int sensorValue = analogRead(BGC_SOUND_SENSOR);
+
+#ifdef SOUNDSENSOR_DEBUG
     if(sensorValue>thresholdvalue)
 	TTRACE("Propellant detect:%d\r\n", sensorValue);
-#ifdef SOUNDSENSOR_DEBUG
     else
 	TRACE("Propellant detect:%d\r\n", sensorValue);
 #endif
 
     fxtm_setsoundlvl(sensorValue);
-    //delay(200);
 }
