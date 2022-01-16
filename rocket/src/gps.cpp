@@ -79,13 +79,13 @@ void receiveGPS()
 {
     if (GPS.newNMEAreceived()) {
 #ifdef GPS_DEBUG2
-	PRINTLN(GPS.lastNMEA());
+        PRINTLN(GPS.lastNMEA());
 #endif
 	if (!GPS.parse(GPS.lastNMEA()))
 	    return;
     }
     if (GPS.fix) {
-	fxtm_setgps(GPS.latitudeDegrees, GPS.longitudeDegrees);
+        fxtm_setgps(GPS.latitudeDegrees, GPS.longitudeDegrees);
     }
 
 #ifdef GPS_DEBUG
@@ -95,34 +95,38 @@ void receiveGPS()
 
 void setupGps()
 {
-  GPS.begin(GPSSERIALBAUD);
-  
-  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
-  GPS.sendCommand(PGCMD_ANTENNA);
-  useInterrupt();
+    GPS.begin(GPSSERIALBAUD);
 
-  delay(1000);
-  // Ask for firmware version
-  GPSdevice.println(PMTK_Q_RELEASE);
-  //TODO : check something before mark init done
+    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
+    GPS.sendCommand(PGCMD_ANTENNA);
+    useInterrupt();
 
-  // WARNING !!! NO delay() should be called in the next loop from here !
-  int retry = 0;
-  while(retry++ < RETRYMAX) {
-      receiveGPS();
-      if(GPS.fix){
-	  debugGPS();
-	  break;
-      }
-      TTRACE("....... synchro failed! retry\r\n");
-  }
-  //
-  if(!GPS.fix){
-      TTRACE("init Failed ! retry later.\r\n");
-      Init_SetFailed();
-  } else
-      TTRACE("init Done: retry:%d\r\n",retry);
+    delay(1000);
+    // Ask for firmware version
+    GPSdevice.println(PMTK_Q_RELEASE);
+    //TODO : check something before mark init done
+
+    // WARNING !!! NO delay() should be called in the next loop from here !
+    int retry = 0;
+    while (retry++ < RETRYMAX)
+    {
+        receiveGPS();
+        if (GPS.fix)
+        {
+            debugGPS();
+            break;
+        }
+        TTRACE("....... synchro failed! retry\r\n");
+    }
+    //
+    if (!GPS.fix)
+    {
+        TTRACE("init Failed ! retry later.\r\n");
+        Init_SetFailed();
+    } else {
+        TTRACE("init Done: retry:%d\r\n", retry);
+    }
 }
 
 void loopGps()
