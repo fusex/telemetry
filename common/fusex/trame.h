@@ -49,12 +49,15 @@ typedef struct {
     int8_t        temperature;
     int8_t        humidity;
     uint8_t       soundLevel;
+    uint8_t       battLevel;
 
     int32_t       gpsLt; 
     int32_t       gpsLg;
+
     imu_sensor_t  accel;
     imu_sensor_t  gyro;
     imu_sensor_t  magn;
+
     imu_sensor_t  accel2;
     imu_sensor_t  gyro2;
 } __attribute__((packed)) fxtm_data_t;
