@@ -1,5 +1,6 @@
 #include "init.h"
 #include "imu.h"
+#include "atmos.h"
 #include "radio.h"
 #include "gps.h"
 #include "sdcard.h"
@@ -19,6 +20,7 @@ static void acquire()
 
     loopPropellant();
     loopRTC();
+    loopAtmos();
 
 #ifdef DEBUG
     fxtm_dump(NULL); 
@@ -43,6 +45,7 @@ void setup()
     setupIMU();
     setupGps();
     setupPropellant();
+    setupAtmos();
     setupSdcard();
 
     Init_Finish();
