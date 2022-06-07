@@ -13,25 +13,29 @@
 #include <fusexutil.h>
 #include "trame.h"
 #include "sdcard.h"
+#include "debug.h"
 
 static void acquire()
 {
     fxtm_reset();
-    loopIMU();
-    loopGps();
-
-    loopPropellant();
     loopRTC();
+#if 1
+    loopPropellant();
     loopAtmos();
-
-#ifdef DEBUG
-    fxtm_dump(NULL); 
+    loopGps();
+#else
+    loopIMU();
+    fxtm_gendata();
 #endif
 }
 
 static void log()
 {
+#if 0
     loopSdcard();
+#else
+    fxtm_dump();
+#endif
 }
 
 static void send()
@@ -44,12 +48,13 @@ void setup()
     setupInit();
     setupRTC();
     setupRadio();
-    setupIMU();
-    setupGps();
     setupPropellant();
     setupAtmos();
+    setupGps();
+#if 0
+    setupIMU();
     setupSdcard();
-
+#endif
     Init_Finish();
     TTRACE("#########################\n\r");
 	TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
@@ -60,6 +65,10 @@ void loop()
     prof_start();
     acquire();
     log();
+#if 0
     send();
+#endif
     prof_report();
+    delay(10000);
 }
+
