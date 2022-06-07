@@ -21,20 +21,13 @@
 
 #include <stdint.h>
 
-
 #define HBITFILED 4
 #define SBITFILED 1
 
 typedef struct {
-    uint8_t  low;
-    uint8_t  high:HBITFILED;
-    uint8_t  sign:SBITFILED;
-} imu_pack_t;
-
-typedef struct {
-    imu_pack_t x;
-    imu_pack_t y;
-    imu_pack_t z;
+    uint16_t x;
+    uint16_t y;
+    uint16_t z;
 } imu_sensor_t;
 
 #define MAX_SENSORS 2
@@ -67,32 +60,16 @@ typedef struct {
 #define MASK0 0x0000ffff
 #define MASK1 0x000f0000
 
-#define IMU_PACK_SET(comp, val) {  \
-	int32_t tval = val;            \
-    if (val<0) {                   \
-        comp.sign = 1;             \
-        tval = -val;               \
-    }                              \
-    comp.low   = tval&MASK0;       \
-    comp.high  = (tval&MASK1)>>16; \
-}
-
-#define IMU_PACK_GET(comp, val) {                 \
-	val = comp.low + (((uint32_t)comp.high)<<16); \
-	if (comp.sign)                                \
-	    val = -val;                               \
-}
-
 #define IMU_SENSOR_SET(p, tm, X, Y, Z) { \
-    IMU_PACK_SET(tm->p.x, X); \
-    IMU_PACK_SET(tm->p.y, Y); \
-    IMU_PACK_SET(tm->p.z, Z); \
+    tm->p.x = X; \
+    tm->p.y = Y; \
+    tm->p.z = Z; \
 }
 
 #define IMU_SENSOR_GET(p, tm, X, Y, Z) { \
-    IMU_PACK_GET(tm->p.x, X);            \
-    IMU_PACK_GET(tm->p.y, Y);            \
-    IMU_PACK_GET(tm->p.z, Z);            \
+    X = tm->p.x;            \
+    Y = tm->p.y;            \
+    Z = tm->p.z;            \
 }
 
 #if 0
@@ -123,6 +100,7 @@ typedef struct {
 } fxtm_block_t;
 
 void fxtm_reset(void);
+void fxtm_gendata(void);
 void fxtm_setsoundlvl(unsigned int level);
 void fxtm_setimu(float a[], float m[], float g[]);
 void fxtm_settemperature(float temperature);
@@ -136,7 +114,7 @@ fxtm_block_t* fxtm_getblock();
 
 size_t fxtm_getblocksize();
 size_t fxtm_getdatasize();
-void   fxtm_dump(fxtm_data_t*);
+void   fxtm_dump();
 int    fxtm_check(fxtm_data_t* tm);
 
 void fxtm_getimu(fxtm_data_t* tm, float* imu);

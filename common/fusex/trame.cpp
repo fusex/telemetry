@@ -21,8 +21,14 @@
 #include "fusexutil.h"
 #include "trame.h"
 
-fxtm_block_t  fxtmblock;
-uint16_t      idCounter = 0;
+static fxtm_block_t fxtmblock;
+static uint16_t idCounter = 0;
+
+void fxtm_gendata ()
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    gendata((uint8_t*)tm, sizeof(fxtm_data_t));
+}
 
 void fxtm_reset ()
 {
@@ -93,7 +99,7 @@ fxtm_block_t* fxtm_getblock ()
     return &fxtmblock;
 }
 
-size_t fxtm_getdatasize ()
+unsigned int fxtm_getdatasize ()
 {
     return sizeof(fxtm_data_t);
 }
@@ -103,10 +109,10 @@ size_t fxtm_getblocksize ()
     return sizeof(fxtm_block_t);
 }
 
-void fxtm_getimu (fxtm_data_t* tm, float* imu)
+void fxtm_getimu (fxtm_data_t* tm, float imu[])
 {
     if(tm == NULL)
-	    tm = &fxtmblock.data;
+    	tm = &fxtmblock.data;
 
     int32_t accel[3] = {0,0,0};
     int32_t magn[3]  = {0,0,0};
@@ -127,10 +133,10 @@ void fxtm_getimu (fxtm_data_t* tm, float* imu)
     imu[8] = (float)magn[2]/IMUFACTOR;
 }
 
-void fxtm_getgps (fxtm_data_t* tm, float* gps)
+void fxtm_getgps (fxtm_data_t* tm, float gps[])
 {
     if(tm == NULL)
-	    tm = &fxtmblock.data;
+    	tm = &fxtmblock.data;
 
     gps[0] = (float)tm->gpsLt/GPSFACTOR;
     gps[1] = (float)tm->gpsLg/GPSFACTOR;
@@ -204,25 +210,24 @@ int fxtm_check (fxtm_data_t* tm)
     return ret;
 }
 
-void fxtm_dump (fxtm_data_t* tm)
+void fxtm_dump ()
 {
-    if(tm == NULL)
-    	tm = &fxtmblock.data;
+    fxtm_data_t* tm = &fxtmblock.data;
 
-    int32_t accel[3]  = {0,0,0};
-    int32_t gyro[3]    = {0,0,0};
-    int32_t magn[3]   = {0,0,0};
-    int32_t accel2[3] = {0,0,0};
-    int32_t gyro2[3]   = {0,0,0};
+    int32_t a[3]  = {0,0,0};
+    int32_t g[3]  = {0,0,0};
+    int32_t m[3]  = {9,0,0};
+    int32_t a2[3] = {0,0,0};
+    int32_t g2[3] = {0,0,0};
    
     float gps[2] = {0,0};
     fxtm_getgps(tm, gps); 
 
-    IMU_SENSOR_GET(accel, tm, accel[0], accel[1], accel[2]);
-    IMU_SENSOR_GET(gyro,  tm, gyro[0],  gyro[1],  gyro[2]);
-    IMU_SENSOR_GET(magn,  tm, magn[0],  magn[1],  magn[2]);
-    IMU_SENSOR_GET(accel2, tm, accel[0], accel[1], accel[2]);
-    IMU_SENSOR_GET(gyro2,  tm, gyro2[0], gyro2[1], gyro2[2]);
+    IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
+    IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
+    IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
+    IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
+    IMU_SENSOR_GET(gyro2,  tm, g2[0], g2[1], g2[2]);
 
     TTRACE("\r\n\tid: %u at ts: %lu\r\n", tm->id, fxtmblock.timestamp);
 
@@ -254,10 +259,12 @@ void fxtm_dump (fxtm_data_t* tm)
 }
 #endif
     TRACE("\tsound level: %u\r\n",tm->soundLevel);
-    TRACE("\ttemperature: %d C, pressure:%u pa\r\n", tm->temperature, tm->pressure);
-    TRACE("\taccel[0]: %6ld, accel[1]: %6ld, accel[2]: %6ld\r\n", accel[0], accel[1], accel[2]);
-    TRACE("\t gyro[0]: %6ld,  gyro[1]: %6ld,  gyro[2]: %6ld\r\n", gyro[0], gyro[1], gyro[2]);
-    TRACE("\t magn[0]: %6ld,  magn[1]: %6ld,  magn[2]: %6ld\r\n", magn[0], magn[1], magn[2]);
-    TRACE("\taccel2[0]: %6ld, accel2[1]: %6ld, accel2[2]: %6ld\r\n", accel2[0], accel2[1], accel2[2]);
-    TRACE("\t gyro2[0]: %6ld,   gyr2[1]: %6ld,   gyr2[2]: %6ld\r\n", gyro2[0], gyro2[1], gyro2[2]);
+    TRACE("\ttemperature: %d C, pressure:%u pa, diffpressure:%u pa\r\n",
+	  tm->temperature, tm->pressure, tm->diffpressure);
+    TRACE("\ttemperature2: %d C, humidity:%u %%\r\n", tm->temperature2, tm->humidity);
+    TRACE("\t accel[0]: %6ld,  accel[1]: %6ld,   accel[2]: %6ld\r\n", a[0], a[1], a[2]);
+    TRACE("\t  gyro[0]: %6ld,   gyro[1]: %6ld,    gyro[2]: %6ld\r\n", g[0], g[1], g[2]);
+    TRACE("\t  magn[0]: %6ld,   magn[1]: %6ld,    magn[2]: %6ld\r\n", m[0], m[1], m[2]);
+    TRACE("\taccel2[0]: %6ld, accel2[1]: %6ld,  accel2[2]: %6ld\r\n", a2[0], a2[1], a2[2]);
+    TRACE("\t gyro2[0]: %6ld,  gyro2[1]: %6ld,   gyro2[2]: %6ld\r\n", g2[0], g2[1], g2[2]);
 }

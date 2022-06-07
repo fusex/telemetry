@@ -81,7 +81,7 @@ void loop()
 			rf95.frequencyError()
 		      );
 	    }
-	    fxtm_dump(NULL);
+	    fxtm_dump();
 #endif
 	    int bytesSent = PCdevice.write((char*)fxtm_getdata(), fxtm_getdatasize());
 #ifdef DEBUG

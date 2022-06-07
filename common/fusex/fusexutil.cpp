@@ -213,8 +213,12 @@ char *ftoa(char *a, double f, int precision = 100)
 
 void gendata(uint8_t* data, unsigned int size)
 {
-    while (size--){
-        *data++ = _myrandom(32, 126);
+    if (size == 0)
+	return;
+
+    while (size--) {
+        *data = _myrandom(32, 126);
+         data++;
     }
 }
 
