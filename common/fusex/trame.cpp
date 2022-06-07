@@ -64,6 +64,18 @@ void fxtm_setpressure (float pressure)
     tm->pressure = (int)pressure;
 }
 
+void fxtm_sethumidity (float humidity)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    tm->humidity = (uint8_t) humidity;
+}
+
+void fxtm_settemperature2 (float temp)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    tm->temperature2 = (int8_t)temp;
+}
+
 void fxtm_setgps (float latitude, float longitude)
 {
     fxtm_data_t* tm = &fxtmblock.data;
@@ -158,8 +170,22 @@ void fxtm_gettemperature (fxtm_data_t* tm, int8_t* ptemp)
     *ptemp = tm->temperature;
 }
 
-uint16_t lastid = 0;
-uint32_t lastts = 0;
+void fxtm_gethumidity (fxtm_data_t* tm, int8_t* phumidity)
+{
+    if(tm == NULL)
+	    tm = &fxtmblock.data;
+    *phumidity = tm->humidity;
+}
+
+void fxtm_gettemperature2 (fxtm_data_t* tm, int8_t* ptemp)
+{
+    if(tm == NULL)
+	    tm = &fxtmblock.data;
+    *ptemp = tm->temperature2;
+}
+
+static uint16_t lastid = 0;
+static uint32_t lastts = 0;
 
 int fxtm_check (fxtm_data_t* tm)
 {

@@ -48,7 +48,8 @@ typedef struct {
     uint16_t      diffpressure;
 
     int8_t        temperature;
-    int8_t        humidity;
+    int8_t        temperature2;
+    uint8_t       humidity;
     uint8_t       soundLevel;
     uint8_t       battLevel;
 
@@ -125,7 +126,9 @@ void fxtm_reset(void);
 void fxtm_setsoundlvl(unsigned int level);
 void fxtm_setimu(float a[], float m[], float g[]);
 void fxtm_settemperature(float temperature);
+void fxtm_settemperature2(float temperature);
 void fxtm_setpressure(float pressure);
+void fxtm_sethumidity(float pressure);
 void fxtm_setgps(float latitude, float longitude);
 
 fxtm_data_t*  fxtm_getdata();
@@ -143,6 +146,7 @@ void fxtm_getts(fxtm_data_t* tm, uint32_t* pts);
 void fxtm_getid(fxtm_data_t* tm, uint16_t* pid);
 void fxtm_getsoundlvl(fxtm_data_t* tm, uint8_t* psndlvl);
 void fxtm_gettemperature(fxtm_data_t* tm, int8_t* ptemp);
+void fxtm_gethumidity(fxtm_data_t* tm, int8_t* phumidity);
 
 #define GPSFACTORPOW   "6" 
 #define GPSFACTOR 1000000 
