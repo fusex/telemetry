@@ -1,3 +1,5 @@
+#define TAG "MAIN"
+
 #include "init.h"
 #include "imu.h"
 #include "atmos.h"
@@ -50,7 +52,7 @@ void setup()
 
     Init_Finish();
     TTRACE("#########################\n\r");
-	TTRACE("Start transfer packet size:%d\r\n",fxtm_getdatasize());
+	TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
 }
 
 void loop()

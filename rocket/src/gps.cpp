@@ -33,7 +33,7 @@
 
 #define RETRYMAX 22000
 
-Adafruit_GPS GPS(&GPSdevice);
+static Adafruit_GPS GPS(&GPSdevice);
 
 SIGNAL(TIMER0_COMPA_vect) {
     GPS.read();
@@ -44,17 +44,17 @@ static void useInterrupt() {
     TIMSK0 |= _BV(OCIE0A);
 }
 
-void getGPSDateTime(char* str)
+static void getGPSDateTime(char* str)
 {
     sprintf(str,"%d-%d-%d-%dh%dm%d", GPS.year, GPS.month, GPS.day, GPS.hour, GPS.minute, GPS.seconds);
 }
 
-bool isGPSFixed()
+static bool isGPSFixed()
 {
   return !!GPS.fix;
 }
 
-void debugGPS()
+static void debugGPS()
 {
     TRACE("\nTime: %d:%d:%d\r\n", GPS.hour, GPS.minute, GPS.seconds, GPS.milliseconds);
     TRACE("Date: %d/%d/20%d\r\n", GPS.day, GPS.month, GPS.year);
@@ -75,7 +75,7 @@ void debugGPS()
     }
 }
 
-void receiveGPS()
+static void receiveGPS()
 {
     if (GPS.newNMEAreceived()) {
 #ifdef GPS_DEBUG2

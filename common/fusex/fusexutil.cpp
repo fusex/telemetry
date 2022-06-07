@@ -21,7 +21,7 @@
 #include "fusexutil.h"
 
 #if _IS_BASE
-SoftwareSerial SWSerial(2, 3);
+static SoftwareSerial SWSerial(2, 3);
 #endif
 
 #define CRC16 0x8005

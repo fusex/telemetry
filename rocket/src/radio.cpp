@@ -25,7 +25,7 @@
 #include "trame.h"
 #include "init.h"
 
-BGC_Lora lora(BGC_LORA_SS, true); 
+static BGC_Lora lora(BGC_LORA_SS, true); 
 
 void setupRadio()
 {

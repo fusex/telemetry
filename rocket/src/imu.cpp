@@ -40,7 +40,7 @@ MPU9250 myIMU;
 #define IMU_DEBUG 1 
 #endif
 
-static int initMPU()
+static int initMPU ()
 {
     byte c = myIMU.readByte(MPU9250_ADDRESS, WHO_AM_I_MPU9250);
 
@@ -63,12 +63,12 @@ static int initMPU()
     return true;
 }
 
-static int initAK()
+static int initAK ()
 {
     byte d = myIMU.readByte(AK8963_ADDRESS, WHO_AM_I_AK8963);
     if (d != AK_AM_I_RET){
-	TTRACE("AK8963 I AM 0x%x I should be 0x%x\r\n",d, AK_AM_I_RET);
-	return false;
+        TTRACE("AK8963 I AM 0x%x I should be 0x%x\r\n",d, AK_AM_I_RET);
+        return false;
     }
 
     myIMU.getMres();
@@ -82,7 +82,7 @@ static int initAK()
     return true;
 }
 
-void setupIMU()
+void setupIMU ()
 {
     Wire.begin();
     if (!initMPU())
@@ -101,12 +101,12 @@ void setupIMU()
     TTRACE("init Done.\r\n");
 }
 
-int intrIMU()
+static int intrIMU ()
 {
     return (myIMU.readByte(MPU9250_ADDRESS, INT_STATUS) & 0x01);
 }
 
-void loopIMU()
+void loopIMU ()
 {
     if(!intrIMU()) return;
 

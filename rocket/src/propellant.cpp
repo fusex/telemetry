@@ -25,7 +25,7 @@
 #include "BGC_Pinout.h"
 #include "trame.h"
 
-const int thresholdvalue=490; //The threshold
+const static int thresholdvalue=490; //The threshold
 
 #if 0
 #define SOUNDSENSOR_DEBUG

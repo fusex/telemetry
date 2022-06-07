@@ -41,13 +41,13 @@
 #define FILE_BLOCK_COUNT (5*60*10L)    // 01 minutes logging
 #endif
 
-SdFat      SD;
-SdBaseFile binFile;
+static SdFat      SD;
+static SdBaseFile binFile;
 
-uint32_t   bn = 0;  
-uint32_t   maxLatency = 0;
-uint16_t   fileid = 0;
-uint16_t   filepart = 0;
+static uint32_t   bn = 0;  
+static uint32_t   maxLatency = 0;
+static uint16_t   fileid = 0;
+static uint16_t   filepart = 0;
 
 #define BOOTID_DEFAULT_MASK 0xffff0000
 #define BOOTID_DEFAULT      0xfc00
