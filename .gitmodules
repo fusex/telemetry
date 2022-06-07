@@ -1,6 +1,6 @@
 [submodule "RadioHead"]
 	path = common/RadioHead
-	url = https://github.com/zskdan/RadioHead
+	url = git@github.com:zskdan/RadioHead.git
 	branch = fusex/master
 [submodule "common/MPU-9250"]
 	path = common/MPU9250
