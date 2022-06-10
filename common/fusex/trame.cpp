@@ -51,11 +51,10 @@ void fxtm_setimu (float a[], float m[], float g[])
     IMU_SENSOR_SET(magn,  tm, (int32_t)(m[0]*IMUFACTOR), (int32_t)(m[1]*IMUFACTOR), (int32_t)(m[2]*IMUFACTOR));
 }
 
-void fxtm_setimu2 (float a[], float g[])
+void fxtm_setimu2 (float a[])
 {
     fxtm_data_t* tm = &fxtmblock.data;
     IMU_SENSOR_SET(accel2, tm, (int32_t)(a[0]*IMUFACTOR), (int32_t)(a[1]*IMUFACTOR), (int32_t)(a[2]*IMUFACTOR));
-    IMU_SENSOR_SET(gyro2,  tm, (int32_t)(g[0]*IMUFACTOR), (int32_t)(g[1]*IMUFACTOR), (int32_t)(g[2]*IMUFACTOR));
 }
 
 void fxtm_settemperature (float temperature)
@@ -224,10 +223,9 @@ void fxtm_dump ()
     fxtm_getgps(tm, gps); 
 
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
+    IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
     IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
-    IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
-    IMU_SENSOR_GET(gyro2,  tm, g2[0], g2[1], g2[2]);
 
     TTRACE("\r\n\tid: %u at ts: %lu\r\n", tm->id, fxtmblock.timestamp);
 
@@ -266,5 +264,4 @@ void fxtm_dump ()
     TRACE("\t  gyro[0]: %6ld,   gyro[1]: %6ld,    gyro[2]: %6ld\r\n", g[0], g[1], g[2]);
     TRACE("\t  magn[0]: %6ld,   magn[1]: %6ld,    magn[2]: %6ld\r\n", m[0], m[1], m[2]);
     TRACE("\taccel2[0]: %6ld, accel2[1]: %6ld,  accel2[2]: %6ld\r\n", a2[0], a2[1], a2[2]);
-    TRACE("\t gyro2[0]: %6ld,  gyro2[1]: %6ld,   gyro2[2]: %6ld\r\n", g2[0], g2[1], g2[2]);
 }
