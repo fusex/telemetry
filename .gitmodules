@@ -39,3 +39,6 @@
 [submodule "common/SimpleSerialShell"]
 	path = common/SimpleSerialShell
 	url = https://github.com/philj404/SimpleSerialShell
+[submodule "SimpleTimer"]
+	path = common/SimpleTimer
+	url = https://github.com/jfturcot/SimpleTimer
