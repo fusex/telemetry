@@ -10,11 +10,14 @@
 #include "rtc.h"
 #include "prof.h"
 
+#include <SimpleTimer.h>
 #include <fusexutil.h>
 #include "trame.h"
 #include "sdcard.h"
 #include "debug.h"
 #include "shell.h"
+
+SimpleTimer scheduler; 
 
 static void acquire()
 {
@@ -46,6 +49,22 @@ static void send()
 #endif
 }
 
+void subLoop()
+{
+    prof_start();
+#if 0
+    acquire();
+    log();
+    send();
+#else
+    delay(100);
+#endif
+
+    prof_report();
+}
+
+#define BGC_ACQ_PERIOD 1000 // in millis on each second.
+
 void setup()
 {
     setupInit();
@@ -62,17 +81,11 @@ void setup()
     Init_Finish();
     TTRACE("#########################\n\r");
 	TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
+    scheduler.setTimer(BGC_ACQ_PERIOD, subLoop, scheduler.RUN_FOREVER);
 }
 
-void subloop()
+void loop()
 {
-    prof_start();
-    acquire();
-    log();
-    send();
-    prof_report();
-}
-
-void loop() {
     loopShell();
+    scheduler.run();
 }
