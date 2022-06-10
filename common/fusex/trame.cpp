@@ -88,6 +88,12 @@ void fxtm_setgps (float latitude, float longitude)
     tm->gpsLg = (int32_t)(longitude*GPSFACTOR);
 }
 
+void fxtm_setseparation (bool separated)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    tm->separation = separated;
+}
+
 fxtm_data_t* fxtm_getdata ()
 {
     return &fxtmblock.data;
@@ -256,6 +262,7 @@ void fxtm_dump ()
     TRACE("%s%ld.%0" GPSFACTORPOW "ld\r\n", gps[1]<0?"-":"", i, d);
 }
 #endif
+    TRACE("\tSeperation: %s\r\n",tm->separation?"ACTED":"NOT YET");
     TRACE("\tsound level: %u\r\n",tm->soundLevel);
     TRACE("\ttemperature: %d C, pressure:%u pa, diffpressure:%u pa\r\n",
 	  tm->temperature, tm->pressure, tm->diffpressure);

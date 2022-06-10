@@ -45,6 +45,7 @@ typedef struct {
     uint8_t       humidity;
     uint8_t       soundLevel;
     uint8_t       battLevel;
+    uint8_t       separation;
 
     int32_t       gpsLt; 
     int32_t       gpsLg;
