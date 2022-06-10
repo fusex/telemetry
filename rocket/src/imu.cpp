@@ -25,9 +25,12 @@
 #include "MPU9250.h"
 
 #include "BGC_Pinout.h"
+#include "BGC_I2c.h"
 #include "trame.h"
 
-MPU9250 myIMU;
+#define MPU9250_ADDRESS BGC_I2C_MAIN_IMU_ADDR
+
+MPU9250 myIMU(MPU9250_ADDRESS);
 
 #if ADO
 #define MPU_AM_I_RET 0x71
