@@ -23,6 +23,7 @@ extern SoftwareSerial SWSerial;
 #endif
 
 void _myprintf(const  _FMT_FLASH_TYPE *fmt, ... );
+void _mycprintf(const  _FMT_FLASH_TYPE *fmt, ... );
 unsigned long _mymillis();
 long _myrandom(long min, long max);
 
@@ -37,8 +38,10 @@ void fatal(void);
 
 #if !defined(_IS_PC)
 # define myprintf(a, ...) _myprintf(F(a), ##__VA_ARGS__)
+# define mycprintf(a, ...) _mycprintf(F(a), ##__VA_ARGS__)
 # define PRINT(x, ...)   DEBUGdevice.print(x, ##__VA_ARGS__)
-# define PRINTS(x) DEBUGdevice.print(x)
+# define PRINTS(x)       DEBUGdevice.print(x)
+# define CPRINTS(x)      SHELLdevice.print(x)
 # define PRINTLN(x, ...) DEBUGdevice.println(x, ##__VA_ARGS__)
 #define  PRINTMILLIS() PRINT((float)_mymillis()/1000,6)
 #else
@@ -48,6 +51,10 @@ void fatal(void);
 # define PRINTLN(x, ...) printf(x"\n", ##__VA_ARGS__)
 #define  PRINTMILLIS() PRINT("%.6f",(float)_mymillis()/1000)
 #endif
+
+#define CTRACE(x, ...) do { \
+    mycprintf(":" x, ##__VA_ARGS__); \
+} while(0)
 
 #define TTRACE(x, ...) do { \
     PRINTMILLIS(); \

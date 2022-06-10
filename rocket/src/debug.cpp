@@ -2,12 +2,20 @@
 #include <Wire.h>
 #include <fusexutil.h>
 
+#define MYTRACE(x, ...) { \
+    if (isConsole) { \
+        CTRACE(x, ##__VA_ARGS__); \
+    } else { \
+        TTRACE(x, ##__VA_ARGS__); \
+    } \
+}
+
 void i2c_scanner (bool isConsole)
 {
   int nDevices = 0;
   Wire.begin();
 
-  TTRACE("Scanning...");
+  MYTRACE("Scanning...");
 
   for (byte address = 1; address < 127; ++address) {
       // The i2c_scanner uses the return value of
@@ -17,16 +25,16 @@ void i2c_scanner (bool isConsole)
       byte error = Wire.endTransmission();
 
       if (error == 0) {
-          TTRACE("I2C device found at address 0x%0x!\n\r", address);
+          MYTRACE("I2C device found at address 0x%0x!\n\r", address);
           ++nDevices;
       } else if (error == 4) {
-          TTRACE("Unknown error at address 0x%0x!\n\r", address);
+          MYTRACE("Unknown error at address 0x%0x!\n\r", address);
       }
   }
   if (nDevices == 0) {
-    TTRACE("No I2C devices found\n\r");
+    MYTRACE("No I2C devices found\n\r");
   } else {
-    TTRACE("done\n\r");
+    MYTRACE("done\n\r");
   }
   delay(5000); // Wait 5 seconds for next scan
 }
