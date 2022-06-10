@@ -19,6 +19,7 @@
 #define _INIT_H
 
 void setupInit();
+void Init_ResetBoard();
 void Init_Finish();
 void Init_SetFailed();
 void Init_SetFatal();

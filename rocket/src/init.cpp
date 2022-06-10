@@ -52,6 +52,13 @@ void setupInit()
     TTRACE("Rocket init Start\r\n");
 }
 
+void Init_ResetBoard()
+{
+    //turn on the WatchDog and don't stroke it.
+    wdt_enable(WDTO_15MS);
+    while(1);
+}
+
 void Init_Finish()
 {
     uint16_t rid = RTC_GetResetID();
@@ -78,8 +85,7 @@ void Init_Finish()
 	    if(semifatalcount==MAXFATAL && rid<MAXRESET) {
 	        RTC_SetResetID();
 	        TTRACE("FATAL init detected! reset !\r\n");
-	        wdt_enable(WDTO_15MS); //turn on the WatchDog and don't stroke it.
-	        while(1);
+		Init_ResetBoard();
 	    }
     }
     TTRACE("#######################\r\n");
