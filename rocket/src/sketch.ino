@@ -19,12 +19,12 @@ static void acquire()
 {
     fxtm_reset();
     loopRTC();
-#if 1
+#if 0
     loopPropellant();
     loopAtmos();
     loopGps();
-#else
     loopIMU();
+#else
     fxtm_gendata();
 #endif
 }
@@ -40,7 +40,9 @@ static void log()
 
 static void send()
 {
+#if 0
     loopRadio();
+#endif
 }
 
 void setup()
@@ -50,8 +52,8 @@ void setup()
     setupRadio();
     setupPropellant();
     setupAtmos();
-    setupGps();
 #if 0
+    setupGps();
     setupIMU();
     setupSdcard();
 #endif
@@ -65,9 +67,7 @@ void loop()
     prof_start();
     acquire();
     log();
-#if 0
     send();
-#endif
     prof_report();
     delay(10000);
 }
