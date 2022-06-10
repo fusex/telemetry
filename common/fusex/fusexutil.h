@@ -76,6 +76,7 @@ void printdata(char* data, unsigned int size);
 
 #define PCSERIALBAUD     115200
 #define DEBUGSERIALBAUD  115200
+#define SHELLSERIALBAUD  115200
 #define GPSSERIALBAUD      9600
 
 #endif // FUSEXUTIL_H

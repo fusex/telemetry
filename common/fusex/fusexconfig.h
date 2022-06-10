@@ -67,6 +67,7 @@
 //#pragma message ("this is the Mega board")
 # define DEBUGdevice     BGC_SerialDEBUG
 # define GPSdevice       BGC_SerialGPS
+# define SHELLdevice     BGC_SerialSHELL
 # elif defined(__AVR_ATmega328P__)
 #  define _IS_BASE 1
 //#pragma message ("this is the UNO board")

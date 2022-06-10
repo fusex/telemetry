@@ -36,3 +36,6 @@
 [submodule "common/HDC1080"]
 	path = common/HDC1080
 	url = https://github.com/closedcube/ClosedCube_HDC1080_Arduino
+[submodule "common/SimpleSerialShell"]
+	path = common/SimpleSerialShell
+	url = https://github.com/philj404/SimpleSerialShell

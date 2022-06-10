@@ -14,6 +14,7 @@
 #include "trame.h"
 #include "sdcard.h"
 #include "debug.h"
+#include "shell.h"
 
 static void acquire()
 {
@@ -48,6 +49,7 @@ static void send()
 void setup()
 {
     setupInit();
+    setupShell();
     setupRTC();
     setupRadio();
     setupPropellant();
@@ -62,13 +64,15 @@ void setup()
 	TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
 }
 
-void loop()
+void subloop()
 {
     prof_start();
     acquire();
     log();
     send();
     prof_report();
-    delay(10000);
 }
 
+void loop() {
+    loopShell();
+}

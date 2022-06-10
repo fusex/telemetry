@@ -42,6 +42,7 @@ void setupInit()
     MCUSR = 0; // clear out any flags of prior resets.
     randomSeed(analogRead(0));
     DEBUGdevice.begin(DEBUGSERIALBAUD);
+
     pinMode(BGC_LED4_FERROR, OUTPUT);
     digitalWrite(BGC_LED4_FERROR, HIGH);
 

@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <fusexutil.h>
 
-void i2c_scanner ()
+void i2c_scanner (bool isConsole)
 {
   int nDevices = 0;
   Wire.begin();
