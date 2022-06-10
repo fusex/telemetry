@@ -26,6 +26,7 @@
 [submodule "common/bgc-library"]
 	path = common/bgc-library
 	url = git@code.federation-openspacemakers.com:p/P0048/bgc-library.git
+	branch = master
 [submodule "common/MCP79412RTC"]
 	path = common/MCP79412RTC
 	url = https://github.com/JChristensen/MCP79412RTC
