@@ -22,8 +22,8 @@ SimpleTimer scheduler;
 static void acquire()
 {
     fxtm_reset();
-    loopRTC();
 #if 0
+    loopRTC();
     loopPropellant();
     loopAtmos();
     loopGps();
@@ -53,18 +53,15 @@ static void send()
 void subLoop()
 {
     prof_start();
-#if 0
+
     acquire();
     log();
     send();
-#else
-    delay(100);
-#endif
 
     prof_report();
 }
 
-#define BGC_ACQ_PERIOD 1000 // in millis on each second.
+#define BGC_ACQ_PERIOD 100 // in millis on each second.
 
 void setup()
 {

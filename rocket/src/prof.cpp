@@ -22,10 +22,10 @@ void prof_report()
     if (delta>prof_max) prof_max = delta;
     prof_avg += delta;
 
-    if (prof_count++%PROF_LOOP) {
-	    TTRACE("%ld loop in:%lu (avg:%lu, max:%lu)\r\n", 
-                prof_count, delta ,prof_avg/(prof_count+1), prof_max);
-    }
+    //if (prof_count++%PROF_LOOP) {
+    TTRACE("%ld loop in:%lu (avg:%lu, max:%lu)\r\n", 
+            prof_count, delta ,prof_avg/(prof_count+1), prof_max);
+    //}
 }
 
 #else
