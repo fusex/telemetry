@@ -45,7 +45,7 @@ typedef struct {
     uint8_t       humidity;
     uint8_t       soundLevel;
     uint8_t       battLevel;
-    uint8_t       separation;
+    uint8_t       flightStatus;
 
     int32_t       gpsLt; 
     int32_t       gpsLg;
@@ -99,6 +99,14 @@ typedef struct {
   uint8_t      fill[FILL_DIM];
 } fxtm_block_t;
 
+
+#define FXTM_FLIGHTSTATUS_LAUNCHPAD     0
+#define FXTM_FLIGHTSTATUS_LIFTOFF       1
+#define FXTM_FLIGHTSTATUS_BURNOUT       2
+#define FXTM_FLIGHTSTATUS_SEPARATION    3
+#define FXTM_FLIGHTSTATUS_RECOVERY      4
+#define FXTM_FLIGHTSTATUS_TOUCHDOWN     5
+
 void fxtm_reset(void);
 void fxtm_gendata(void);
 void fxtm_setsoundlvl(unsigned int level);
@@ -107,6 +115,7 @@ void fxtm_settemperature(float temperature);
 void fxtm_settemperature2(float temperature);
 void fxtm_setpressure(float pressure);
 void fxtm_sethumidity(float pressure);
+void fxtm_setflightstatus(uint8_t flightStatus);
 void fxtm_setgps(float latitude, float longitude);
 
 fxtm_data_t*  fxtm_getdata();

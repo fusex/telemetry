@@ -88,10 +88,10 @@ void fxtm_setgps (float latitude, float longitude)
     tm->gpsLg = (int32_t)(longitude*GPSFACTOR);
 }
 
-void fxtm_setseparation (bool separated)
+void fxtm_setflightstatus (uint8_t flightStatus)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->separation = separated;
+    tm->flightStatus = flightStatus;
 }
 
 fxtm_data_t* fxtm_getdata ()
@@ -195,6 +195,13 @@ void fxtm_gettemperature2 (fxtm_data_t* tm, int8_t* ptemp)
     *ptemp = tm->temperature2;
 }
 
+void fxtm_getflightstatus (fxtm_data_t* tm, uint8_t* pFlightStatus)
+{
+    if(tm == NULL)
+	tm = &fxtmblock.data;
+    *pFlightStatus = tm->flightStatus;
+}
+
 static uint16_t lastid = 0;
 static uint32_t lastts = 0;
 
@@ -262,7 +269,17 @@ void fxtm_dump ()
     TRACE("%s%ld.%0" GPSFACTORPOW "ld\r\n", gps[1]<0?"-":"", i, d);
 }
 #endif
-    TRACE("\tSeperation: %s\r\n",tm->separation?"ACTED":"NOT YET");
+{
+    TRACE("\tFlight Status: %s (%3d)\r\n",
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":
+            "ERROR", tm->flightStatus);
+}
+
     TRACE("\tsound level: %u\r\n",tm->soundLevel);
     TRACE("\ttemperature: %d C, pressure:%u pa, diffpressure:%u pa\r\n",
 	  tm->temperature, tm->pressure, tm->diffpressure);

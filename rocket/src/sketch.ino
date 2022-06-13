@@ -28,6 +28,7 @@ static void acquire()
     loopAtmos();
     loopGps();
     loopIMU();
+    loopFlightStatus();
 #else
     fxtm_gendata();
 #endif
