@@ -30,28 +30,40 @@
 #include <ICM20948_WE.h>
 #include "ICM20600.h"
 
+#define isAD0(x) (x&1)
 ICM20948_WE myImu = ICM20948_WE(BGC_I2C_MAIN_IMU_ADDR);
-ICM20600    myImuAux = ICM20600(false);
+ICM20600    myImuAux = ICM20600(isAD0(BGC_I2C_AUX_IMU_ADDR));
+
+#if 1
+#define IMU_CALIBRATION
+#endif
 
 static int initICM20948 ()
 {
-    if (!myImu.init())
+    if (myImu.init() == false)
 	return false;
 
-    if (!myImu.initMagnetometer())
-	return false;
-
-#if IMU_CALIBRATION
+#ifdef IMU_CALIBRATION
     myImu.autoOffsets();
 #endif
 
     myImu.setGyrRange(ICM20948_GYRO_RANGE_250);
+    myImu.setGyrDLPF(ICM20948_DLPF_6);  
+    myImu.setGyrSampleRateDivider(10);
+
     myImu.setAccRange(ICM20948_ACC_RANGE_16G);
     myImu.setAccDLPF(ICM20948_DLPF_6);    
-    myImu.setGyrDLPF(ICM20948_DLPF_6);  
     myImu.setAccSampleRateDivider(10);
-    myImu.setGyrSampleRateDivider(10);
-    myImu.setMagOpMode(AK09916_CONT_MODE_10HZ);
+
+    return true;
+}
+
+static int initAK ()
+{
+    if (!myImu.initMagnetometer())
+	return false;
+
+    myImu.setMagOpMode(AK09916_CONT_MODE_20HZ);
 
     return true;
 }
@@ -66,22 +78,32 @@ static int initICM20600 ()
 
 void setupIMU ()
 {
+    bool failed = false;
     Wire.begin();
-    if (!initICM20948())
+
+    if (initICM20948() == false)
     {
         TTRACE("init ICM20948 Failed! fatal !!!\r\n");
         Init_SetSemiFatal();
-        return;
+	failed = true;
     }
 
-    if (!initICM20600())
+    if (initAK() == false)
+    {
+        TTRACE("init ICM20948-AK Failed! fatal !!!\r\n");
+        Init_SetSemiFatal();
+	failed = true;
+    }
+
+    if (initICM20600() == false)
     {
         TTRACE("init ICM20600 Failed! fatal !!!\r\n");
         Init_SetSemiFatal();
-        return;
+	failed = true;
     }
 
-    TTRACE("init Done.\r\n");
+    if (failed == false)
+	TTRACE("init Done.\r\n");
 }
 
 void loopIMU ()
@@ -104,9 +126,9 @@ void loopIMU ()
     //float m[] = {mag.x/1000, mag.y/1000, mag.z/1000}; 
     float g[] = {gyr.x, gyr.y, gyr.z};
     float a2[] = {
-	    myImuAux.getAccelerationX(),
-	    myImuAux.getAccelerationY(),
-	    myImuAux.getAccelerationZ()
+	myImuAux.getAccelerationX(),
+	myImuAux.getAccelerationY(),
+	myImuAux.getAccelerationZ()
     };
 
     fxtm_setimu(a, m, g);
