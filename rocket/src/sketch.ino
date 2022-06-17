@@ -19,28 +19,28 @@
 
 SimpleTimer scheduler; 
 
+static void acquire_fake()
+{
+    fxtm_reset();
+    fxtm_gendata();
+}
+
 static void acquire()
 {
     fxtm_reset();
-#if 1
     loopRTC();
     loopPropellant();
     loopAtmos();
     loopIMU();
     //loopGps();
     //loopFlightStatus();
-#else
-    fxtm_gendata();
-#endif
 }
+
 
 static void log()
 {
-#if 0
-    loopSdcard();
-#else
+    //loopSdcard();
     //fxtm_dump(false);
-#endif
 }
 
 static void send()
@@ -52,7 +52,11 @@ void subLoop()
 {
     prof_start();
 
+#if 1
     acquire();
+#else
+    acquire_fake();
+#endif
     log();
     send();
 
@@ -68,12 +72,10 @@ void setup()
     setupRTC();
     setupPropellant();
     setupAtmos();
-    setupRadio();
     setupIMU();
-#if 0
-    setupGps();
-    setupSdcard();
-#endif
+    setupRadio();
+    //setupGps();
+    //setupSdcard();
     Init_Finish();
     TTRACE("#########################\n\r");
 	TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
