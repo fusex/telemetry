@@ -39,15 +39,13 @@ static void log()
 #if 0
     loopSdcard();
 #else
-    fxtm_dump(false);
+    //fxtm_dump(false);
 #endif
 }
 
 static void send()
 {
-#if 0
     loopRadio();
-#endif
 }
 
 void subLoop()
@@ -68,9 +66,9 @@ void setup()
     setupInit();
     setupShell();
     setupRTC();
-    setupRadio();
     setupPropellant();
     setupAtmos();
+    setupRadio();
     setupIMU();
 #if 0
     setupGps();
