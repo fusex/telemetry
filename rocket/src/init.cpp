@@ -25,6 +25,7 @@
 #include "trame.h"
 #include "BGC_Pinout.h"
 #include "rtc.h"
+#include "version.h"
 
 #define MAXFATAL  4
 #define MAXRESET 10
@@ -51,6 +52,7 @@ void setupInit()
 #endif
     TTRACE("#######################\r\n");
     TTRACE("Rocket init Start\r\n");
+    TTRACE("    Version: %s\r\n", VERSION);
 }
 
 void Init_ResetBoard()

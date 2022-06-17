@@ -15,6 +15,7 @@ ARDUINO_CMD := $(arduino-path)/arduino -v --port $(serial-port) --board arduino:
 build: compile
 
 compile:
+	$(ROOT)/create-version.sh
 	$(ARDUINO_CMD) --verify $(ENTRY_POINY) 
 
 upload:
