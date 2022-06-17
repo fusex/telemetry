@@ -4,10 +4,18 @@
 #include "fusexutil.h"
 #include "init.h"
 #include "debug.h"
+#include "version.h"
+#include "trame.h"
+#include "prof.h"
+#include "rtc.h"
 
 int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-    shell.println(F("Running " __FILE__ ",\nBuilt " __DATE__));
+    shell.println(F(
+		    "Built "   __DATE__ ":" __TIME__"\n\r"
+		    "Version " VERSION  "\n\r"
+		    "Running " __FILE__ "\n\r"
+		    ));
     return 0;
 }
 
