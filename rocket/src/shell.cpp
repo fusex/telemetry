@@ -29,6 +29,12 @@ int fxtmStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+int profStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    prof_dump(true);
+    return 0;
+}
+
 int rtcStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     RTC_DumpDebug(true);
@@ -43,6 +49,7 @@ void setupShell()
     shell.addCommand(F("i2c-scan"), scanI2c);
     shell.addCommand(F("reset"), resetBoard);
     shell.addCommand(F("fxtm"), fxtmStatus);
+    shell.addCommand(F("prof"), profStatus);
     shell.addCommand(F("rtc"), rtcStatus);
 }
 
