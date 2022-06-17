@@ -85,5 +85,7 @@ void setup()
 void loop()
 {
     loopShell();
-    scheduler.run();
+    if (!execIsPaused()) {
+        scheduler.run();
+    }
 }

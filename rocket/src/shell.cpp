@@ -74,6 +74,22 @@ int rtcStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+static bool isPaused = false;
+int execPause(int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    isPaused = true;
+}
+
+int execResume(int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    isPaused = false;
+}
+
+bool execIsPaused()
+{
+    return isPaused;
+}
+
 void setupShell()
 {
     SHELLdevice.begin(SHELLSERIALBAUD);
@@ -86,6 +102,8 @@ void setupShell()
     shell.addCommand(F("fxtm"), fxtmStatus);
     shell.addCommand(F("prof"), profStatus);
     shell.addCommand(F("rtc"), rtcStatus);
+    shell.addCommand(F("pause"), execPause);
+    shell.addCommand(F("resume"), execResume);
 }
 
 void loopShell()
