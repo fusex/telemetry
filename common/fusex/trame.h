@@ -111,6 +111,7 @@ void fxtm_reset(void);
 void fxtm_gendata(void);
 void fxtm_setsoundlvl(unsigned int level);
 void fxtm_setimu(float a[], float m[], float g[]);
+void fxtm_setimu2(float a[]);
 void fxtm_settemperature(float temperature);
 void fxtm_settemperature2(float temperature);
 void fxtm_setpressure(float pressure);

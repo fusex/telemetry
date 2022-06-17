@@ -22,65 +22,44 @@
 #include <fusexutil.h>
 
 #include "Wire.h"
-#include "MPU9250.h"
 
 #include "BGC_Pinout.h"
 #include "BGC_I2c.h"
 #include "trame.h"
 
-#define MPU9250_ADDRESS BGC_I2C_MAIN_IMU_ADDR
+#include <ICM20948_WE.h>
+#include "ICM20600.h"
 
-MPU9250 myIMU;
+ICM20948_WE myImu = ICM20948_WE(BGC_I2C_MAIN_IMU_ADDR);
+ICM20600    myImuAux = ICM20600(false);
 
-#if ADO
-#define MPU_AM_I_RET 0x71
-#else
-#define MPU_AM_I_RET 0x73
-#endif
-#define AK_AM_I_RET 0x48
-
-#if 0
-#define IMU_DEBUG 1 
-#endif
-
-static int initMPU ()
+static int initICM20948 ()
 {
-    byte c = myIMU.readByte(MPU9250_ADDRESS, WHO_AM_I_MPU9250);
-
-    if (c != MPU_AM_I_RET){
-	TTRACE("MPU9250 I AM 0x%x. I should be 0x%x\r\n", c, MPU_AM_I_RET);
+    if (!myImu.init())
 	return false;
-    }
+
+    if (!myImu.initMagnetometer())
+	return false;
 
 #if IMU_CALIBRATION
-    TTRACE("calibrating MPU ....\r\n");
-    myIMU.MPU9250SelfTest(myIMU.SelfTest);
-    myIMU.calibrateMPU9250(myIMU.gyroBias, myIMU.accelBias);
+    myImu.autoOffsets();
 #endif
 
-    myIMU.initMPU9250();
-
-    myIMU.getAres();
-    myIMU.getGres();
+    myImu.setGyrRange(ICM20948_GYRO_RANGE_250);
+    myImu.setAccRange(ICM20948_ACC_RANGE_16G);
+    myImu.setAccDLPF(ICM20948_DLPF_6);    
+    myImu.setGyrDLPF(ICM20948_DLPF_6);  
+    myImu.setAccSampleRateDivider(10);
+    myImu.setGyrSampleRateDivider(10);
+    myImu.setMagOpMode(AK09916_CONT_MODE_10HZ);
 
     return true;
 }
 
-static int initAK ()
+static int initICM20600 ()
 {
-    byte d = myIMU.readByte(AK8963_ADDRESS, WHO_AM_I_AK8963);
-    if (d != AK_AM_I_RET){
-        TTRACE("AK8963 I AM 0x%x I should be 0x%x\r\n",d, AK_AM_I_RET);
-        return false;
-    }
-
-    myIMU.getMres();
-    myIMU.initAK8963(myIMU.factoryMagCalibration);
-
-#if IMU_CALIBRATION
-    TTRACE("calibrating AK ....\r\n");
-    myIMU.magCalMPU9250(myIMU.magBias, myIMU.magScale);
-#endif
+    myImuAux.initialize();
+    myImuAux.reset();
 
     return true;
 }
@@ -88,65 +67,49 @@ static int initAK ()
 void setupIMU ()
 {
     Wire.begin();
-    if (!initMPU())
+    if (!initICM20948())
     {
-        TTRACE("init Failed! fatal !!!\r\n");
+        TTRACE("init ICM20948 Failed! fatal !!!\r\n");
         Init_SetSemiFatal();
         return;
     }
-    if (!initAK())
+
+    if (!initICM20600())
     {
-        TTRACE("init Failed! fatal !!!\r\n");
-        Init_SetFailed();
+        TTRACE("init ICM20600 Failed! fatal !!!\r\n");
+        Init_SetSemiFatal();
         return;
     }
 
     TTRACE("init Done.\r\n");
 }
 
-static int intrIMU ()
-{
-    return (myIMU.readByte(MPU9250_ADDRESS, INT_STATUS) & 0x01);
-}
-
 void loopIMU ()
 {
-    if(!intrIMU()) return;
-
     unsigned long time = micros();
     unsigned long d1;
 
-    myIMU.readAccelData(myIMU.accelCount);  // Read the x/y/z adc values
-    myIMU.readGyroData(myIMU.gyroCount);    // Read the x/y/z adc values
-    myIMU.readMagData(myIMU.magCount);      // Read the x/y/z adc values
-    myIMU.tempCount = myIMU.readTempData(); // Read the adc values
+    myImu.readSensor();
+#if 0
+    xyzFloat acc = myImu.getAccRawValues();
+    xyzFloat gyr = myImu.getGyrValues();
+#else
+    xyzFloat acc = myImu.getCorrectedAccRawValues();
+    xyzFloat gyr = myImu.getCorrectedGyrRawValues();
+#endif
+    xyzFloat mag = myImu.getMagValues();
 
-    d1 = micros() - time;
-
-    myIMU.ax = (float)myIMU.accelCount[0] * myIMU.aRes; // - myIMU.accelBias[0];
-    myIMU.ay = (float)myIMU.accelCount[1] * myIMU.aRes; // - myIMU.accelBias[1];
-    myIMU.az = (float)myIMU.accelCount[2] * myIMU.aRes; // - myIMU.accelBias[2];
-
-    myIMU.gx = (float)myIMU.gyroCount[0] * myIMU.gRes;
-    myIMU.gy = (float)myIMU.gyroCount[1] * myIMU.gRes;
-    myIMU.gz = (float)myIMU.gyroCount[2] * myIMU.gRes;
-
-    myIMU.mx = (float)myIMU.magCount[0] * myIMU.mRes
-	* myIMU.factoryMagCalibration[0] - myIMU.magBias[0];
-    myIMU.my = (float)myIMU.magCount[1] * myIMU.mRes
-	* myIMU.factoryMagCalibration[1] - myIMU.magBias[1];
-    myIMU.mz = (float)myIMU.magCount[2] * myIMU.mRes
-	* myIMU.factoryMagCalibration[2] - myIMU.magBias[2];
-
-    myIMU.temperature = ((float) myIMU.tempCount) / 333.87 + 21.0;
-
-    float a[] = {myIMU.ax, myIMU.ay, myIMU.az};
-    float m[] = {myIMU.mx/1000, myIMU.my/1000, myIMU.mz/1000}; 
-    float g[] = {myIMU.gx, myIMU.gy, myIMU.gz};
+    float a[] = {acc.x, acc.y, acc.z};
+    float m[] = {mag.x, mag.y, mag.z}; 
+    //float m[] = {mag.x/1000, mag.y/1000, mag.z/1000}; 
+    float g[] = {gyr.x, gyr.y, gyr.z};
+    float a2[] = {
+	    myImuAux.getAccelerationX(),
+	    myImuAux.getAccelerationY(),
+	    myImuAux.getAccelerationZ()
+    };
 
     fxtm_setimu(a, m, g);
+    fxtm_setimu2(a2);
     DTRACE("ZSK packet acquired in:%ld and prepared in %ld us\r\n", d1, micros()-time);
-
-    myIMU.updateTime();
-    myIMU.count = millis();
 }

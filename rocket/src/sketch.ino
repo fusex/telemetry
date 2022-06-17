@@ -22,13 +22,13 @@ SimpleTimer scheduler;
 static void acquire()
 {
     fxtm_reset();
-#if 0
+#if 1
     loopRTC();
     loopPropellant();
     loopAtmos();
-    loopGps();
     loopIMU();
-    loopFlightStatus();
+    //loopGps();
+    //loopFlightStatus();
 #else
     fxtm_gendata();
 #endif
@@ -61,7 +61,7 @@ void subLoop()
     prof_report();
 }
 
-#define BGC_ACQ_PERIOD 100 // in millis on each second.
+#define BGC_ACQ_PERIOD 1000 // in millis on each second.
 
 void setup()
 {
@@ -71,9 +71,9 @@ void setup()
     setupRadio();
     setupPropellant();
     setupAtmos();
+    setupIMU();
 #if 0
     setupGps();
-    setupIMU();
     setupSdcard();
 #endif
     Init_Finish();

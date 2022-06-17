@@ -42,3 +42,9 @@
 [submodule "SimpleTimer"]
 	path = common/SimpleTimer
 	url = https://github.com/jfturcot/SimpleTimer
+[submodule "common/ICM20948_WE"]
+	path = common/ICM20948_WE
+	url = https://github.com/wollewald/ICM20948_WE
+[submodule "Seeed_ICM20600_AK09918"]
+	path = common/Seeed_ICM20600_AK09918
+	url = https://github.com/Seeed-Studio/Seeed_ICM20600_AK09918
