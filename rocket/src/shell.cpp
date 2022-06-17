@@ -19,6 +19,31 @@ int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+int readI2c(int argc, char** argv)
+{
+    if (argc != 3) {
+	shell.println("bad argument count");
+	return -1;
+    }
+    uint8_t address = strtol(argv[1], NULL, 16);
+    uint8_t reg = strtol(argv[2], NULL, 16);
+    uint8_t val = i2c_read(true, address, reg);
+    shell.println(val, HEX);
+}
+
+int writeI2c(int argc, char** argv)
+{
+    if (argc != 4) {
+	shell.println("bad argument count");
+	return -1;
+    }
+    uint8_t address = strtol(argv[1], NULL, 16);
+    uint8_t reg = strtol(argv[2], NULL, 16);
+    uint8_t val = strtol(argv[3], NULL, 16);
+
+    i2c_write(true, address, reg, val);
+}
+
 int scanI2c(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     i2c_scanner(true);
@@ -55,6 +80,8 @@ void setupShell()
     shell.attach(SHELLdevice);
     shell.addCommand(F("id"), showID);
     shell.addCommand(F("i2c-scan"), scanI2c);
+    shell.addCommand(F("i2c-read"), readI2c);
+    shell.addCommand(F("i2c-write"), writeI2c);
     shell.addCommand(F("reset"), resetBoard);
     shell.addCommand(F("fxtm"), fxtmStatus);
     shell.addCommand(F("prof"), profStatus);

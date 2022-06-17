@@ -30,3 +30,28 @@ void i2c_scanner (bool isConsole)
   }
   delay(5000); // Wait 5 seconds for next scan
 }
+
+uint8_t i2c_read (bool isConsole, uint8_t address, uint8_t reg)
+{
+    uint8_t value = 0xff;
+
+    Wire.begin();
+    Wire.beginTransmission(address);
+    Wire.write(reg);
+    Wire.endTransmission(false);
+    Wire.requestFrom(address, 1);
+    if(Wire.available()){
+        value = Wire.read();
+    }
+    return value;
+}
+
+void i2c_write (bool isConsole, uint8_t address, uint8_t reg, uint8_t value)
+{
+    Wire.begin();
+
+    Wire.beginTransmission(address);
+    Wire.write(reg);
+    Wire.write(value);
+    Wire.endTransmission();
+}
