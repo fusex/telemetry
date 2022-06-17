@@ -52,7 +52,7 @@ static void RTC_PrintI00(int val, char delim)
 }
 
 // Print time (and date) given a time_t value
-static void RTC_PrintTime(time_t t)
+static void RTC_PrintTime2(time_t t)
 {
     RTC_PrintI00(hour(t), ':');
     RTC_PrintI00(minute(t), ':');
