@@ -39,7 +39,7 @@ static void log()
 #if 0
     loopSdcard();
 #else
-    fxtm_dump();
+    fxtm_dump(false);
 #endif
 }
 

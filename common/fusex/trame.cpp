@@ -222,7 +222,7 @@ int fxtm_check (fxtm_data_t* tm)
     return ret;
 }
 
-void fxtm_dump ()
+void fxtm_dump (bool isConsole)
 {
     fxtm_data_t* tm = &fxtmblock.data;
 
@@ -240,7 +240,7 @@ void fxtm_dump ()
     IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
 
-    TTRACE("\r\n\tid: %u at ts: %lu\r\n", tm->id, fxtmblock.timestamp);
+    MYTRACE("\r\n\tid: %u at ts: %lu\r\n", tm->id, fxtmblock.timestamp);
 
 #if _IS_PC 
     TRACE("\tgps: %f,%f\r\n",gps[0], gps[1]);
@@ -255,7 +255,7 @@ void fxtm_dump ()
     if (gps[0]<0) u = -u;
     d = u*GPSFACTOR;
 
-    TRACE("\tgps: %s%ld.%0" GPSFACTORPOW "ld, ", gps[0]<0?"-":"", i, d);
+    MYTRACE("\tgps: %s%ld.%0" GPSFACTORPOW "ld, ", gps[0]<0?"-":"", i, d);
 }
 {
     long   i,d;
@@ -266,11 +266,11 @@ void fxtm_dump ()
     if (gps[1]<0) u = -u;
     d = u*GPSFACTOR;
 
-    TRACE("%s%ld.%0" GPSFACTORPOW "ld\r\n", gps[1]<0?"-":"", i, d);
+    MYTRACE("%s%ld.%0" GPSFACTORPOW "ld\r\n", gps[1]<0?"-":"", i, d);
 }
 #endif
 {
-    TRACE("\tFlight Status: %s (%3d)\r\n",
+    MYTRACE("\tFlight Status: %s (%3d)\r\n",
 	    tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
 	    tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
 	    tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
@@ -280,12 +280,12 @@ void fxtm_dump ()
             "ERROR", tm->flightStatus);
 }
 
-    TRACE("\tsound level: %u\r\n",tm->soundLevel);
-    TRACE("\ttemperature: %d C, pressure:%u pa, diffpressure:%u pa\r\n",
+    MYTRACE("\tsound level: %u\r\n",tm->soundLevel);
+    MYTRACE("\ttemperature: %d C, pressure:%u pa, diffpressure:%u pa\r\n",
 	  tm->temperature, tm->pressure, tm->diffpressure);
-    TRACE("\ttemperature2: %d C, humidity:%u %%\r\n", tm->temperature2, tm->humidity);
-    TRACE("\t accel[0]: %6ld,  accel[1]: %6ld,   accel[2]: %6ld\r\n", a[0], a[1], a[2]);
-    TRACE("\t  gyro[0]: %6ld,   gyro[1]: %6ld,    gyro[2]: %6ld\r\n", g[0], g[1], g[2]);
-    TRACE("\t  magn[0]: %6ld,   magn[1]: %6ld,    magn[2]: %6ld\r\n", m[0], m[1], m[2]);
-    TRACE("\taccel2[0]: %6ld, accel2[1]: %6ld,  accel2[2]: %6ld\r\n", a2[0], a2[1], a2[2]);
+    MYTRACE("\ttemperature2: %d C, humidity:%u %%\r\n", tm->temperature2, tm->humidity);
+    MYTRACE("\t accel[0]: %6ld,  accel[1]: %6ld,   accel[2]: %6ld\r\n", a[0], a[1], a[2]);
+    MYTRACE("\t  gyro[0]: %6ld,   gyro[1]: %6ld,    gyro[2]: %6ld\r\n", g[0], g[1], g[2]);
+    MYTRACE("\t  magn[0]: %6ld,   magn[1]: %6ld,    magn[2]: %6ld\r\n", m[0], m[1], m[2]);
+    MYTRACE("\taccel2[0]: %6ld, accel2[1]: %6ld,  accel2[2]: %6ld\r\n", a2[0], a2[1], a2[2]);
 }

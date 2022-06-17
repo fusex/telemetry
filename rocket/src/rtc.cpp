@@ -65,11 +65,23 @@ static void RTC_PrintTime(time_t t)
     Serial.println(year(t));
 }
 
-static void RTC_DumpDebug()
+void RTC_DumpDebug(bool isConsole)
 {
-    TTRACE("resetId: %d.\r\n", resetID);
-    TTRACE("bootId: %d.\r\n", bootID);
-    TTRACE("date and time: "); RTC_PrintTime(now());
+    time_t t = now();
+
+    MYTTRACE("resetId: %d.\r\n", resetID);
+    MYTTRACE("bootId: %d.\r\n", bootID);
+    MYTTRACE("date and time: ");
+
+    MYTRACE("%2d:%2d:%2d %s %d %s %4d\r\n",
+		hour(t),
+		minute(t),
+		second(t),
+		dayShortStr(weekday(t)),
+		day(t),
+		monthShortStr(month(t)),
+		year(t)
+	  );
 }
 
 static time_t RTC_GetCompileTime()
@@ -113,7 +125,7 @@ void setupRTC()
     RTC.sramWrite(SRAM_BOOT_OFFSET, bootID+1);
 
 #if RTC_DEBUG
-    RTC_DumpDebug();
+    RTC_DumpDebug(false);
 #endif
 
     TTRACE("init Done.\r\n");

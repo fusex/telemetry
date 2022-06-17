@@ -23,6 +23,18 @@ int resetBoard(int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+int fxtmStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    fxtm_dump(true);
+    return 0;
+}
+
+int rtcStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    RTC_DumpDebug(true);
+    return 0;
+}
+
 void setupShell()
 {
     SHELLdevice.begin(SHELLSERIALBAUD);
@@ -30,6 +42,8 @@ void setupShell()
     shell.addCommand(F("id"), showID);
     shell.addCommand(F("i2c-scan"), scanI2c);
     shell.addCommand(F("reset"), resetBoard);
+    shell.addCommand(F("fxtm"), fxtmStatus);
+    shell.addCommand(F("rtc"), rtcStatus);
 }
 
 void loopShell()

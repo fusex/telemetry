@@ -2,20 +2,12 @@
 #include <Wire.h>
 #include <fusexutil.h>
 
-#define MYTRACE(x, ...) { \
-    if (isConsole) { \
-        CTRACE(x, ##__VA_ARGS__); \
-    } else { \
-        TTRACE(x, ##__VA_ARGS__); \
-    } \
-}
-
 void i2c_scanner (bool isConsole)
 {
   int nDevices = 0;
   Wire.begin();
 
-  MYTRACE("Scanning...");
+  MYTTRACE("Scanning...");
 
   for (byte address = 1; address < 127; ++address) {
       // The i2c_scanner uses the return value of

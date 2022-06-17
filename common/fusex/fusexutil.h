@@ -52,6 +52,22 @@ void fatal(void);
 #define  PRINTMILLIS() PRINT("%.6f",(float)_mymillis()/1000)
 #endif
 
+#define MYTRACE(x, ...) { \
+    if (isConsole) { \
+        CTRACE(x, ##__VA_ARGS__); \
+    } else { \
+        TRACE(x, ##__VA_ARGS__); \
+    } \
+}
+
+#define MYTTRACE(x, ...) { \
+    if (isConsole) { \
+        CTTRACE(x, ##__VA_ARGS__); \
+    } else { \
+        TTRACE(x, ##__VA_ARGS__); \
+    } \
+}
+
 #define CTRACE(x, ...) do { \
     mycprintf(":" x, ##__VA_ARGS__); \
 } while(0)
@@ -59,6 +75,11 @@ void fatal(void);
 #define TTRACE(x, ...) do { \
     PRINTMILLIS(); \
     myprintf(":" TAG "\t: " x, ##__VA_ARGS__); \
+} while(0)
+
+#define CTTRACE(x, ...) do { \
+    PRINTMILLIS(); \
+    mycprintf(":" TAG "\t: " x, ##__VA_ARGS__); \
 } while(0)
 
 #define TRACE(x, ...) myprintf(x, ##__VA_ARGS__)
