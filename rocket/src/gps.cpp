@@ -18,110 +18,77 @@
 
 #define TAG "GPS"
 
+#include <NMEAGPS.h>
+#include <NeoHWSerial.h>
 #include <fusexutil.h>
-#include <Adafruit_GPS.h>
+#include <BGC_Pinout.h>
+
 #include "trame.h"
 #include "init.h"
 
-#if 0
-#define GPS_DEBUG 1
+//------------------------------------------------------------
+// Check that the config files are set up properly
+
+#if !defined( GPS_FIX_LOCATION )
+  #error You must uncomment GPS_FIX_LOCATION in GPSfix_cfg.h!
 #endif
 
-#if 0
-#define GPS_DEBUG2 1
+#if !defined( NMEAGPS_INTERRUPT_PROCESSING )
+  #error You must define NMEAGPS_INTERRUPT_PROCESSING in NMEAGPS_cfg.h!
 #endif
 
-#define RETRYMAX 22000
+#define RETRYMAX 60 // Retry 60 secondes.
+static NMEAGPS gps; // This parses the GPS characters
 
-static Adafruit_GPS GPS(&GPSdevice);
+// The parser is expecting only GNGLL messages at 5Hz rate.
+// Please use ubloxcfg.ino to configure the ublox gps receiver accordingly.
 
-SIGNAL(TIMER0_COMPA_vect) {
-    GPS.read();
-}
+// Complicated macros to perform double indirection inorder to append
+// "Neo" to the Serial name ex: BGC_SerialGPS == Serial1  => GPSdevice == NeoSerial1.
+#define VARIABLE Neo
+#define PASTER(x,y) x ## y
+#define EVALUATOR(x,y)  PASTER(x,y)
+#define NAME(fun) EVALUATOR(VARIABLE, fun)
 
-static void useInterrupt() {
-    OCR0A = 0xAF;
-    TIMSK0 |= _BV(OCIE0A);
-}
+#define GPSdevice NAME(BGC_SerialGPS)
 
-static void getGPSDateTime(char* str)
+static void GPSisr( uint8_t c )
 {
-    sprintf(str,"%d-%d-%d-%dh%dm%d", GPS.year, GPS.month, GPS.day, GPS.hour, GPS.minute, GPS.seconds);
+    gps.handle( c );
 }
 
-static bool isGPSFixed()
+static int receiveGPS ()
 {
-  return !!GPS.fix;
-}
+    int ret = -1;
 
-static void debugGPS()
-{
-    TRACE("\nTime: %d:%d:%d\r\n", GPS.hour, GPS.minute, GPS.seconds, GPS.milliseconds);
-    TRACE("Date: %d/%d/20%d\r\n", GPS.day, GPS.month, GPS.year);
-    TRACE("Satellites: %d Fix: %d Quality: %d\r\n", GPS.satellites, (int)GPS.fix, (int)GPS.fixquality);
-    if (GPS.fix) {
-	PRINT("Location: ");
-	PRINT(GPS.latitude, 4); PRINT(GPS.lat);
-	PRINT(", ");
-	PRINT(GPS.longitude, 4); PRINTLN(GPS.lon);
-	PRINT("Location (in degrees, works with Google Maps): ");
-	PRINT(GPS.latitudeDegrees, 5);
-	PRINT(", "); 
-	PRINTLN(GPS.longitudeDegrees, 5);
-	TRACE("Speed (knots): %d.%d\r\n", (int)GPS.speed, (int)(GPS.speed*100)%100);
-	PRINT("Angle: "); PRINTLN(GPS.angle);
-	PRINT("Altitude: "); PRINTLN(GPS.altitude);
-	PRINT("Satellites: "); PRINTLN((int)GPS.satellites);
-    }
-}
-
-static void receiveGPS()
-{
-    if (GPS.newNMEAreceived()) {
-#ifdef GPS_DEBUG2
-        PRINTLN(GPS.lastNMEA());
-#endif
-	if (!GPS.parse(GPS.lastNMEA()))
-	    return;
-    }
-    if (GPS.fix) {
-        fxtm_setgps(GPS.latitudeDegrees, GPS.longitudeDegrees);
+    if (gps.available()) {
+	gps_fix fix = gps.read();
+	if (fix.valid.location) {
+	    fxtm_setgps(fix.latitude(), fix.longitude());
+	    ret = 0; 
+	}
     }
 
-#ifdef GPS_DEBUG
-    debugGPS();
-#endif
+    return ret;
 }
 
-void setupGps()
+void setupGps ()
 {
-    GPS.begin(GPSSERIALBAUD);
+    bool gpsFixed = false;
 
-    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
-    GPS.sendCommand(PGCMD_ANTENNA);
-    useInterrupt();
+    GPSdevice.attachInterrupt(GPSisr);
+    GPSdevice.begin(GPSSERIALBAUD);
 
-    delay(1000);
-    // Ask for firmware version
-    GPSdevice.println(PMTK_Q_RELEASE);
-    //TODO : check something before mark init done
-
-    // WARNING !!! NO delay() should be called in the next loop from here !
     int retry = 0;
-    while (retry++ < RETRYMAX)
-    {
-        receiveGPS();
-        if (GPS.fix)
-        {
-            debugGPS();
+    while (retry++ < RETRYMAX) {
+        if (receiveGPS() == 0) {
+	    gpsFixed = true;
             break;
-        }
-        TTRACE("....... synchro failed! retry\r\n");
+	}
+	delay(1000);
     }
     //
-    if (!GPS.fix)
-    {
+    if (gpsFixed == false) {
         TTRACE("init Failed ! retry later.\r\n");
         Init_SetFailed();
     } else {
@@ -131,5 +98,8 @@ void setupGps()
 
 void loopGps()
 {
-    receiveGPS();	
+    receiveGPS();
+    if (gps.overrun()) {
+        gps.overrun( false );
+    }
 }

@@ -32,7 +32,7 @@ static void acquire()
     loopPropellant();
     loopAtmos();
     loopIMU();
-    //loopGps();
+    loopGps();
     //loopFlightStatus();
 }
 
@@ -74,7 +74,7 @@ void setup()
     setupAtmos();
     setupIMU();
     setupRadio();
-    //setupGps();
+    setupGps();
     //setupSdcard();
     Init_Finish();
     TTRACE("#########################\n\r");
