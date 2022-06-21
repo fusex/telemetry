@@ -48,3 +48,9 @@
 [submodule "Seeed_ICM20600_AK09918"]
 	path = common/Seeed_ICM20600_AK09918
 	url = https://github.com/Seeed-Studio/Seeed_ICM20600_AK09918
+[submodule "common/NeoHWSerial"]
+	path = common/NeoHWSerial
+	url = https://github.com/SlashDevin/NeoHWSerial
+[submodule "common/NeoGPS"]
+	path = common/NeoGPS
+	url = https://github.com/SlashDevin/NeoGPS
