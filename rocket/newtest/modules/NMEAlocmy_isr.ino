@@ -1,11 +1,8 @@
 #include <NMEAGPS.h>
+#include <NeoHWSerial.h>
 
 //------------------------------------------------------------
 // Check that the config files are set up properly
-
-#if !defined( NMEAGPS_PARSE_RMC )
-  #error You must uncomment NMEAGPS_PARSE_RMC in NMEAGPS_cfg.h!
-#endif
 
 #if !defined( GPS_FIX_LOCATION )
   #error You must uncomment GPS_FIX_LOCATION in GPSfix_cfg.h!
@@ -19,8 +16,8 @@
   #error You must uncomment GPS_FIX_SATELLITES in GPSfix_cfg.h!
 #endif
 
-#ifdef NMEAGPS_INTERRUPT_PROCESSING
-  #error You must *NOT* define NMEAGPS_INTERRUPT_PROCESSING in NMEAGPS_cfg.h!
+#if !defined( NMEAGPS_INTERRUPT_PROCESSING )
+  #error You must define NMEAGPS_INTERRUPT_PROCESSING in NMEAGPS_cfg.h!
 #endif
 
 //------------------------------------------------------------
@@ -29,8 +26,18 @@ static NMEAGPS gps; // This parses the GPS characters
 
 //----------------------------------------------------------------
 
-static void doSomeWork( const gps_fix & fix )
+static void GPSisr( uint8_t c )
 {
+  gps.handle( c );
+
+} // GPSisr
+
+static void printAll( const gps_fix & fix )
+{
+#if 0
+    Serial2.print( fix.dateTime.seconds );
+#endif
+    Serial2.print( ',' );
     Serial2.print( "GF:" );
     Serial2.print( sizeof(gps.fix()) );
     Serial2.print( ',' );
@@ -67,15 +74,16 @@ static void doSomeWork( const gps_fix & fix )
 
     Serial2.println();
 
-} // doSomeWork
+} // printAll
 
 //------------------------------------
+
+#define NeoSerial(x) Neo##x
 
 void setup()
 {
     Serial2.begin(115200);
     while (!Serial2);
-    delay(10000);
 
     Serial2.print( F("NMEAloc.INO: started\n") );
     Serial2.print( F("fix object size = ") );
@@ -84,11 +92,40 @@ void setup()
     Serial2.println( sizeof(gps) );
     Serial2.println( F("Looking for GPS device on Serial1") );
 
-    Serial1.begin(9600);
+#if 1
+    NeoSerial(Serial1).attachInterrupt( GPSisr );
+    NeoSerial(Serial1).begin(9600);
+#else
+  //--configure UART1 of MEGA: Bd = 9600; RXRDY interrupt----
+  UCSR1B = 0b10011000;  //
+  UCSR1C = 0b00000110;  //
+  //-Bd: 9600-------------
+  UBRR1L = 0x67;
+  UBRR1H = 0x00;
+  //--global int enable--
+  bitSet(SREG, 7);
+#endif
 }
+
+#if 0
+ISR(USART1_RX_vect)
+{
+  gps.handle( UDR1 );
+}
+#endif
 
 void loop()
 {
-    while (gps.available(Serial1))
-        doSomeWork( gps.read() );
+    if (gps.available()) {
+        Serial2.println() ;
+        printAll( gps.read() );
+    }
+    delay(100);
+    Serial2.print(".") ;
+#if 1
+    if (gps.overrun()) {
+        gps.overrun( false );
+        Serial2.print("O") ;
+    }
+#endif
 }
