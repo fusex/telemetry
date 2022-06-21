@@ -8,14 +8,6 @@
   #error You must uncomment GPS_FIX_LOCATION in GPSfix_cfg.h!
 #endif
 
-#if !defined( GPS_FIX_ALTITUDE)
-  #error You must uncomment GPS_FIX_LOCATION in GPSfix_cfg.h!
-#endif
-
-#if !defined( GPS_FIX_SATELLITES )
-  #error You must uncomment GPS_FIX_SATELLITES in GPSfix_cfg.h!
-#endif
-
 #if !defined( NMEAGPS_INTERRUPT_PROCESSING )
   #error You must define NMEAGPS_INTERRUPT_PROCESSING in NMEAGPS_cfg.h!
 #endif
@@ -45,10 +37,12 @@ static void printAll( const gps_fix & fix )
     Serial2.print( sizeof(gps) );
     Serial2.print( ',' );
 
+#if 0
     if (fix.valid.satellites)
         Serial2.print( fix.satellites );
     else
         Serial2.print( '?' );
+#endif
 
     Serial2.print( ',' );
 
@@ -66,11 +60,13 @@ static void printAll( const gps_fix & fix )
     }
     Serial2.print( ',' );
 
+#if 0
     if (fix.valid.altitude) {
         Serial2.print( fix.altitude() ); 
     } else {
         Serial2.print( '?' );
     }
+#endif
 
     Serial2.println();
 
