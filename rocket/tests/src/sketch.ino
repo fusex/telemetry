@@ -17,7 +17,7 @@
 #define LED_MAX      LED_FERROR
 
 #define BUZZER          A12
-#define SD_CS_PIN       11
+#define SD_CS_PIN       10
 //#define SPIFLASH_CS_PIN 10
 #define SPIFLASH_CS_PIN 11
 #define LORA_CS_PIN     25

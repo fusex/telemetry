@@ -36,10 +36,9 @@ static void acquire()
     //loopFlightStatus();
 }
 
-
 static void log()
 {
-    //loopSdcard();
+    loopSdcard();
     //fxtm_dump(false);
 }
 
@@ -75,10 +74,10 @@ void setup()
     setupIMU();
     setupRadio();
     setupGps();
-    //setupSdcard();
+    setupSdcard();
     Init_Finish();
     TTRACE("#########################\n\r");
-	TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
+    TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
     scheduler.setTimer(BGC_ACQ_PERIOD, subLoop, scheduler.RUN_FOREVER);
 }
 
