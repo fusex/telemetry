@@ -62,7 +62,7 @@ void subLoop()
     prof_report();
 }
 
-#define BGC_ACQ_PERIOD 1000 // in millis on each second.
+#define BGC_ACQ_PERIOD 100 // in millis on each second.
 
 void setup()
 {
