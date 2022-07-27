@@ -19,12 +19,12 @@ compile:
 	$(ARDUINO_CMD) --verify $(ENTRY_POINY) 
 
 upload:
-	usbrelay BITFT_2=1
+	usbrelay BITFT_2=1 || true
 	fuser -k -15 $(serial-port) || true
 	sleep 5
 	$(ARDUINO_CMD) --upload $(ENTRY_POINY) 
 	sleep 1
-	usbrelay BITFT_2=0
+	usbrelay BITFT_2=0 || true
 
 serial:
 	$(TERMINAL) -b 115200 $(serial-port)
