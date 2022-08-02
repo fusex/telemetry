@@ -115,6 +115,7 @@ void fxtm_setimu2(float a[]);
 void fxtm_settemperature(float temperature);
 void fxtm_settemperature2(float temperature);
 void fxtm_setpressure(float pressure);
+void fxtm_setdiffpressure(uint16_t diffpressure);
 void fxtm_sethumidity(float pressure);
 void fxtm_setflightstatus(uint8_t flightStatus);
 void fxtm_setgps(float latitude, float longitude);

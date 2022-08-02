@@ -66,7 +66,13 @@ void fxtm_settemperature (float temperature)
 void fxtm_setpressure (float pressure)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->pressure = (int)pressure;
+    tm->pressure = (uint16_t)pressure;
+}
+
+void fxtm_setdiffpressure (uint16_t diffpressure)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    tm->diffpressure = (uint16_t)diffpressure;
 }
 
 void fxtm_sethumidity (float humidity)
