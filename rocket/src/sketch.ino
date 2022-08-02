@@ -3,6 +3,7 @@
 #include "init.h"
 #include "imu.h"
 #include "atmos.h"
+#include "pitot.h"
 #include "radio.h"
 #include "gps.h"
 #include "sdcard.h"
@@ -31,6 +32,7 @@ static void acquire()
     loopRTC();
     loopPropellant();
     loopAtmos();
+    loopPitot();
     loopIMU();
     loopGps();
     //loopFlightStatus();
@@ -72,6 +74,7 @@ void setup()
     setupPropellant();
     setupAtmos();
     setupIMU();
+    setupPitot();
     setupRadio();
     setupGps();
     setupSdcard();
