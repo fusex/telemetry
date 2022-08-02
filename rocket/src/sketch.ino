@@ -7,7 +7,6 @@
 #include "radio.h"
 #include "gps.h"
 #include "sdcard.h"
-#include "propellant.h"
 #include "rtc.h"
 #include "prof.h"
 
@@ -18,7 +17,7 @@
 #include "debug.h"
 #include "shell.h"
 
-SimpleTimer scheduler; 
+SimpleTimer scheduler;
 
 static void acquire_fake()
 {
@@ -30,12 +29,10 @@ static void acquire()
 {
     fxtm_reset();
     loopRTC();
-    loopPropellant();
     loopAtmos();
     loopPitot();
     loopIMU();
     loopGps();
-    //loopFlightStatus();
 }
 
 static void log()
@@ -71,7 +68,6 @@ void setup()
     setupInit();
     setupShell();
     setupRTC();
-    setupPropellant();
     setupAtmos();
     setupIMU();
     setupPitot();
