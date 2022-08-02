@@ -4,27 +4,24 @@
 #include <fusexconfig.h>
 #include <fusexutil.h>
 #include <Wire.h>
-#include <BGC_Pinout.h>
+#include <BGC_I2c.h>
 
 #include "trame.h"
-
-
-int address = 0x28;
 
 // I2C COMM
 static uint16_t Pc, Tc;
 static uint8_t PitotStatus;
 
-static void readSensor()
+static int readSensor()
 {
     uint8_t rD1, rD2, rD3, rD4;
 
-    Wire.beginTransmission(address);  // set sensor target
-    Wire.requestFrom(address, 4);    // request four byte
+    Wire.beginTransmission(BGC_I2C_DIFFPRESSURE_ADDR);  // set sensor target
+    Wire.requestFrom(BGC_I2C_DIFFPRESSURE_ADDR, 4);     // request 4 bytes
 
     uint8_t available = Wire.available();
     if (available != 4) {
-        return;
+        return -1; // return as error as sensor is not responding correctly.
     }
 
     // receive 1 ACK + 1 Byte
@@ -37,7 +34,7 @@ static void readSensor()
     rD4 = Wire.read();
     // send 1 NACK + 1 STOP
 
-    Wire.endTransmission(false); 
+    Wire.endTransmission();
 
     PitotStatus = (rD1 >> 6 & 0x3);
     //bit pressure is the last 6 bits of byte 0 (high bits) & all of byte 1 (lowest 8 bits)
@@ -46,35 +43,17 @@ static void readSensor()
     Tc = ( ((uint16_t)rD3 << 3) & 0x7F8 ) | ( ( (uint16_t)(rD4) >> 5) & 0x7 );
 }
 
-static bool isSensorPresent()
-{
-    uint8_t error;
-
-    Wire.beginTransmission(address);
-    error = Wire.endTransmission();
-    if (error == 0) {
-	return true;
-    }
-    return false;
-}
-
 void setupPitot()
 {
-    if (isSensorPresent() == false) {
-        Init_SetFailed();
-    }
-
     TTRACE("init Done.\r\n");
 }
 
 void loopPitot()
 {
-    if (isSensorPresent() == false) {
+    if (readSensor() == -1) {
         fxtm_setflightstatus(FXTM_FLIGHTSTATUS_SEPARATION);
         return;
     }
-
-    readSensor();
 
     if (PitotStatus != 0)  {
         fxtm_settemperature(Tc);
