@@ -108,6 +108,7 @@ static time_t RTC_GetCompileTime()
 
 void setupRTC()
 {
+    module_add(TAG);
 #if 1
     setSyncProvider(RTC.get); // the function to get the time from the RTC
 #else
@@ -129,6 +130,7 @@ void setupRTC()
 #endif
 
     TTRACE("init Done.\r\n");
+    module_setup(TAG, FXTM_SUCCESS);
 }
 
 void loopRTC()

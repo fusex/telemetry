@@ -56,6 +56,12 @@ int resetBoard(int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+int execModules(int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    modules_printall(true);
+    return 0;
+}
+
 int fxtmStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     fxtm_dump(true);
@@ -104,6 +110,7 @@ void setupShell()
     shell.addCommand(F("rtc"), rtcStatus);
     shell.addCommand(F("pause"), execPause);
     shell.addCommand(F("resume"), execResume);
+    shell.addCommand(F("modules"), execModules);
 }
 
 void loopShell()

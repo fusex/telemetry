@@ -238,6 +238,40 @@ void gendata(uint8_t* data, unsigned int size)
     }
 }
 
+typedef struct {
+    char*         module_name;
+    fxtm_error_t  setup_error;
+    fxtm_error_t  run_error;
+} fxtm_module_t;
+
+#define MAX_MODULES 10
+static fxtm_module_t fxtm_modules[MAX_MODULES];
+static uint8_t       fxtm_modules_count = 0;
+
+void module_add(const char* tag)
+{
+    fxtm_modules[fxtm_modules_count++].module_name = tag;
+}
+
+void module_setup(const char* tag, fxtm_error_t error)
+{
+    for (uint8_t i =0; i<fxtm_modules_count; i++) {
+        if (fxtm_modules[i].module_name == tag) {
+            fxtm_modules[i].setup_error = error;
+            break;
+        }
+    }
+}
+
+void modules_printall(bool isConsole)
+{
+    for (uint8_t i =0; i<fxtm_modules_count; i++) {
+        MYTRACE("%s \t\t: %s\r\n",
+                fxtm_modules[i].module_name,
+                fxtm_modules[i].setup_error==FXTM_SUCCESS?"Success":"Failure");
+    }
+}
+
 #ifdef DEBUG
 void printdata(char* data, unsigned int size)
 {

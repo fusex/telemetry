@@ -32,6 +32,14 @@ uint16_t _gen_crc16(const uint8_t *data, uint16_t size);
 void gendata(uint8_t* data, unsigned int size);
 void fatal(void);
 
+typedef uint8_t fxtm_error_t;
+#define FXTM_SUCCESS 0
+#define FXTM_FAILURE 1
+
+void module_add(const char* tag);
+void module_setup(const char* tag, fxtm_error_t error);
+void modules_printall(bool isConsole);
+
 #ifndef TAG
 # define TAG "unknown-module"
 #endif
