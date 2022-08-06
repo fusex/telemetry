@@ -1,4 +1,4 @@
-#define TAG "ATMOS"
+#define TAG "PITOT"
 #include "init.h"
 
 #include <fusexconfig.h>
@@ -10,7 +10,7 @@
 
 // I2C COMM
 static uint16_t Pc, Tc;
-static uint8_t PitotStatus;
+static uint8_t PitotStatus = 0;
 
 static int readSensor()
 {
@@ -41,6 +41,8 @@ static int readSensor()
     Pc = ( (uint16_t)rD1 << 8 & 0x3F00 ) | ( (uint16_t)rD2 & 0xFF );
     //bit temperature is all of byte 2 (lowest 8 bits) and the first three bits of byte 3
     Tc = ( ((uint16_t)rD3 << 3) & 0x7F8 ) | ( ( (uint16_t)(rD4) >> 5) & 0x7 );
+
+    return 0;
 }
 
 void setupPitot()
@@ -57,7 +59,7 @@ void loopPitot()
         return;
     }
 
-    if (PitotStatus != 0)  {
+    if (PitotStatus == 0)  {
         fxtm_settemperature(Tc);
         fxtm_setdiffpressure(Pc);
     }
