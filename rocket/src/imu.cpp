@@ -1,20 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  imu.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  20/05/2017 17:23:34
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Zakaria ElQotbi (zskdan), zakaria@derbsellicon.com
- *        Company:  Derb.io 
- *
- * =====================================================================================
- */
 #define TAG "IMU"
 
 #include "init.h"
@@ -85,32 +68,29 @@ void setupIMU ()
     {
         TTRACE("init ICM20948 Failed! fatal !!!\r\n");
         Init_SetSemiFatal();
-	failed = true;
+        failed = true;
     }
 
     if (initAK() == false)
     {
         TTRACE("init ICM20948-AK Failed! fatal !!!\r\n");
         Init_SetSemiFatal();
-	failed = true;
+        failed = true;
     }
 
     if (initICM20600() == false)
     {
         TTRACE("init ICM20600 Failed! fatal !!!\r\n");
         Init_SetSemiFatal();
-	failed = true;
+        failed = true;
     }
 
     if (failed == false)
-	TTRACE("init Done.\r\n");
+        TTRACE("init Done.\r\n");
 }
 
 void loopIMU ()
 {
-    unsigned long time = micros();
-    unsigned long d1;
-
     myImu.readSensor();
 #if 0
     xyzFloat acc = myImu.getAccRawValues();
@@ -126,12 +106,11 @@ void loopIMU ()
     //float m[] = {mag.x/1000, mag.y/1000, mag.z/1000}; 
     float g[] = {gyr.x, gyr.y, gyr.z};
     float a2[] = {
-	myImuAux.getAccelerationX(),
-	myImuAux.getAccelerationY(),
-	myImuAux.getAccelerationZ()
+        myImuAux.getAccelerationX(),
+        myImuAux.getAccelerationY(),
+        myImuAux.getAccelerationZ()
     };
 
     fxtm_setimu(a, m, g);
     fxtm_setimu2(a2);
-    DTRACE("ZSK packet acquired in:%ld and prepared in %ld us\r\n", d1, micros()-time);
 }

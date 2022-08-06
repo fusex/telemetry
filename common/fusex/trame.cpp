@@ -1,28 +1,12 @@
-/*
- * =====================================================================================
- *
- *       Filename:  trame.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  30/06/2017 22:51:15
- *       Revision:  none
- *       Compiler:  gcc
- *
-*         Author:  Zakaria ElQotbi (zakariae), zakaria.elqotbi@derbsellicon.com
-*        Company:  Derb.io 
- *
- * =====================================================================================
- */
 #define TAG "FXTM"
 
 #include <stddef.h>
-#include "fusexutil.h"
+#include <fusexutil.h>
+
 #include "trame.h"
 
 static fxtm_block_t fxtmblock;
-static uint16_t idCounter = 0;
+static uint16_t     idCounter = 0;
 
 void fxtm_gendata ()
 {
@@ -47,7 +31,7 @@ void fxtm_setimu (float a[], float m[], float g[])
 {
     fxtm_data_t* tm = &fxtmblock.data;
     IMU_SENSOR_SET(accel, tm, (int32_t)(a[0]*IMUFACTOR), (int32_t)(a[1]*IMUFACTOR), (int32_t)(a[2]*IMUFACTOR));
-    IMU_SENSOR_SET(gyro,   tm, (int32_t)(g[0]*IMUFACTOR), (int32_t)(g[1]*IMUFACTOR), (int32_t)(g[2]*IMUFACTOR));
+    IMU_SENSOR_SET(gyro,  tm, (int32_t)(g[0]*IMUFACTOR), (int32_t)(g[1]*IMUFACTOR), (int32_t)(g[2]*IMUFACTOR));
     IMU_SENSOR_SET(magn,  tm, (int32_t)(m[0]*IMUFACTOR), (int32_t)(m[1]*IMUFACTOR), (int32_t)(m[2]*IMUFACTOR));
 }
 

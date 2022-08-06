@@ -1,21 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  fusexutil.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  21/05/2017 22:06:08
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Zakaria ElQotbi (zskdan), zakaria@derbsellicon.com
- *        Company:  Derb.io 
- *
- * =====================================================================================
- */
-
 #include <string.h>
 
 #include "fusexutil.h"

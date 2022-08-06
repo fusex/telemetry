@@ -1,12 +1,12 @@
 #define TAG "PITOT"
-#include "init.h"
 
-#include <fusexconfig.h>
-#include <fusexutil.h>
 #include <Wire.h>
 #include <BGC_I2c.h>
+#include <fusexconfig.h>
+#include <fusexutil.h>
+#include <trame.h>
 
-#include "trame.h"
+#include "init.h"
 
 // I2C COMM
 static uint16_t Pc, Tc;

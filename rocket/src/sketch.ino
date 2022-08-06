@@ -1,5 +1,9 @@
 #define TAG "MAIN"
 
+#include <SimpleTimer.h>
+#include <fusexutil.h>
+#include <trame.h>
+
 #include "init.h"
 #include "imu.h"
 #include "atmos.h"
@@ -9,10 +13,6 @@
 #include "sdcard.h"
 #include "rtc.h"
 #include "prof.h"
-
-#include <SimpleTimer.h>
-#include <fusexutil.h>
-#include "trame.h"
 #include "sdcard.h"
 #include "debug.h"
 #include "shell.h"

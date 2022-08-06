@@ -1,15 +1,17 @@
+#define TAG "SHELL"
+
 #include <Arduino.h>
 #include <SimpleSerialShell.h>
+#include <fusexutil.h>
+#include <trame.h>
 
-#include "fusexutil.h"
 #include "init.h"
 #include "debug.h"
 #include "version.h"
-#include "trame.h"
 #include "prof.h"
 #include "rtc.h"
 
-int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     shell.println(F(
 		    "Built "   __DATE__ ":" __TIME__"\n\r"
@@ -19,77 +21,99 @@ int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
-int readI2c(int argc, char** argv)
+static int readI2c(int argc, char** argv)
 {
     if (argc != 3) {
-	shell.println("bad argument count");
-	return -1;
+        shell.println("bad argument count");
+        return -1;
     }
+
     uint8_t address = strtol(argv[1], NULL, 16);
     uint8_t reg = strtol(argv[2], NULL, 16);
     uint8_t val = i2c_read(true, address, reg);
+
     shell.println(val, HEX);
+
+    return 0;
 }
 
-int writeI2c(int argc, char** argv)
+static int writeI2c(int argc, char** argv)
 {
     if (argc != 4) {
-	shell.println("bad argument count");
-	return -1;
+        shell.println("bad argument count");
+        return -1;
     }
+
     uint8_t address = strtol(argv[1], NULL, 16);
     uint8_t reg = strtol(argv[2], NULL, 16);
     uint8_t val = strtol(argv[3], NULL, 16);
 
     i2c_write(true, address, reg, val);
+
+    return 0;
 }
 
-int scanI2c(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int scanI2c(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     i2c_scanner(true);
+
     return 0;
 }
 
-int resetBoard(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int resetBoard(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     Init_ResetBoard();
+
     return 0;
 }
 
-int execModules(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int execModules(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     modules_printall(true);
+
     return 0;
 }
 
-int fxtmStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int fxtmStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     fxtm_dump(true);
+
     return 0;
 }
 
-int profStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int profStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     prof_dump(true);
+
     return 0;
 }
 
-int rtcStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int rtcStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     RTC_DumpDebug(true);
+
     return 0;
 }
 
 static bool isPaused = false;
-int execPause(int /*argc*/ = 0, char** /*argv*/ = NULL)
+
+static int execPause(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     isPaused = true;
+
+    return 0;
 }
 
-int execResume(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int execResume(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     isPaused = false;
+
+    return 0;
 }
+
+/* #########################################
+                    Public
+   ######################################### */
 
 bool execIsPaused()
 {
