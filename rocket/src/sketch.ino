@@ -1,6 +1,5 @@
 #define TAG "MAIN"
 
-#include <SimpleTimer.h>
 #include <fusexutil.h>
 #include <trame.h>
 
@@ -16,8 +15,7 @@
 #include "sdcard.h"
 #include "debug.h"
 #include "shell.h"
-
-SimpleTimer scheduler;
+#include "exec.h"
 
 static void acquire_fake()
 {
@@ -61,8 +59,6 @@ void subLoop()
     prof_report();
 }
 
-#define BGC_ACQ_PERIOD 100 // in millis on each second.
-
 void setup()
 {
     setupInit();
@@ -74,16 +70,16 @@ void setup()
     setupRadio();
     setupGps();
     setupSdcard();
+    setupExec();
+
     Init_Finish();
+
     TTRACE("#########################\n\r");
     TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
-    scheduler.setTimer(BGC_ACQ_PERIOD, subLoop, scheduler.RUN_FOREVER);
 }
 
 void loop()
 {
     loopShell();
-    if (!execIsPaused()) {
-        scheduler.run();
-    }
+    loopExec();
 }

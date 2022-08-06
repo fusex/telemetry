@@ -10,6 +10,7 @@
 #include "version.h"
 #include "prof.h"
 #include "rtc.h"
+#include "exec.h"
 
 static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
