@@ -96,18 +96,16 @@ static int rtcStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
-static bool isPaused = false;
-
 static int execPause(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-    isPaused = true;
+    execSetPaused(true);
 
     return 0;
 }
 
 static int execResume(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-    isPaused = false;
+    execSetPaused(false);
 
     return 0;
 }
@@ -115,11 +113,6 @@ static int execResume(int /*argc*/ = 0, char** /*argv*/ = NULL)
 /* #########################################
                     Public
    ######################################### */
-
-bool execIsPaused()
-{
-    return isPaused;
-}
 
 void setupShell()
 {
