@@ -4,9 +4,9 @@
 #include <Arduino.h>
 #include <avr/wdt.h>
 #include <stdbool.h>
+#include <trame.h>
+#include <BGC_Pinout.h>
 
-#include "trame.h"
-#include "BGC_Pinout.h"
 #include "rtc.h"
 #include "version.h"
 

@@ -52,7 +52,7 @@
 # endif
 
 # ifdef CONFIG_RADIO
-# define CONFIG_TEST_RADIO
+#  define CONFIG_TEST_RADIO
 # endif
 
 # ifdef CONFIG_IMU
