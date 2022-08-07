@@ -1,21 +1,3 @@
-/*
-* =====================================================================================
-*
-*       Filename:  trame.h
-*
-*    Description:  
-*
-*        Version:  1.0
-*        Created:  05/02/2017 01:09:39 PM
-*       Revision:  none
-*       Compiler:  gcc
-*
-*         Author:  Zakaria ElQotbi (zakariae), zakaria.elqotbi@derbsellicon.com
-*        Company:  Derb.io 
-*
-* =====================================================================================
-*/
-
 #ifndef _TRAME_H
 #define _TRAME_H
 
