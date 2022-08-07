@@ -56,11 +56,14 @@ void loopPitot()
 {
     if (readSensor() == -1) {
         fxtm_setflightstatus(FXTM_FLIGHTSTATUS_SEPARATION);
+	DYNTTRACE("SEPARATION detection\r\n");
         return;
     }
 
     if (PitotStatus == 0)  {
         fxtm_settemperature(Tc);
         fxtm_setdiffpressure(Pc);
+    } else {
+	DYNTTRACE(" PitotStatus:0x%x\r\n", PitotStatus);
     }
 }
