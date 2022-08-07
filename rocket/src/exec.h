@@ -1,8 +1,7 @@
 #ifndef _EXEC_H
 #define _EXEC_H
 
-void execSetPaused(bool paused);
-bool execIsPaused();
+void exec_pausedSet(bool paused);
 
 void setupExec();
 void loopExec();

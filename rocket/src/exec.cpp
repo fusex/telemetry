@@ -4,18 +4,13 @@
 
 #define BGC_ACQ_PERIOD 100 // in millis on each second.
 
-SimpleTimer scheduler;
+static SimpleTimer scheduler;
 
 static bool isPaused = false;
 
 extern void subLoop();
 
-bool execIsPaused()
-{
-    return isPaused;
-}
-
-void execSetPaused(bool paused)
+void exec_pausedSet(bool paused)
 {
     isPaused = paused;
 }
@@ -27,7 +22,7 @@ void setupExec()
 
 void loopExec()
 {
-    if (!execIsPaused()) {
+    if (!isPaused) {
         scheduler.run();
     }
 }

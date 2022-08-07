@@ -98,14 +98,15 @@ static int rtcStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
 
 static int execPause(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-    execSetPaused(true);
+    exec_pausedSet(true);
 
     return 0;
 }
 
 static int execResume(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-    execSetPaused(false);
+    exec_pausedSet(false);
+
 
     return 0;
 }
