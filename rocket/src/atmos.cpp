@@ -10,12 +10,6 @@
 
 #include "init.h"
 
-#if 0
-# define TEMPERATURE_FROM_BMP
-#else
-# define TEMPERATURE_FROM_HDC100
-#endif
-
 static ClosedCube_HDC1080 hdc1080;
 static Adafruit_BMP280    bmp;
 
@@ -41,7 +35,7 @@ void setupAtmos ()
 
 void loopAtmos ()
 {
-#ifdef TEMPERATURE_FROM_BMP
+#ifdef CONFIG_TEMPERATURE_FROM_BMP
     float temperature = bmp.readTemperature();
 #else
     float temperature = hdc1080.readTemperature();

@@ -34,6 +34,18 @@
 #define CONFIG_PROPELLANT
 #define CONFIG_GPS
 
+#if 1
+# define CONFIG_TEMPERATURE_FROM_HDC100
+#endif
+
+#if 0
+# define CONFIG_TEMPERATURE_FROM_BMP
+#endif
+
+#if 0
+# define CONFIG_TEMPERATURE_FROM_PITOT
+#endif
+
 #ifdef CONFIG_TEST
 # ifdef CONFIG_SDCARD
 #  define CONFIG_TEST_SDCARD
