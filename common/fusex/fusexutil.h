@@ -22,6 +22,9 @@
 extern SoftwareSerial SWSerial;
 #endif
 
+void dynTrace_enable(bool enable);
+bool dynTrace_isEnable();
+
 void _myprintf(const  _FMT_FLASH_TYPE *fmt, ... );
 void _mycprintf(const  _FMT_FLASH_TYPE *fmt, ... );
 unsigned long _mymillis();
@@ -70,6 +73,14 @@ void modules_printall(bool isConsole);
 
 #define MYTTRACE(x, ...) { \
     if (isConsole) { \
+        CTTRACE(x, ##__VA_ARGS__); \
+    } else { \
+        TTRACE(x, ##__VA_ARGS__); \
+    } \
+}
+
+#define DYNTTRACE(x, ...) { \
+    if (dynTrace_isEnable()) { \
         CTTRACE(x, ##__VA_ARGS__); \
     } else { \
         TTRACE(x, ##__VA_ARGS__); \

@@ -8,6 +8,18 @@ static SoftwareSerial SWSerial(2, 3);
 
 #define CRC16 0x8005
 
+static bool GdynTrace = false;
+
+void dynTrace_enable(bool enable)
+{
+    GdynTrace = enable;
+}
+
+bool dynTrace_isEnable()
+{
+    return GdynTrace;
+}
+
 //Check routine taken from
 //http://web.mit.edu/6.115/www/miscfiles/amulet/amulet-help/xmodem.htm
 int calcrc16(const uint8_t *ptr, uint16_t count)

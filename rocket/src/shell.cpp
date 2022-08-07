@@ -107,6 +107,19 @@ static int execResume(int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     exec_pausedSet(false);
 
+    return 0;
+}
+
+static int dynTraceOn(int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    dynTrace_enable(true);
+
+    return 0;
+}
+
+static int dynTraceOff(int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    dynTrace_enable(false);
 
     return 0;
 }
@@ -130,6 +143,8 @@ void setupShell()
     shell.addCommand(F("pause"), execPause);
     shell.addCommand(F("resume"), execResume);
     shell.addCommand(F("modules"), execModules);
+    shell.addCommand(F("trace"), dynTraceOn);
+    shell.addCommand(F("notrace"), dynTraceOff);
 }
 
 void loopShell()
