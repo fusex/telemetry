@@ -12,6 +12,10 @@ static uint32_t prof_max = 0;
 static uint32_t prof_last = 0;
 #define PROF_LOOP 200UL
 
+#if 0
+# define DEBUG
+#endif
+
 void prof_start ()
 {
     prof_time = micros();
@@ -32,8 +36,10 @@ void prof_report ()
     if (prof_last>prof_max) prof_max = prof_last;
     prof_avg = prof_cumul/10;
 
+#if DEBUG
     TTRACE("Loop in:%lu (avg:%lu, max:%lu)\r\n", 
             prof_last, prof_avg, prof_max);
+#endif
 }
 
 #else
