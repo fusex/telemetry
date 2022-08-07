@@ -29,9 +29,9 @@ static int readI2c(int argc, char** argv)
         return -1;
     }
 
-    uint8_t address = strtol(argv[1], NULL, 16);
+    uint8_t adr = strtol(argv[1], NULL, 16);
     uint8_t reg = strtol(argv[2], NULL, 16);
-    uint8_t val = i2c_read(true, address, reg);
+    uint8_t val = i2c_read(true, adr, reg);
 
     shell.println(val, HEX);
 
@@ -45,11 +45,11 @@ static int writeI2c(int argc, char** argv)
         return -1;
     }
 
-    uint8_t address = strtol(argv[1], NULL, 16);
+    uint8_t adr = strtol(argv[1], NULL, 16);
     uint8_t reg = strtol(argv[2], NULL, 16);
     uint8_t val = strtol(argv[3], NULL, 16);
 
-    i2c_write(true, address, reg, val);
+    i2c_write(true, adr, reg, val);
 
     return 0;
 }
