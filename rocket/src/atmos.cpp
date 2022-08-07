@@ -10,6 +10,12 @@
 
 #include "init.h"
 
+#if 0
+# define TEMPERATURE_FROM_BMP
+#else
+# define TEMPERATURE_FROM_HDC100
+#endif
+
 static ClosedCube_HDC1080 hdc1080;
 static Adafruit_BMP280    bmp;
 
@@ -35,13 +41,15 @@ void setupAtmos ()
 
 void loopAtmos ()
 {
+#ifdef TEMPERATURE_FROM_BMP
     float temperature = bmp.readTemperature();
-    float pressure = bmp.readPressure();
-    float humidity = hdc1080.readHumidity();
-    float temperature2 = hdc1080.readTemperature();
+#else
+    float temperature = hdc1080.readTemperature();
+#endif
+    float humidity   = hdc1080.readHumidity();
+    float pressure   = bmp.readPressure();
 
     fxtm_settemperature(temperature);
-    fxtm_settemperature2(temperature2);
     fxtm_setpressure(pressure);
     fxtm_sethumidity(humidity);
 }

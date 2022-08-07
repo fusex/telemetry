@@ -41,7 +41,6 @@ typedef struct {
     uint16_t      diffpressure;
 
     int8_t        temperature;
-    int8_t        temperature2;
     uint8_t       humidity;
 #if 0
     uint8_t       soundLevel;
@@ -115,7 +114,6 @@ void fxtm_setsoundlvl(unsigned int level);
 void fxtm_setimu(float a[], float m[], float g[]);
 void fxtm_setimu2(float a[]);
 void fxtm_settemperature(float temperature);
-void fxtm_settemperature2(float temperature);
 void fxtm_setpressure(float pressure);
 void fxtm_setdiffpressure(uint16_t diffpressure);
 void fxtm_sethumidity(float pressure);

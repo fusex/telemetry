@@ -8,6 +8,10 @@
 
 #include "init.h"
 
+#if 0
+# define TEMPERATURE_FROM_PITOT
+#endif
+
 // I2C COMM
 static uint16_t Pc, Tc;
 static uint8_t  PitotStatus = 0;
@@ -69,7 +73,9 @@ void loopPitot ()
                 separation = false;
                 DYNTTRACE(" REINSERTION detected\r\n");
             }
+#ifdef TEMPERATURE_FROM_PITOT
             fxtm_settemperature(Tc);
+#endif
             fxtm_setdiffpressure(Pc);
         } else {
             DYNTTRACE(" Error PitotStatus:0x%x\r\n", PitotStatus);

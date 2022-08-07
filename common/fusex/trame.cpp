@@ -59,12 +59,6 @@ void fxtm_sethumidity (float humidity)
     tm->humidity = (uint8_t) humidity;
 }
 
-void fxtm_settemperature2 (float temp)
-{
-    fxtm_data_t* tm = &fxtmblock.data;
-    tm->temperature2 = (int8_t)temp;
-}
-
 void fxtm_setgps (float latitude, float longitude)
 {
     fxtm_data_t* tm = &fxtmblock.data;
@@ -180,13 +174,6 @@ void fxtm_gethumidity (fxtm_data_t* tm, int8_t* phumidity)
     *phumidity = tm->humidity;
 }
 
-void fxtm_gettemperature2 (fxtm_data_t* tm, int8_t* ptemp)
-{
-    if(tm == NULL)
-	    tm = &fxtmblock.data;
-    *ptemp = tm->temperature2;
-}
-
 void fxtm_getflightstatus (fxtm_data_t* tm, uint8_t* pFlightStatus)
 {
     if(tm == NULL)
@@ -275,9 +262,8 @@ void fxtm_dump (bool isConsole)
 #if 0
     MYTRACE("\tsound level: %u\r\n",tm->soundLevel);
 #endif
-    MYTRACE("\ttemperature: %d C, pressure:%u pa, diffpressure:%u pa\r\n",
-	  tm->temperature, tm->pressure, tm->diffpressure);
-    MYTRACE("\ttemperature2: %d C, humidity:%u %%\r\n", tm->temperature2, tm->humidity);
+    MYTRACE("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
+    MYTRACE("\ttemperature: %d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
     MYTRACE("\t accel[0]: %6ld,  accel[1]: %6ld,   accel[2]: %6ld\r\n", a[0], a[1], a[2]);
     MYTRACE("\t  gyro[0]: %6ld,   gyro[1]: %6ld,    gyro[2]: %6ld\r\n", g[0], g[1], g[2]);
     MYTRACE("\t  magn[0]: %6ld,   magn[1]: %6ld,    magn[2]: %6ld\r\n", m[0], m[1], m[2]);
