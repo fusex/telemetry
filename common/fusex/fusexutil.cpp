@@ -107,16 +107,14 @@ char* mystrchr(char* fmt)
 {
     char* n = fmt;
     while(1){
-	if(*n == '%' &&
-	    ( *(n+1) == 'f' ||
-	      ( *(n+2) == 'f' && isdigit(*(n+1)))
-            )
-          )
-        {
-	   return n;
-	}
-	if(*n==0)
-	    return NULL;
+        if(*n == '%' && (
+            *(n+1) == 'f' ||
+            ( *(n+2) == 'f' && isdigit(*(n+1)))
+            )) {
+            return n;
+        }
+        if(*n==0)
+            return NULL;
         n++;
     }
 }
@@ -130,19 +128,19 @@ void _myprintf2(const char *fmt, ... )
 
     va_start(args, fmt);
     do {
-	unsigned int factor = 100;
+        unsigned int factor = 100;
         char *q = mystrchr(p);
         if (q) {
             *q++ = '\0';
             char f = *q++;
             if(isdigit(f)) {
-		factor = pow(10, f-'0');
-		q++;
-	    }
+                factor = pow(10, f-'0');
+                q++;
+            }
         }
-	buf += vsnprintf(buf, strlen(buf), (const char *)fmt, args); // for the rest of the world
+        buf += vsnprintf(buf, strlen(buf), (const char *)fmt, args); // for the rest of the world
         if (q) {
-	    double f = va_arg(args, double);
+            double f = va_arg(args, double);
             buf += sprintf(buf, "%d.%d", (int)f,(int)(f*factor)%factor);
         }
         p = q;
@@ -224,7 +222,7 @@ char *ftoa(char *a, double f, int precision = 100)
 void gendata(uint8_t* data, unsigned int size)
 {
     if (size == 0)
-	return;
+        return;
 
     while (size--) {
         *data = _myrandom(32, 126);
@@ -274,11 +272,11 @@ void modules_printall(bool isConsole)
 #ifdef DEBUG
 void printdata(char* data, unsigned int size)
 {
-    for(int i=0;i<RH_RF95_MAX_MESSAGE_LEN;i++) {
-	DEBUGdevice.print("byte ");
-	DEBUGdevice.print(i);
-	DEBUGdevice.print(" = ");
-	DEBUGdevice.println(data[i]);
+    for(int i=0;i<size;i++) {
+        DEBUGdevice.print("byte ");
+        DEBUGdevice.print(i);
+        DEBUGdevice.print(" = ");
+        DEBUGdevice.println(data[i]);
     }
 }
 #endif

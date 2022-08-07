@@ -8,17 +8,17 @@
 # define _FMT_FLASH_TYPE __FlashStringHelper
 #else
 # define _FMT_FLASH_TYPE char
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdarg.h>
-#include <math.h> 
-#include <sys/time.h>
+# include <stdint.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <ctype.h>
+# include <stdarg.h>
+# include <math.h>
+# include <sys/time.h>
 #endif
 
 #if _IS_BASE
-#include <SoftwareSerial.h>
+# include <SoftwareSerial.h>
 extern SoftwareSerial SWSerial;
 #endif
 
@@ -54,13 +54,13 @@ void modules_printall(bool isConsole);
 # define PRINTS(x)       DEBUGdevice.print(x)
 # define CPRINTS(x)      SHELLdevice.print(x)
 # define PRINTLN(x, ...) DEBUGdevice.println(x, ##__VA_ARGS__)
-#define  PRINTMILLIS() PRINT((float)_mymillis()/1000,6)
+# define PRINTMILLIS() PRINT((float)_mymillis()/1000,6)
 #else
 # define myprintf(a, ...) _myprintf(a, ##__VA_ARGS__)
 # define PRINT(x, ...)   printf(x, ##__VA_ARGS__)
 # define PRINTS(x)   printf("%s", x)
 # define PRINTLN(x, ...) printf(x"\n", ##__VA_ARGS__)
-#define  PRINTMILLIS() PRINT("%.6f",(float)_mymillis()/1000)
+# define PRINTMILLIS() PRINT("%.6f",(float)_mymillis()/1000)
 #endif
 
 #define MYTRACE(x, ...) { \
