@@ -50,30 +50,30 @@ void Init_Finish ()
 {
     uint16_t rid = RTC_GetResetID();
 
-    if(rid>MAXRESET)
-	    RTC_ResetResetID();
+    if (rid>MAXRESET)
+        RTC_ResetResetID();
 
     rid = RTC_GetResetID();
 
-    if(!initfailed) {
-	    digitalWrite(BGC_LED4_FERROR, LOW);
-	    TTRACE("Rocket init Done\r\n");
-     } else {
-	    TTRACE("Rocket init failed !\r\n");
-	    for(int i=0;i<100;i++) {
-	        digitalWrite(BGC_LED4_FERROR, LOW);
-	        delay(100);
-	        digitalWrite(BGC_LED4_FERROR, HIGH);
-	        delay(100);
-	    }
+    if (!initfailed) {
+        digitalWrite(BGC_LED4_FERROR, LOW);
+        TTRACE("Rocket init Done\r\n");
+    } else {
+        TTRACE("Rocket init failed !\r\n");
+        for(int i=0;i<100;i++) {
+            digitalWrite(BGC_LED4_FERROR, LOW);
+            delay(100);
+            digitalWrite(BGC_LED4_FERROR, HIGH);
+            delay(100);
+        }
 
-	    TTRACE("rid :%d and semifatalcount:%d!\r\n",rid,semifatalcount);
+        TTRACE("rid :%d and semifatalcount:%d!\r\n",rid,semifatalcount);
 
-	    if(semifatalcount==MAXFATAL && rid<MAXRESET) {
-	        RTC_SetResetID();
-	        TTRACE("FATAL init detected! reset !\r\n");
-		Init_ResetBoard();
-	    }
+        if (semifatalcount == MAXFATAL && rid<MAXRESET) {
+            RTC_SetResetID();
+            TTRACE("FATAL init detected! reset !\r\n");
+            Init_ResetBoard();
+        }
     }
     TTRACE("#######################\r\n");
 }

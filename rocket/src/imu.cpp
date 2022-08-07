@@ -78,9 +78,8 @@ void setupIMU ()
     }
 #endif
 
-    if (initICM20600() == false)
-    {
-        TTRACE("init ICM20600 Failed! fatal !!!\r\n");
+    if (initICM20600() == false) {
+        CTRACE("init ICM20600 Failed! fatal !!!\r\n");
         failed = true;
     }
 
