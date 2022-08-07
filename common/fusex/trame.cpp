@@ -21,12 +21,6 @@ void fxtm_reset ()
     fxtmblock.timestamp = _mymillis();
 }
 
-void fxtm_setsoundlvl (unsigned int level)
-{
-    fxtm_data_t* tm = &fxtmblock.data;
-    tm->soundLevel = (uint8_t)(level/4);
-}
-
 void fxtm_setimu (float a[], float m[], float g[])
 {
     fxtm_data_t* tm = &fxtmblock.data;
@@ -157,12 +151,20 @@ void fxtm_getid (fxtm_data_t* tm, uint16_t* pid)
     *pid = tm->id;
 }
 
+#if 0
 void fxtm_getsoundlvl (fxtm_data_t* tm, uint8_t* psndlvl)
 {
     if(tm == NULL)
 	    tm = &fxtmblock.data;
     *psndlvl = tm->soundLevel;
 }
+
+void fxtm_setsoundlvl (unsigned int level)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    tm->soundLevel = (uint8_t)(level/4);
+}
+#endif
 
 void fxtm_gettemperature (fxtm_data_t* tm, int8_t* ptemp)
 {
@@ -270,7 +272,9 @@ void fxtm_dump (bool isConsole)
             "ERROR", tm->flightStatus);
 }
 
+#if 0
     MYTRACE("\tsound level: %u\r\n",tm->soundLevel);
+#endif
     MYTRACE("\ttemperature: %d C, pressure:%u pa, diffpressure:%u pa\r\n",
 	  tm->temperature, tm->pressure, tm->diffpressure);
     MYTRACE("\ttemperature2: %d C, humidity:%u %%\r\n", tm->temperature2, tm->humidity);

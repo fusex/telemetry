@@ -43,7 +43,9 @@ typedef struct {
     int8_t        temperature;
     int8_t        temperature2;
     uint8_t       humidity;
+#if 0
     uint8_t       soundLevel;
+#endif
     uint8_t       battLevel;
     uint8_t       flightStatus;
 
