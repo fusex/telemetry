@@ -1,21 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  propellant.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  20/05/2017 17:23:34
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Zakaria ElQotbi (zskdan), zakaria@derbsellicon.com
- *        Company:  Derb.io 
- *
- * =====================================================================================
- */
-
 #define TAG "SND"
 
 #include <Arduino.h>
@@ -31,12 +13,14 @@ const static int thresholdvalue=490; //The threshold
 #define SOUNDSENSOR_DEBUG
 #endif
 
-void setupPropellant()
+void setupPropellant ()
 {
-   TTRACE("init Done\n\r");
+    module_add(TAG);
+    TTRACE("init Done\n\r");
+    module_setup(TAG, FXTM_SUCCESS);
 }
 
-void loopPropellant()
+void loopPropellant ()
 {
     int sensorValue = analogRead(BGC_SOUND_SENSOR);
 

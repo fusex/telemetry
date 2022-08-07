@@ -22,7 +22,7 @@ static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
-static int readI2c(int argc, char** argv)
+static int readI2c (int argc, char** argv)
 {
     if (argc != 3) {
         shell.println("bad argument count");
@@ -38,7 +38,7 @@ static int readI2c(int argc, char** argv)
     return 0;
 }
 
-static int writeI2c(int argc, char** argv)
+static int writeI2c (int argc, char** argv)
 {
     if (argc != 4) {
         shell.println("bad argument count");
@@ -54,28 +54,28 @@ static int writeI2c(int argc, char** argv)
     return 0;
 }
 
-static int scanI2c(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int scanI2c (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     i2c_scanner(true);
 
     return 0;
 }
 
-static int resetBoard(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int resetBoard (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     Init_ResetBoard();
 
     return 0;
 }
 
-static int execModules(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int execModules (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     modules_printall(true);
 
     return 0;
 }
 
-static int fxtmStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int fxtmStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     fxtm_dump(true);
     CTRACE("\n\tfxtm_data size:%d\n\r", fxtm_getdatasize());
@@ -83,42 +83,42 @@ static int fxtmStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
-static int profStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int profStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     prof_dump(true);
 
     return 0;
 }
 
-static int rtcStatus(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int rtcStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     RTC_DumpDebug(true);
 
     return 0;
 }
 
-static int execPause(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int execPause (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     exec_pausedSet(true);
 
     return 0;
 }
 
-static int execResume(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int execResume (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     exec_pausedSet(false);
 
     return 0;
 }
 
-static int dynTraceOn(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int dynTraceOn (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     dynTrace_enable(true);
 
     return 0;
 }
 
-static int dynTraceOff(int /*argc*/ = 0, char** /*argv*/ = NULL)
+static int dynTraceOff (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     dynTrace_enable(false);
 
@@ -129,8 +129,10 @@ static int dynTraceOff(int /*argc*/ = 0, char** /*argv*/ = NULL)
                     Public
    ######################################### */
 
-void setupShell()
+void setupShell ()
 {
+    module_add(TAG);
+
     SHELLdevice.begin(SHELLSERIALBAUD);
     shell.attach(SHELLdevice);
     shell.addCommand(F("id"), showID);
@@ -146,9 +148,12 @@ void setupShell()
     shell.addCommand(F("modules"), execModules);
     shell.addCommand(F("trace"), dynTraceOn);
     shell.addCommand(F("notrace"), dynTraceOff);
+
+    TTRACE("init Done.\r\n");
+    module_setup(TAG, FXTM_SUCCESS);
 }
 
-void loopShell()
+void loopShell ()
 {
     shell.executeIfInput();
 }

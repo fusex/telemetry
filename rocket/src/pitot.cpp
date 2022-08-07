@@ -13,7 +13,7 @@ static uint16_t Pc, Tc;
 static uint8_t  PitotStatus = 0;
 static bool     separation = false;
 
-static fxtm_error_t readSensor()
+static fxtm_error_t readSensor ()
 {
     uint8_t rD1, rD2, rD3, rD4;
 
@@ -46,33 +46,33 @@ static fxtm_error_t readSensor()
     return FXTM_SUCCESS;
 }
 
-void setupPitot()
+void setupPitot ()
 {
     module_add(TAG);
     TTRACE("init Done.\r\n");
     module_setup(TAG, FXTM_SUCCESS);
 }
 
-void loopPitot()
+void loopPitot ()
 {
     fxtm_error_t ret = readSensor();
 
     if (ret == FXTM_FAILURE) {
-	if (separation == false) {
-	    separation = true;
-	    fxtm_setflightstatus(FXTM_FLIGHTSTATUS_SEPARATION);
-	    DYNTTRACE(" SEPARATION detected\r\n");
-	}
+        if (separation == false) {
+            separation = true;
+            fxtm_setflightstatus(FXTM_FLIGHTSTATUS_SEPARATION);
+            DYNTTRACE(" SEPARATION detected\r\n");
+        }
     } else {
-	if (PitotStatus == 0) {
-	    if (separation == true) {
-		separation = false;
-		DYNTTRACE(" REINSERTION detected\r\n");
-	    }
-	    fxtm_settemperature(Tc);
-	    fxtm_setdiffpressure(Pc);
-	} else {
-	    DYNTTRACE(" Error PitotStatus:0x%x\r\n", PitotStatus);
-	}
+        if (PitotStatus == 0) {
+            if (separation == true) {
+                separation = false;
+                DYNTTRACE(" REINSERTION detected\r\n");
+            }
+            fxtm_settemperature(Tc);
+            fxtm_setdiffpressure(Pc);
+        } else {
+            DYNTTRACE(" Error PitotStatus:0x%x\r\n", PitotStatus);
+        }
     }
 }

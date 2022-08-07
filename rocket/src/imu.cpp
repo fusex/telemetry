@@ -1,17 +1,15 @@
 #define TAG "IMU"
 
-#include "init.h"
 #include <fusexconfig.h>
 #include <fusexutil.h>
-
-#include "Wire.h"
-
-#include "BGC_Pinout.h"
-#include "BGC_I2c.h"
-#include "trame.h"
-
+#include <Wire.h>
+#include <BGC_Pinout.h>
+#include <BGC_I2c.h>
+#include <trame.h>
 #include <ICM20948_WE.h>
 #include "ICM20600.h"
+
+#include "init.h"
 
 #define isAD0(x) (x&1)
 ICM20948_WE myImu = ICM20948_WE(BGC_I2C_MAIN_IMU_ADDR);
@@ -24,7 +22,7 @@ ICM20600    myImuAux = ICM20600(isAD0(BGC_I2C_AUX_IMU_ADDR));
 static int initICM20948 ()
 {
     if (myImu.init() == false)
-	return false;
+        return false;
 
 #ifdef IMU_CALIBRATION
     myImu.autoOffsets();
@@ -44,7 +42,7 @@ static int initICM20948 ()
 static int initAK ()
 {
     if (!myImu.initMagnetometer())
-	return false;
+        return false;
 
     myImu.setMagOpMode(AK09916_CONT_MODE_20HZ);
 
@@ -61,32 +59,38 @@ static int initICM20600 ()
 
 void setupIMU ()
 {
+    module_add(TAG);
+
     bool failed = false;
     Wire.begin();
 
     if (initICM20948() == false)
     {
         TTRACE("init ICM20948 Failed! fatal !!!\r\n");
-        Init_SetSemiFatal();
         failed = true;
     }
 
+#if 1
     if (initAK() == false)
     {
         TTRACE("init ICM20948-AK Failed! fatal !!!\r\n");
-        Init_SetSemiFatal();
         failed = true;
     }
+#endif
 
     if (initICM20600() == false)
     {
         TTRACE("init ICM20600 Failed! fatal !!!\r\n");
-        Init_SetSemiFatal();
         failed = true;
     }
 
-    if (failed == false)
+    if (failed == false) {
         TTRACE("init Done.\r\n");
+        module_setup(TAG, FXTM_SUCCESS);
+    } else {
+        module_setup(TAG, FXTM_FAILURE);
+        Init_SetSemiFatal();
+    }
 }
 
 void loopIMU ()

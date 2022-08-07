@@ -17,13 +17,13 @@
 #include "shell.h"
 #include "exec.h"
 
-static void acquire_fake()
+static void acquire_fake ()
 {
     fxtm_reset();
     fxtm_gendata();
 }
 
-static void acquire()
+static void acquire ()
 {
     fxtm_reset();
     loopRTC();
@@ -33,18 +33,18 @@ static void acquire()
     loopGps();
 }
 
-static void log()
+static void log ()
 {
     loopSdcard();
     //fxtm_dump(false);
 }
 
-static void send()
+static void send ()
 {
     loopRadio();
 }
 
-void subLoop()
+void subLoop ()
 {
     prof_start();
 
@@ -59,7 +59,7 @@ void subLoop()
     prof_report();
 }
 
-void setup()
+void setup ()
 {
     setupInit();
     setupShell();
@@ -78,7 +78,7 @@ void setup()
     TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
 }
 
-void loop()
+void loop ()
 {
     loopShell();
     loopExec();

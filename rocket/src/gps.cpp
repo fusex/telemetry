@@ -1,21 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  gps2.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  02/07/2017 16:49:42
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Zakaria ElQotbi (zskdan), zakaria@derbsellicon.com
- *        Company:  Derb.io 
- *
- * =====================================================================================
- */
-
 #define TAG "GPS"
 
 #include <NMEAGPS.h>
@@ -23,8 +5,8 @@
 #include <fusexutil.h>
 #include <ublox/ubxGPS.h>
 #include <BGC_Pinout.h>
+#include <trame.h>
 
-#include "trame.h"
 #include "init.h"
 
 //------------------------------------------------------------
@@ -53,7 +35,7 @@ static NMEAGPS gps; // This parses the GPS characters
 
 #define GPSdevice NAME(BGC_SerialGPS)
 
-static void GPSisr( uint8_t c )
+static void GPSisr ( uint8_t c )
 {
     gps.handle( c );
 }
@@ -90,7 +72,7 @@ const unsigned char ubxDisableZDA[] PROGMEM =
   { 0x06,0x01,0x08,0x00,0xF0,0x08,0x00,0x00,0x00,0x00,0x00,0x01 };
 const uint32_t COMMAND_DELAY = 250;
 
-void sendUBX( const unsigned char *progmemBytes, size_t len )
+void sendUBX (const unsigned char *progmemBytes, size_t len )
 {
   GPSdevice.write( 0xB5 ); // SYNC1
   GPSdevice.write( 0x62 ); // SYNC2
@@ -122,6 +104,8 @@ static void configureUblox ()
 
 void setupGps ()
 {
+    module_add(TAG);
+
     bool gpsFixed = false;
 
     GPSdevice.attachInterrupt(GPSisr);
@@ -132,21 +116,23 @@ void setupGps ()
     int retry = 0;
     while (retry++ < RETRYMAX) {
         if (receiveGPS() == 0) {
-	    gpsFixed = true;
+            gpsFixed = true;
             break;
-	}
-	delay(1000);
+        }
+        delay(1000);
     }
+
     //
     if (gpsFixed == false) {
         TTRACE("init Failed ! retry later.\r\n");
         Init_SetFailed();
     } else {
         TTRACE("init Done: retry:%d\r\n", retry);
+        module_setup(TAG, FXTM_SUCCESS);
     }
 }
 
-void loopGps()
+void loopGps ()
 {
     receiveGPS();
     if (gps.overrun()) {

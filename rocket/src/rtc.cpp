@@ -20,27 +20,27 @@
 static uint32_t bootID  = 0;
 static uint16_t resetID = 0;
 
-uint32_t RTC_GetBootID()
+uint32_t RTC_GetBootID ()
 {
     return bootID;
 }
 
-uint16_t RTC_GetResetID()
+uint16_t RTC_GetResetID ()
 {
     return resetID;
 }
 
-void RTC_ResetResetID()
+void RTC_ResetResetID ()
 {
     RTC.sramWrite(SRAM_RESET_OFFSET, 0);
 }
 
-void RTC_SetResetID()
+void RTC_SetResetID ()
 {
     RTC.sramWrite(SRAM_RESET_OFFSET, resetID+1);
 }
 
-void RTC_DumpDebug(bool isConsole)
+void RTC_DumpDebug (bool isConsole)
 {
     time_t t = now();
 
@@ -59,7 +59,7 @@ void RTC_DumpDebug(bool isConsole)
 	  );
 }
 
-static time_t RTC_GetCompileTime()
+static time_t RTC_GetCompileTime ()
 {
     const uint32_t FUDGE(15);        // fudge factor to allow for compile time (seconds, YMMV)
     tmElements_t tm;
@@ -86,9 +86,10 @@ static time_t RTC_GetCompileTime()
     return t + FUDGE;        // add fudge factor to allow for compile time
 }
 
-void setupRTC()
+void setupRTC ()
 {
     module_add(TAG);
+
 #if 1
     setSyncProvider(RTC.get); // the function to get the time from the RTC
 #else
@@ -113,6 +114,6 @@ void setupRTC()
     module_setup(TAG, FXTM_SUCCESS);
 }
 
-void loopRTC()
+void loopRTC ()
 {
 }

@@ -1,37 +1,17 @@
-/*
- * =====================================================================================
- *
- *       Filename:  sdcard2.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  28/05/2017 15:13:42
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Zakaria ElQotbi (zskdan), zakaria@derbsellicon.com
- *        Company:  Derb.io 
- *
- * =====================================================================================
- */
-
-#define TAG "SD"
+#define TAG "SDCARD"
 
 #include <fusexconfig.h>
 #include <fusexutil.h>
+#include <trame.h>
+#include <BGC_Pinout.h>
 
-#include "FreeStack.h"
+#include <FreeStack.h>
 #include <SPI.h>
-#include "SdFat.h"
+#include <SdFat.h>
 #include <TimeLib.h>        // https://www.pjrc.com/teensy/td_libs_DS1307RTC.html
 
 #include "init.h"
-#include "trame.h"
-#include "BGC_Pinout.h"
 #include "sdcard.h"
-#include "rtc.h"
-#include "gps.h"
 
 #define LOGFILENAME "fusexlog"
 #define error(msg) {SD.errorPrint(&Serial, F(msg));}
@@ -47,10 +27,6 @@ static uint16_t   filepart = 0;
 
 #define BOOTID_DEFAULT_MASK 0xffff0000
 #define BOOTID_DEFAULT      0xfc00
-
-#if 0
-#define DEBUG
-#endif
 
 static void SD_CreateBinFile ()
 {
@@ -147,14 +123,16 @@ static void SD_RecordBinFile ()
 //TODO rotate filelog
 void setupSdcard ()
 {
+    module_add(TAG);
     if (SD_Init() != 0) {
         Init_SetSemiFatal();
         TTRACE("init Failed!\r\n");
     } else {
-	uint32_t usec = micros();
+        uint32_t usec = micros();
         SD_CreateBinFile();
-	TTRACE("sdcard createBinFile in usec: %ld\r\n", micros() - usec);
+        TTRACE("sdcard createBinFile in usec: %ld\r\n", micros() - usec);
         TTRACE("init Done.\r\n");
+        module_setup(TAG, FXTM_SUCCESS);
     }
     SD.card()->spiStop();
 }
