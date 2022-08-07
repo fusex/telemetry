@@ -238,12 +238,17 @@ typedef struct {
     fxtm_error_t  run_error;
 } fxtm_module_t;
 
-#define MAX_MODULES 10
+#define MAX_MODULES 16
 static fxtm_module_t fxtm_modules[MAX_MODULES];
 static uint8_t       fxtm_modules_count = 0;
 
 void module_add(const char* tag)
 {
+    if (fxtm_modules_count == MAX_MODULES) {
+        TTRACE("ERROR maximum number of modules reached.\r\n");
+        fatal();
+    }
+
     fxtm_modules[fxtm_modules_count++].module_name = tag;
 }
 
