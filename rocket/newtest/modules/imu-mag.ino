@@ -13,6 +13,8 @@
 
 ***************************************************************************/
 
+#include <Arduino.h>
+#include <avr/wdt.h>
 #include <Wire.h>
 #include <ICM20948_WE.h>
 #define ICM20948_ADDR 0x69
@@ -31,7 +33,9 @@ void setup() {
   Wire.begin();
   Serial.begin(115200);
   while (!Serial) {}
-  delay (10000);
+
+  Serial.println("Waiting for 5 seconds");
+  delay (5000);
 
   if (!myIMU.init()) {
     Serial.println("ICM20948 does not respond");
@@ -39,12 +43,28 @@ void setup() {
   else {
     Serial.println("ICM20948 is connected");
   }
+  int retry = 1;
+  do {
+      if (!myIMU.initMagnetometer()) {
+          Serial.print("retry ");
+          Serial.print(retry);
+          Serial.println(" Magnetometer does not respond");
+      } else {
+          Serial.println("Magnetometer is connected");
+          break;
+      }
+  } while (--retry != 0);
 
-  if (!myIMU.initMagnetometer()) {
-    Serial.println("Magnetometer does not respond");
-  }
-  else {
-    Serial.println("Magnetometer is connected");
+  while (1) {
+      if (Serial.available() > 0) {
+          // read the incoming byte:
+          char incomingByte = Serial.read();
+          if (incomingByte == 'r') {
+              Serial.println("Reseting the board");
+              ResetBoard();
+          }
+      }
+      delay(1000);
   }
 
   /* You can set the following modes for the magnetometer:
@@ -59,6 +79,13 @@ void setup() {
   myIMU.setMagOpMode(AK09916_CONT_MODE_20HZ);
 }
 
+void ResetBoard ()
+{
+    //turn on the WatchDog and don't stroke it.
+    wdt_enable(WDTO_15MS);
+    while(1);
+}
+
 void loop() {
   myIMU.readSensor();
   xyzFloat magValue = myIMU.getMagValues(); // returns magnetic flux density [µT]
@@ -71,4 +98,13 @@ void loop() {
   Serial.println(magValue.z);
 
   delay(1000);
+
+  if (Serial.available() > 0) {
+    // read the incoming byte:
+    char incomingByte = Serial.read();
+    if (incomingByte == 'r') {
+        Serial.println("Reseting the board");
+        ResetBoard();
+    }
+  }
 }
