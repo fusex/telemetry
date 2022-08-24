@@ -263,7 +263,7 @@ void module_setup(const char* tag, fxtm_error_t error)
 void modules_printall(bool isConsole)
 {
     for (uint8_t i =0; i<fxtm_modules_count; i++) {
-        MYTRACE("%s \t\t: %s\r\n",
+        MYTRACE("%-10s \t: %s\r\n",
                 fxtm_modules[i].module_name,
                 fxtm_modules[i].setup_error==FXTM_SUCCESS?"Success":"Failure");
     }
