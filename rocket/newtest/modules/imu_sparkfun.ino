@@ -33,6 +33,7 @@ void setup()
 
     myICM.enableDebugging(); // Uncomment this line to enable helpful debug messages on Serial
 
+    int i=0;
     bool initialized = false;
     while (!initialized)
     {
@@ -43,12 +44,17 @@ void setup()
         if (myICM.status != ICM_20948_Stat_Ok)
         {
             SERIAL_PORT.println("Trying again...");
+            i++;
             delay(500);
         } else {
             initialized = true;
+            SERIAL_PORT.print(F(" after reties:"));
+            SERIAL_PORT.println(i);
         }
     }
-    while (1) {
+#if 0
+    while (1)
+    {
         if (Serial.available() > 0) {
             // read the incoming byte:
             char incomingByte = Serial.read();
@@ -59,6 +65,7 @@ void setup()
         }
         delay(1000);
     }
+#endif
 }
 
 void ResetBoard ()
@@ -87,23 +94,28 @@ void loop()
 
 void printScaledAGMT(ICM_20948_I2C *sensor)
 {
-#if 0
+#if 1
   SERIAL_PORT.print("Scaled. Acc (mg) [ ");
   printFormattedFloat(sensor->accX(), 5, 2);
   SERIAL_PORT.print(", ");
   printFormattedFloat(sensor->accY(), 5, 2);
   SERIAL_PORT.print(", ");
   printFormattedFloat(sensor->accZ(), 5, 2);
+#endif
+#if 0
   SERIAL_PORT.print(" ], Gyr (DPS) [ ");
   printFormattedFloat(sensor->gyrX(), 5, 2);
   SERIAL_PORT.print(", ");
   printFormattedFloat(sensor->gyrY(), 5, 2);
   SERIAL_PORT.print(", ");
   printFormattedFloat(sensor->gyrZ(), 5, 2);
+#endif
+#if 1
   SERIAL_PORT.print(" ], Tmp (C) [ ");
   printFormattedFloat(sensor->temp(), 5, 2);
 #endif
 
+#if 0
   SERIAL_PORT.print("Mag (uT) [ ");
   printFormattedFloat(sensor->magX(), 5, 2);
   SERIAL_PORT.print(", ");
@@ -111,6 +123,8 @@ void printScaledAGMT(ICM_20948_I2C *sensor)
   SERIAL_PORT.print(", ");
   printFormattedFloat(sensor->magZ(), 5, 2);
   SERIAL_PORT.print(" ]");
+#endif
+
   SERIAL_PORT.println();
 }
 
