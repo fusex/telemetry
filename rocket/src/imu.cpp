@@ -33,15 +33,15 @@ static bool initICM20948 ()
 
     /* Set the scale to 16G for accel and 500 for Gyro */
     ICM_20948_fss_t myFSS =
-    	{ .a = gpm16, .g = dps500 };
+        { .a = gpm16, .g = dps500 };
     myImu.setFullScale(ICM_20948_Internal_Acc|ICM_20948_Internal_Gyr, myFSS);
     if (myImu.status != ICM_20948_Stat_Ok)
         return false;
 
     /* Set the sampling rate to 10 Hz */
     myImu.setSampleMode(
-	(ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr),
-	ICM_20948_Sample_Mode_Cycled);
+            (ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr),
+            ICM_20948_Sample_Mode_Cycled);
     ICM_20948_smplrt_t mySmplrt = {.a = 10, .g = 10};
     myImu.setSampleRate(ICM_20948_Internal_Acc|ICM_20948_Internal_Gyr, mySmplrt);
     if (myImu.status != ICM_20948_Stat_Ok)
@@ -50,7 +50,7 @@ static bool initICM20948 ()
 #if 1
     /* Enable a Filter */
     ICM_20948_dlpcfg_t myDLPcfg = 
-    	{.a = acc_d11bw5_n17bw, .g = gyr_d11bw6_n17bw8};
+        {.a = acc_d11bw5_n17bw, .g = gyr_d11bw6_n17bw8};
     myImu.setDLPFcfg(ICM_20948_Internal_Acc|ICM_20948_Internal_Gyr, myDLPcfg);
     if (myImu.status != ICM_20948_Stat_Ok)
         return false;
@@ -80,17 +80,17 @@ void setupIMU ()
 
     if (initICM20948() == false)
     {
-        CTRACE("init ICM20948 Failed! fatal !!!\r\n");
+        TTRACE("init ICM20948 Failed! fatal !!!\r\n");
         failed = true;
     }
 
     if (initICM20600() == false) {
-        CTRACE("init ICM20600 Failed! fatal !!!\r\n");
+        TTRACE("init ICM20600 Failed! fatal !!!\r\n");
         failed = true;
     }
 
     if (failed == false) {
-        CTRACE("init Done.\r\n");
+        TTRACE("init Done.\r\n");
         module_setup(TAG, FXTM_SUCCESS);
     } else {
         module_setup(TAG, FXTM_FAILURE);
