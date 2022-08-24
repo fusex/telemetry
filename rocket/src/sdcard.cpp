@@ -15,15 +15,14 @@
 
 #define LOGFILENAME "fusexlog"
 #define error(msg) {SD.errorPrint(&Serial, F(msg));}
-#define FILE_BLOCK_COUNT (120*60*10L) // 120 minutes logging
+#define FILE_BLOCK_COUNT (120*60*10L) // 120 minutes logging at 10HZ
 
 static SdFat      SD;
 static SdBaseFile binFile;
 
 static uint32_t   bn = 0;  
-static uint32_t   maxLatency = 0;
-static uint16_t   fileid = 0;
 static uint16_t   filepart = 0;
+static char       filename[128];
 
 #define BOOTID_DEFAULT_MASK 0xffff0000
 #define BOOTID_DEFAULT      0xfc00
@@ -33,16 +32,14 @@ static void SD_CreateBinFile ()
     // max number of blocks to erase per erase call
     const uint32_t ERASE_SIZE = 262144L;
     uint32_t bgnBlock, endBlock;
-    char filename[128];
     memset(filename, 0, 128);
-    DTTRACE("Start createbinfile\r\n");
 
-    sprintf(filename, "%d-%d-%d-%d-%d-%d.txt", LOGFILENAME,
+    sprintf(filename, "%s-%d-%d-%d-%d-%d-%d-%d.bgc",
+            LOGFILENAME,
             hour(), minute(), second(), day(), month(), year(),
-            filepart++, ".txt");
+            filepart++);
 
     // Create new file.
-    DTTRACE("Creating new file: %s\r\n", filename);
     binFile.close();
 
     uint32_t usec = micros();
@@ -57,8 +54,8 @@ static void SD_CreateBinFile ()
     }
 
     TTRACE("sdcard createBinFile2 in usec: %ld\r\n", micros() - usec);
+
     // Flash erase all data in the file.
-    DTTRACE("Erasing all data\r\n");
     usec = micros();
     uint32_t bgnErase = bgnBlock;
     uint32_t endErase;
@@ -80,7 +77,6 @@ static void SD_CreateBinFile ()
     TTRACE("sdcard createBinFile4 in usec: %ld\r\n", micros() - usec);
 
     bn = 0;
-    DTTRACE("End createbinfile\r\n");
 }
 
 static int SD_Init ()
@@ -118,7 +114,13 @@ static void SD_RecordBinFile ()
     SD.card()->spiStop();
 }
 
-//TODO rotate filelog
+void dumpSdcard (bool isConsole)
+{
+    MYTRACE("filename:     %s\r\n", filename);
+    MYTRACE("filepart:     %d\r\n", filepart);
+    MYTRACE("blocknumber:  %d\r\n", bn);
+}
+
 void setupSdcard ()
 {
     module_add(TAG);

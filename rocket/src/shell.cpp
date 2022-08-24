@@ -11,6 +11,7 @@
 #include "prof.h"
 #include "rtc.h"
 #include "exec.h"
+#include "sdcard.h"
 
 static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
@@ -125,6 +126,13 @@ static int dynTraceOff (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+static int sdcardStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    dumpSdcard(true);
+
+    return 0;
+}
+
 /* #########################################
                     Public
    ######################################### */
@@ -148,6 +156,7 @@ void setupShell ()
     shell.addCommand(F("modules"), execModules);
     shell.addCommand(F("trace"), dynTraceOn);
     shell.addCommand(F("notrace"), dynTraceOff);
+    shell.addCommand(F("sdcard"), sdcardStatus);
 
     TTRACE("init Done.\r\n");
     module_setup(TAG, FXTM_SUCCESS);
