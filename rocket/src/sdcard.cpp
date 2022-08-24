@@ -49,16 +49,17 @@ static void SD_CreateBinFile ()
     if (!binFile.createContiguous(filename, 512 * FILE_BLOCK_COUNT)) {
         error("createContiguous failed");
     }
-    TTRACE("sdcard createBinFile21 in usec: %ld\r\n", micros() - usec);
+    TTRACE("sdcard createBinFile1 in usec: %ld\r\n", micros() - usec);
     usec = micros();
     // Get the address of the file on the SD.
     if (!binFile.contiguousRange(&bgnBlock, &endBlock)) {
         error("contiguousRange failed");
     }
 
-    TTRACE("sdcard createBinFile22 in usec: %ld\r\n", micros() - usec);
+    TTRACE("sdcard createBinFile2 in usec: %ld\r\n", micros() - usec);
     // Flash erase all data in the file.
     DTTRACE("Erasing all data\r\n");
+    usec = micros();
     uint32_t bgnErase = bgnBlock;
     uint32_t endErase;
     while (bgnErase < endBlock) {
@@ -71,9 +72,12 @@ static void SD_CreateBinFile ()
         }
         bgnErase = endErase + 1;
     }
+    TTRACE("sdcard createBinFile3 in usec: %ld\r\n", micros() - usec);
 
+    usec = micros();
     if (!SD.card()->writeStart(binFile.firstBlock()))
         error("writeStart failed");
+    TTRACE("sdcard createBinFile4 in usec: %ld\r\n", micros() - usec);
 
     bn = 0;
     DTTRACE("End createbinfile\r\n");
@@ -93,7 +97,6 @@ static int SD_Init ()
 static void SD_RecordBinFile ()
 {
     fxtm_block_t *pBlock = fxtm_getblock();
-    uint32_t usec = micros();
     SD.card()->spiStart();
     if (!SD.card()->isBusy()) {
         // Write block to SD.
@@ -113,11 +116,6 @@ static void SD_RecordBinFile ()
         WTTRACE("SDCard busy\r\n");
 
     SD.card()->spiStop();
-    usec = micros() - usec;
-    if (usec > maxLatency) {
-        maxLatency = usec;
-    }
-    DTTRACE("sdcard loop in usec: %ld (max: %ld)\r\n", usec, maxLatency);
 }
 
 //TODO rotate filelog
@@ -128,9 +126,7 @@ void setupSdcard ()
         Init_SetSemiFatal();
         TTRACE("init Failed!\r\n");
     } else {
-        uint32_t usec = micros();
         SD_CreateBinFile();
-        TTRACE("sdcard createBinFile in usec: %ld\r\n", micros() - usec);
         TTRACE("init Done.\r\n");
         module_setup(TAG, FXTM_SUCCESS);
     }
