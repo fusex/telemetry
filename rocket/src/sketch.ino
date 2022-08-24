@@ -27,8 +27,8 @@ static void acquire ()
 {
     fxtm_reset();
     loopRTC();
-    loopAtmos();
     loopPitot();
+    loopAtmos();
     loopIMU();
     loopGps();
 }
@@ -64,9 +64,9 @@ void setup ()
     setupInit();
     setupShell();
     setupRTC();
+    setupPitot();
     setupAtmos();
     setupIMU();
-    setupPitot();
     setupRadio();
     setupGps();
     setupSdcard();
