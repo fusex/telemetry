@@ -30,7 +30,10 @@ static void acquire ()
     loopPitot();
     loopAtmos();
     loopIMU();
+
+#if 0
     loopGps();
+#endif
 }
 
 static void log ()
@@ -53,6 +56,7 @@ void subLoop ()
 #else
     acquire_fake();
 #endif
+
     log();
     send();
 
@@ -68,8 +72,11 @@ void setup ()
     setupAtmos();
     setupIMU();
     setupRadio();
+#if 0
     setupGps();
+#endif
     setupSdcard();
+
     setupExec();
 
     Init_Finish();
