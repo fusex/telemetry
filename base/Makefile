@@ -1,2 +1,3 @@
+ROOT := ..
 -include config/ino.ini
-include ../build.mk
+include $(ROOT)/build.mk
