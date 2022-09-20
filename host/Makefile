@@ -3,13 +3,14 @@
 BIN3 := fxhost
 
 BUILDDIR := .build
-CFLAGS := -Wall -ggdb -std=c++11 -pthread
+CFLAGS := -Wall -ggdb -std=c++11 -pthread -I. -D_IS_PC
 .DEFAULT_GOAL := all
 LDFLAGS := -lm -lpthread
 LD := g++
 CXX := g++
 
-COMMON := $(BUILDDIR)/logger.o $(BUILDDIR)/trame.o $(BUILDDIR)/fusexutil.o
+COMMON := $(BUILDDIR)/logger.o $(BUILDDIR)/trame.o
+# $(BUILDDIR)/fusexutil.o
 
 #all: $(BUILDDIR)/$(BIN1) $(BUILDDIR)/$(BIN2) $(BUILDDIR)/$(BIN3)
 all: $(BUILDDIR)/$(BIN3)

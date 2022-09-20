@@ -29,7 +29,7 @@
 
 #include <time.h>
 
-#include "fusexutil.h"
+#include "fusexutilpc.h"
 #include "trame.h"
 #include "logger.h"
 
@@ -222,7 +222,7 @@ int main(int argc, char** argv)
 {
     char logfilename[128];
 
-    if(argc > 1 && !strncmp("-l",argv[1],2))
+    if(argc > 1 && !strncmp("-r",argv[1],2))
 	t.fd = openregular(argc,argv);
     else if(argc > 1 && !strncmp("-h",argv[1],2))
  	do_usage(argv);	

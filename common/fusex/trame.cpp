@@ -1,11 +1,19 @@
 #define TAG "FXTM"
 
+#include <stdlib.h>
 #include <stddef.h>
-#include <fusexutil.h>
+
+#if !defined(_IS_PC)
+# include <fusexutil.h>
+#else
+# include <fusexutilpc.h>
+#endif
 
 #include "trame.h"
 
 static fxtm_block_t fxtmblock;
+
+#if !defined(_IS_PC)
 static uint16_t     idCounter = 0;
 
 void fxtm_gendata ()
@@ -20,6 +28,7 @@ void fxtm_reset ()
     tm->id = idCounter++; 
     fxtmblock.timestamp = _mymillis();
 }
+#endif
 
 void fxtm_setimu (float a[], float m[], float g[])
 {
@@ -82,7 +91,7 @@ fxtm_block_t* fxtm_getblock ()
     return &fxtmblock;
 }
 
-unsigned int fxtm_getdatasize ()
+size_t fxtm_getdatasize ()
 {
     return sizeof(fxtm_data_t);
 }
@@ -209,7 +218,6 @@ void fxtm_dump (bool isConsole)
     int32_t g[3]  = {0,0,0};
     int32_t m[3]  = {9,0,0};
     int32_t a2[3] = {0,0,0};
-    int32_t g2[3] = {0,0,0};
    
     float gps[2] = {0,0};
     fxtm_getgps(tm, gps); 
@@ -220,11 +228,6 @@ void fxtm_dump (bool isConsole)
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
 
     MYTRACE("\r\n\tid: %u at ts: %lu\r\n", tm->id, fxtmblock.timestamp);
-
-#if _IS_PC 
-    TRACE("\tgps: %f,%f\r\n",gps[0], gps[1]);
-#else
-    //TRACE("\tgps: %ld.%ld,%ld.%ld\r\n",abs((int)gps[0]), (int)(gps[0]*GPSFACTOR)%GPSFACTOR, abs((int)gps[1]),(int)(gps[1]*GPSFACTOR)%GPSFACTOR);
 {
     long   i,d;
     double u;
@@ -247,7 +250,6 @@ void fxtm_dump (bool isConsole)
 
     MYTRACE("%s%ld.%0" GPSFACTORPOW "ld\r\n", gps[1]<0?"-":"", i, d);
 }
-#endif
 {
     MYTRACE("\tFlight Status: %s (%3d)\r\n",
 	    tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
