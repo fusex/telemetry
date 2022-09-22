@@ -31,7 +31,7 @@ static void acquire ()
     loopAtmos();
     loopIMU();
 
-#if 0
+#if 1
     loopGps();
 #endif
 }
@@ -72,7 +72,7 @@ void setup ()
     setupAtmos();
     setupIMU();
     setupRadio();
-#if 0
+#if 1
     setupGps();
 #endif
     setupSdcard();
