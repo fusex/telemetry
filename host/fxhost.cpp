@@ -177,6 +177,7 @@ void thread_acquisition(int fd, logger* l)
 	rb += readsize;
     } while (!finish && !asktoterm);
     l->flush(); 
+    printf("end of acquisition\n");
 }
 
 void thread_dumper(logger* l)
@@ -198,6 +199,7 @@ void thread_dumper(logger* l)
 	    //assert(fxtm_check((fxtm_data_t*)buf)==0);
 	}
     } while (!finish && !asktoterm);
+    printf("end of dumper\n");
 }
 
 typedef struct {
