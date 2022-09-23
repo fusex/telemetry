@@ -68,14 +68,14 @@
 
 void logger::logthread()
 {
-    while(!mustDied) {
+    while(!mustDie) {
 	std::unique_lock<std::mutex> locker(mLock);
-	std::atomic_thread_fence(std::memory_order_release); \
+	std::atomic_thread_fence(std::memory_order_release);
 	while(c.load(std::memory_order_release) == p.load(std::memory_order_release)) {
 	    debug("logthread wait for hup at");
 	    processIt.wait(locker);
 	    debug("logthread get a hup at");
-	    std::atomic_thread_fence(std::memory_order_release); \
+	    std::atomic_thread_fence(std::memory_order_release);
 	}
 	logfilewriter();
     }
@@ -199,7 +199,7 @@ void logger::join()
 logger::~logger()
 {
     dtrace("calling dtor\n");
-    mustDied = true;
+    mustDie = true;
     fclose(logfile);
     fclose(readfile);
     free(cloglist);

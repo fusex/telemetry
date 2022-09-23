@@ -58,7 +58,7 @@ class logger {
     std::mutex              mLock;
     std::condition_variable processIt;
 
-    bool                    mustDied = false;
+    bool                    mustDie = false;
     FILE*                   logfile;
     FILE*                   readfile;
     char                    logfilename[MAX_FILE_PATH];
