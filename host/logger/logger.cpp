@@ -191,6 +191,11 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     return s;
 }
 
+void logger::join()
+{
+    task.join();
+}
+
 logger::~logger()
 {
     dtrace("calling dtor\n");
@@ -215,5 +220,5 @@ logger::logger(const char* filename)
     assert(readfile);
 
     task = std::thread(&logger::logthread,this);
-    task.detach();
+    //task.detach();
 }

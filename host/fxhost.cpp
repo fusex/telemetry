@@ -244,9 +244,9 @@ int main(int argc, char** argv)
 
     t.l = new logger(logfilename);
     t.dumptask = std::thread(thread_dumper,t.l);
-
     t.acqtask = std::thread(thread_acquisition,t.fd,t.l);
 
+    t.l->join();
     t.acqtask.join();
     t.dumptask.join();
 }

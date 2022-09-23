@@ -86,5 +86,6 @@ public:
     void wlog(uint8_t* buf, size_t size);
     void debug(const char*);
     void flush();
+    void join();
 };
 #endif // _LOGGER_H
