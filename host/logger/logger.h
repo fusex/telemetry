@@ -64,9 +64,9 @@ class logger {
     char                    logfilename[MAX_FILE_PATH];
     fxlog*                  cloglist;
 
-    std::atomic<uint32_t> p;
-    std::atomic<uint32_t> c;
-    std::atomic<uint32_t> x;
+    std::atomic<uint32_t> p{0};
+    std::atomic<uint32_t> c{0};
+    std::atomic<uint32_t> x{0};
 
     volatile bool full;
     uint64_t ids = 0;
