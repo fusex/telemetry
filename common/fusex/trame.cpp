@@ -200,7 +200,7 @@ int fxtm_check (fxtm_data_t* tm)
 
     int ret = 0;
     if (tm->id != (lastid +1) && tm->id != 0) {
-	TTRACE("discontinuation at id: %u at ts: %lu, lastid:%u lastts:%lu\r\n",
+	TTRACE("discontinuation at id: %u at ts: %u, lastid:%u lastts:%u\r\n",
 	       tm->id, fxtmblock.timestamp, lastid, lastts);
 	ret = 1;
     }
@@ -227,7 +227,7 @@ void fxtm_dump (bool isConsole)
     IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
 
-    MYTRACE("\r\n\tid: %u at ts: %lu\r\n", tm->id, fxtmblock.timestamp);
+    MYTRACE("\r\n\tid: %u at ts: %u\r\n", tm->id, fxtmblock.timestamp);
 {
     long   i,d;
     double u;
@@ -266,8 +266,8 @@ void fxtm_dump (bool isConsole)
 #endif
     MYTRACE("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
     MYTRACE("\ttemperature: %d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
-    MYTRACE("\t accel[0]: %6ld,  accel[1]: %6ld,   accel[2]: %6ld\r\n", a[0], a[1], a[2]);
-    MYTRACE("\t  gyro[0]: %6ld,   gyro[1]: %6ld,    gyro[2]: %6ld\r\n", g[0], g[1], g[2]);
-    MYTRACE("\t  magn[0]: %6ld,   magn[1]: %6ld,    magn[2]: %6ld\r\n", m[0], m[1], m[2]);
-    MYTRACE("\taccel2[0]: %6ld, accel2[1]: %6ld,  accel2[2]: %6ld\r\n", a2[0], a2[1], a2[2]);
+    MYTRACE("\t accel[0]: %6d,  accel[1]: %6d,   accel[2]: %6d\r\n", a[0], a[1], a[2]);
+    MYTRACE("\t  gyro[0]: %6d,   gyro[1]: %6d,    gyro[2]: %6d\r\n", g[0], g[1], g[2]);
+    MYTRACE("\t  magn[0]: %6d,   magn[1]: %6d,    magn[2]: %6d\r\n", m[0], m[1], m[2]);
+    MYTRACE("\taccel2[0]: %6d, accel2[1]: %6d,  accel2[2]: %6d\r\n", a2[0], a2[1], a2[2]);
 }
