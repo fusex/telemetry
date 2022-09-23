@@ -92,6 +92,7 @@ void logger::debug(const char* h)
 
 void logger::logfilewriter()
 {
+    debug("logwriter");
     bool do_fflush = false;
     std::atomic_thread_fence(std::memory_order_release);
     while(p.load(std::memory_order_release) - c.load(std::memory_order_release)) {
