@@ -75,13 +75,13 @@ int head = 0;
 #define NEXT() {head++; if(head==3) head = 0; }
 #endif
 
-#define FILL_DIM (512 - 4 - sizeof(fxtm_data_t))
 typedef struct {
-  fxtm_data_t  data;
-  uint32_t     timestamp; 
-  uint8_t      fill[FILL_DIM];
-} fxtm_block_t;
+	fxtm_data_t  data;
+	uint32_t     timestamp;
+	uint8_t      padding[512 - sizeof(fxtm_data_t) - sizeof(uint32_t)];
+}__attribute__((packed)) fxtm_block_t;
 
+static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
 
 #define FXTM_FLIGHTSTATUS_LAUNCHPAD     0
 #define FXTM_FLIGHTSTATUS_LIFTOFF       1
