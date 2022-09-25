@@ -38,7 +38,8 @@
 
 #define trace(f,...) printf(f , ##__VA_ARGS__ )
 
-#ifdef DEBUG
+#if 0
+//#ifdef DEBUG
 #define dtrace(f,...) printf(f , ##__VA_ARGS__ )
 #define ddtrace(f,...) { if(DEBUG>1) printf(f , ##__VA_ARGS__ );}
 #else

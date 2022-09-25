@@ -213,7 +213,11 @@ int fxtm_check (fxtm_data_t* tm)
 void fxtm_dump (bool isConsole)
 {
     fxtm_data_t* tm = &fxtmblock.data;
+    fxtm_dumpdata(tm);
+}
 
+void fxtm_dumpdata(fxtm_data_t* tm)
+{
     int32_t a[3]  = {0,0,0};
     int32_t g[3]  = {0,0,0};
     int32_t m[3]  = {9,0,0};

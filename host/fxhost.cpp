@@ -131,7 +131,7 @@ void do_usage(char** argv)
     exit(-2);
 }
 
-#if 0
+#if 1
 # define HEX_DUMP   0
 # define TRAME_DUMP 1
 #elif 0
@@ -170,7 +170,7 @@ void thread_acquisition(int fd, logger* l)
         }
 #if 0
 /* ZSK DEBUG TOREMOVE */
-	printf("rdlen: %d expected:%ld\n", rdlen, fxtm_getdatasize());
+	printf("rdlen: %ld expected:%ld\n", rdlen, fxtm_getdatasize());
 /* ZSK END*/
 #endif
 	//rb += fxtm_getblocksize();
@@ -194,7 +194,7 @@ void thread_dumper(logger* l)
 		printf(" 0x%x", *p);
 	    printf("\n");
 #elif TRAME_DUMP
-	    fxtm_dump((fxtm_data_t*)buf);
+	    fxtm_dumpdata((fxtm_data_t*)buf);
 #endif
 	    //assert(fxtm_check((fxtm_data_t*)buf)==0);
 	}

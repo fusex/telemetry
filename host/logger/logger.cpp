@@ -72,9 +72,9 @@ void logger::logthread()
 	std::unique_lock<std::mutex> locker(mLock);
 	std::atomic_thread_fence(std::memory_order_release);
 	while(c.load(std::memory_order_release) == p.load(std::memory_order_release)) {
-	    debug("logthread wait for hup at");
+	    //debug("logthread wait for hup at");
 	    processIt.wait(locker);
-	    debug("logthread get a hup at");
+	    //debug("logthread get a hup at");
 	    std::atomic_thread_fence(std::memory_order_release);
 	}
 	logfilewriter();
@@ -172,9 +172,9 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     std::atomic_thread_fence(std::memory_order_release);
     while(x.load(std::memory_order_release) == p.load(std::memory_order_release)) {
 	std::unique_lock<std::mutex> locker(mLock);
-	debug("rlog wait for hup at");
+	//debug("rlog wait for hup at");
 	processIt.wait(locker);
-	debug("rlog get a hup at");
+	//debug("rlog get a hup at");
 	std::atomic_thread_fence(std::memory_order_release);
     }
 
