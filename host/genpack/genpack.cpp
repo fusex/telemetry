@@ -64,7 +64,7 @@ int main (int argc, char** argv)
 	uint8_t*     buf = (uint8_t*) fxtm_getblock();
 	fxtm_data_t* tm  = fxtm_getdata(); 
 
-        memset(buf,0,bs);
+        //memset(buf,0,bs);
 	
         float x = (float)((i*10)+i)/10;
 	float y = (float)((i*10)-i)/10;
@@ -73,13 +73,19 @@ int main (int argc, char** argv)
 	float accel[3] = {x,y,z};
 	float magn[3]  = {y,x,z};
 	float gyr[3]   = {z,y,x};
-	fxtm_setimu(accel, magn, gyr); 
+	float accel2[3]= {y,z,x};
 
 	tm->id = i;
 
-	//fxtm_setsoundlvl((i%MAX_SOUND_LEVEL));
-	fxtm_settemperature((i%MAX_TEMPERATURE));
-	fxtm_setpressure((MAX_PRESSURE_AT_SEALEVEL - i));
+	fxtm_setimu(accel, magn, gyr); 
+	fxtm_setimu2(accel2); 
+
+	fxtm_settemperature(i%MAX_TEMPERATURE);
+	fxtm_setpressure(MAX_PRESSURE_AT_SEALEVEL - i);
+	fxtm_setdiffpressure(MAX_PRESSURE_AT_SEALEVEL + i);
+	fxtm_sethumidity(i%100);
+	fxtm_setflightstatus(i%(FXTM_FLIGHTSTATUS_TOUCHDOWN+1));
+
 	fxtm_setgps(x, y);
 
 	fxtm_dump(NULL);
