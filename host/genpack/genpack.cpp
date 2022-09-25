@@ -27,40 +27,40 @@
 #include <signal.h>
 #include <time.h>
 
-//#include "fusexutil.h"
 #include "trame.h"
+
 #define MAX_PRESSURE_AT_SEALEVEL 1013
 
-void do_usage(char** argv)
+void do_usage (char** argv)
 {
     printf ("\tUsage: %s [-h] outputfile [NR] \n",argv[0]);
     exit(0);
 }
 
-int main(int argc, char** argv)
+int main (int argc, char** argv)
 {
     FILE*          file = NULL;
     int32_t        nr_packets = 1;
     uint32_t       wb = 0;
     const uint32_t bs = fxtm_getblocksize();
 
-    if(argc < 2) {
+    if (argc < 2) {
 	printf("please provide file\n");
 	exit(1);
     }
-    if(!strncmp("-h",argv[1],2))
+    if (!strncmp("-h",argv[1],2))
  	do_usage(argv);	
-    if(argc > 1)
+    if (argc > 1)
 	file = fopen(argv[1],"wo"); 
-    if(argc>2)
+    if (argc>2)
     	nr_packets = strtol(argv[2],NULL,10);
 
-    if(!file) {
+    if (!file) {
         printf("Error opening %s: %s\n", argv[1], strerror(errno));
 	exit(-1);
     }
 
-    for(int32_t i=0; i<nr_packets; i++){
+    for (int32_t i=0; i<nr_packets; i++) {
 	uint8_t*     buf = (uint8_t*) fxtm_getblock();
 	fxtm_data_t* tm  = fxtm_getdata(); 
 
@@ -75,22 +75,23 @@ int main(int argc, char** argv)
 	float gyr[3]   = {z,y,x};
 	fxtm_setimu(accel, magn, gyr); 
 
-	//tm->timestamp = _mymillis(); 
 	tm->id = i;
 
 	//fxtm_setsoundlvl((i%MAX_SOUND_LEVEL));
 	fxtm_settemperature((i%MAX_TEMPERATURE));
 	fxtm_setpressure((MAX_PRESSURE_AT_SEALEVEL - i));
 	fxtm_setgps(x, y);
+
 	fxtm_dump(NULL);
 
-	if(fwrite(buf, bs, 1, file) == 0){
+	if (fwrite(buf, bs, 1, file) == 0) {
 	    printf("Error writing in %s %s\n", argv[1], strerror(errno));
 	    break;
 	}
 	wb += bs;
 	usleep(1000); // a tempo to make the timestamp progress
     }
+
     printf("%d bytes writed\n", wb);
 
     fclose(file);
