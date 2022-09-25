@@ -1,11 +1,12 @@
 BIN      := genpack
 BUILDDIR := .build
-CXXFLAGS := -Wall -ggdb -std=c++11 -pthread -I..
+CXXFLAGS := -Wall -ggdb -std=c++11 -pthread -I.. -D_IS_PC
 .DEFAULT_GOAL := all
 LD := g++
 CXX := g++
 
-COMMON := $(BUILDDIR)/trame.o $(BUILDDIR)/fusexutil.o
+COMMON := $(BUILDDIR)/trame.o
+#$(BUILDDIR)/fusexutil.o
 
 all: $(BUILDDIR)/$(BIN)
 

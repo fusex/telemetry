@@ -27,8 +27,9 @@
 #include <signal.h>
 #include <time.h>
 
-#include "fusexutil.h"
+//#include "fusexutil.h"
 #include "trame.h"
+#define MAX_PRESSURE_AT_SEALEVEL 1013
 
 void do_usage(char** argv)
 {
@@ -74,10 +75,10 @@ int main(int argc, char** argv)
 	float gyr[3]   = {z,y,x};
 	fxtm_setimu(accel, magn, gyr); 
 
-	tm->timestamp = _mymillis(); 
+	//tm->timestamp = _mymillis(); 
 	tm->id = i;
 
-	fxtm_setsoundlvl((i%MAX_SOUND_LEVEL));
+	//fxtm_setsoundlvl((i%MAX_SOUND_LEVEL));
 	fxtm_settemperature((i%MAX_TEMPERATURE));
 	fxtm_setpressure((MAX_PRESSURE_AT_SEALEVEL - i));
 	fxtm_setgps(x, y);
