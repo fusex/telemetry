@@ -235,7 +235,7 @@ int main(int argc, char** argv)
 
     memset(logfilename,0,128);
     getlogfile(logfilename);
-    //assert(strlen(logfilename)>0);
+    assert(strlen(logfilename)>0);
 
 #if 0
     if(signal(SIGINT, sig_handler)==SIG_ERR)

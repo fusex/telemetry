@@ -1,0 +1,25 @@
+ $ .build/genpack plop 2
+:FXTM   :
+        id: 0 at ts: 0
+:FXTM   :       gps: 0.000000, :FXTM    : 0.000000
+:FXTM   :       Flight Status: LAUNCHPAD (  0)
+:FXTM   :       pressure:1013 pa, diffpressure:1013 pa
+:FXTM   :       temperature: 0 C, humidity:0 %
+:FXTM   :        accel[0]:      0,  accel[1]:      0,   accel[2]:      0
+:FXTM   :         gyro[0]:      0,   gyro[1]:      0,    gyro[2]:      0
+:FXTM   :         magn[0]:      0,   magn[1]:      0,    magn[2]:      0
+:FXTM   :       accel2[0]:      0, accel2[1]:      0,  accel2[2]:      0
+:FXTM   :
+        id: 1 at ts: 0
+:FXTM   :       gps: 1.100000, :FXTM    : 0.899999
+:FXTM   :       Flight Status: LIFTOFF (  1)
+:FXTM   :       pressure:1012 pa, diffpressure:1014 pa
+:FXTM   :       temperature: 1 C, humidity:1 %
+:FXTM   :        accel[0]:    110,  accel[1]:     90,   accel[2]:    100
+:FXTM   :         gyro[0]:    100,   gyro[1]:     90,    gyro[2]:    110
+:FXTM   :         magn[0]:     90,   magn[1]:    110,    magn[2]:    100
+:FXTM   :       accel2[0]:     90, accel2[1]:    100,  accel2[2]:    110
+1024 bytes writed
+ $
+
+

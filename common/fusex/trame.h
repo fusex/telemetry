@@ -14,7 +14,6 @@ typedef struct {
 
 #define MAX_SENSORS 2
 
-// IT SHOULD BE arround 52 Bytes
 typedef struct {
     char          magic[4] = {'B','G','C','0'};
     uint16_t      id;

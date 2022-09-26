@@ -1,6 +1,4 @@
-#BIN1 := fxdecode
-#BIN2 := serialread
-BIN3 := fxhost
+BIN := fxhost
 
 BUILDDIR := .build
 CFLAGS := -Wall -ggdb -std=c++11 -pthread -I. -D_IS_PC
@@ -12,10 +10,9 @@ CXX := g++
 COMMON := $(BUILDDIR)/logger.o $(BUILDDIR)/trame.o
 # $(BUILDDIR)/fusexutil.o
 
-#all: $(BUILDDIR)/$(BIN1) $(BUILDDIR)/$(BIN2) $(BUILDDIR)/$(BIN3)
-all: $(BUILDDIR)/$(BIN3)
+all: $(BUILDDIR)/$(BIN)
 
-$(BUILDDIR)/$(BIN3): $(COMMON) $(BUILDDIR)/$(BIN3).o
+$(BUILDDIR)/$(BIN): $(COMMON) $(BUILDDIR)/$(BIN).o
 	$(LD) $^ $(LDFLAGS) -o $@
 
 $(BUILDDIR)/%.o: %.cpp 
