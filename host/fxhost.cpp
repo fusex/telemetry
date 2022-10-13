@@ -192,7 +192,7 @@ int opensocket(struct sockaddr_in* servaddr)
 
 void do_usage(char** argv)
 {
-    printf ("\tUsage: %s [-l] file\n",argv[0]);
+    printf ("\tUsage: %s [-r] file\n",argv[0]);
     exit(-2);
 }
 
