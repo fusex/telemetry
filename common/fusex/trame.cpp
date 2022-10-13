@@ -275,3 +275,56 @@ void fxtm_dumpdata(fxtm_data_t* tm)
     MYTRACE("\t  magn[0]: %6d,   magn[1]: %6d,    magn[2]: %6d\r\n", m[0], m[1], m[2]);
     MYTRACE("\taccel2[0]: %6d, accel2[1]: %6d,  accel2[2]: %6d\r\n", a2[0], a2[1], a2[2]);
 }
+
+#define GETGPS(x) do { \
+    long   i,d;        \
+    double u;          \
+    i = abs((int)x);   \
+    u = (double)(x-i); \
+    if (x<0) u = -u;   \
+    d = u*GPSFACTOR;   \
+} while(0)
+
+#define STRINGIFY(f, ...) do { \
+    wrote = snprintf(buf+totalwrote, remaining, f,  ##__VA_ARGS__); \
+    totalwrote += wrote; \
+    remaining -= wrote;  \
+} while(0);
+
+size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
+{
+    int32_t a[3]  = {0,0,0};
+    int32_t g[3]  = {0,0,0};
+    int32_t m[3]  = {9,0,0};
+    int32_t a2[3] = {0,0,0};
+    float   gps[2] = {0,0};
+
+    fxtm_getgps(tm, gps);
+    IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
+    IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
+    IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
+    IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
+
+    size_t wrote = 0;
+    size_t totalwrote = 0;
+    size_t remaining = bufsize;
+
+    STRINGIFY("{id:%u, ", tm->id);
+    STRINGIFY("pressure:%u, diffpressure:%u, ", tm->pressure, tm->diffpressure);
+    STRINGIFY("temperature:%d, humidity:%u, ", tm->temperature, tm->humidity);
+    STRINGIFY("longitude:%f, latitude:%f, ", gps[0], gps[1]);
+    STRINGIFY("accelx:%d, accely:%d, accelz:%d, ", a[0], a[1], a[2]);
+    STRINGIFY("gyrox:%d, gyroy:%d, gyroz:%d, ", g[0], g[1], g[2]);
+    STRINGIFY("magnx:%d, magny:%d, magnz:%d, ", m[0], m[1], m[2]);
+    STRINGIFY("accel2x:%d, accel2y:%d, accel2z:%d, ", a2[0], a2[1], a2[2]);
+    STRINGIFY("flightstatus:%s}",
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":
+	    tm->flightStatus==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":
+            "ERROR");
+
+    return totalwrote;
+}

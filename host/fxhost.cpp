@@ -213,6 +213,7 @@ void thread_acquisition(int fd, logger* log)
 void thread_conso(logger* log)
 {
     uint8_t buf[512];
+    char    bufJSON[1024];
     bool    finish = false;
 
     do {
@@ -220,7 +221,12 @@ void thread_conso(logger* log)
         if(rd == fxtm_getdatasize()) {
             fxhost_dump(buf, rd);
             fxhost_check(buf);
-            if(sendto(fxh.sockfd, (const uint8_t *)buf, sizeof(buf), 0,
+
+            size_t jsize = fxtm_tojson((fxtm_data_t*)buf, bufJSON, sizeof(bufJSON));
+#if 0
+            printf("wrote json size of:%ld\n",jsize);
+#endif
+            if(sendto(fxh.sockfd, (const uint8_t *)bufJSON, jsize, 0,
                     (const struct sockaddr *) &server, sizeof(server)) < 0){
                 printf("Error from sendto %s\n", strerror(errno));
                 finish = true;

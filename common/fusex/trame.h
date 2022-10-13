@@ -109,6 +109,7 @@ size_t fxtm_getdatasize();
 void   fxtm_dump(bool isConsole);
 void   fxtm_dumpdata(fxtm_data_t* tm);
 int    fxtm_check(fxtm_data_t* tm);
+size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize);
 
 void fxtm_getimu(fxtm_data_t* tm, float* imu);
 void fxtm_getgps(fxtm_data_t* tm, float* gps);
