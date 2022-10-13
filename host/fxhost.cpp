@@ -11,7 +11,7 @@
  *       Compiler:  gcc
  *
 *         Author:  Zakaria ElQotbi (zakariae), zakaria.elqotbi@derbsellicon.com
-*        Company:  Derb.io 
+*        Company:  Derb.io
  *
  * =====================================================================================
  */
@@ -23,7 +23,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <errno.h>
-#include <fcntl.h> 
+#include <fcntl.h>
 #include <signal.h>
 #include <assert.h>
 
@@ -33,7 +33,30 @@
 #include "trame.h"
 #include "logger.h"
 
-size_t readsize = 0;
+#if 1
+# define HEX_DUMP   0
+# define TRAME_DUMP 1
+#elif 0
+# define HEX_DUMP   1
+# define TRAME_DUMP 0
+#else
+# define HEX_DUMP   0
+# define TRAME_DUMP 0
+#endif
+
+#define SERIALBAUD B115200
+
+typedef struct {
+    int         fd;
+    int         sockfd;
+    std::thread acqtask;
+    std::thread consotask;
+    logger*     log;
+} fxhost_t;
+
+static fxhost_t  fxh;
+static size_t    chunksize = 0;
+static bool      asktoterm = false;
 
 int set_interface_attribs(int fd, int speed)
 {
@@ -90,8 +113,8 @@ int openregular(int argc,char** argv)
 {
     int fd;
     if(argc<3){
-	printf("please provide file\n");
-	exit(1);
+        printf("please provide file\n");
+        exit(1);
     }
     fd = open(argv[2], O_RDONLY);
     if (fd < 0) {
@@ -99,19 +122,17 @@ int openregular(int argc,char** argv)
         return -1;
     }
 
-    readsize = fxtm_getblocksize();
+    chunksize = fxtm_getblocksize();
 
     return fd;
 }
-
-#define SERIALBAUD B115200
 
 int openserial(int argc, char** argv)
 {
     int  fd;
     const char *portname = "/dev/ttyACM1";
     if(argc > 1)
-	portname = argv[1];
+        portname = argv[1];
 
     fd = open(portname, O_RDONLY | O_NOCTTY);
     if (fd < 0) {
@@ -120,7 +141,7 @@ int openserial(int argc, char** argv)
     }
     set_interface_attribs(fd, SERIALBAUD);
 
-    readsize = fxtm_getdatasize();
+    chunksize = fxtm_getdatasize();
 
     return fd;
 }
@@ -131,92 +152,65 @@ void do_usage(char** argv)
     exit(-2);
 }
 
-#if 1
-# define HEX_DUMP   0
-# define TRAME_DUMP 1
-#elif 0
-# define HEX_DUMP   1
-# define TRAME_DUMP 0
-#else
-# define HEX_DUMP   0
-# define TRAME_DUMP 0
-#endif
-
 void getlogfile(char* filename)
 {
     struct tm *t;
     time_t now = time(NULL);
     t = gmtime(&now);
-    //strftime(filename, 128, "fusexlog-%Y-%m-%d-%H-%M-%S", t);
     strftime(filename, 128, "fusexlog-%Y-%m-%d", t);
 }
 
-int asktoterm = 0;
-
-void thread_acquisition(int fd, logger* l)
+void thread_acquisition(int fd, logger* log)
 {
     size_t rb = 0;
-    int    finish = 0;
+    bool   finish = false;
     FILE*  file = fdopen(fd,"ro");
     do {
         size_t rdlen;
 
-        rdlen = fread(fxtm_getdata(), 1, readsize, file);
+        rdlen = fread(fxtm_getdata(), 1, chunksize, file);
         if (rdlen > 0) {
-	    l->wlog((uint8_t*)fxtm_getdata(),fxtm_getdatasize());
+            log->wlog((uint8_t*)fxtm_getdata(),fxtm_getdatasize());
         } else {
-            //printf("Error from read %s\n", strerror(errno));
-	    finish = 1;
+            printf("Error from read %s\n", strerror(errno));
+            finish = true;
         }
-#if 0
-/* ZSK DEBUG TOREMOVE */
-	printf("rdlen: %ld expected:%ld\n", rdlen, fxtm_getdatasize());
-/* ZSK END*/
-#endif
-	//rb += fxtm_getblocksize();
-	rb += readsize;
+
+        rb += chunksize;
     } while (!finish && !asktoterm);
-    l->flush(); 
+    log->flush();
     printf("end of acquisition\n");
 }
 
-void thread_dumper(logger* l)
+void thread_conso(logger* log)
 {
     uint8_t buf[512];
-    int    finish = 0;
-    do {
-	size_t rd = l->rlog(buf, fxtm_getdatasize());
-	if(rd == fxtm_getdatasize()) {
-#if HEX_DUMP
-	    unsigned char *p;
-	    rdlen = rd;
-	    for (p = buf; rdlen-- > 0; p++)
-		printf(" 0x%x", *p);
-	    printf("\n");
-#elif TRAME_DUMP
-	    fxtm_dumpdata((fxtm_data_t*)buf);
-#endif
-	    //assert(fxtm_check((fxtm_data_t*)buf)==0);
-	}
-    } while (!finish && !asktoterm);
-    printf("end of dumper\n");
-}
+    bool    finish = false;
 
-typedef struct {
-    int  fd;
-    std::thread acqtask;
-    std::thread dumptask;
-    logger* l;
-} thr;
-thr  t; 
+    do {
+        size_t rd = log->rlog(buf, fxtm_getdatasize());
+        if(rd == fxtm_getdatasize()) {
+#if HEX_DUMP
+            unsigned char *p;
+            rdlen = rd;
+            for (p = buf; rdlen-- > 0; p++)
+                printf(" 0x%x", *p);
+            printf("\n");
+#elif TRAME_DUMP
+            fxtm_dumpdata((fxtm_data_t*)buf);
+#endif
+        }
+    } while (!finish && !asktoterm);
+    printf("end of consumer\n");
+}
 
 void sig_handler(int signo)
 {
-    if (signo == SIGINT) { 
-	printf("SigInt catched! terminating ...\n");
-	asktoterm = 1;
-	delete t.l;
-	close(t.fd);
+    if (signo == SIGINT) {
+        printf("SigInt catched! terminating ...\n");
+        asktoterm = true;
+        delete fxh.log;
+        close(fxh.fd);
     }
 }
 
@@ -225,13 +219,13 @@ int main(int argc, char** argv)
     char logfilename[128];
 
     if(argc > 1 && !strncmp("-r",argv[1],2))
-	t.fd = openregular(argc,argv);
+        fxh.fd = openregular(argc,argv);
     else if(argc > 1 && !strncmp("-h",argv[1],2))
- 	do_usage(argv);	
+        do_usage(argv);
     else
-	t.fd = openserial(argc,argv);
+        fxh.fd = openserial(argc,argv);
 
-    if(t.fd<0) return -1;
+    if(fxh.fd<0) return -1;
 
     memset(logfilename,0,128);
     getlogfile(logfilename);
@@ -239,14 +233,19 @@ int main(int argc, char** argv)
 
 #if 0
     if(signal(SIGINT, sig_handler)==SIG_ERR)
-	printf("cannot catch SIGINT\n");
+        printf("cannot catch SIGINT\n");
 #endif
 
-    t.l = new logger(logfilename);
-    t.dumptask = std::thread(thread_dumper,t.l);
-    t.acqtask = std::thread(thread_acquisition,t.fd,t.l);
+    /* Instantiate logger that will store data within a thread */
+    fxh.log = new logger(logfilename);
 
-    t.l->join();
-    t.acqtask.join();
-    t.dumptask.join();
+    /* Start consumer thread */
+    fxh.consotask = std::thread(thread_conso,fxh.log);
+
+    /* Start producer thread */
+    fxh.acqtask = std::thread(thread_acquisition, fxh.fd, fxh.log);
+
+    fxh.log->join();
+    fxh.acqtask.join();
+    fxh.consotask.join();
 }
