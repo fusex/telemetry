@@ -1,20 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  fxhost.c
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  07/06/2017 00:34:59
- *       Revision:  none
- *       Compiler:  gcc
- *
-*         Author:  Zakaria ElQotbi (zakariae), zakaria.elqotbi@derbsellicon.com
-*        Company:  Derb.io
- *
- * =====================================================================================
- */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
