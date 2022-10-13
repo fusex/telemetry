@@ -33,15 +33,30 @@
 #include "trame.h"
 #include "logger.h"
 
-#if 1
-# define HEX_DUMP   0
-# define TRAME_DUMP 1
-#elif 0
+#if 0
 # define HEX_DUMP   1
-# define TRAME_DUMP 0
+#endif
+
+#if 0
+# define TRAME_DUMP 1
+#endif
+
+#if 0
+# define TRAME_CHECK 1
+#endif
+
+#ifdef TRAME_CHECK
+# define fxhost_check(b) fxtm_check((fxtm_data_t*)b);
 #else
-# define HEX_DUMP   0
-# define TRAME_DUMP 0
+# define fxhost_check(b) do { (void) b; } while(0)
+#endif
+
+#ifdef HEX_DUMP
+# define fxhost_dump(b, l) hexdump(b, l)
+#elif defined(TRAME_DUMP)
+# define fxhost_dump(b, l) fxtm_dumpdata((fxtm_data_t*)b)
+#else
+# define fxhost_dump(b, l) do { (void)b; (void)l; } while(0)
 #endif
 
 #define SERIALBAUD B115200
@@ -57,6 +72,14 @@ typedef struct {
 static fxhost_t  fxh;
 static size_t    chunksize = 0;
 static bool      asktoterm = false;
+
+void hexdump(const uint8_t* buf, size_t len)
+{
+    unsigned char *p;
+    for (p = (unsigned char*) buf; len-- > 0; p++)
+            printf(" 0x%x", *p);
+    printf("\n");
+}
 
 int set_interface_attribs(int fd, int speed)
 {
@@ -190,15 +213,8 @@ void thread_conso(logger* log)
     do {
         size_t rd = log->rlog(buf, fxtm_getdatasize());
         if(rd == fxtm_getdatasize()) {
-#if HEX_DUMP
-            unsigned char *p;
-            rdlen = rd;
-            for (p = buf; rdlen-- > 0; p++)
-                printf(" 0x%x", *p);
-            printf("\n");
-#elif TRAME_DUMP
-            fxtm_dumpdata((fxtm_data_t*)buf);
-#endif
+            fxhost_dump(buf, rd);
+            fxhost_check(buf);
         }
     } while (!finish && !asktoterm);
     printf("end of consumer\n");
