@@ -210,13 +210,14 @@ void thread_acquisition(int fd, logger* log)
     bool   finish = false;
     FILE*  file = fdopen(fd,"ro");
     do {
-        size_t rdlen;
-
+        size_t rdlen = 0;
         rdlen = fread(fxtm_getdata(), 1, chunksize, file);
         if (rdlen > 0) {
             log->wlog((uint8_t*)fxtm_getdata(),fxtm_getdatasize());
         } else {
-            printf("Error from read %s\n", strerror(errno));
+#if 0
+            printf("Error from read:%s rdlen:%ld\n", strerror(errno), rdlen);
+#endif
             finish = true;
         }
 
