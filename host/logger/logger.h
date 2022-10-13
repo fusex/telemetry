@@ -32,14 +32,13 @@
 #define HDR_SIZE  32
 #define MSG_SIZE 476
 
-#if 1
+#if 0
 #define DEBUG 1
 #endif
 
 #define trace(f,...) printf(f , ##__VA_ARGS__ )
 
-#if 0
-//#ifdef DEBUG
+#ifdef DEBUG
 #define dtrace(f,...) printf(f , ##__VA_ARGS__ )
 #define ddtrace(f,...) { if(DEBUG>1) printf(f , ##__VA_ARGS__ );}
 #else
