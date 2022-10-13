@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
@@ -26,8 +25,9 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <assert.h>
-
 #include <time.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
 
 #include "fusexutilpc.h"
 #include "trame.h"
@@ -59,7 +59,9 @@
 # define fxhost_dump(b, l) do { (void)b; (void)l; } while(0)
 #endif
 
-#define SERIALBAUD B115200
+#define SERIALBAUD      B115200
+#define SERVER_UDPPORT  54321
+#define SERVER_IPADDR   "127.0.0.1"
 
 typedef struct {
     int         fd;
@@ -69,9 +71,10 @@ typedef struct {
     logger*     log;
 } fxhost_t;
 
-static fxhost_t  fxh;
-static size_t    chunksize = 0;
-static bool      asktoterm = false;
+static fxhost_t           fxh;
+static size_t             chunksize = 0;
+static bool               asktoterm = false;
+static struct sockaddr_in server;
 
 void hexdump(const uint8_t* buf, size_t len)
 {
@@ -169,6 +172,24 @@ int openserial(int argc, char** argv)
     return fd;
 }
 
+int opensocket(struct sockaddr_in* servaddr)
+{
+    int sockfd;
+
+    if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+        printf("Error socket opening : %s\n", strerror(errno));
+        return -2;
+    }
+
+    memset(servaddr, 0, sizeof(struct sockaddr_in));
+
+    servaddr->sin_family = AF_INET;
+    servaddr->sin_port = htons(SERVER_UDPPORT);
+    servaddr->sin_addr.s_addr = inet_addr(SERVER_IPADDR);
+
+    return sockfd;
+}
+
 void do_usage(char** argv)
 {
     printf ("\tUsage: %s [-l] file\n",argv[0]);
@@ -215,6 +236,11 @@ void thread_conso(logger* log)
         if(rd == fxtm_getdatasize()) {
             fxhost_dump(buf, rd);
             fxhost_check(buf);
+            if(sendto(fxh.sockfd, (const uint8_t *)buf, sizeof(buf), 0,
+                    (const struct sockaddr *) &server, sizeof(server)) < 0){
+                printf("Error from sendto %s\n", strerror(errno));
+                finish = true;
+            }
         }
     } while (!finish && !asktoterm);
     printf("end of consumer\n");
@@ -227,6 +253,7 @@ void sig_handler(int signo)
         asktoterm = true;
         delete fxh.log;
         close(fxh.fd);
+        close(fxh.sockfd);
     }
 }
 
@@ -246,6 +273,9 @@ int main(int argc, char** argv)
     memset(logfilename,0,128);
     getlogfile(logfilename);
     assert(strlen(logfilename)>0);
+
+    fxh.sockfd = opensocket(&server);
+    if(fxh.sockfd<0) return -2;
 
 #if 0
     if(signal(SIGINT, sig_handler)==SIG_ERR)
