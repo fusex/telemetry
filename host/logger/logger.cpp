@@ -22,14 +22,10 @@
 
 #include "logger.h"
 
-#if 1
-#define LOG_SAME
-#endif
-
 #define INC_P() { \
     p.fetch_add(1, std::memory_order_relaxed); \
     std::atomic_thread_fence(std::memory_order_release); \
-    if ((p.load(std::memory_order_relaxed) - c.load(std::memory_order_relaxed)) == SLOT_MAX) { \
+    if ((p - x.load(std::memory_order_relaxed)) == SLOT_MAX) { \
         dtrace("ring full\n"); \
         full = true; \
         hup(); \
@@ -37,26 +33,23 @@
         dtrace("ring not more full\n"); \
     }; \
     std::atomic_thread_fence(std::memory_order_release); \
-    if ( \
-        ((p.load(std::memory_order_release) - c.load(std::memory_order_release)) == 1) || \
-        ((p.load(std::memory_order_release) - x.load(std::memory_order_release)) == 1)) \
-    { \
+    if (p - x.load(std::memory_order_release) == 1) { \
         dtrace("send hup1\n"); \
         hup(); \
     } \
-    debug("P"); \
+    debug1("P"); \
 }
 
 #define INC_C() { \
     c.fetch_add(1, std::memory_order_relaxed); \
     std::atomic_thread_fence(std::memory_order_release); \
-    debug("C"); \
+    debug1("C"); \
 }
 
 #define INC_X() { \
     x.fetch_add(1, std::memory_order_relaxed); \
     std::atomic_thread_fence(std::memory_order_release); \
-    debug("X"); \
+    debug1("X"); \
 }
 
 #define myassert(cond) { \
@@ -71,7 +64,7 @@ void logger::logthread()
     while(!mustDie) {
         std::unique_lock<std::mutex> locker(mLock);
         std::atomic_thread_fence(std::memory_order_release);
-        while(c.load(std::memory_order_release) == p.load(std::memory_order_release)) {
+        while(x == p.load(std::memory_order_release)) {
             //debug("logthread wait for hup at");
             processIt.wait(locker);
             //debug("logthread get a hup at");
@@ -81,25 +74,47 @@ void logger::logthread()
     }
 }
 
+void logger::debug1(const char* h)
+{
+    std::atomic_thread_fence(std::memory_order_release);
+    trace("%s (D1) ring status p:%d/x:%d/c:%d\n", h,
+            p.load(std::memory_order_relaxed),
+            x.load(std::memory_order_relaxed),
+            c.load(std::memory_order_relaxed));
+}
+
+
 void logger::debug(const char* h)
 {
     std::atomic_thread_fence(std::memory_order_release);
-    trace("%s ring status p:%d/c:%d/x:%d\n", h, 
+    trace("%s ring status p:%d/x:%d/c:%d\n", h,
             p.load(std::memory_order_relaxed),
-            c.load(std::memory_order_relaxed),
-            x.load(std::memory_order_relaxed));
+            x.load(std::memory_order_relaxed),
+            c.load(std::memory_order_relaxed));
 }
+
+#define hexdump(buf, len) do { \
+    unsigned char *p; \
+    uint32_t s = len; \
+    for (p = (unsigned char*) buf; s-- > 0; p++) \
+            printf(" 0x%x", *p); \
+    printf("\n"); \
+} while(0)
 
 void logger::logfilewriter()
 {
+   myassert(p.load(std::memory_order_release) - x <= SLOT_MAX);
+
     debug("logwriter");
     bool do_fflush = false;
     std::atomic_thread_fence(std::memory_order_release);
-    while(p.load(std::memory_order_release) - c.load(std::memory_order_release)) {
-        fwrite(&cloglist[c], 512, 1, logfile);
-        INC_C();
+    while(p.load(std::memory_order_release) - x) {
+        uint32_t slotId = x%SLOT_MAX;
+        fwrite(&cloglist[slotId], 1, 512, logfile);
+        INC_X();
         do_fflush = true;
         std::atomic_thread_fence(std::memory_order_release);
+
     }
 
     if(full) full = false;
@@ -107,7 +122,6 @@ void logger::logfilewriter()
     if(do_fflush) {
         fflush(logfile);
     }
-    std::atomic_thread_fence(std::memory_order_release);
     //ddebug("vfsynced");
 }
 
@@ -134,15 +148,15 @@ void logger::hup()
 void logger::lprintf(const char* fmt, ...)
 {
    va_list ap;
-   myassert(abs(p - c) < SLOT_MAX);
+   myassert(abs(p - x.load(std::memory_order_release)) < SLOT_MAX);
 
-#ifndef LOG_SAME 
-   sprintf(cloglist[p.load(std::memory_order_release)].header, "  [%20lld]: ", gettimestamp());
-   cloglist[p.load(std::memory_order_release)].id = ids++;
-#endif
+   uint32_t slotId = p%SLOT_MAX;
+
+   sprintf(cloglist[slotId].header, "  [%20lld]: ", gettimestamp());
+   cloglist[slotId].id = ids++;
 
    va_start(ap,fmt);
-   vsprintf(cloglist[p.load(std::memory_order_release)].logmsg, fmt, ap);
+   vsprintf(cloglist[slotId].logmsg, fmt, ap);
    va_end(ap);
 
    INC_P();
@@ -150,15 +164,15 @@ void logger::lprintf(const char* fmt, ...)
 
 void logger::wlog(uint8_t* buf, size_t size)
 {
-   myassert(abs(p - c) < SLOT_MAX);
+   myassert(p - x.load(std::memory_order_release) <= SLOT_MAX);
    assert(size < MSG_SIZE);
 
-#ifndef LOG_SAME 
-   sprintf(cloglist[p.load(std::memory_order_release)].header, "  [%20lld]: ", gettimestamp());
-   cloglist[p.load(std::memory_order_release)].id = ids++;
-#endif
+   uint32_t slotId = p%SLOT_MAX;
 
-   memcpy(cloglist[p.load(std::memory_order_release)].logmsg, buf, size);
+   sprintf(cloglist[slotId].header, "  [%20lld]: ", gettimestamp());
+   cloglist[slotId].id = ids++;
+
+   memcpy(cloglist[slotId].logmsg, buf, 512);
 
    INC_P();
 }
@@ -167,10 +181,8 @@ size_t logger::rlog(uint8_t* buf, size_t size)
 {
     size_t s = size;  
  
-    myassert(x<=p);
-
     std::atomic_thread_fence(std::memory_order_release);
-    while(x.load(std::memory_order_release) == p.load(std::memory_order_release)) {
+    while(c == x.load(std::memory_order_release)) {
         std::unique_lock<std::mutex> locker(mLock);
         //debug("rlog wait for hup at");
         processIt.wait(locker);
@@ -187,7 +199,7 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     } else
         memcpy(buf, cloglist[x.load(std::memory_order_release)%SLOT_MAX].logmsg, size);
 
-    INC_X();
+    INC_C();
 
     return s;
 }
