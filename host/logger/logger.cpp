@@ -191,13 +191,25 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     }
 
     std::atomic_thread_fence(std::memory_order_release);
-    if(p.load(std::memory_order_release) - x.load(std::memory_order_release)> SLOT_MAX) {
-        int err= fseek(readfile, x.load(std::memory_order_release)*512, SEEK_SET);
+    //if (p.load(std::memory_order_release) - c >= SLOT_MAX)
+    {
+	//printf("ftell0 at:%ld\n", ftell(readfile));
+	printf("seek at:%d\n", c*512);
+        int err = fseek(readfile, c*512, SEEK_SET); //TODO: we should check c overflow
         myassert(err==0);
-        s = fread(buf, size, 1, readfile); //TODO check this
+	//printf("ftell1 at:%ld\n", ftell(readfile));
+	//printf("buf0 at:%p\n", buf);
+        s = fread(buf, 1, size, readfile); //TODO check this
+	//printf("ftell2 at:%ld\n", ftell(readfile));
+	//printf("buf1 at:%p\n", buf);
         s *= size;
-    } else
-        memcpy(buf, cloglist[x.load(std::memory_order_release)%SLOT_MAX].logmsg, size);
+#if 0
+    } else {
+	uint32_t slotId = c%SLOT_MAX; 
+        memcpy(buf, cloglist[slotId].logmsg, size);
+        s = size;
+#endif
+    }
 
     INC_C();
 
