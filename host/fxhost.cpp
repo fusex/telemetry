@@ -45,6 +45,7 @@
 #define SERIALBAUD      B115200
 #define SERVER_UDPPORT  54321
 #define SERVER_IPADDR   "127.0.0.1"
+#define BGC_ACQ_PERIOD  (100*1000)
 
 typedef struct {
     int         fd;
@@ -52,6 +53,7 @@ typedef struct {
     std::thread acqtask;
     std::thread consotask;
     logger*     log;
+    bool        simu;
 } fxhost_t;
 
 static fxhost_t           fxh;
@@ -207,6 +209,7 @@ void thread_acquisition(int fd, logger* log)
         }
 
         rb += chunksize;
+        if(fxh.simu) usleep(BGC_ACQ_PERIOD*9/10);
     } while (!finish && !asktoterm);
     log->flush();
     printf("end of acquisition\n");
@@ -252,10 +255,12 @@ void sig_handler(int signo)
 int main(int argc, char** argv)
 {
     char logfilename[128];
+    fxh.simu = false;
 
-    if(argc > 1 && !strncmp("-r",argv[1],2))
+    if(argc > 1 && !strncmp("-r",argv[1],2)) {
         fxh.fd = openregular(argc,argv);
-    else if(argc > 1 && !strncmp("-h",argv[1],2))
+        fxh.simu = true;
+    } else if(argc > 1 && !strncmp("-h",argv[1],2))
         do_usage(argv);
     else
         fxh.fd = openserial(argc,argv);
