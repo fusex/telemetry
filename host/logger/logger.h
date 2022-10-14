@@ -85,6 +85,7 @@ public:
     size_t rlog(uint8_t* buf, size_t size);
     void wlog(uint8_t* buf, size_t size);
     void debug(const char*);
+    void debug1(const char*);
     void flush();
     void join();
 };

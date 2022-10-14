@@ -192,11 +192,13 @@ void thread_acquisition(int fd, logger* log)
     size_t rb = 0;
     bool   finish = false;
     FILE*  file = fdopen(fd,"ro");
+
+    assert(chunksize>0);
     do {
         size_t rdlen = 0;
         rdlen = fread(fxtm_getdata(), 1, chunksize, file);
         if (rdlen > 0) {
-            log->wlog((uint8_t*)fxtm_getdata(),fxtm_getdatasize());
+            log->wlog((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
         } else {
 #if 0
             printf("Error from read:%s rdlen:%ld\n", strerror(errno), rdlen);
@@ -218,7 +220,7 @@ void thread_conso(logger* log)
 
     do {
         size_t rd = log->rlog(buf, fxtm_getdatasize());
-        if(rd == fxtm_getdatasize()) {
+        if(rd > 0) {
             fxhost_dump(buf, rd);
             fxhost_check(buf);
 
@@ -281,7 +283,7 @@ int main(int argc, char** argv)
     /* Start producer thread */
     fxh.acqtask = std::thread(thread_acquisition, fxh.fd, fxh.log);
 
-    fxh.log->join();
     fxh.acqtask.join();
+    fxh.log->join();
     fxh.consotask.join();
 }
