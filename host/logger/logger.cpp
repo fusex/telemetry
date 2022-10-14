@@ -110,11 +110,10 @@ void logger::logfilewriter()
     std::atomic_thread_fence(std::memory_order_release);
     while(p.load(std::memory_order_release) - x) {
         uint32_t slotId = x%SLOT_MAX;
-        fwrite(&cloglist[slotId], 1, 512, logfile);
+        fwrite(&cloglist[slotId], 512, 1, logfile);
         INC_X();
         do_fflush = true;
         std::atomic_thread_fence(std::memory_order_release);
-
     }
 
     if(full) full = false;
@@ -182,7 +181,7 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     size_t s = size;  
  
     std::atomic_thread_fence(std::memory_order_release);
-    while(c == x.load(std::memory_order_release)) {
+    while(p == c.load(std::memory_order_release)) {
         std::unique_lock<std::mutex> locker(mLock);
         //debug("rlog wait for hup at");
         processIt.wait(locker);
@@ -191,24 +190,20 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     }
 
     std::atomic_thread_fence(std::memory_order_release);
-    //if (p.load(std::memory_order_release) - c >= SLOT_MAX)
-    {
-	//printf("ftell0 at:%ld\n", ftell(readfile));
-	printf("seek at:%d\n", c*512);
-        int err = fseek(readfile, c*512, SEEK_SET); //TODO: we should check c overflow
-        myassert(err==0);
-	//printf("ftell1 at:%ld\n", ftell(readfile));
-	//printf("buf0 at:%p\n", buf);
-        s = fread(buf, 1, size, readfile); //TODO check this
-	//printf("ftell2 at:%ld\n", ftell(readfile));
-	//printf("buf1 at:%p\n", buf);
-        s *= size;
-#if 0
-    } else {
-	uint32_t slotId = c%SLOT_MAX; 
+    //check if it is not too late to read from ring-buffer.
+    if ((p.load(std::memory_order_release) - c) < SLOT_MAX) {
+        uint32_t slotId = c%SLOT_MAX;
         memcpy(buf, cloglist[slotId].logmsg, size);
         s = size;
-#endif
+    }
+
+    //check again in case we have race condition, if yes,
+    //re-read from logger file.
+    if ((p.load(std::memory_order_release) - c) >= SLOT_MAX) {
+        int err = fseek(readfile, c*512, SEEK_SET); //TODO: we should check c overflow
+        myassert(err==0);
+        s = fread(buf, size, 1, readfile);
+        s *= size;
     }
 
     INC_C();

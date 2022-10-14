@@ -196,7 +196,7 @@ void thread_acquisition(int fd, logger* log)
     assert(chunksize>0);
     do {
         size_t rdlen = 0;
-        rdlen = fread(fxtm_getdata(), 1, chunksize, file);
+        rdlen = fread(fxtm_getdata(), chunksize, 1, file);
         if (rdlen > 0) {
             log->wlog((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
         } else {
