@@ -309,15 +309,15 @@ size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
     size_t totalwrote = 0;
     size_t remaining = bufsize;
 
-    STRINGIFY("{id:%u, ", tm->id);
-    STRINGIFY("pressure:%u, diffpressure:%u, ", tm->pressure, tm->diffpressure);
-    STRINGIFY("temperature:%d, humidity:%u, ", tm->temperature, tm->humidity);
-    STRINGIFY("longitude:%f, latitude:%f, ", gps[0], gps[1]);
-    STRINGIFY("accelx:%d, accely:%d, accelz:%d, ", a[0], a[1], a[2]);
-    STRINGIFY("gyrox:%d, gyroy:%d, gyroz:%d, ", g[0], g[1], g[2]);
-    STRINGIFY("magnx:%d, magny:%d, magnz:%d, ", m[0], m[1], m[2]);
-    STRINGIFY("accel2x:%d, accel2y:%d, accel2z:%d, ", a2[0], a2[1], a2[2]);
-    STRINGIFY("flightstatus:%s}",
+    STRINGIFY("{\"id\":%u, ", tm->id);
+    STRINGIFY("\"pressure\":%u, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
+    STRINGIFY("\"temperature\":%d, \"humidity\":%u, ", tm->temperature, tm->humidity);
+    STRINGIFY("\"longitude\":%f, \"latitude\":%f, ", gps[0], gps[1]);
+    STRINGIFY("\"accelx\":%d, \"accely\":%d, \"accelz\":%d, ", a[0], a[1], a[2]);
+    STRINGIFY("\"gyrox\":%d, \"gyroy\":%d, \"gyroz\":%d, ", g[0], g[1], g[2]);
+    STRINGIFY("\"magnx\":%d, \"magny\":%d, \"magnz\":%d, ", m[0], m[1], m[2]);
+    STRINGIFY("\"accel2x\":%d, \"accel2y\":%d, \"accel2z\":%d, ", a2[0], a2[1], a2[2]);
+    STRINGIFY("\"flightstatus\":\"%s\"}",
 	    tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
 	    tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
 	    tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
