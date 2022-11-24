@@ -107,7 +107,7 @@ fxtm_block_t* fxtm_getblock();
 size_t fxtm_getblocksize();
 size_t fxtm_getdatasize();
 void   fxtm_dump(bool isConsole);
-void   fxtm_dumpdata(fxtm_data_t* tm);
+void   fxtm_dumpdata(fxtm_data_t* tm, bool isConsole);
 int    fxtm_check(fxtm_data_t* tm);
 size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize);
 
