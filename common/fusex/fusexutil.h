@@ -17,9 +17,11 @@
 # include <sys/time.h>
 #endif
 
+#if 0
 #if _IS_BASE
 # include <SoftwareSerial.h>
 extern SoftwareSerial SWSerial;
+#endif
 #endif
 
 void dynTrace_enable(bool enable);

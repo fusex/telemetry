@@ -1,7 +1,4 @@
 #include <BGC_Lora.h>
-#include <RH_RF95.h>
-#include <SPI.h>
-#include <fusexconfig.h>
 #include <fusexutil.h>
 #include <trame.h>
 

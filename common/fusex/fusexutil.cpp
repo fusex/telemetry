@@ -2,8 +2,10 @@
 
 #include "fusexutil.h"
 
+#if 0
 #if _IS_BASE
 static SoftwareSerial SWSerial(2, 3);
+#endif
 #endif
 
 #define CRC16 0x8005
@@ -247,7 +249,7 @@ void module_add(const char* tag)
         fatal();
     }
 
-    fxtm_modules[fxtm_modules_count++].module_name = tag;
+    fxtm_modules[fxtm_modules_count++].module_name = (char*) tag;
 }
 
 void module_setup(const char* tag, fxtm_error_t error)
