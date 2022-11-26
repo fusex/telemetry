@@ -84,8 +84,8 @@
 #  define PCdevice    Serial //TODO is this should be here ?
 #  define DEBUGdevice SWSerial
 # elif defined(__SAM3X8E__)
-#  define PCdevice    Serial //TODO is this should be here ?
-#  define DEBUGdevice Serial1
+#  define DEBUGdevice Serial
+#  define PCdevice    SerialUSB //TODO is this should be here ?
 #  define SHELLdevice Serial2 
 #  define _IS_BASE 1
 # elif defined(__i386__) || defined( __x86_64__)

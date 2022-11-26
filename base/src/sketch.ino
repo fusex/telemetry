@@ -14,8 +14,10 @@ static unsigned int receivepacket(unsigned int packetnbr) {
     while (count--) {
         if (lora.waitAvailableTimeout(10000)) {
             uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
-            if (lora.recv((uint8_t*)fxtm_getdata(), &len))
+            if (lora.recv((uint8_t*)fxtm_getdata(), &len)) {
+                PCdevice.write((const char*)fxtm_getdata(), len);
                 DTTRACE("Received packet \n\r");
+            }
         } else {
             TTRACE("ERROR: reception Error at %d/%d! Timeout !\n\r",
                    packetnbr - count - 1, packetnbr);
@@ -28,6 +30,7 @@ static unsigned int receivepacket(unsigned int packetnbr) {
 
 void setup() {
     DEBUGdevice.begin(DEBUGSERIALBAUD);
+    PCdevice.begin(PCSERIALBAUD);
     TTRACE("--------------------------------------\n\r");
     TTRACE("--------------------------------------\n\r");
     TTRACE("--------------------------------------\n\r");
