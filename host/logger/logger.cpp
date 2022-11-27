@@ -1,21 +1,3 @@
-/*
-* =====================================================================================
-*
-*       Filename:  logger.cpp
-*
-*    Description:  
-*
-*        Version:  1.0
-*        Created:  05/15/2017 11:39:11 AM
-*       Revision:  none
-*       Compiler:  gcc
-*
-*         Author:  Zakaria ElQotbi (zakariae), zakaria.elqotbi@harman.com
-*        Company:  Harman
-*
-* =====================================================================================
-*/
-
 #include <assert.h>
 #include <string.h> 
 #include <stdarg.h> 
