@@ -108,7 +108,7 @@ void fxtm_getimu (fxtm_data_t* tm, float imu[])
 
     int32_t accel[3] = {0,0,0};
     int32_t magn[3]  = {0,0,0};
-    int32_t gyro[3]   = {0,0,0};
+    int32_t gyro[3]  = {0,0,0};
 
     IMU_SENSOR_GET(accel, tm, accel[0], accel[1], accel[2]);
     IMU_SENSOR_GET(magn,  tm, magn[0],  magn[1],  magn[2]);

@@ -26,17 +26,15 @@
 
 #include <sys/time.h>
 
-#define MAX_FILE_PATH 128
-#define SLOT_MAX       64
-
-#define HDR_SIZE  32
-#define MSG_SIZE 476
-
 #if 0
 #define DEBUG 1
 #endif
 
+#if 0
 #define trace(f,...) printf(f , ##__VA_ARGS__ )
+#else
+#define trace(f,...) do {} while(0);
+#endif
 
 #ifdef DEBUG
 #define dtrace(f,...) printf(f , ##__VA_ARGS__ )
@@ -46,12 +44,20 @@
 #define ddtrace dtrace
 #endif
 
+#define MAX_FILE_PATH 128
+#define SLOT_MAX       64
+//#define SLOT_MAX       2
+
+#define HDR_SIZE  32
+#define MSG_SIZE 476
+
 typedef struct {
   char     logmsg[MSG_SIZE];
   char     header[HDR_SIZE];
   uint32_t id;
 } fxlog;
-#define BUILD_BUG_ON (sizeof(fxlog)%512);
+#define FXLOG_SIZE   sizeof(fxlog)
+#define BUILD_BUG_ON (FXLOG_SIZE%512);
 
 class logger {
     std::thread             task;

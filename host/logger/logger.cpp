@@ -110,7 +110,7 @@ void logger::logfilewriter()
     std::atomic_thread_fence(std::memory_order_release);
     while(p.load(std::memory_order_release) - x) {
         uint32_t slotId = x%SLOT_MAX;
-        fwrite(&cloglist[slotId], 512, 1, logfile);
+        fwrite(&cloglist[slotId], FXLOG_SIZE, 1, logfile);
         INC_X();
         do_fflush = true;
         std::atomic_thread_fence(std::memory_order_release);
@@ -171,7 +171,7 @@ void logger::wlog(uint8_t* buf, size_t size)
    sprintf(cloglist[slotId].header, "  [%20lld]: ", gettimestamp());
    cloglist[slotId].id = ids++;
 
-   memcpy(cloglist[slotId].logmsg, buf, 512);
+   memcpy(cloglist[slotId].logmsg, buf, FXLOG_SIZE);
 
    INC_P();
 }
@@ -200,7 +200,7 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     //check again in case we have race condition, if yes,
     //re-read from logger file.
     if ((p.load(std::memory_order_release) - c) >= SLOT_MAX) {
-        int err = fseek(readfile, c*512, SEEK_SET); //TODO: we should check c overflow
+        int err = fseek(readfile, c*FXLOG_SIZE, SEEK_SET); //TODO: we should check c overflow
         myassert(err==0);
         s = fread(buf, size, 1, readfile);
         s *= size;

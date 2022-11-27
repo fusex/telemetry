@@ -6,7 +6,8 @@ static BGC_Lora lora(10, true); //Lora shield on DUE.
 
 static bool once = true;
 
-static unsigned int receivepacket(unsigned int packetnbr) {
+static unsigned int receivepacket(unsigned int packetnbr)
+{
     unsigned int count = packetnbr;
 
     WTTRACE("Start reception of packet\n\r");
@@ -28,7 +29,8 @@ static unsigned int receivepacket(unsigned int packetnbr) {
     return count;
 }
 
-void setup() {
+void setup()
+{
     DEBUGdevice.begin(DEBUGSERIALBAUD);
     PCdevice.begin(PCSERIALBAUD);
     TTRACE("--------------------------------------\n\r");
@@ -38,14 +40,19 @@ void setup() {
     TTRACE("--------------------------------------\n\r");
     TTRACE("--------------------------------------\n\r");
 
-    if (!lora.init()) {
-        TTRACE("Radio init failed\n\r");
-        return;
-    } else
-        TTRACE("Radio init Done with packet size:%d\n\r", fxtm_getdatasize());
+    while (true) {
+        if (lora.init()) {
+            TTRACE("Radio init Done with packet size:%d\n\r", fxtm_getdatasize());
+            break;
+        } else {
+            TTRACE("Radio init failed\n\r");
+            delay(2000);
+        }
+    }
 }
 
-void loop() {
+void loop()
+{
     if (once) {
         TTRACE("#########################\n\r");
         TTRACE("Waiting for Connection\n\r");
@@ -59,7 +66,9 @@ void loop() {
                 TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n", lora.lastSNR(),
                        lora.lastRssi(), lora.frequencyError());
             }
+#if 0
             fxtm_dump(false);
+#endif
         }
     }
 }

@@ -20,7 +20,7 @@
 # define HEX_DUMP   1
 #endif
 
-#if 0
+#if 1
 # define TRAME_DUMP 1
 #endif
 
@@ -37,7 +37,7 @@
 #ifdef HEX_DUMP
 # define fxhost_dump(b, l) hexdump(b, l)
 #elif defined(TRAME_DUMP)
-# define fxhost_dump(b, l) fxtm_dumpdata((fxtm_data_t*)b)
+# define fxhost_dump(b, l) fxtm_dumpdata((fxtm_data_t*)b, true)
 #else
 # define fxhost_dump(b, l) do { (void)b; (void)l; } while(0)
 #endif
@@ -133,7 +133,9 @@ int openregular(int argc,char** argv)
         return -1;
     }
 
-    chunksize = fxtm_getblocksize();
+    if (chunksize == 0) {
+        chunksize = fxtm_getblocksize();
+    }
 
     return fd;
 }
@@ -152,7 +154,9 @@ int openserial(int argc, char** argv)
     }
     set_interface_attribs(fd, SERIALBAUD);
 
-    chunksize = fxtm_getdatasize();
+    if (chunksize == 0) {
+	chunksize = fxtm_getdatasize();
+    }
 
     return fd;
 }
@@ -196,6 +200,9 @@ void thread_acquisition(int fd, logger* log)
     FILE*  file = fdopen(fd,"ro");
 
     assert(chunksize>0);
+
+    printf("chunksize is set to:%ld\n", chunksize);
+
     do {
         size_t rdlen = 0;
         rdlen = fread(fxtm_getdata(), chunksize, 1, file);
