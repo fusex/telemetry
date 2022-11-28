@@ -25,8 +25,8 @@ void fxtm_gendata ()
 void fxtm_reset ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->id = idCounter++; 
-    fxtmblock.timestamp = _mymillis();
+    tm->id = idCounter++;
+    fxtmblock.txh.timestamp = _mymillis();
 }
 #endif
 
@@ -114,13 +114,13 @@ void fxtm_getimu (fxtm_data_t* tm, float imu[])
     IMU_SENSOR_GET(magn,  tm, magn[0],  magn[1],  magn[2]);
     IMU_SENSOR_GET(gyro,  tm, gyro[0],  gyro[1],  gyro[2]);
 
-    imu[0] = (float)accel[0]/IMUFACTOR; 
-    imu[1] = (float)accel[0]/IMUFACTOR; 
-    imu[2] = (float)accel[0]/IMUFACTOR; 
-    imu[3] = (float)gyro[0]/IMUFACTOR; 
+    imu[0] = (float)accel[0]/IMUFACTOR;
+    imu[1] = (float)accel[0]/IMUFACTOR;
+    imu[2] = (float)accel[0]/IMUFACTOR;
+    imu[3] = (float)gyro[0]/IMUFACTOR;
     imu[4] = (float)gyro[1]/IMUFACTOR;
-    imu[5] = (float)gyro[2]/IMUFACTOR; 
-    imu[6] = (float)magn[0]/IMUFACTOR; 
+    imu[5] = (float)gyro[2]/IMUFACTOR;
+    imu[6] = (float)magn[0]/IMUFACTOR;
     imu[7] = (float)magn[1]/IMUFACTOR;
     imu[8] = (float)magn[2]/IMUFACTOR;
 }
@@ -128,7 +128,7 @@ void fxtm_getimu (fxtm_data_t* tm, float imu[])
 void fxtm_getgps (fxtm_data_t* tm, float gps[])
 {
     if(tm == NULL)
-    	tm = &fxtmblock.data;
+        tm = &fxtmblock.data;
 
     gps[0] = (float)tm->gpsLt/GPSFACTOR;
     gps[1] = (float)tm->gpsLg/GPSFACTOR;
@@ -137,20 +137,20 @@ void fxtm_getgps (fxtm_data_t* tm, float gps[])
 void fxtm_getpressure (fxtm_data_t* tm, int32_t* ppressure)
 {
     if(tm == NULL)
-    	tm = &fxtmblock.data;
+        tm = &fxtmblock.data;
 
     *ppressure = tm->pressure;
 }
 
 void fxtm_getts (fxtm_data_t* tm, uint32_t* pts)
 {
-    *pts = fxtmblock.timestamp;
+    *pts = fxtmblock.txh.timestamp;
 }
 
 void fxtm_getid (fxtm_data_t* tm, uint16_t* pid)
 {
     if(tm == NULL)
-	    tm = &fxtmblock.data;
+        tm = &fxtmblock.data;
     *pid = tm->id;
 }
 
@@ -158,7 +158,7 @@ void fxtm_getid (fxtm_data_t* tm, uint16_t* pid)
 void fxtm_getsoundlvl (fxtm_data_t* tm, uint8_t* psndlvl)
 {
     if(tm == NULL)
-	    tm = &fxtmblock.data;
+        tm = &fxtmblock.data;
     *psndlvl = tm->soundLevel;
 }
 
@@ -172,21 +172,21 @@ void fxtm_setsoundlvl (unsigned int level)
 void fxtm_gettemperature (fxtm_data_t* tm, int8_t* ptemp)
 {
     if(tm == NULL)
-	    tm = &fxtmblock.data;
+        tm = &fxtmblock.data;
     *ptemp = tm->temperature;
 }
 
 void fxtm_gethumidity (fxtm_data_t* tm, int8_t* phumidity)
 {
     if(tm == NULL)
-	    tm = &fxtmblock.data;
+        tm = &fxtmblock.data;
     *phumidity = tm->humidity;
 }
 
 void fxtm_getflightstatus (fxtm_data_t* tm, uint8_t* pFlightStatus)
 {
     if(tm == NULL)
-	tm = &fxtmblock.data;
+        tm = &fxtmblock.data;
     *pFlightStatus = tm->flightStatus;
 }
 
@@ -200,12 +200,12 @@ int fxtm_check (fxtm_data_t* tm)
 
     int ret = 0;
     if (tm->id != (lastid +1) && tm->id != 0) {
-	TTRACE("discontinuation at id: %u at ts: %u, lastid:%u lastts:%u\r\n",
-	       tm->id, fxtmblock.timestamp, lastid, lastts);
-	ret = 1;
+        TTRACE("discontinuation at id: %u at ts: %u, lastid:%u lastts:%u\r\n",
+                tm->id, fxtmblock.rxh.timestamp, lastid, lastts);
+        ret = 1;
     }
     lastid = tm->id;
-    lastts = fxtmblock.timestamp;
+    lastts = fxtmblock.rxh.timestamp;
 
     return ret;
 }
@@ -222,16 +222,16 @@ void fxtm_dumpdata(fxtm_data_t* tm, bool isConsole)
     int32_t g[3]  = {0,0,0};
     int32_t m[3]  = {9,0,0};
     int32_t a2[3] = {0,0,0};
-   
+
     float gps[2] = {0,0};
-    fxtm_getgps(tm, gps); 
+    fxtm_getgps(tm, gps);
 
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
     IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
 
-    MYTRACE("\r\n\tid: %u at ts: %u\r\n", tm->id, fxtmblock.timestamp);
+    MYTRACE("\r\n\tid: %u at ts: %u\r\n", tm->id, fxtmblock.txh.timestamp);
 {
     long   i,d;
     double u;
@@ -256,12 +256,12 @@ void fxtm_dumpdata(fxtm_data_t* tm, bool isConsole)
 }
 {
     MYTRACE("\tFlight Status: %s (%3d)\r\n",
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":
             "ERROR", tm->flightStatus);
 }
 
@@ -318,12 +318,12 @@ size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
     STRINGIFY("\"magnx\":%d, \"magny\":%d, \"magnz\":%d, ", m[0], m[1], m[2]);
     STRINGIFY("\"accel2x\":%d, \"accel2y\":%d, \"accel2z\":%d, ", a2[0], a2[1], a2[2]);
     STRINGIFY("\"flightstatus\":\"%s\"}",
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":
-	    tm->flightStatus==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":
+            tm->flightStatus==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":
             "ERROR");
 
     return totalwrote;

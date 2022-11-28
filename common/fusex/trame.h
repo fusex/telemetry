@@ -1,15 +1,16 @@
 #ifndef _TRAME_H
 #define _TRAME_H
 
+#include <stdfix.h>
 #include <stdint.h>
 
 #define HBITFILED 4
 #define SBITFILED 1
 
 typedef struct {
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
+    int16_t x;
+    int16_t y;
+    int16_t z;
 } imu_sensor_t;
 
 #define MAX_SENSORS 2
@@ -29,8 +30,8 @@ typedef struct {
     uint8_t       battLevel;
     uint8_t       flightStatus;
 
-    int32_t       gpsLt; 
-    int32_t       gpsLg;
+    int16_t       gpsLt;
+    int16_t       gpsLg;
 
     imu_sensor_t  accel;
     imu_sensor_t  accel2;
@@ -75,9 +76,23 @@ int head = 0;
 #endif
 
 typedef struct {
-	fxtm_data_t  data;
-	uint32_t     timestamp;
-	uint8_t      padding[512 - sizeof(fxtm_data_t) - sizeof(uint32_t)];
+    uint32_t     timestamp;
+} fxtm_txheader_t;
+
+typedef struct {
+    uint32_t     timestamp;
+    uint32_t     rssi;
+    uint32_t     snr;
+    uint32_t     frequencyError;
+} fxtm_rxheader_t;
+
+typedef struct {
+    fxtm_data_t      data;
+    fxtm_txheader_t  txh;
+    fxtm_rxheader_t  rxh;
+    uint8_t          padding[512 - sizeof(fxtm_data_t)
+                                 - sizeof(fxtm_txheader_t)
+                                 - sizeof(fxtm_rxheader_t)];
 }__attribute__((packed)) fxtm_block_t;
 
 static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
@@ -120,9 +135,9 @@ void fxtm_getsoundlvl(fxtm_data_t* tm, uint8_t* psndlvl);
 void fxtm_gettemperature(fxtm_data_t* tm, int8_t* ptemp);
 void fxtm_gethumidity(fxtm_data_t* tm, int8_t* phumidity);
 
-#define GPSFACTORPOW   "6" 
-#define GPSFACTOR 1000000 
-#define IMUFACTOR     100 
+#define GPSFACTORPOW   "6"
+#define GPSFACTOR 1000000
+#define IMUFACTOR     100
 
 #define MAX_SOUND_LEVEL 1024
 #define MAX_TEMPERATURE  256
