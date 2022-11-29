@@ -19,13 +19,13 @@
 
 static void acquire_fake ()
 {
-    fxtm_reset();
+    fxtm_reset(_mymillis());
     fxtm_gendata();
 }
 
 static void acquire ()
 {
-    fxtm_reset();
+    fxtm_reset(_mymillis());
     loopRTC();
     loopPitot();
     loopAtmos();

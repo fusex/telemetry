@@ -78,7 +78,9 @@ static int execModules (int /*argc*/ = 0, char** /*argv*/ = NULL)
 
 static int fxtmStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-    fxtm_dump(true);
+    char buf[256];
+    fxtm_dumpdata(NULL, buf, 256);
+    CTRACE("%s", buf);
     CTRACE("\n\tfxtm trame size:%d Bytes\n\r", fxtm_getdatasize());
 
     return 0;

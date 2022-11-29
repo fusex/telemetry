@@ -6,7 +6,9 @@
 #include <Adafruit_BMP280.h>
 #include <ClosedCube_HDC1080.h>
 #include <BGC_I2c.h>
+extern "C" {
 #include <trame.h>
+}
 
 #include "init.h"
 

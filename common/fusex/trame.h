@@ -1,22 +1,50 @@
 #ifndef _TRAME_H
 #define _TRAME_H
 
-#include <stdfix.h>
 #include <stdint.h>
+#include <stdbool.h>
+#include <stdfix.h>
 
-#define HBITFILED 4
-#define SBITFILED 1
+#define FXTM_FLIGHTSTATUS_LAUNCHPAD     0
+#define FXTM_FLIGHTSTATUS_LIFTOFF       1
+#define FXTM_FLIGHTSTATUS_BURNOUT       2
+#define FXTM_FLIGHTSTATUS_SEPARATION    3
+#define FXTM_FLIGHTSTATUS_RECOVERY      4
+#define FXTM_FLIGHTSTATUS_TOUCHDOWN     5
+
+#define MAX_SOUND_LEVEL 1024
+#define MAX_TEMPERATURE  256
+
+#define IMU_SENSOR_SET(p, tm, X, Y, Z) { \
+    tm->p.x = X; \
+    tm->p.y = Y; \
+    tm->p.z = Z; \
+}
+
+#define IMU_SENSOR_GET(p, tm, X, Y, Z) { \
+    X = tm->p.x;            \
+    Y = tm->p.y;            \
+    Z = tm->p.z;            \
+}
+
+
+#ifdef __cplusplus
+#define myaccum 
+extern "C"
+{
+#else
+#define myaccum _Accum
+#endif /* __cplusplus */
 
 typedef struct {
-    int16_t x;
-    int16_t y;
-    int16_t z;
+    short myaccum x;
+    short myaccum y;
+    short myaccum z;
 } imu_sensor_t;
 
-#define MAX_SENSORS 2
-
+// = {'B','G','C','0'};
 typedef struct {
-    char          magic[4] = {'B','G','C','0'};
+    char          magic[4];
     uint16_t      id;
 
     uint16_t      pressure;
@@ -30,8 +58,8 @@ typedef struct {
     uint8_t       battLevel;
     uint8_t       flightStatus;
 
-    int16_t       gpsLt;
-    int16_t       gpsLg;
+    short myaccum gpsLt;
+    short myaccum gpsLg;
 
     imu_sensor_t  accel;
     imu_sensor_t  accel2;
@@ -39,21 +67,6 @@ typedef struct {
     imu_sensor_t  magn;
 
 } __attribute__((packed)) fxtm_data_t;
-
-#define MASK0 0x0000ffff
-#define MASK1 0x000f0000
-
-#define IMU_SENSOR_SET(p, tm, X, Y, Z) { \
-    tm->p.x = X; \
-    tm->p.y = Y; \
-    tm->p.z = Z; \
-}
-
-#define IMU_SENSOR_GET(p, tm, X, Y, Z) { \
-    X = tm->p.x;            \
-    Y = tm->p.y;            \
-    Z = tm->p.z;            \
-}
 
 #if 0
 enum fxtm_buff_status_e {
@@ -95,51 +108,38 @@ typedef struct {
                                  - sizeof(fxtm_rxheader_t)];
 }__attribute__((packed)) fxtm_block_t;
 
-static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
-
-#define FXTM_FLIGHTSTATUS_LAUNCHPAD     0
-#define FXTM_FLIGHTSTATUS_LIFTOFF       1
-#define FXTM_FLIGHTSTATUS_BURNOUT       2
-#define FXTM_FLIGHTSTATUS_SEPARATION    3
-#define FXTM_FLIGHTSTATUS_RECOVERY      4
-#define FXTM_FLIGHTSTATUS_TOUCHDOWN     5
-
-void fxtm_reset(void);
+//static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
+void fxtm_reset(uint32_t ts);
 void fxtm_gendata(void);
 void fxtm_setsoundlvl(unsigned int level);
 void fxtm_setimu(float a[], float m[], float g[]);
 void fxtm_setimu2(float a[]);
-void fxtm_settemperature(float temperature);
-void fxtm_setpressure(float pressure);
+void fxtm_settemperature(int8_t temperature);
+void fxtm_setpressure(uint16_t pressure);
 void fxtm_setdiffpressure(uint16_t diffpressure);
-void fxtm_sethumidity(float pressure);
+void fxtm_sethumidity(uint8_t humidity);
 void fxtm_setflightstatus(uint8_t flightStatus);
 void fxtm_setgps(float latitude, float longitude);
 
 fxtm_data_t*  fxtm_getdata();
 fxtm_block_t* fxtm_getblock();
 
-size_t fxtm_getblocksize();
-size_t fxtm_getdatasize();
-void   fxtm_dump(bool isConsole);
-void   fxtm_dumpdata(fxtm_data_t* tm, bool isConsole);
-int    fxtm_check(fxtm_data_t* tm);
-size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize);
+size_t   fxtm_getblocksize();
+size_t   fxtm_getdatasize();
+size_t   fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize);
+uint16_t fxtm_check(fxtm_data_t* tm);
+size_t   fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize);
 
 void fxtm_getimu(fxtm_data_t* tm, float* imu);
 void fxtm_getgps(fxtm_data_t* tm, float* gps);
-void fxtm_getpressure(fxtm_data_t* tm, int32_t* ppressure);
+void fxtm_getpressure(fxtm_data_t* tm, uint16_t* ppressure);
 void fxtm_getts(fxtm_data_t* tm, uint32_t* pts);
 void fxtm_getid(fxtm_data_t* tm, uint16_t* pid);
 void fxtm_getsoundlvl(fxtm_data_t* tm, uint8_t* psndlvl);
 void fxtm_gettemperature(fxtm_data_t* tm, int8_t* ptemp);
-void fxtm_gethumidity(fxtm_data_t* tm, int8_t* phumidity);
-
-#define GPSFACTORPOW   "6"
-#define GPSFACTOR 1000000
-#define IMUFACTOR     100
-
-#define MAX_SOUND_LEVEL 1024
-#define MAX_TEMPERATURE  256
+void fxtm_gethumidity(fxtm_data_t* tm, uint8_t* phumidity);
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif //define _TRAME_H
