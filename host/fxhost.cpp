@@ -37,7 +37,11 @@
 #ifdef HEX_DUMP
 # define fxhost_dump(b, l) hexdump(b, l)
 #elif defined(TRAME_DUMP)
-# define fxhost_dump(b, l) fxtm_dumpdata((fxtm_data_t*)b, true)
+# define fxhost_dump(b, l) do { \
+    char out[512]; \
+    fxtm_dumpdata((fxtm_data_t*)b, out, l); \
+    printf("%s", out); \
+} while(0);
 #else
 # define fxhost_dump(b, l) do { (void)b; (void)l; } while(0)
 #endif

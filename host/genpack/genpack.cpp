@@ -31,6 +31,12 @@
 
 #define MAX_PRESSURE_AT_SEALEVEL 1013
 
+# define fxhost_dump(b, l) do { \
+    char out[512]; \
+    fxtm_dumpdata((fxtm_data_t*)b, out, l); \
+    printf("%s", out); \
+} while(0);
+
 void do_usage (char** argv)
 {
     printf ("\tUsage: %s [-h] outputfile [NR] \n",argv[0]);
@@ -88,7 +94,7 @@ int main (int argc, char** argv)
 
 	fxtm_setgps(x, y);
 
-	fxtm_dump(NULL);
+	fxhost_dump(tm, sizeof(fxtm_data_t));
 
 	if (fwrite(buf, bs, 1, file) == 0) {
 	    printf("Error writing in %s %s\n", argv[1], strerror(errno));
