@@ -74,7 +74,8 @@
 # define DEBUGdevice     BGC_SerialDEBUG
 #else
 # if defined(__AVR_ATmega2560__)
-#  define _IS_ROCKET 1
+#  define PCdevice Serial
+//#  define _IS_ROCKET 1
 //#pragma message ("this is the Mega board")
 #  define DEBUGdevice     BGC_SerialDEBUG
 #  define SHELLdevice     BGC_SerialSHELL
