@@ -38,8 +38,9 @@
 # define fxhost_dump(b, l) hexdump(b, l)
 #elif defined(TRAME_DUMP)
 # define fxhost_dump(b, l) do { \
+    (void)l; \
     char out[512]; \
-    fxtm_dumpdata((fxtm_data_t*)b, out, l); \
+    fxtm_dumpdata((fxtm_data_t*)b, out, 512); \
     printf("%s", out); \
 } while(0);
 #else
