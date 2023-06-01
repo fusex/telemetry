@@ -121,14 +121,15 @@ void set_mincount(int fd, int mcount)
     tty.c_cc[VMIN] = mcount ? 1 : 0;
     tty.c_cc[VTIME] = 5;        /* half second timer */
 
-    if (tcsetattr(fd, TCSANOW, &tty) < 0)
+    if (tcsetattr(fd, TCSANOW, &tty) < 0) {
         printf("Error tcsetattr: %s\n", strerror(errno));
+    }
 }
 
 int openregular(int argc,char** argv)
 {
     int fd;
-    if(argc<3){
+    if (argc<3) {
         printf("please provide file\n");
         exit(1);
     }
@@ -149,8 +150,10 @@ int openserial(int argc, char** argv)
 {
     int  fd;
     const char *portname = "/dev/ttyACM1";
-    if(argc > 1)
+
+    if (argc > 1) {
         portname = argv[1];
+    }
 
     fd = open(portname, O_RDONLY | O_NOCTTY);
     if (fd < 0) {
@@ -186,7 +189,7 @@ int opensocket(struct sockaddr_in* servaddr)
 
 void do_usage(char** argv)
 {
-    printf ("\tUsage: %s [-r] file\n",argv[0]);
+    printf("\tUsage: %s [-r] file\n",argv[0]);
     exit(-2);
 }
 
@@ -221,7 +224,7 @@ void thread_acquisition(int fd, logger* log)
         }
 
         rb += chunksize;
-        if(fxh.simu) usleep(BGC_ACQ_PERIOD*9/10);
+        if (fxh.simu) usleep(BGC_ACQ_PERIOD*9/10);
     } while (!finish && !asktoterm);
     log->flush();
     printf("end of acquisition\n");
@@ -235,7 +238,7 @@ void thread_conso(logger* log)
 
     do {
         size_t rd = log->rlog(buf, fxtm_getdatasize());
-        if(rd > 0) {
+        if (rd > 0) {
             fxhost_dump(buf, rd);
             fxhost_check(buf);
 
@@ -243,8 +246,8 @@ void thread_conso(logger* log)
 #if 0
             printf("wrote json size of:%ld\n",jsize);
 #endif
-            if(sendto(fxh.sockfd, (const uint8_t *)bufJSON, jsize, 0,
-                    (const struct sockaddr *) &server, sizeof(server)) < 0){
+            if (sendto(fxh.sockfd, (const uint8_t *)bufJSON, jsize, 0,
+                    (const struct sockaddr *) &server, sizeof(server)) < 0) {
                 printf("Error from sendto %s\n", strerror(errno));
                 finish = true;
             }
@@ -269,26 +272,28 @@ int main(int argc, char** argv)
     char logfilename[128];
     fxh.simu = false;
 
-    if(argc > 1 && !strncmp("-r",argv[1],2)) {
+    if (argc > 1 && !strncmp("-r",argv[1],2)) {
         fxh.fd = openregular(argc,argv);
         fxh.simu = true;
-    } else if(argc > 1 && !strncmp("-h",argv[1],2))
+    } else if (argc > 1 && !strncmp("-h",argv[1],2)) {
         do_usage(argv);
-    else
+    } else {
         fxh.fd = openserial(argc,argv);
+    }
 
-    if(fxh.fd<0) return -1;
+    if (fxh.fd<0) return -1;
 
     memset(logfilename,0,128);
     getlogfile(logfilename);
     assert(strlen(logfilename)>0);
 
     fxh.sockfd = opensocket(&server);
-    if(fxh.sockfd<0) return -2;
+    if (fxh.sockfd<0) return -2;
 
 #if 0
-    if(signal(SIGINT, sig_handler)==SIG_ERR)
+    if (signal(SIGINT, sig_handler)==SIG_ERR) {
         printf("cannot catch SIGINT\n");
+    }
 #endif
 
     /* Instantiate logger that will store data within a thread */

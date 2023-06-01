@@ -11,7 +11,7 @@
         dtrace("ring full\n"); \
         full = true; \
         hup(); \
-        while(full); \
+        while (full); \
         dtrace("ring not more full\n"); \
     }; \
     std::atomic_thread_fence(std::memory_order_release); \
@@ -36,17 +36,18 @@
 
 #define myassert(cond) { \
     std::atomic_thread_fence(std::memory_order_release); \
-    if(!(cond)) \
+    if (!(cond)) {\
         debug("asserting at"); \
+    } \
     assert(cond); \
 }
 
 void logger::logthread()
 {
-    while(!mustDie) {
+    while (!mustDie) {
         std::unique_lock<std::mutex> locker(mLock);
         std::atomic_thread_fence(std::memory_order_release);
-        while(x == p.load(std::memory_order_release)) {
+        while (x == p.load(std::memory_order_release)) {
             //debug("logthread wait for hup at");
             processIt.wait(locker);
             //debug("logthread get a hup at");
@@ -81,7 +82,7 @@ void logger::debug(const char* h)
     for (p = (unsigned char*) buf; s-- > 0; p++) \
             printf(" 0x%x", *p); \
     printf("\n"); \
-} while(0)
+} while (0)
 
 void logger::logfilewriter()
 {
@@ -90,7 +91,7 @@ void logger::logfilewriter()
     debug("logwriter");
     bool do_fflush = false;
     std::atomic_thread_fence(std::memory_order_release);
-    while(p.load(std::memory_order_release) - x) {
+    while (p.load(std::memory_order_release) - x) {
         uint32_t slotId = x%SLOT_MAX;
         fwrite(&cloglist[slotId], FXLOG_SIZE, 1, logfile);
         INC_X();
@@ -98,9 +99,9 @@ void logger::logfilewriter()
         std::atomic_thread_fence(std::memory_order_release);
     }
 
-    if(full) full = false;
+    if (full) full = false;
 
-    if(do_fflush) {
+    if (do_fflush) {
         fflush(logfile);
     }
     //ddebug("vfsynced");
@@ -163,7 +164,7 @@ size_t logger::rlog(uint8_t* buf, size_t size)
     size_t s = size;  
  
     std::atomic_thread_fence(std::memory_order_release);
-    while(p == c.load(std::memory_order_release)) {
+    while (p == c.load(std::memory_order_release)) {
         std::unique_lock<std::mutex> locker(mLock);
         //debug("rlog wait for hup at");
         processIt.wait(locker);
