@@ -20,7 +20,7 @@
 static void acquire_fake ()
 {
     fxtm_reset(_mymillis());
-    fxtm_gendata();
+    gendata((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
 }
 
 static void acquire ()
@@ -39,7 +39,6 @@ static void acquire ()
 static void log ()
 {
     loopSdcard();
-    //fxtm_dump(false);
 }
 
 static void send ()
@@ -71,11 +70,11 @@ void setup ()
     setupPitot();
     setupAtmos();
     setupIMU();
-    setupRadio();
 #if 1
     setupGps();
 #endif
     setupSdcard();
+    setupRadio();
 
     setupExec();
 
