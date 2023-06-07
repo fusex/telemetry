@@ -2,10 +2,9 @@
 
 #include <Arduino.h>
 #include <fusexutil.h>
-#include <fusexconfig.h>
+#include <trame.h>
 
 #include "BGC_Pinout.h"
-#include "trame.h"
 
 const static int thresholdvalue=490; //The threshold
 

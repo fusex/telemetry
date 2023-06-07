@@ -31,9 +31,10 @@ with open(csvfilename, encoding = 'utf-8') as csvfile:
     csv_reader = csv.DictReader(csvfile)
     i = 0
     for rows in csv_reader:
+        i += 1
+        if i < 1200: continue
         data = {}
         data["id"] = i
-        i += 1
         data["accelx"] = rows['Accelerometer X (g)']
         data["accely"] = rows['Accelerometer Y (g)']
         data["accelz"] = rows['Accelerometer Z (g)']

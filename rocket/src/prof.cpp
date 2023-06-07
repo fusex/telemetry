@@ -2,8 +2,8 @@
 
 #include <Arduino.h>
 #include <stdint.h>
-#include "fusexconfig.h"
-#include "fusexutil.h"
+
+#include <fusexutil.h>
 
 #ifdef CONFIG_PROFILING
 static uint32_t prof_time;

@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "trame.h"
+#include <trame.h>
 
 int main(int argc,char** argv)
 {

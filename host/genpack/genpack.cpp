@@ -27,7 +27,7 @@
 #include <signal.h>
 #include <time.h>
 
-#include "trame.h"
+#include <trame.h>
 
 #define MAX_PRESSURE_AT_SEALEVEL 1013
 
