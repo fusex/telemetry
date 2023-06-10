@@ -19,11 +19,11 @@
 #include "logger.h"
 
 #if 0
-# define HEX_DUMP   1
+# define HEX_DUMP    1
 #endif
 
-#if 1
-# define TRAME_DUMP 1
+#if 0
+# define TRAME_DUMP  1
 #endif
 
 #if 1
@@ -40,7 +40,7 @@
         uint16_t id; \
         fxtm_getts((fxtm_data_t*)buf, &ts); \
         fxtm_getid((fxtm_data_t*)buf, &id); \
-        printf("Discontinuation at id: %u at ts: %u, lastid:%u lastts:%u\r\n", \
+        printf("Discontinuation at id:%u at ts:%u, lastid:%u lastts:%u\r\n", \
                id, ts, lastid, lastts); \
     } \
 } while(0);
