@@ -25,7 +25,7 @@
 #define ENABLE_FAKE
 #endif
 
-static void acquire_fake ()
+static void acquire_fake (void)
 {
 #if 0
     gendata((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
@@ -49,7 +49,7 @@ static void acquire_fake ()
     fxtm_reset(_mymillis());
 }
 
-static void acquire ()
+static void acquire (void)
 {
     fxtm_reset(_mymillis());
     loopRTC();
@@ -61,17 +61,17 @@ static void acquire ()
 #endif
 }
 
-static void log ()
+static void log (void)
 {
     loopSdcard();
 }
 
-static void send ()
+static void send (void)
 {
     loopRadio();
 }
 
-void subLoop ()
+void subLoop (void)
 {
     prof_start();
 
@@ -87,7 +87,7 @@ void subLoop ()
     prof_report();
 }
 
-void setup ()
+void setup (void)
 {
     setupInit();
     setupShell();
@@ -113,7 +113,7 @@ void setup ()
     TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
 }
 
-void loop ()
+void loop (void)
 {
     loopShell();
     loopExec();
