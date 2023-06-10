@@ -77,11 +77,11 @@ void subLoop (void)
 
 #ifndef ENABLE_FAKE
     acquire();
+    log();
 #else
     acquire_fake();
 #endif
 
-    log();
     send();
 
     prof_report();
