@@ -27,6 +27,11 @@
     Z = tm->p.z;            \
 }
 
+#if 0
+#define PACKED __attribute__((packed))
+#else
+#define PACKED
+#endif
 
 #ifdef __cplusplus
 #define myaccum 
@@ -67,7 +72,7 @@ typedef struct {
     imu_sensor_t  gyro;
     imu_sensor_t  magn;
 
-} __attribute__((packed)) fxtm_data_t;
+} PACKED fxtm_data_t;
 
 #if 0
 enum fxtm_buff_status_e {
@@ -107,7 +112,7 @@ typedef struct {
     uint8_t          padding[512 - sizeof(fxtm_data_t)
                                  - sizeof(fxtm_txheader_t)
                                  - sizeof(fxtm_rxheader_t)];
-}__attribute__((packed)) fxtm_block_t;
+} PACKED fxtm_block_t;
 
 //static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
 void fxtm_reset(uint32_t ts);
