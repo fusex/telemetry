@@ -3,11 +3,17 @@
 
 #include "fusexconfig.h"
 
-#if !defined(_IS_PC)
-# include <Arduino.h>
+# if defined(__AVR_ATmega2560__)
 # define _FMT_FLASH_TYPE __FlashStringHelper
+# define FMT(x)          F(x)
 #else
 # define _FMT_FLASH_TYPE char
+# define  FMT(x)         (x)
+#endif
+
+#if !defined(_IS_HOST)
+# include <Arduino.h>
+#else
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -49,20 +55,20 @@ void modules_printall(bool isConsole);
 # define TAG "unknown-module"
 #endif
 
-#if !defined(_IS_PC)
-# define myprintf(a, ...) _myprintf(F(a), ##__VA_ARGS__)
-# define mycprintf(a, ...) _mycprintf(F(a), ##__VA_ARGS__)
+#define myprintf(a, ...) _myprintf(FMT(a), ##__VA_ARGS__)
+
+#if !defined(_IS_HOST)
+# define mycprintf(a, ...) _mycprintf(FMT(a), ##__VA_ARGS__)
 # define PRINT(x, ...)   DEBUGdevice.print(x, ##__VA_ARGS__)
 # define PRINTS(x)       DEBUGdevice.print(x)
 # define CPRINTS(x)      SHELLdevice.print(x)
 # define PRINTLN(x, ...) DEBUGdevice.println(x, ##__VA_ARGS__)
-# define PRINTMILLIS() PRINT((float)_mymillis()/1000,6)
+# define PRINTMILLIS()   PRINT((float)_mymillis()/1000,6)
 #else
-# define myprintf(a, ...) _myprintf(a, ##__VA_ARGS__)
 # define PRINT(x, ...)   printf(x, ##__VA_ARGS__)
-# define PRINTS(x)   printf("%s", x)
+# define PRINTS(x)       printf("%s", x)
 # define PRINTLN(x, ...) printf(x"\n", ##__VA_ARGS__)
-# define PRINTMILLIS() PRINT("%.6f",(float)_mymillis()/1000)
+# define PRINTMILLIS()   PRINT("%.6f",(float)_mymillis()/1000)
 #endif
 
 #define MYTRACE(x, ...) { \

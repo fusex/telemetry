@@ -1,7 +1,7 @@
 BIN := fxhost
 
 BUILDDIR := .build
-CFLAGS := -Wall -ggdb -std=c++11 -pthread -I. -D_IS_PC
+CFLAGS := -Wall -ggdb -std=c++11 -pthread -I. -D_IS_HOST
 .DEFAULT_GOAL := all
 LDFLAGS := -lm -lpthread
 LD := g++

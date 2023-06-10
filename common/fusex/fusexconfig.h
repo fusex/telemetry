@@ -90,7 +90,7 @@
 #  define SHELLdevice Serial2 
 #  define _IS_BASE 1
 # elif defined(__i386__) || defined( __x86_64__)
-#  define _IS_PC 1 
+#  define _IS_HOST 1
 # else
 #  error unknown board
 # endif

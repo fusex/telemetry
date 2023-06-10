@@ -1,6 +1,6 @@
 BIN      := genpack
 BUILDDIR := .build
-CXXFLAGS := -Wall -ggdb -std=c++11 -pthread -I.. -D_IS_PC
+CXXFLAGS := -Wall -ggdb -std=c++11 -pthread -I.. -D_IS_HOST
 .DEFAULT_GOAL := all
 LD := g++
 CXX := g++

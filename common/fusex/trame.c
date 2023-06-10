@@ -6,7 +6,7 @@
 
 #include "trame.h"
 
-#ifdef _IS_PC
+#ifdef _IS_HOST
 #include <cstdio>
 #endif
 

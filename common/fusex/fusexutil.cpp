@@ -155,7 +155,7 @@ void _myprintf2(const char *fmt, ... )
 
 long _myrandom(long min, long max)
 {
-#if defined(_IS_PC)
+#if defined(_IS_HOST)
    return min + random()%(max-min);
 #else
    return random(min,max);
@@ -164,7 +164,7 @@ long _myrandom(long min, long max)
 
 unsigned long _mymillis()
 {
-#if defined(_IS_PC)
+#if defined(_IS_HOST)
     struct timeval tp;
     gettimeofday(&tp, NULL);
     return (tp.tv_sec * 1000000 + tp.tv_usec)/1000;
