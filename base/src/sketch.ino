@@ -58,11 +58,11 @@ static boolean receivepacket (void)
             if (len < fxtm_getdatasize() ) {
                 TTRACE("Warning: packet incomplete at %d!\n\r", packetcounter);
             }
-            fxtm_rxheader_t* rxData = fxtm_getrxheader();
-            rxData->timestamp = _mymillis();
-            rxData->snr = lora.lastSNR();
-            rxData->rssi = lora.lastRssi();
-            rxData->frequencyError = lora.frequencyError();
+            fxtm_rxfooter_t* rxf = fxtm_getrxfooter();
+            rxf->timestamp = _mymillis();
+            rxf->snr = lora.lastSNR();
+            rxf->rssi = lora.lastRssi();
+            rxf->frequencyError = lora.frequencyError();
             PCdevice.write((const char*)fxtm_getdata(), fxtm_getrxdatasize());
         }
     } else {

@@ -103,15 +103,15 @@ typedef struct {
     uint32_t     rssi;
     uint32_t     snr;
     uint32_t     frequencyError;
-} fxtm_rxheader_t;
+} fxtm_rxfooter_t;
 
 typedef struct {
     fxtm_txheader_t  txh;
     fxtm_data_t      data;
-    fxtm_rxheader_t  rxh;
+    fxtm_rxfooter_t  rxf;
     uint8_t          padding[512 - sizeof(fxtm_data_t)
                                  - sizeof(fxtm_txheader_t)
-                                 - sizeof(fxtm_rxheader_t)];
+                                 - sizeof(fxtm_rxfooter_t)];
 } PACKED fxtm_block_t;
 
 //static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
@@ -129,13 +129,13 @@ void fxtm_setgps(float latitude, float longitude);
 
 fxtm_data_t*     fxtm_getdata(void);
 fxtm_block_t*    fxtm_getblock(void);
-fxtm_rxheader_t* fxtm_getrxheader(void);
+fxtm_rxfooter_t* fxtm_getrxfooter(void);
 fxtm_txheader_t* fxtm_gettxheader(void);
 
 size_t fxtm_getblocksize(void);
 size_t fxtm_getdatasize(void);
 size_t fxtm_gettxheadersize(void);
-size_t fxtm_getrxheadersize(void);
+size_t fxtm_getrxfootersize(void);
 size_t fxtm_getrxdatasize(void);
 size_t fxtm_gettxdatasize(void);
 

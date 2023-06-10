@@ -8,6 +8,15 @@
 #include <cstdio>
 #endif
 
+#define FXTM_FLIGHTSTATUS_STRING(x) (\
+    x==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD": \
+    x==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF": \
+    x==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT": \
+    x==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION": \
+    x==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY": \
+    x==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN": \
+    "ERROR")
+
 static fxtm_block_t fxtmblock;
 static uint16_t     idCounter = 0;
 
@@ -75,9 +84,9 @@ fxtm_txheader_t* fxtm_gettxheader (void)
     return &fxtmblock.txh;
 }
 
-fxtm_rxheader_t* fxtm_getrxheader (void)
+fxtm_rxfooter_t* fxtm_getrxfooter (void)
 {
-    return &fxtmblock.rxh;
+    return &fxtmblock.rxf;
 }
 
 fxtm_data_t* fxtm_getdata (void)
@@ -100,14 +109,14 @@ size_t fxtm_gettxheadersize (void)
     return sizeof(fxtm_txheader_t);
 }
 
-size_t fxtm_getrxheadersize (void)
+size_t fxtm_getrxfootersize (void)
 {
-    return sizeof(fxtm_rxheader_t);
+    return sizeof(fxtm_rxfooter_t);
 }
 
 size_t fxtm_getrxdatasize (void)
 {
-    return fxtm_getdatasize() + fxtm_getrxheadersize();
+    return fxtm_getdatasize() + fxtm_getrxfootersize();
 }
 
 size_t fxtm_gettxdatasize (void)
@@ -228,7 +237,7 @@ uint16_t fxtm_check (fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts)
     }
 
     lastid = tm->id;
-    lastts = fxtmblock.rxh.timestamp;
+    lastts = fxtmblock.rxf.timestamp;
 
     return ret;
 }
@@ -263,29 +272,27 @@ size_t fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize)
     STRINGIFY("\tgps: %f, %f\r\n", gps[0], gps[1]);
 
     STRINGIFY("\tflightstatus: %s (%3d)\r\n",
-            tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":
-            "ERROR", tm->flightStatus);
-
+	      FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
 #if 0
     STRINGIFY("\tsound level: %u\r\n",tm->soundLevel);
 #endif
+
     STRINGIFY("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
     STRINGIFY("\ttemperature: %d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
-    STRINGIFY("\t accel[0]: %6f,  accel[1]: %f,   accel[2]: %6f\r\n", a[0], a[1], a[2]);
-    STRINGIFY("\t  gyro[0]: %f,   gyro[1]: %f,    gyro[2]: %6f\r\n", g[0], g[1], g[2]);
-    STRINGIFY("\t  magn[0]: %6f,   magn[1]: %6f,    magn[2]: %6f\r\n", m[0], m[1], m[2]);
-    STRINGIFY("\taccel2[0]: %6f, accel2[1]: %6f,  accel2[2]: %6f\r\n", a2[0], a2[1], a2[2]);
+    STRINGIFY("\t accel[0]: %6f,  accel[1]: %6f,  accel[2]: %6f\r\n", a[0], a[1], a[2]);
+    STRINGIFY("\t  gyro[0]: %6f,   gyro[1]: %6f,   gyro[2]: %6f\r\n", g[0], g[1], g[2]);
+    STRINGIFY("\t  magn[0]: %6f,   magn[1]: %6f,   magn[2]: %6f\r\n", m[0], m[1], m[2]);
+    STRINGIFY("\taccel2[0]: %6f, accel2[1]: %6f, accel2[2]: %6f\r\n", a2[0], a2[1], a2[2]);
 
     return totalwrote;
 }
 
 size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
 {
+    size_t wrote = 0;
+    size_t totalwrote = 0;
+    size_t remaining = bufsize;
+
     float   a[3] = {0,0,0};
     float   g[3] = {0,0,0};
     float   m[3] = {9,0,0};
@@ -293,14 +300,11 @@ size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
     float gps[2] = {0,0};
 
     fxtm_getgps(tm, gps);
+
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
     IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
-
-    size_t wrote = 0;
-    size_t totalwrote = 0;
-    size_t remaining = bufsize;
 
     STRINGIFY("{\"id\":%u, ", tm->id);
     STRINGIFY("\"pressure\":%u, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
@@ -310,14 +314,7 @@ size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
     STRINGIFY("\"gyrox\":%f, \"gyroy\":%f, \"gyroz\":%f, ", g[0], g[1], g[2]);
     STRINGIFY("\"magnx\":%f, \"magny\":%f, \"magnz\":%f, ", m[0], m[1], m[2]);
     STRINGIFY("\"accel2x\":%f, \"accel2y\":%f, \"accel2z\":%f, ", a2[0], a2[1], a2[2]);
-    STRINGIFY("\"flightstatus\":\"%s\"}",
-            tm->flightStatus==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":
-            tm->flightStatus==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":
-            "ERROR");
+    STRINGIFY("\"flightstatus\":\"%s\"}", FXTM_FLIGHTSTATUS_STRING(tm->flightStatus));
 
     return totalwrote;
 }
