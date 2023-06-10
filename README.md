@@ -18,3 +18,8 @@ cd base ; make; make upload
 to build host code for a linux PC:
 
 cd host ; make
+
+to build all the project.
+
+make
+
