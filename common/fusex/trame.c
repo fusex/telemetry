@@ -74,7 +74,17 @@ void fxtm_setflightstatus (uint8_t flightStatus)
     tm->flightStatus = flightStatus;
 }
 
-fxtm_data_t* fxtm_getdata ()
+fxtm_txheader_t* fxtm_gettxheader (void)
+{
+    return &fxtmblock.txh;
+}
+
+fxtm_rxheader_t* fxtm_getrxheader (void)
+{
+    return &fxtmblock.rxh;
+}
+
+fxtm_data_t* fxtm_getdata (void)
 {
     return &fxtmblock.data;
 }
@@ -84,12 +94,32 @@ fxtm_block_t* fxtm_getblock ()
     return &fxtmblock;
 }
 
-size_t fxtm_getdatasize ()
+size_t fxtm_getdatasize (void)
 {
     return sizeof(fxtm_data_t);
 }
 
-size_t fxtm_getblocksize ()
+size_t fxtm_gettxheadersize (void)
+{
+    return sizeof(fxtm_txheader_t);
+}
+
+size_t fxtm_getrxheadersize (void)
+{
+    return sizeof(fxtm_rxheader_t);
+}
+
+size_t fxtm_getrxdatasize (void)
+{
+    return fxtm_getdatasize() + fxtm_getrxheadersize();
+}
+
+size_t fxtm_gettxdatasize (void)
+{
+    return fxtm_gettxheadersize() + fxtm_getdatasize();
+}
+
+size_t fxtm_getblocksize (void)
 {
     return sizeof(fxtm_block_t);
 }

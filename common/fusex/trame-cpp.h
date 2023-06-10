@@ -18,6 +18,8 @@ void fxtm_setgps(float latitude, float longitude);
 
 fxtm_data_t*  fxtm_getdata();
 fxtm_block_t* fxtm_getblock();
+fxtm_rxheader_t* fxtm_getrxheader(void);
+fxtm_txheader_t* fxtm_gettxheader(void);
 
 size_t   fxtm_getblocksize();
 size_t   fxtm_getdatasize();

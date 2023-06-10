@@ -121,11 +121,18 @@ void fxtm_sethumidity(uint8_t humidity);
 void fxtm_setflightstatus(uint8_t flightStatus);
 void fxtm_setgps(float latitude, float longitude);
 
-fxtm_data_t*  fxtm_getdata();
-fxtm_block_t* fxtm_getblock();
+fxtm_data_t*     fxtm_getdata(void);
+fxtm_block_t*    fxtm_getblock(void);
+fxtm_rxheader_t* fxtm_getrxheader(void);
+fxtm_txheader_t* fxtm_gettxheader(void);
 
-size_t   fxtm_getblocksize();
-size_t   fxtm_getdatasize();
+size_t fxtm_getblocksize(void);
+size_t fxtm_getdatasize(void);
+size_t fxtm_gettxheadersize(void);
+size_t fxtm_getrxheadersize(void);
+size_t fxtm_getrxdatasize(void);
+size_t fxtm_gettxdatasize(void);
+
 size_t   fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize);
 uint16_t fxtm_check(fxtm_data_t* tm);
 size_t   fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize);
