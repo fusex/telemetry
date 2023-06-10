@@ -7,7 +7,11 @@
 
 #include "init.h"
 
-static BGC_Lora lora(BGC_LORA_SS, true); 
+#if 0
+static BGC_Lora lora(10, true);  //arduino mega board with lora shield
+#else
+static BGC_Lora lora(BGC_LORA_SS, true);
+#endif
 
 void setupRadio ()
 {
