@@ -216,6 +216,8 @@ void getlogfile(char* filename)
     strftime(filename, 128, "fusexlog-%Y-%m-%d", t);
 }
 
+static uint32_t chunkcounter = 0;
+
 void thread_acquisition(int fd, logger* log)
 {
     size_t rb = 0;
@@ -231,6 +233,7 @@ void thread_acquisition(int fd, logger* log)
         rdlen = fread(fxtm_getdata(), chunksize, 1, file);
         if (rdlen > 0) {
             log->wlog((uint8_t*)fxtm_getdata(), fxtm_getrxdatasize());
+            printf("%d\r", chunkcounter++);
         } else {
 #if 0
             printf("Error from read:%s rdlen:%ld\n", strerror(errno), rdlen);
