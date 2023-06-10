@@ -106,8 +106,8 @@ typedef struct {
 } fxtm_rxheader_t;
 
 typedef struct {
-    fxtm_data_t      data;
     fxtm_txheader_t  txh;
+    fxtm_data_t      data;
     fxtm_rxheader_t  rxh;
     uint8_t          padding[512 - sizeof(fxtm_data_t)
                                  - sizeof(fxtm_txheader_t)

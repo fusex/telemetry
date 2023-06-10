@@ -163,7 +163,7 @@ int openserial(int argc, char** argv)
     set_interface_attribs(fd, SERIALBAUD);
 
     if (chunksize == 0) {
-	chunksize = fxtm_getdatasize();
+	chunksize = fxtm_getrxdatasize();
     }
 
     return fd;
@@ -215,7 +215,7 @@ void thread_acquisition(int fd, logger* log)
         size_t rdlen = 0;
         rdlen = fread(fxtm_getdata(), chunksize, 1, file);
         if (rdlen > 0) {
-            log->wlog((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
+            log->wlog((uint8_t*)fxtm_getdata(), fxtm_getrxdatasize());
         } else {
 #if 0
             printf("Error from read:%s rdlen:%ld\n", strerror(errno), rdlen);
@@ -237,7 +237,7 @@ void thread_conso(logger* log)
     bool    finish = false;
 
     do {
-        size_t rd = log->rlog(buf, fxtm_getdatasize());
+        size_t rd = log->rlog(buf, fxtm_getrxdatasize());
         if (rd > 0) {
             fxhost_dump(buf, rd);
             fxhost_check(buf);
