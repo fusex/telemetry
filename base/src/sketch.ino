@@ -5,7 +5,9 @@
 #include <trame.h>
 
 static BGC_Lora lora(10, true); //Lora shield on DUE.
-#if 1
+
+//FIXME: fxtmp_dump() does not completly display all the packet.
+#if 0
 #define fxtmp_dump() do { \
     static char buf[256]; \
     fxtm_dumpdata(fxtm_getdata(), buf, 256); \
@@ -35,11 +37,14 @@ static boolean receivepacket (void)
             rxData->frequencyError = lora.frequencyError();
             PCdevice.write((const char*)fxtm_getdata(), fxtm_getrxdatasize());
             fxtmp_dump();
+            packetcounter++;
         }
     } else {
         TTRACE("ERROR: reception Error at %d! Timeout !\n\r", packetcounter);
         return false;
     }
+
+    TRACE("%d\r", packetcounter);
 
     return true;
 }
