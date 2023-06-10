@@ -1,3 +1,5 @@
+#define TAG "HOST"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -24,12 +26,24 @@
 # define TRAME_DUMP 1
 #endif
 
-#if 0
+#if 1
 # define TRAME_CHECK 1
 #endif
 
 #ifdef TRAME_CHECK
-# define fxhost_check(b) fxtm_check((fxtm_data_t*)b);
+# define fxhost_check(b) do { \
+    uint32_t lastts; \
+    uint16_t lastid; \
+    uint16_t ret = fxtm_check((fxtm_data_t*)buf, &lastid, &lastts); \
+    if (ret != 0) { \
+        uint32_t ts; \
+        uint16_t id; \
+        fxtm_getts((fxtm_data_t*)buf, &ts); \
+        fxtm_getid((fxtm_data_t*)buf, &id); \
+        printf("Discontinuation at id: %u at ts: %u, lastid:%u lastts:%u\r\n", \
+               id, ts, lastid, lastts); \
+    } \
+} while(0);
 #else
 # define fxhost_check(b) do { (void) b; } while(0)
 #endif

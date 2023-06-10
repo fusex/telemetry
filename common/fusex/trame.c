@@ -218,18 +218,21 @@ void fxtm_getflightstatus (fxtm_data_t* tm, uint8_t* pFlightStatus)
 static uint16_t lastid = 0;
 static uint32_t lastts = 0;
 
-uint16_t fxtm_check (fxtm_data_t* tm)
+uint16_t fxtm_check (fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts)
 {
     uint16_t ret = 0;
 
-    if(tm == NULL)
+    if (tm == NULL) {
         tm = &fxtmblock.data;
+    }
+
+    *plastts = lastts;
+    *plastid = lastid;
 
     if (tm->id != (lastid +1) && tm->id != 0) {
-        TTRACE("discontinuation at id: %u at ts: %u, lastid:%u lastts:%u\r\n",
-                tm->id, fxtmblock.rxh.timestamp, lastid, lastts);
         ret = lastid;
     }
+
     lastid = tm->id;
     lastts = fxtmblock.rxh.timestamp;
 

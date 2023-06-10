@@ -17,6 +17,26 @@ static BGC_Lora lora(10, true); //Lora shield on DUE.
 #define fxtmp_dump()
 #endif
 
+#ifdef TRAME_CHECK
+# define fxbase_check() do { \
+    uint32_t lastts; \
+    uint16_t lastid; \
+    uint16_t ret = fxtm_check(NULL, &lastid, &lastts); \
+    if (ret != 0) { \
+        uint32_t ts; \
+        uint16_t id; \
+        fxtm_getts(NULL, &ts); \
+        fxtm_getid(NULL, &id); \
+        TTRACE("Discontinuation at id: %u at ts: %u, lastid:%u lastts:%u\r\n", \
+               id, ts, lastid, lastts); \
+        TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n", lora.lastSNR(), \
+                lora.lastRssi(), lora.frequencyError()); \
+    } \
+} while(0);
+#else
+# define fxbase_check()
+#endif
+
 static uint32_t packetcounter = 0;
 
 static boolean receivepacket (void)
@@ -80,10 +100,7 @@ void loop()
 {
     if (lora.available()) {
         if (receivepacket()) {
-            if (fxtm_check(NULL)) {
-                TTRACE("SNR: %d RSSI: %d Freq ERROR: %d\r\n", lora.lastSNR(),
-                       lora.lastRssi(), lora.frequencyError());
-            }
+            fxbase_check();
         }
     }
 }
