@@ -140,7 +140,7 @@ size_t fxtm_getrxdatasize(void);
 size_t fxtm_gettxdatasize(void);
 
 size_t   fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize);
-uint16_t fxtm_check(fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts);
+uint16_t fxtm_check (fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts);
 size_t   fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize);
 
 void fxtm_getimu(fxtm_data_t* tm, float* imu);

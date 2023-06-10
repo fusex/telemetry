@@ -4,17 +4,23 @@
 #include <fusexutil.h>
 #include <trame.h>
 
-static BGC_Lora lora(10, true); //Lora shield on DUE.
+#if 0
+# define TRAME_DUMP 1
+#endif
+
+#if 1
+# define TRAME_CHECK 1
+#endif
 
 //FIXME: fxtmp_dump() does not completly display all the packet.
-#if 0
-#define fxtmp_dump() do { \
+#if TRAME_DUMP
+#define fxbase_dump() do { \
     static char buf[256]; \
     fxtm_dumpdata(fxtm_getdata(), buf, 256); \
     TTRACE("%s \n\r", buf); \
 } while(0)
 #else
-#define fxtmp_dump()
+#define fxbase_dump()
 #endif
 
 #ifdef TRAME_CHECK
@@ -36,6 +42,8 @@ static BGC_Lora lora(10, true); //Lora shield on DUE.
 #else
 # define fxbase_check()
 #endif
+ 
+static BGC_Lora lora(10, true); //Lora shield on DUE.
 
 static uint32_t packetcounter = 0;
 
@@ -56,15 +64,13 @@ static boolean receivepacket (void)
             rxData->rssi = lora.lastRssi();
             rxData->frequencyError = lora.frequencyError();
             PCdevice.write((const char*)fxtm_getdata(), fxtm_getrxdatasize());
-            fxtmp_dump();
-            packetcounter++;
         }
     } else {
         TTRACE("ERROR: reception Error at %d! Timeout !\n\r", packetcounter);
         return false;
     }
 
-    TRACE("%d\r", packetcounter);
+    TRACE("%d\r", packetcounter++);
 
     return true;
 }
@@ -101,6 +107,7 @@ void loop()
     if (lora.available()) {
         if (receivepacket()) {
             fxbase_check();
+            fxbase_dump();
         }
     }
 }

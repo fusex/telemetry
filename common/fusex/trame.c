@@ -1,5 +1,3 @@
-#define TAG "FXTM"
-
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,10 +6,6 @@
 
 #ifdef _IS_HOST
 #include <cstdio>
-#endif
-
-#ifndef TTRACE
-#define TTRACE(f, ...)
 #endif
 
 static fxtm_block_t fxtmblock;

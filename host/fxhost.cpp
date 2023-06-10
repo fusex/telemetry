@@ -83,8 +83,9 @@ static struct sockaddr_in server;
 void hexdump(const uint8_t* buf, size_t len)
 {
     unsigned char *p;
-    for (p = (unsigned char*) buf; len-- > 0; p++)
+    for (p = (unsigned char*) buf; len-- > 0; p++) {
             printf(" 0x%x", *p);
+    }
     printf("\n");
 }
 

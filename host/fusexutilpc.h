@@ -1,5 +1,5 @@
-#ifndef FUSEXUTIL_H
-#define FUSEXUTIL_H
+#ifndef FUSEXUTILPC_H
+#define FUSEXUTILPC_H
 #include <stdio.h>
 
 #define PCSERIALBAUD     115200
@@ -12,4 +12,4 @@
     printf(":" TAG "\t: " x, ##__VA_ARGS__); \
 } while(0)
 
-#endif // FUSEXUTIL_H
+#endif // FUSEXUTILPC_H
