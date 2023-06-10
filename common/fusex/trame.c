@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "trame.h"
 
@@ -20,6 +21,7 @@ void fxtm_reset (uint32_t ts)
 {
     fxtm_data_t* tm = &fxtmblock.data;
     tm->id = idCounter++;
+    memcpy(tm->magic, TRAME_VERSION, TRAME_VERSION_SIZE);
     fxtmblock.txh.timestamp = ts;
 }
 
@@ -275,13 +277,12 @@ size_t fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize)
 #if 0
     STRINGIFY("\tsound level: %u\r\n",tm->soundLevel);
 #endif
-
     STRINGIFY("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
     STRINGIFY("\ttemperature: %d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
-    STRINGIFY("\t accel[0]: %f,  accel[1]: %f,   accel[2]: %6f\r\n", a[0], a[1], a[2]);
+    STRINGIFY("\t accel[0]: %6f,  accel[1]: %f,   accel[2]: %6f\r\n", a[0], a[1], a[2]);
     STRINGIFY("\t  gyro[0]: %f,   gyro[1]: %f,    gyro[2]: %6f\r\n", g[0], g[1], g[2]);
-    STRINGIFY("\t  magn[0]: %f,   magn[1]: %f,    magn[2]: %6f\r\n", m[0], m[1], m[2]);
-    STRINGIFY("\taccel2[0]: %f, accel2[1]: %f,  accel2[2]: %6f\r\n", a2[0], a2[1], a2[2]);
+    STRINGIFY("\t  magn[0]: %6f,   magn[1]: %6f,    magn[2]: %6f\r\n", m[0], m[1], m[2]);
+    STRINGIFY("\taccel2[0]: %6f, accel2[1]: %6f,  accel2[2]: %6f\r\n", a2[0], a2[1], a2[2]);
 
     return totalwrote;
 }

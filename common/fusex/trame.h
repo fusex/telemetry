@@ -42,7 +42,8 @@ typedef struct {
     short myaccum z;
 } imu_sensor_t;
 
-// = {'B','G','C','0'};
+#define TRAME_VERSION         "BGC0"
+#define TRAME_VERSION_SIZE    (sizeof(TRAME_VERSION)- 1)
 typedef struct {
     char          magic[4];
     uint16_t      id;
