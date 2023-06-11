@@ -268,21 +268,21 @@ size_t fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize)
     IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
 
-    STRINGIFY("\r\n\tid: %u at ts: %u\r\n", tm->id, fxtmblock.txh.timestamp);
-    STRINGIFY("\tgps: %f, %f\r\n", gps[0], gps[1]);
+    STRINGIFY("\r\n\tid:%u\r\n", tm->id);
+    STRINGIFY("\tgps:%f,%f\r\n", gps[0], gps[1]);
 
-    STRINGIFY("\tflightstatus: %s (%3d)\r\n",
+    STRINGIFY("\tflightstatus:%s(%3d)\r\n",
 	      FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
 #if 0
     STRINGIFY("\tsound level: %u\r\n",tm->soundLevel);
 #endif
 
     STRINGIFY("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
-    STRINGIFY("\ttemperature: %d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
-    STRINGIFY("\t accel[0]: %6f,  accel[1]: %6f,  accel[2]: %6f\r\n", a[0], a[1], a[2]);
-    STRINGIFY("\t  gyro[0]: %6f,   gyro[1]: %6f,   gyro[2]: %6f\r\n", g[0], g[1], g[2]);
-    STRINGIFY("\t  magn[0]: %6f,   magn[1]: %6f,   magn[2]: %6f\r\n", m[0], m[1], m[2]);
-    STRINGIFY("\taccel2[0]: %6f, accel2[1]: %6f, accel2[2]: %6f\r\n", a2[0], a2[1], a2[2]);
+    STRINGIFY("\ttemperature:%d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
+    STRINGIFY("\t accel[0]:%6f,  accel[1]:%6f,  accel[2]:%6f\r\n", a[0], a[1], a[2]);
+    STRINGIFY("\t  gyro[0]:%6f,   gyro[1]:%6f,   gyro[2]:%6f\r\n", g[0], g[1], g[2]);
+    STRINGIFY("\t  magn[0]:%6f,   magn[1]:%6f,   magn[2]:%6f\r\n", m[0], m[1], m[2]);
+    STRINGIFY("\taccel2[0]:%6f, accel2[1]:%6f, accel2[2]:%6f\r\n", a2[0], a2[1], a2[2]);
 
     return totalwrote;
 }
