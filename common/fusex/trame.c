@@ -131,7 +131,7 @@ size_t fxtm_getblocksize (void)
 
 void fxtm_getimu (fxtm_data_t* tm, float imu[])
 {
-    if(tm == NULL)
+    if (tm == NULL)
     	tm = &fxtmblock.data;
 
     int32_t accel[3] = {0,0,0};
@@ -155,7 +155,7 @@ void fxtm_getimu (fxtm_data_t* tm, float imu[])
 
 void fxtm_getgps (fxtm_data_t* tm, float gps[])
 {
-    if(tm == NULL)
+    if (tm == NULL)
         tm = &fxtmblock.data;
 
     gps[0] = tm->gpsLt;
@@ -164,7 +164,7 @@ void fxtm_getgps (fxtm_data_t* tm, float gps[])
 
 void fxtm_getpressure (fxtm_data_t* tm, uint16_t* ppressure)
 {
-    if(tm == NULL)
+    if (tm == NULL)
         tm = &fxtmblock.data;
 
     *ppressure = tm->pressure;
@@ -177,7 +177,7 @@ void fxtm_getts (fxtm_data_t* tm, uint32_t* pts)
 
 void fxtm_getid (fxtm_data_t* tm, uint16_t* pid)
 {
-    if(tm == NULL)
+    if (tm == NULL)
         tm = &fxtmblock.data;
     *pid = tm->id;
 }
@@ -185,7 +185,7 @@ void fxtm_getid (fxtm_data_t* tm, uint16_t* pid)
 #if 0
 void fxtm_getsoundlvl (fxtm_data_t* tm, uint8_t* psndlvl)
 {
-    if(tm == NULL)
+    if (tm == NULL)
         tm = &fxtmblock.data;
     *psndlvl = tm->soundLevel;
 }
@@ -199,21 +199,21 @@ void fxtm_setsoundlvl (unsigned int level)
 
 void fxtm_gettemperature (fxtm_data_t* tm, int8_t* ptemp)
 {
-    if(tm == NULL)
+    if (tm == NULL)
         tm = &fxtmblock.data;
     *ptemp = tm->temperature;
 }
 
 void fxtm_gethumidity (fxtm_data_t* tm, uint8_t* phumidity)
 {
-    if(tm == NULL)
+    if (tm == NULL)
         tm = &fxtmblock.data;
     *phumidity = tm->humidity;
 }
 
 void fxtm_getflightstatus (fxtm_data_t* tm, uint8_t* pFlightStatus)
 {
-    if(tm == NULL)
+    if (tm == NULL)
         tm = &fxtmblock.data;
     *pFlightStatus = tm->flightStatus;
 }
