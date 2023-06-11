@@ -1,11 +1,12 @@
 BIN := fxhost
 
 BUILDDIR := .build
-CFLAGS := -Wall -ggdb -std=c++11 -pthread -I. -D_IS_HOST
+CFLAGS := -Wall -ggdb -pthread -I. -D_IS_HOST -ffixed-point
+CXXFLAGS := -Wall -ggdb -std=c++11 -pthread -I. -D_IS_HOST
 .DEFAULT_GOAL := all
 LDFLAGS := -lm -lpthread
-LD := g++
-CXX := g++
+CC := clang
+LD := clang++
 
 COMMON := $(BUILDDIR)/logger.o $(BUILDDIR)/trame.o
 # $(BUILDDIR)/fusexutil.o
@@ -15,9 +16,9 @@ all: $(BUILDDIR)/$(BIN)
 $(BUILDDIR)/$(BIN): $(COMMON) $(BUILDDIR)/$(BIN).o
 	$(LD) $^ $(LDFLAGS) -o $@
 
-$(BUILDDIR)/%.o: %.cpp 
+$(BUILDDIR)/%.o: %.c*
 	@mkdir -p $(BUILDDIR)
-	cc $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) -r .build

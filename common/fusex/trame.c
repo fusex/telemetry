@@ -1,12 +1,9 @@
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "trame.h"
-
-#ifdef _IS_HOST
-#include <cstdio>
-#endif
 
 #define FXTM_FLIGHTSTATUS_STRING(x) (\
     x==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD": \

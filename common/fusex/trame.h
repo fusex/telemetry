@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdfix.h>
 
 #define FXTM_FLIGHTSTATUS_LAUNCHPAD     0
 #define FXTM_FLIGHTSTATUS_LIFTOFF       1
