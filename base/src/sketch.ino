@@ -43,7 +43,7 @@
 # define fxbase_check()
 #endif
  
-static BGC_Lora lora(10, true); //Lora shield on DUE.
+static BGC_Lora lora(10, true); //Lora shield on Arduino DUE or Arduino Mega.
 
 static uint32_t packetcounter = 0;
 

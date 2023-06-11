@@ -22,7 +22,7 @@
 # define HEX_DUMP    1
 #endif
 
-#if 0
+#if 1
 # define TRAME_DUMP  1
 #endif
 
