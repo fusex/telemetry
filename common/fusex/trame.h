@@ -40,10 +40,12 @@ extern "C"
 #define myaccum _Accum
 #endif /* __cplusplus */
 
+typedef short myaccum myfloat;
+
 typedef struct {
-    short myaccum x;
-    short myaccum y;
-    short myaccum z;
+    myfloat x;
+    myfloat y;
+    myfloat z;
 } imu_sensor_t;
 
 #define TRAME_VERSION         "BGC0"
@@ -63,8 +65,8 @@ typedef struct {
     uint8_t       battLevel;
     uint8_t       flightStatus;
 
-    short myaccum gpsLt;
-    short myaccum gpsLg;
+    myfloat       gpsLt;
+    myfloat       gpsLg;
 
     imu_sensor_t  accel;
     imu_sensor_t  accel2;
@@ -134,6 +136,7 @@ fxtm_txheader_t* fxtm_gettxheader(void);
 size_t fxtm_getblocksize(void);
 size_t fxtm_getdatasize(void);
 size_t fxtm_gettxheadersize(void);
+size_t fxtm_getfloatsize(void);
 size_t fxtm_getrxfootersize(void);
 size_t fxtm_getrxdatasize(void);
 size_t fxtm_gettxdatasize(void);

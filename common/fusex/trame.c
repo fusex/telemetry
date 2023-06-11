@@ -101,6 +101,11 @@ size_t fxtm_getdatasize (void)
     return sizeof(fxtm_data_t);
 }
 
+size_t fxtm_getfloatsize (void)
+{
+    return sizeof(myfloat);
+}
+
 size_t fxtm_gettxheadersize (void)
 {
     return sizeof(fxtm_txheader_t);

@@ -227,6 +227,10 @@ void thread_acquisition(int fd, logger* log)
     assert(chunksize>0);
 
     printf("chunksize is set to:%ld\n", chunksize);
+    printf("sizeof tmdata:%ld\n", fxtm_getdatasize());
+    printf("sizeof tmblock:%ld\n", fxtm_getblocksize());
+    printf("sizeof myfloat:%ld vs float:%ld\n",
+            fxtm_getfloatsize(), sizeof(float));
 
     do {
         size_t rdlen = 0;
