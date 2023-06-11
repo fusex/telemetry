@@ -268,7 +268,7 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
 
     float   a[3] = {0,0,0};
     float   g[3] = {0,0,0};
-    float   m[3] = {9,0,0};
+    float   m[3] = {0,0,0};
     float  a2[3] = {0,0,0};
     float gps[2] = {0,0};
 
