@@ -17,7 +17,7 @@
 #include "shell.h"
 #include "exec.h"
 
-#if 0
+#if 1
 #define ENABLE_GPS
 #endif
 
