@@ -102,7 +102,7 @@ typedef struct {
     uint32_t    timestamp;
     int16_t     rssi;
     int16_t     snr;
-    int32_t     frequencyError;
+    int16_t     frequencyError;
 } fxtm_rxfooter_t;
 
 typedef struct {
