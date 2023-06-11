@@ -31,7 +31,7 @@
     if (ret != 0) { \
         uint32_t ts; \
         uint16_t id; \
-        fxtm_getts(NULL, &ts); \
+        fxtm_getrxts(NULL, &ts); \
         fxtm_getid(NULL, &id); \
         TTRACE("Discontinuation at id: %u at ts: %u, lastid:%u lastts:%u\r\n", \
                id, ts, lastid, lastts); \

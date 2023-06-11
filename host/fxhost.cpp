@@ -38,7 +38,7 @@
     if (ret != 0) { \
         uint32_t ts; \
         uint16_t id; \
-        fxtm_getts((fxtm_data_t*)buf, &ts); \
+        fxtm_getrxts((fxtm_block_t*)buf, &ts); \
         fxtm_getid((fxtm_data_t*)buf, &id); \
         printf("Discontinuation at id:%u at ts:%u, lastid:%u lastts:%u\r\n", \
                id, ts, lastid, lastts); \

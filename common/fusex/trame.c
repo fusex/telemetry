@@ -170,9 +170,20 @@ void fxtm_getpressure (fxtm_data_t* tm, uint16_t* ppressure)
     *ppressure = tm->pressure;
 }
 
-void fxtm_getts (fxtm_data_t* tm, uint32_t* pts)
+void fxtm_gettxts (fxtm_block_t* block, uint32_t* pts)
 {
-    *pts = fxtmblock.txh.timestamp;
+    if (block == NULL)
+        block = &fxtmblock;
+
+    *pts = block->txh.timestamp;
+}
+
+void fxtm_getrxts (fxtm_block_t* block, uint32_t* pts)
+{
+    if (block == NULL)
+        block = &fxtmblock;
+
+    *pts = block->rxf.timestamp;
 }
 
 void fxtm_getid (fxtm_data_t* tm, uint16_t* pid)
@@ -298,7 +309,7 @@ size_t fxtm_dumptxheader (fxtm_txheader_t* txh, char* buf, size_t bufsize)
     return totalwrote;
 }
 
-size_t fxtm_dumprxfooter (fxtm_rxfooter_t * rxf, char* buf, size_t bufsize)
+size_t fxtm_dumprxfooter (fxtm_rxfooter_t* rxf, char* buf, size_t bufsize)
 {
     size_t wrote = 0;
     size_t totalwrote = 0;
