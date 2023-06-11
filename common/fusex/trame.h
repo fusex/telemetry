@@ -99,10 +99,10 @@ typedef struct {
 } fxtm_txheader_t;
 
 typedef struct {
-    uint32_t     timestamp;
-    uint32_t     rssi;
-    uint32_t     snr;
-    uint32_t     frequencyError;
+    uint32_t    timestamp;
+    int16_t     rssi;
+    int16_t     snr;
+    int32_t     frequencyError;
 } fxtm_rxfooter_t;
 
 typedef struct {
@@ -139,9 +139,12 @@ size_t fxtm_getrxfootersize(void);
 size_t fxtm_getrxdatasize(void);
 size_t fxtm_gettxdatasize(void);
 
+size_t   fxtm_dumprxfooter(fxtm_rxfooter_t * rxf, char* buf, size_t bufsize);
+size_t   fxtm_dumptxheader(fxtm_txheader_t* txh, char* buf, size_t bufsize);
 size_t   fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize);
-uint16_t fxtm_check (fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts);
-size_t   fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize);
+size_t   fxtm_dumprxdata(uint8_t* data, char* buf, size_t bufsize);
+uint16_t fxtm_check(fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts);
+size_t   fxtm_tojson(uint8_t* data, char* buf, size_t bufsize);
 
 void fxtm_getimu(fxtm_data_t* tm, float* imu);
 void fxtm_getgps(fxtm_data_t* tm, float* gps);

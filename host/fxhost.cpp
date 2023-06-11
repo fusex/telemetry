@@ -53,8 +53,8 @@
 #elif defined(TRAME_DUMP)
 # define fxhost_dump(b, l) do { \
     (void)l; \
-    char out[512]; \
-    fxtm_dumpdata((fxtm_data_t*)b, out, 512); \
+    char out[1024]; \
+    fxtm_dumprxdata(b, out, 1024); \
     printf("%s", out); \
 } while(0);
 #else
@@ -260,7 +260,7 @@ void thread_conso(logger* log)
             fxhost_dump(buf, rd);
             fxhost_check(buf);
 
-            size_t jsize = fxtm_tojson((fxtm_data_t*)buf, bufJSON, sizeof(bufJSON));
+            size_t jsize = fxtm_tojson(buf, bufJSON, sizeof(bufJSON));
 #if 0
             printf("wrote json size of:%ld\n",jsize);
 #endif

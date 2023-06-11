@@ -249,7 +249,7 @@ uint16_t fxtm_check (fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts)
     remaining -= wrote;  \
 } while(0);
 
-size_t fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize)
+size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
 {
     size_t wrote = 0;
     size_t totalwrote = 0;
@@ -287,7 +287,46 @@ size_t fxtm_dumpdata(fxtm_data_t* tm, char* buf, size_t bufsize)
     return totalwrote;
 }
 
-size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
+size_t fxtm_dumptxheader (fxtm_txheader_t* txh, char* buf, size_t bufsize)
+{
+    size_t wrote = 0;
+    size_t totalwrote = 0;
+    size_t remaining = bufsize;
+
+    STRINGIFY("\r\n\tts:%u\r\n", txh->timestamp);
+
+    return totalwrote;
+}
+
+size_t fxtm_dumprxfooter (fxtm_rxfooter_t * rxf, char* buf, size_t bufsize)
+{
+    size_t wrote = 0;
+    size_t totalwrote = 0;
+    size_t remaining = bufsize;
+
+    STRINGIFY("\tts:%u\r\n", rxf->timestamp);
+    STRINGIFY("\trssi:%d dBm\r\n", rxf->rssi);
+    STRINGIFY("\tsnr:%d dB\r\n", rxf->snr);
+    STRINGIFY("\tfrequencyError:%d Hz\r\n", rxf->frequencyError);
+
+    return totalwrote;
+}
+
+size_t fxtm_dumprxdata (uint8_t* data, char* buf, size_t bufsize)
+{
+    size_t           wrote = 0;
+    fxtm_data_t*     tm = (fxtm_data_t*) data;
+    fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (data + fxtm_getdatasize());
+
+    wrote = fxtm_dumpdata(tm, buf, bufsize);
+    if (wrote < bufsize) {
+	wrote += fxtm_dumprxfooter(rxf, buf+wrote, bufsize-wrote);
+    }
+
+    return wrote;
+}
+
+size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
 {
     size_t wrote = 0;
     size_t totalwrote = 0;
@@ -299,6 +338,9 @@ size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
     float  a2[3] = {0,0,0};
     float gps[2] = {0,0};
 
+    fxtm_data_t*     tm = (fxtm_data_t*) data;
+    fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (data + fxtm_getdatasize());
+
     fxtm_getgps(tm, gps);
 
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
@@ -306,7 +348,8 @@ size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
     IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
 
-    STRINGIFY("{\"id\":%u, ", tm->id);
+    STRINGIFY("{");
+    STRINGIFY("\"id\":%u, ", tm->id);
     STRINGIFY("\"pressure\":%u, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
     STRINGIFY("\"temperature\":%d, \"humidity\":%u, ", tm->temperature, tm->humidity);
     STRINGIFY("\"longitude\":%f, \"latitude\":%f, ", gps[0], gps[1]);
@@ -314,7 +357,12 @@ size_t fxtm_tojson(fxtm_data_t* tm, char* buf, size_t bufsize)
     STRINGIFY("\"gyrox\":%f, \"gyroy\":%f, \"gyroz\":%f, ", g[0], g[1], g[2]);
     STRINGIFY("\"magnx\":%f, \"magny\":%f, \"magnz\":%f, ", m[0], m[1], m[2]);
     STRINGIFY("\"accel2x\":%f, \"accel2y\":%f, \"accel2z\":%f, ", a2[0], a2[1], a2[2]);
-    STRINGIFY("\"flightstatus\":\"%s\"}", FXTM_FLIGHTSTATUS_STRING(tm->flightStatus));
+    STRINGIFY("\"flightstatus\":\"%s\", ", FXTM_FLIGHTSTATUS_STRING(tm->flightStatus));
+    STRINGIFY("\"ts\":%u, ", rxf->timestamp);
+    STRINGIFY("\"rssi\":%d, ", rxf->rssi);
+    STRINGIFY("\"snr\":%d, ", rxf->snr);
+    STRINGIFY("\"frequencyError\":%d", rxf->frequencyError);
+    STRINGIFY("}");
 
     return totalwrote;
 }
