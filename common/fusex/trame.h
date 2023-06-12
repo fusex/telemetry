@@ -4,6 +4,21 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+
+#define myaccum
+#else
+#define myaccum _Accum
+#endif /* __cplusplus */
+
+#if 1
+#define PACKED __attribute__((packed))
+#else
+#define PACKED
+#endif
+
 #define FXTM_FLIGHTSTATUS_LAUNCHPAD     0
 #define FXTM_FLIGHTSTATUS_LIFTOFF       1
 #define FXTM_FLIGHTSTATUS_BURNOUT       2
@@ -26,19 +41,8 @@
     Z = tm->p.z;            \
 }
 
-#if 0
-#define PACKED __attribute__((packed))
-#else
-#define PACKED
-#endif
-
-#ifdef __cplusplus
-#define myaccum 
-extern "C"
-{
-#else
-#define myaccum _Accum
-#endif /* __cplusplus */
+#define TRAME_VERSION         "BGC0"
+#define TRAME_VERSION_SIZE    (sizeof(TRAME_VERSION)- 1)
 
 typedef short myaccum myfloat;
 
@@ -48,8 +52,6 @@ typedef struct {
     myfloat z;
 } imu_sensor_t;
 
-#define TRAME_VERSION         "BGC0"
-#define TRAME_VERSION_SIZE    (sizeof(TRAME_VERSION)- 1)
 typedef struct {
     char          magic[4];
     uint16_t      id;
