@@ -97,14 +97,14 @@ int head = 0;
 
 typedef struct {
     uint32_t     timestamp;
-} fxtm_txheader_t;
+} PACKED fxtm_txheader_t;
 
 typedef struct {
     uint32_t    timestamp;
     int16_t     rssi;
     int16_t     snr;
     int16_t     frequencyError;
-} fxtm_rxfooter_t;
+} PACKED fxtm_rxfooter_t;
 
 typedef struct {
     fxtm_txheader_t  txh;
