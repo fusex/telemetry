@@ -218,9 +218,9 @@ void getlogfile(char* filename)
 
 static uint32_t chunkcounter = 0;
 
+static size_t rb = 0;
 void thread_acquisition(int fd, logger* log)
 {
-    size_t rb = 0;
     bool   finish = false;
     FILE*  file = fdopen(fd,"ro");
 
