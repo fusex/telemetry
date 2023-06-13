@@ -303,7 +303,7 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     STRINGIFY("\tgps:%f,%f\r\n", gps[0], gps[1]);
 
     STRINGIFY("\tflightstatus:%s(%3d)\r\n",
-	      FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
+              FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
 #if 0
     STRINGIFY("\tsound level: %u\r\n",tm->soundLevel);
 #endif
