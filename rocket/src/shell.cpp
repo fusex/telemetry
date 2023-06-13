@@ -26,7 +26,7 @@ static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 static int readI2c (int argc, char** argv)
 {
     if (argc != 3) {
-        shell.println("bad argument count");
+        shell.println(F("bad argument count"));
         return -1;
     }
 
@@ -76,12 +76,18 @@ static int execModules (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+#define CONSOLE_BUF_SIZE  512
+static char consolebuf[CONSOLE_BUF_SIZE];
+
 static int fxtmStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-    char buf[256];
-    fxtm_dumpdata(NULL, buf, 256);
-    CTRACE("%s", buf);
-    CTRACE("\n\tfxtm trame size:%d Bytes\n\r", fxtm_getdatasize());
+    size_t len = fxtm_dumpdata(NULL, consolebuf, CONSOLE_BUF_SIZE);
+    _CTRACE("%s", consolebuf);
+    _CTRACE("\n\r\n\r");
+    _CTRACE("fxtm string size:%d Bytes\n\r", len);
+    _CTRACE("fxtm string len:%d Bytes\n\r", strlen(consolebuf));
+    _CTRACE("fxtm data   size:%d Bytes\n\r", fxtm_getdatasize());
+    _CTRACE("fxtm block  size:%d Bytes\n\r", fxtm_getblocksize());
 
     return 0;
 }

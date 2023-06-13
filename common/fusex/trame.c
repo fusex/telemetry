@@ -133,8 +133,9 @@ size_t fxtm_getblocksize (void)
 
 void fxtm_getimu (fxtm_data_t* tm, float imu[])
 {
-    if (tm == NULL)
-    	tm = &fxtmblock.data;
+    if (tm == NULL) {
+        tm = &fxtmblock.data;
+    }
 
     int32_t accel[3] = {0,0,0};
     int32_t magn[3]  = {0,0,0};
@@ -157,8 +158,9 @@ void fxtm_getimu (fxtm_data_t* tm, float imu[])
 
 void fxtm_getgps (fxtm_data_t* tm, float gps[])
 {
-    if (tm == NULL)
+    if (tm == NULL) {
         tm = &fxtmblock.data;
+    }
 
     gps[0] = tm->gpsLt;
     gps[1] = tm->gpsLg;
@@ -166,8 +168,9 @@ void fxtm_getgps (fxtm_data_t* tm, float gps[])
 
 void fxtm_getpressure (fxtm_data_t* tm, uint16_t* ppressure)
 {
-    if (tm == NULL)
+    if (tm == NULL) {
         tm = &fxtmblock.data;
+    }
 
     *ppressure = tm->pressure;
 }
@@ -190,16 +193,20 @@ void fxtm_getrxts (fxtm_block_t* block, uint32_t* pts)
 
 void fxtm_getid (fxtm_data_t* tm, uint16_t* pid)
 {
-    if (tm == NULL)
+    if (tm == NULL) {
         tm = &fxtmblock.data;
+    }
+
     *pid = tm->id;
 }
 
 #if 0
 void fxtm_getsoundlvl (fxtm_data_t* tm, uint8_t* psndlvl)
 {
-    if (tm == NULL)
+    if (tm == NULL) {
         tm = &fxtmblock.data;
+    }
+
     *psndlvl = tm->soundLevel;
 }
 
@@ -212,22 +219,28 @@ void fxtm_setsoundlvl (unsigned int level)
 
 void fxtm_gettemperature (fxtm_data_t* tm, int8_t* ptemp)
 {
-    if (tm == NULL)
+    if (tm == NULL) {
         tm = &fxtmblock.data;
+    }
+
     *ptemp = tm->temperature;
 }
 
 void fxtm_gethumidity (fxtm_data_t* tm, uint8_t* phumidity)
 {
-    if (tm == NULL)
+    if (tm == NULL) {
         tm = &fxtmblock.data;
+    }
+
     *phumidity = tm->humidity;
 }
 
 void fxtm_getflightstatus (fxtm_data_t* tm, uint8_t* pFlightStatus)
 {
-    if (tm == NULL)
+    if (tm == NULL) {
         tm = &fxtmblock.data;
+    }
+
     *pFlightStatus = tm->flightStatus;
 }
 
@@ -264,6 +277,10 @@ uint16_t fxtm_check (fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts)
 
 size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
 {
+    if (tm == NULL) {
+        tm = &fxtmblock.data;
+    }
+
     size_t wrote = 0;
     size_t totalwrote = 0;
     size_t remaining = bufsize;
@@ -306,6 +323,10 @@ size_t fxtm_dumptxheader (fxtm_txheader_t* txh, char* buf, size_t bufsize)
     size_t totalwrote = 0;
     size_t remaining = bufsize;
 
+    if (txh == NULL) {
+        txh = &fxtmblock.txh;
+    }
+
     STRINGIFY("\r\n\tts:%u\r\n", txh->timestamp);
 
     return totalwrote;
@@ -316,6 +337,10 @@ size_t fxtm_dumprxfooter (fxtm_rxfooter_t* rxf, char* buf, size_t bufsize)
     size_t wrote = 0;
     size_t totalwrote = 0;
     size_t remaining = bufsize;
+
+    if (rxf == NULL) {
+        rxf = &fxtmblock.rxf;
+    }
 
     STRINGIFY("\tts:%u\r\n", rxf->timestamp);
     STRINGIFY("\trssi:%d dBm\r\n", rxf->rssi);
@@ -328,12 +353,17 @@ size_t fxtm_dumprxfooter (fxtm_rxfooter_t* rxf, char* buf, size_t bufsize)
 size_t fxtm_dumprxdata (uint8_t* data, char* buf, size_t bufsize)
 {
     size_t           wrote = 0;
+
+    if (data == NULL) {
+        data = &fxtmblock.data;
+    }
+
     fxtm_data_t*     tm = (fxtm_data_t*) data;
     fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (data + fxtm_getdatasize());
 
     wrote = fxtm_dumpdata(tm, buf, bufsize);
     if (wrote < bufsize) {
-	wrote += fxtm_dumprxfooter(rxf, buf+wrote, bufsize-wrote);
+        wrote += fxtm_dumprxfooter(rxf, buf+wrote, bufsize-wrote);
     }
 
     return wrote;
@@ -351,7 +381,12 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     float  a2[3] = {0,0,0};
     float gps[2] = {0,0};
 
+    if (data == NULL) {
+        data = &fxtmblock.data;
+    }
+
     fxtm_data_t*     tm = (fxtm_data_t*) data;
+
     fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (data + fxtm_getdatasize());
 
     fxtm_getgps(tm, gps);
