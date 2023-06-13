@@ -95,8 +95,12 @@ void modules_printall(bool isConsole);
     } \
 }
 
+#define _CTRACE(x, ...) do { \
+    mycprintf(x, ##__VA_ARGS__); \
+} while(0)
+
 #define CTRACE(x, ...) do { \
-    mycprintf(":" x, ##__VA_ARGS__); \
+    _CTRACE(":" x, ##__VA_ARGS__); \
 } while(0)
 
 #define TTRACE(x, ...) do { \
