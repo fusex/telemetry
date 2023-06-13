@@ -269,10 +269,11 @@ uint16_t fxtm_check (fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts)
 }
 
 #define STRINGIFY(f, ...) do { \
-    assert(remaining>0); \
-    wrote = snprintf(buf+totalwrote, remaining, f,  ##__VA_ARGS__); \
-    totalwrote += wrote; \
-    remaining -= wrote;  \
+    if (remaining>0) { \
+        wrote = snprintf(buf+totalwrote, remaining, f,  ##__VA_ARGS__); \
+        totalwrote += wrote; \
+        remaining -= wrote;  \
+    } \
 } while(0);
 
 size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
