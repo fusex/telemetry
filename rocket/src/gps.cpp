@@ -77,20 +77,20 @@ const uint32_t COMMAND_DELAY = 250;
 
 void sendUBX (const unsigned char *progmemBytes, size_t len )
 {
-  GPSdevice.write( 0xB5 ); // SYNC1
-  GPSdevice.write( 0x62 ); // SYNC2
+    GPSdevice.write( 0xB5 ); // SYNC1
+    GPSdevice.write( 0x62 ); // SYNC2
 
-  uint8_t a = 0, b = 0;
-  while (len-- > 0) {
-    uint8_t c = pgm_read_byte( progmemBytes++ );
-    a += c;
-    b += a;
-    GPSdevice.write( c );
-  }
+    uint8_t a = 0, b = 0;
+    while (len-- > 0) {
+        uint8_t c = pgm_read_byte( progmemBytes++ );
+        a += c;
+        b += a;
+        GPSdevice.write( c );
+    }
 
-  GPSdevice.write( a ); // CHECKSUM A
-  GPSdevice.write( b ); // CHECKSUM B
-  delay( COMMAND_DELAY );
+    GPSdevice.write( a ); // CHECKSUM A
+    GPSdevice.write( b ); // CHECKSUM B
+    delay( COMMAND_DELAY );
 
 } // sendUBX
 

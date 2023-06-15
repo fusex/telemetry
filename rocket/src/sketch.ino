@@ -30,15 +30,15 @@ static void acquire_fake (void)
 #if 0
     gendata((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
 #elif 0
-    fxtm_setgps(48.866667, 2.333333);
+    fxtm_setgps(48, 2);
     fxtm_setflightstatus(FXTM_FLIGHTSTATUS_SEPARATION);
     fxtm_setpressure(100);
     fxtm_setdiffpressure(200);
     fxtm_settemperature(-5);
     fxtm_sethumidity(98);
     imuraw_t a[]  = { 111,  222,  333};
-    imuraw_t m[] =  { 444,  555,  666};
-    imuraw_t g[] =  { 777,  888,  999};
+    imuraw_t m[]  = { 444,  555,  666};
+    imuraw_t g[]  = { 777,  888,  999};
     imuraw_t a2[] = {1010, 1111, 1212};
     fxtm_setimu(a, m, g);
     fxtm_setimu2(a2);

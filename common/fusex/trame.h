@@ -46,8 +46,8 @@ extern "C"
 
 /* Set Paris as reference for gpsdelta_t */ 
 //TODO
-#define GPS_REF_LAT     0 
-#define GPS_REF_LONG    0
+#define GPS_REF_LAT     10 
+#define GPS_REF_LONG    100
 
 #if 0
 typedef short myaccum myfloat;
@@ -92,8 +92,8 @@ typedef struct {
     uint8_t       battLevel;
     uint8_t       flightStatus;
 
-    gpsdelta_t      gpsLt;
-    gpsdelta_t      gpsLg;
+    gpsdelta_t    gpsLt;
+    gpsdelta_t    gpsLg;
 
     imu_sensor_t  accel;
     imu_sensor_t  accel2;

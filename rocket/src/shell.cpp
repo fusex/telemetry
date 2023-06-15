@@ -84,10 +84,9 @@ static int fxtmStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
     size_t len = fxtm_dumpdata(NULL, consolebuf, CONSOLE_BUF_SIZE);
     _CTRACE("%s", consolebuf);
     _CTRACE("\n\r\n\r");
-    _CTRACE("fxtm string size:%d Bytes\n\r", len);
-    _CTRACE("fxtm string len:%d Bytes\n\r", strlen(consolebuf));
-    _CTRACE("fxtm data   size:%d Bytes\n\r", fxtm_getdatasize());
-    _CTRACE("fxtm block  size:%d Bytes\n\r", fxtm_getblocksize());
+    _CTRACE("fxtm string size:%3d Bytes\n\r", len);
+    _CTRACE("fxtm block  size:%3d Bytes\n\r", fxtm_getblocksize());
+    _CTRACE("fxtm data   size:%3d Bytes\n\r", fxtm_getdatasize());
 
     return 0;
 }
