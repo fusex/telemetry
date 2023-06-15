@@ -33,7 +33,7 @@ void fxtm_setimu (imuraw_t a[], imuraw_t m[], imuraw_t g[])
     IMU_SENSOR_SET(magn,  tm, m[0], m[1], m[2]);
 }
 
-void fxtm_setimu2 (float a[])
+void fxtm_setimu2 (imuraw_t a[])
 {
     fxtm_data_t* tm = &fxtmblock.data;
     IMU_SENSOR_SET(accel2, tm, a[0], a[1], a[2]);
@@ -290,7 +290,7 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     imuraw_t   g[3] = {0,0,0};
     imuraw_t   m[3] = {0,0,0};
 
-    float  a2[3] = {0,0,0};
+    imuraw_t  a2[3] = {0,0,0};
     float gps[2] = {0,0};
 
     fxtm_getgps(tm, gps);
@@ -314,7 +314,7 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     STRINGIFY("\t accel[0]:%6d,  accel[1]:%6d,  accel[2]:%6d\r\n", a[0], a[1], a[2]);
     STRINGIFY("\t  gyro[0]:%6d,   gyro[1]:%6d,   gyro[2]:%6d\r\n", g[0], g[1], g[2]);
     STRINGIFY("\t  magn[0]:%6d,   magn[1]:%6d,   magn[2]:%6d\r\n", m[0], m[1], m[2]);
-    STRINGIFY("\taccel2[0]:%6f, accel2[1]:%6f, accel2[2]:%6f\r\n", a2[0], a2[1], a2[2]);
+    STRINGIFY("\taccel2[0]:%6d, accel2[1]:%6d, accel2[2]:%6d\r\n", a2[0], a2[1], a2[2]);
 
     return totalwrote;
 }
@@ -381,7 +381,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     imuraw_t   g[3] = {0,0,0};
     imuraw_t   m[3] = {0,0,0};
 
-    float  a2[3] = {0,0,0};
+    imuraw_t  a2[3] = {0,0,0};
     float gps[2] = {0,0};
 
     if (data == NULL) {
@@ -407,7 +407,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     STRINGIFY("\"accelx\":%d, \"accely\":%d, \"accelz\":%d, ", a[0], a[1], a[2]);
     STRINGIFY("\"gyrox\":%d, \"gyroy\":%d, \"gyroz\":%d, ", g[0], g[1], g[2]);
     STRINGIFY("\"magnx\":%d, \"magny\":%d, \"magnz\":%d, ", m[0], m[1], m[2]);
-    STRINGIFY("\"accel2x\":%f, \"accel2y\":%f, \"accel2z\":%f, ", a2[0], a2[1], a2[2]);
+    STRINGIFY("\"accel2x\":%d, \"accel2y\":%d, \"accel2z\":%d, ", a2[0], a2[1], a2[2]);
     STRINGIFY("\"flightstatus\":\"%s\", ", FXTM_FLIGHTSTATUS_STRING(tm->flightStatus));
     STRINGIFY("\"ts\":%u, ", rxf->timestamp);
     STRINGIFY("\"rssi\":%d, ", rxf->rssi);

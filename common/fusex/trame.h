@@ -134,7 +134,7 @@ void fxtm_reset(uint32_t ts);
 void fxtm_gendata(void);
 void fxtm_setsoundlvl(unsigned int level);
 void fxtm_setimu(imuraw_t a[], imuraw_t m[], imuraw_t g[]);
-void fxtm_setimu2(float a[]);
+void fxtm_setimu2(imuraw_t a[]);
 void fxtm_settemperature(int8_t temperature);
 void fxtm_setpressure(uint16_t pressure);
 void fxtm_setdiffpressure(uint16_t diffpressure);

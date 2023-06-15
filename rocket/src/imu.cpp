@@ -111,10 +111,10 @@ void loopIMU ()
         fxtm_setimu(a, m, g);
     }
 
-    float a2[] = {
-        myImuAux.getAccelerationX(),
-        myImuAux.getAccelerationY(),
-        myImuAux.getAccelerationZ()
+    imuraw_t a2[] = {
+        myImuAux.getRawAccelerationX(),
+        myImuAux.getRawAccelerationY(),
+        myImuAux.getRawAccelerationZ()
     };
 
     fxtm_setimu2(a2);

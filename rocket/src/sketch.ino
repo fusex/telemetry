@@ -39,7 +39,7 @@ static void acquire_fake (void)
     imuraw_t a[]  = { 111,  222,  333};
     imuraw_t m[] =  { 444,  555,  666};
     imuraw_t g[] =  { 777,  888,  999};
-    float a2[] = {10.10, 11.11, 12.12};
+    imuraw_t a2[] = {1010, 1111, 1212};
     fxtm_setimu(a, m, g);
     fxtm_setimu2(a2);
 #else
