@@ -63,11 +63,11 @@ void fxtm_sethumidity (uint8_t humidity)
     tm->humidity = humidity;
 }
 
-void fxtm_setgps (float latitude, float longitude)
+void fxtm_setgps (gpsraw_t latitude, gpsraw_t longitude)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->gpsLt = latitude;
-    tm->gpsLg = longitude;
+    tm->gpsLt = latitude - GPS_REF_LAT;
+    tm->gpsLg = longitude - GPS_REF_LONG;
 }
 
 void fxtm_setflightstatus (uint8_t flightStatus)
@@ -156,14 +156,14 @@ void fxtm_getimu (fxtm_data_t* tm, imuraw_t imu[])
     imu[8] = magn[2];
 }
 
-void fxtm_getgps (fxtm_data_t* tm, float gps[])
+void fxtm_getgps (fxtm_data_t* tm, gpsraw_t gps[])
 {
     if (tm == NULL) {
         tm = &fxtmblock.data;
     }
 
-    gps[0] = tm->gpsLt;
-    gps[1] = tm->gpsLg;
+    gps[0] = tm->gpsLt + GPS_REF_LAT;
+    gps[1] = tm->gpsLg + GPS_REF_LONG;
 }
 
 void fxtm_getpressure (fxtm_data_t* tm, uint16_t* ppressure)
@@ -291,7 +291,7 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     imuraw_t   m[3] = {0,0,0};
 
     imuraw_t  a2[3] = {0,0,0};
-    float gps[2] = {0,0};
+    gpsraw_t gps[2] = {0,0};
 
     fxtm_getgps(tm, gps);
 
@@ -301,7 +301,7 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
 
     STRINGIFY("\r\n\tid:%u\r\n", tm->id);
-    STRINGIFY("\tgps:%f,%f\r\n", gps[0], gps[1]);
+    STRINGIFY("\tgps:%d,%d\r\n", gps[0], gps[1]);
 
     STRINGIFY("\tflightstatus:%s(%3d)\r\n",
               FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
@@ -382,7 +382,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     imuraw_t   m[3] = {0,0,0};
 
     imuraw_t  a2[3] = {0,0,0};
-    float gps[2] = {0,0};
+    gpsraw_t gps[2] = {0,0};
 
     if (data == NULL) {
         data = (uint8_t*) &fxtmblock.data;
@@ -403,7 +403,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     STRINGIFY("\"id\":%u, ", tm->id);
     STRINGIFY("\"pressure\":%u, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
     STRINGIFY("\"temperature\":%d, \"humidity\":%u, ", tm->temperature, tm->humidity);
-    STRINGIFY("\"longitude\":%f, \"latitude\":%f, ", gps[0], gps[1]);
+    STRINGIFY("\"longitude\":%d, \"latitude\":%d, ", gps[0], gps[1]);
     STRINGIFY("\"accelx\":%d, \"accely\":%d, \"accelz\":%d, ", a[0], a[1], a[2]);
     STRINGIFY("\"gyrox\":%d, \"gyroy\":%d, \"gyroz\":%d, ", g[0], g[1], g[2]);
     STRINGIFY("\"magnx\":%d, \"magny\":%d, \"magnz\":%d, ", m[0], m[1], m[2]);

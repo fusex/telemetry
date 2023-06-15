@@ -44,6 +44,11 @@ extern "C"
 #define TRAME_VERSION         "BGC0"
 #define TRAME_VERSION_SIZE    (sizeof(TRAME_VERSION)- 1)
 
+/* Set Paris as reference for gpsdelta_t */ 
+//TODO
+#define GPS_REF_LAT     0 
+#define GPS_REF_LONG    0
+
 #if 0
 typedef short myaccum myfloat;
 #elif 0
@@ -56,6 +61,14 @@ typedef float myfloat;
 typedef myfloat imuraw_t;
 #else
 typedef int16_t imuraw_t;
+#endif
+
+#if 0
+typedef myfloat gpsraw_t;
+typedef myfloat gpsdelta_t;
+#else
+typedef int32_t gpsraw_t;
+typedef int16_t gpsdelta_t;
 #endif
 
 typedef struct {
@@ -79,8 +92,8 @@ typedef struct {
     uint8_t       battLevel;
     uint8_t       flightStatus;
 
-    myfloat       gpsLt;
-    myfloat       gpsLg;
+    gpsdelta_t      gpsLt;
+    gpsdelta_t      gpsLg;
 
     imu_sensor_t  accel;
     imu_sensor_t  accel2;
@@ -140,7 +153,7 @@ void fxtm_setpressure(uint16_t pressure);
 void fxtm_setdiffpressure(uint16_t diffpressure);
 void fxtm_sethumidity(uint8_t humidity);
 void fxtm_setflightstatus(uint8_t flightStatus);
-void fxtm_setgps(float latitude, float longitude);
+void fxtm_setgps(gpsraw_t latitude, gpsraw_t longitude);
 
 fxtm_data_t*     fxtm_getdata(void);
 fxtm_block_t*    fxtm_getblock(void);
@@ -163,7 +176,7 @@ uint16_t fxtm_check(fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts);
 size_t   fxtm_tojson(uint8_t* data, char* buf, size_t bufsize);
 
 void fxtm_getimu(fxtm_data_t* tm, imuraw_t* imu);
-void fxtm_getgps(fxtm_data_t* tm, float* gps);
+void fxtm_getgps(fxtm_data_t* tm, gpsraw_t* gps);
 void fxtm_getpressure(fxtm_data_t* tm, uint16_t* ppressure);
 void fxtm_gettxts(fxtm_block_t* data, uint32_t* pts);
 void fxtm_getrxts(fxtm_block_t* data, uint32_t* pts);

@@ -45,11 +45,14 @@ static int receiveGPS ()
     int ret = -1;
 
     if (gps.available()) {
-	gps_fix fix = gps.read();
-	if (fix.valid.location) {
-	    fxtm_setgps(fix.latitude(), fix.longitude());
-	    ret = 0; 
-	}
+        gps_fix fix = gps.read();
+        if (fix.valid.location) {
+            int16_t lat = fix.latitudeL() - GPS_REF_LAT;
+            int16_t lon = fix.longitudeL() - GPS_REF_LONG; 
+
+            fxtm_setgps(lat, lon);
+            ret = 0; 
+        }
     }
 
     return ret;
