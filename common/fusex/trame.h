@@ -44,7 +44,13 @@ extern "C"
 #define TRAME_VERSION         "BGC0"
 #define TRAME_VERSION_SIZE    (sizeof(TRAME_VERSION)- 1)
 
+#if 0
 typedef short myaccum myfloat;
+#elif 0
+typedef _Float16 myfloat;
+#else
+typedef float myfloat;
+#endif
 
 #if 0
 typedef myfloat imuraw_t;
