@@ -46,11 +46,17 @@ extern "C"
 
 typedef short myaccum myfloat;
 
+#if 0
+typedef myfloat imuraw_t;
+#else
+typedef int16_t imuraw_t;
+#endif
+
 typedef struct {
-    myfloat x;
-    myfloat y;
-    myfloat z;
-} imu_sensor_t;
+    imuraw_t x;
+    imuraw_t y;
+    imuraw_t z;
+} PACKED imu_sensor_t;
 
 typedef struct {
     char          magic[4];
@@ -121,7 +127,7 @@ typedef struct {
 void fxtm_reset(uint32_t ts);
 void fxtm_gendata(void);
 void fxtm_setsoundlvl(unsigned int level);
-void fxtm_setimu(float a[], float m[], float g[]);
+void fxtm_setimu(imuraw_t a[], imuraw_t m[], imuraw_t g[]);
 void fxtm_setimu2(float a[]);
 void fxtm_settemperature(int8_t temperature);
 void fxtm_setpressure(uint16_t pressure);
@@ -150,7 +156,7 @@ size_t   fxtm_dumprxdata(uint8_t* data, char* buf, size_t bufsize);
 uint16_t fxtm_check(fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts);
 size_t   fxtm_tojson(uint8_t* data, char* buf, size_t bufsize);
 
-void fxtm_getimu(fxtm_data_t* tm, float* imu);
+void fxtm_getimu(fxtm_data_t* tm, imuraw_t* imu);
 void fxtm_getgps(fxtm_data_t* tm, float* gps);
 void fxtm_getpressure(fxtm_data_t* tm, uint16_t* ppressure);
 void fxtm_gettxts(fxtm_block_t* data, uint32_t* pts);

@@ -36,9 +36,9 @@ static void acquire_fake (void)
     fxtm_setdiffpressure(200);
     fxtm_settemperature(-5);
     fxtm_sethumidity(98);
-    float a[]  = { 1.11,  2.22,  3.33};
-    float m[] =  { 4.44,  5.55,  6.66};
-    float g[] =  { 7.77,  8.88,  9.99};
+    imuraw_t a[]  = { 111,  222,  333};
+    imuraw_t m[] =  { 444,  555,  666};
+    imuraw_t g[] =  { 777,  888,  999};
     float a2[] = {10.10, 11.11, 12.12};
     fxtm_setimu(a, m, g);
     fxtm_setimu2(a2);

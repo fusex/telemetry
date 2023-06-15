@@ -25,7 +25,7 @@ void fxtm_reset (uint32_t ts)
     fxtmblock.txh.timestamp = ts;
 }
 
-void fxtm_setimu (float a[], float m[], float g[])
+void fxtm_setimu (imuraw_t a[], imuraw_t m[], imuraw_t g[])
 {
     fxtm_data_t* tm = &fxtmblock.data;
     IMU_SENSOR_SET(accel, tm, a[0], a[1], a[2]);
@@ -131,7 +131,7 @@ size_t fxtm_getblocksize (void)
     return sizeof(fxtm_block_t);
 }
 
-void fxtm_getimu (fxtm_data_t* tm, float imu[])
+void fxtm_getimu (fxtm_data_t* tm, imuraw_t imu[])
 {
     if (tm == NULL) {
         tm = &fxtmblock.data;
@@ -286,9 +286,10 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     size_t totalwrote = 0;
     size_t remaining = bufsize;
 
-    float   a[3] = {0,0,0};
-    float   g[3] = {0,0,0};
-    float   m[3] = {0,0,0};
+    imuraw_t   a[3] = {0,0,0};
+    imuraw_t   g[3] = {0,0,0};
+    imuraw_t   m[3] = {0,0,0};
+
     float  a2[3] = {0,0,0};
     float gps[2] = {0,0};
 
@@ -310,9 +311,9 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
 
     STRINGIFY("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
     STRINGIFY("\ttemperature:%d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
-    STRINGIFY("\t accel[0]:%6f,  accel[1]:%6f,  accel[2]:%6f\r\n", a[0], a[1], a[2]);
-    STRINGIFY("\t  gyro[0]:%6f,   gyro[1]:%6f,   gyro[2]:%6f\r\n", g[0], g[1], g[2]);
-    STRINGIFY("\t  magn[0]:%6f,   magn[1]:%6f,   magn[2]:%6f\r\n", m[0], m[1], m[2]);
+    STRINGIFY("\t accel[0]:%6d,  accel[1]:%6d,  accel[2]:%6d\r\n", a[0], a[1], a[2]);
+    STRINGIFY("\t  gyro[0]:%6d,   gyro[1]:%6d,   gyro[2]:%6d\r\n", g[0], g[1], g[2]);
+    STRINGIFY("\t  magn[0]:%6d,   magn[1]:%6d,   magn[2]:%6d\r\n", m[0], m[1], m[2]);
     STRINGIFY("\taccel2[0]:%6f, accel2[1]:%6f, accel2[2]:%6f\r\n", a2[0], a2[1], a2[2]);
 
     return totalwrote;
@@ -376,9 +377,10 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     size_t totalwrote = 0;
     size_t remaining = bufsize;
 
-    float   a[3] = {0,0,0};
-    float   g[3] = {0,0,0};
-    float   m[3] = {9,0,0};
+    imuraw_t   a[3] = {0,0,0};
+    imuraw_t   g[3] = {0,0,0};
+    imuraw_t   m[3] = {0,0,0};
+
     float  a2[3] = {0,0,0};
     float gps[2] = {0,0};
 
@@ -402,9 +404,9 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     STRINGIFY("\"pressure\":%u, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
     STRINGIFY("\"temperature\":%d, \"humidity\":%u, ", tm->temperature, tm->humidity);
     STRINGIFY("\"longitude\":%f, \"latitude\":%f, ", gps[0], gps[1]);
-    STRINGIFY("\"accelx\":%f, \"accely\":%f, \"accelz\":%f, ", a[0], a[1], a[2]);
-    STRINGIFY("\"gyrox\":%f, \"gyroy\":%f, \"gyroz\":%f, ", g[0], g[1], g[2]);
-    STRINGIFY("\"magnx\":%f, \"magny\":%f, \"magnz\":%f, ", m[0], m[1], m[2]);
+    STRINGIFY("\"accelx\":%d, \"accely\":%d, \"accelz\":%d, ", a[0], a[1], a[2]);
+    STRINGIFY("\"gyrox\":%d, \"gyroy\":%d, \"gyroz\":%d, ", g[0], g[1], g[2]);
+    STRINGIFY("\"magnx\":%d, \"magny\":%d, \"magnz\":%d, ", m[0], m[1], m[2]);
     STRINGIFY("\"accel2x\":%f, \"accel2y\":%f, \"accel2z\":%f, ", a2[0], a2[1], a2[2]);
     STRINGIFY("\"flightstatus\":\"%s\", ", FXTM_FLIGHTSTATUS_STRING(tm->flightStatus));
     STRINGIFY("\"ts\":%u, ", rxf->timestamp);

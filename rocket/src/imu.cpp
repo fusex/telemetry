@@ -102,11 +102,11 @@ void loopIMU ()
 {
     if (myImu.dataReady())
     {
-        myImu.getAGMT();
+        ICM_20948_AGMT_t agmt = myImu.getAGMT();
 
-        float a[] = {myImu.accX(), myImu.accY(), myImu.accZ()};
-        float m[] = {myImu.magX(), myImu.magY(), myImu.magZ()};
-        float g[] = {myImu.gyrX(), myImu.gyrY(), myImu.gyrZ()};
+        imuraw_t a[] = {agmt.acc.axes.x, agmt.acc.axes.y, agmt.acc.axes.z};
+        imuraw_t m[] = {agmt.mag.axes.x, agmt.mag.axes.y, agmt.mag.axes.z};
+        imuraw_t g[] = {agmt.gyr.axes.x, agmt.gyr.axes.y, agmt.gyr.axes.z};
 
         fxtm_setimu(a, m, g);
     }
