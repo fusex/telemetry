@@ -130,7 +130,7 @@ void logger::hup()
 void logger::lprintf(const char* fmt, ...)
 {
    va_list ap;
-   myassert(abs(p - x.load(std::memory_order_release)) < SLOT_MAX);
+   myassert(p - x.load(std::memory_order_release) < SLOT_MAX);
 
    uint32_t slotId = p%SLOT_MAX;
 

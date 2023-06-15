@@ -357,7 +357,7 @@ size_t fxtm_dumprxdata (uint8_t* data, char* buf, size_t bufsize)
     size_t           wrote = 0;
 
     if (data == NULL) {
-        data = &fxtmblock.data;
+        data = (uint8_t*) &fxtmblock.data;
     }
 
     fxtm_data_t*     tm = (fxtm_data_t*) data;
@@ -385,7 +385,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     float gps[2] = {0,0};
 
     if (data == NULL) {
-        data = &fxtmblock.data;
+        data = (uint8_t*) &fxtmblock.data;
     }
 
     fxtm_data_t*     tm = (fxtm_data_t*) data;
