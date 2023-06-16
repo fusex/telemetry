@@ -301,7 +301,7 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
 
     STRINGIFY("\r\n\tid:%u\r\n", tm->id);
-    STRINGIFY("\tgps:%ld,%ld\r\n", gps[0], gps[1]);
+    STRINGIFY("\tgps:%ld,%ld\r\n", (long)gps[0], (long)gps[1]);
 
     STRINGIFY("\tflightstatus:%s(%3u)\r\n",
               FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
