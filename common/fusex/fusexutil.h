@@ -6,9 +6,11 @@
 # if defined(__AVR_ATmega2560__)
 # define _FMT_FLASH_TYPE __FlashStringHelper
 # define FMT(x)          F(x)
+# define VSNPRINTF       vsnprintf_P
 #else
 # define _FMT_FLASH_TYPE char
 # define  FMT(x)         (x)
+# define VSNPRINTF       vsnprintf
 #endif
 
 #if !defined(_IS_HOST)
@@ -22,6 +24,9 @@
 # include <math.h>
 # include <sys/time.h>
 #endif
+
+#define CONSOLE_BUF_SIZE  512
+extern char consolebuf[CONSOLE_BUF_SIZE];
 
 #if 0
 #if _IS_BASE
@@ -55,25 +60,29 @@ void modules_printall(bool isConsole);
 # define TAG "unknown-module"
 #endif
 
-#define myprintf(a, ...) _myprintf(FMT(a), ##__VA_ARGS__)
+#define myprintf(a, ...)     _myprintf(FMT(a), ##__VA_ARGS__)
 
 #if !defined(_IS_HOST)
-# define mycprintf(a, ...) _mycprintf(FMT(a), ##__VA_ARGS__)
-# define PRINT(x, ...)   DEBUGdevice.print(x, ##__VA_ARGS__)
-# define PRINTS(x)       DEBUGdevice.print(x)
-# define CPRINTS(x)      SHELLdevice.print(x)
-# define PRINTLN(x, ...) DEBUGdevice.println(x, ##__VA_ARGS__)
-# define PRINTMILLIS()   PRINT((float)_mymillis()/1000,6)
+# define mycprintf(a, ...)   _mycprintf(FMT(a), ##__VA_ARGS__)
+# define DEBUGPRINTS(x, ...) DEBUGdevice.print(x, ##__VA_ARGS__)
+# define SHELLPRINTS(x, ...) SHELLdevice.print(x, ##__VA_ARGS__)
+# define PRINTMILLIS()       DEBUGPRINTS((float)_mymillis()/1000,6)
 #else
-# define PRINT(x, ...)   printf(x, ##__VA_ARGS__)
-# define PRINTS(x)       printf("%s", x)
-# define PRINTLN(x, ...) printf(x"\n", ##__VA_ARGS__)
-# define PRINTMILLIS()   PRINT("%.6f",(float)_mymillis()/1000)
+# define DEBUGPRINTS(x, ...) printf(x, ##__VA_ARGS__)
+# define PRINTMILLIS()       DEBUGPRINTS("%.6f",(float)_mymillis()/1000)
 #endif
+
+#define STRINGIFY(f, ...) do { \
+    if (remaining>0) { \
+        wrote = snprintf(buf+totalwrote, remaining, f,  ##__VA_ARGS__); \
+        totalwrote += wrote; \
+        remaining -= wrote;  \
+    } \
+} while(0);
 
 #define MYTRACE(x, ...) { \
     if (isConsole) { \
-        CTRACE(x, ##__VA_ARGS__); \
+        SHELLTRACE(x, ##__VA_ARGS__); \
     } else { \
         TRACE(x, ##__VA_ARGS__); \
     } \
@@ -95,12 +104,12 @@ void modules_printall(bool isConsole);
     } \
 }
 
-#define _CTRACE(x, ...) do { \
+#define _SHELLTRACE(x, ...) do { \
     mycprintf(x, ##__VA_ARGS__); \
 } while(0)
 
-#define CTRACE(x, ...) do { \
-    _CTRACE(":" x, ##__VA_ARGS__); \
+#define SHELLTRACE(x, ...) do { \
+    _SHELLTRACE(":" x, ##__VA_ARGS__); \
 } while(0)
 
 #define TTRACE(x, ...) do { \

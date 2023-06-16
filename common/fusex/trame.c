@@ -291,31 +291,32 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     imuraw_t   m[3] = {0,0,0};
 
     imuraw_t  a2[3] = {0,0,0};
-    gpsraw_t gps[2] = {0, 0};
+    gpsraw_t gps[2] = {0,0};
 
     fxtm_getgps(tm, &gps[0], &gps[1]);
 
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
-    IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
     IMU_SENSOR_GET(gyro,   tm, g[0],  g[1],  g[2]);
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
+    IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
 
     STRINGIFY("\r\n\tid:%u\r\n", tm->id);
-    STRINGIFY("\tgps:%d", gps[0]);
-    STRINGIFY(",%d\r\n", gps[1]);
+    STRINGIFY("\tgps:%ld,%ld\r\n", gps[0], gps[1]);
 
-    STRINGIFY("\tflightstatus:%s(%3d)\r\n",
+    STRINGIFY("\tflightstatus:%s(%3u)\r\n",
               FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
+    STRINGIFY("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
+    STRINGIFY("\ttemperature:%d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
+    STRINGIFY("\t accel[x]:%6d,  accel[y]:%6d,  accel[z]:%6d\r\n", a[0], a[1], a[2]);
+
 #if 0
     STRINGIFY("\tsound level: %u\r\n",tm->soundLevel);
 #endif
 
-    STRINGIFY("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
-    STRINGIFY("\ttemperature:%d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
-    STRINGIFY("\t accel[0]:%6d,  accel[1]:%6d,  accel[2]:%6d\r\n", a[0], a[1], a[2]);
-    STRINGIFY("\t  gyro[0]:%6d,   gyro[1]:%6d,   gyro[2]:%6d\r\n", g[0], g[1], g[2]);
-    STRINGIFY("\t  magn[0]:%6d,   magn[1]:%6d,   magn[2]:%6d\r\n", m[0], m[1], m[2]);
-    STRINGIFY("\taccel2[0]:%6d, accel2[1]:%6d, accel2[2]:%6d\r\n", a2[0], a2[1], a2[2]);
+    STRINGIFY("\t  gyro[x]:%6d,   gyro[y]:%6d,   gyro[z]:%6d\r\n", g[0], g[1], g[2]);
+    STRINGIFY("\t  magn[x]:%6d,   magn[y]:%6d,   magn[z]:%6d\r\n", m[0], m[1], m[2]);
+    STRINGIFY("\taccel2[x]:%6d, accel2[y]:%6d, accel2[z]:%6d\r\n", a2[0], a2[1], a2[2]);
+    STRINGIFY("\r\n");
 
     return totalwrote;
 }

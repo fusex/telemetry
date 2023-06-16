@@ -41,9 +41,9 @@ extern "C"
 }
 
 #define IMU_SENSOR_GET(p, tm, X, Y, Z) { \
-    X = tm->p.x;            \
-    Y = tm->p.y;            \
-    Z = tm->p.z;            \
+    X = tm->p.x; \
+    Y = tm->p.y; \
+    Z = tm->p.z; \
 }
 
 #define TRAME_VERSION         "BGC0"

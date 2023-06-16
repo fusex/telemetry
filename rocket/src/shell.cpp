@@ -15,18 +15,17 @@
 
 static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-    shell.println(F(
-		    "Built "   __DATE__ ":" __TIME__"\n\r"
-		    "Version " VERSION  "\n\r"
-		    "Running " __FILE__ "\n\r"
-		    ));
+    _SHELLTRACE("Built "   __DATE__ ":" __TIME__"\n\r"
+            "Version " VERSION  "\n\r"
+            "Running " __FILE__ "\n\r"
+    );
     return 0;
 }
 
 static int readI2c (int argc, char** argv)
 {
     if (argc != 3) {
-        shell.println(F("bad argument count"));
+        _SHELLTRACE("bad argument count\n\r");
         return -1;
     }
 
@@ -34,7 +33,7 @@ static int readI2c (int argc, char** argv)
     uint8_t reg = strtol(argv[2], NULL, 16);
     uint8_t val = i2c_read(true, adr, reg);
 
-    shell.println(val, HEX);
+    SHELLPRINTS(val, HEX);
 
     return 0;
 }
@@ -42,7 +41,7 @@ static int readI2c (int argc, char** argv)
 static int writeI2c (int argc, char** argv)
 {
     if (argc != 4) {
-        shell.println("bad argument count");
+        _SHELLTRACE("bad argument count");
         return -1;
     }
 
@@ -76,17 +75,14 @@ static int execModules (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
-#define CONSOLE_BUF_SIZE  512
-static char consolebuf[CONSOLE_BUF_SIZE];
-
 static int fxtmStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
     size_t len = fxtm_dumpdata(NULL, consolebuf, CONSOLE_BUF_SIZE);
-    _CTRACE("%s", consolebuf);
-    _CTRACE("\n\r\n\r");
-    _CTRACE("fxtm string size:%3d Bytes\n\r", len);
-    _CTRACE("fxtm block  size:%3d Bytes\n\r", fxtm_getblocksize());
-    _CTRACE("fxtm data   size:%3d Bytes\n\r", fxtm_getdatasize());
+    SHELLPRINTS(consolebuf);
+
+    _SHELLTRACE("fxtm string size:%3d Bytes\n\r", len);
+    _SHELLTRACE("fxtm block  size:%3d Bytes\n\r", fxtm_getblocksize());
+    _SHELLTRACE("fxtm data   size:%3d Bytes\n\r", fxtm_getdatasize());
 
     return 0;
 }

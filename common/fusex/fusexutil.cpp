@@ -150,7 +150,7 @@ void _myprintf2(const char *fmt, ... )
 
     va_end(args);
 
-    PRINTS(buf);
+    DEBUGPRINTS(buf);
 }
 
 long _myrandom(long min, long max)
@@ -173,36 +173,28 @@ unsigned long _mymillis()
 #endif
 }
 
+char consolebuf[CONSOLE_BUF_SIZE];
+
 void _mycprintf(const _FMT_FLASH_TYPE *fmt, ... )
 {
-    char buf[128]; // resulting string limited to 128 chars
     va_list args;
 
     va_start(args, fmt);
-#ifdef __AVR__
-    vsnprintf_P(buf, sizeof(buf), (const char *)fmt, args); // progmem for AVR
-#else
-    vsnprintf(buf, sizeof(buf), (const char *)fmt, args); // for the rest of the world
-#endif
+    VSNPRINTF(consolebuf, sizeof(consolebuf), (const char *)fmt, args);
     va_end(args);
 
-    CPRINTS(buf);
+    SHELLPRINTS(consolebuf);
 }
 
 void _myprintf(const _FMT_FLASH_TYPE *fmt, ... )
 {
-    char buf[128]; // resulting string limited to 128 chars
     va_list args;
 
     va_start(args, fmt);
-#ifdef __AVR__
-    vsnprintf_P(buf, sizeof(buf), (const char *)fmt, args); // progmem for AVR
-#else
-    vsnprintf(buf, sizeof(buf), (const char *)fmt, args); // for the rest of the world
-#endif
+    VSNPRINTF(consolebuf, sizeof(consolebuf), (const char *)fmt, args);
     va_end(args);
 
-    PRINTS(buf);
+    DEBUGPRINTS(consolebuf);
 }
 
 #if 0
