@@ -29,6 +29,11 @@ extern "C"
 #define MAX_SOUND_LEVEL 1024
 #define MAX_TEMPERATURE  256
 
+#define GPS_SET(p, tm, LAT, LONG) { \
+    tm->g.lat = X; \
+    tm->g.lon = Y; \
+}
+
 #define IMU_SENSOR_SET(p, tm, X, Y, Z) { \
     tm->p.x = X; \
     tm->p.y = Y; \
@@ -47,7 +52,7 @@ extern "C"
 /* Set Paris as reference for gpsdelta_t */ 
 //TODO
 #define GPS_REF_LAT     10 
-#define GPS_REF_LONG    100
+#define GPS_REF_LON    100
 
 #if 0
 typedef short myaccum myfloat;
@@ -78,6 +83,11 @@ typedef struct {
 } PACKED imu_sensor_t;
 
 typedef struct {
+    gpsdelta_t lat;
+    gpsdelta_t lon;
+} PACKED gps_t;
+
+typedef struct {
     char          magic[4];
     uint16_t      id;
 
@@ -92,8 +102,7 @@ typedef struct {
     uint8_t       battLevel;
     uint8_t       flightStatus;
 
-    gpsdelta_t    gpsLt;
-    gpsdelta_t    gpsLg;
+    gps_t         gps;
 
     imu_sensor_t  accel;
     imu_sensor_t  accel2;
@@ -176,7 +185,7 @@ uint16_t fxtm_check(fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts);
 size_t   fxtm_tojson(uint8_t* data, char* buf, size_t bufsize);
 
 void fxtm_getimu(fxtm_data_t* tm, imuraw_t* imu);
-void fxtm_getgps(fxtm_data_t* tm, gpsraw_t* gps);
+void fxtm_getgps(fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude);
 void fxtm_getpressure(fxtm_data_t* tm, uint16_t* ppressure);
 void fxtm_gettxts(fxtm_block_t* data, uint32_t* pts);
 void fxtm_getrxts(fxtm_block_t* data, uint32_t* pts);

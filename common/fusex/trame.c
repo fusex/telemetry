@@ -66,8 +66,8 @@ void fxtm_sethumidity (uint8_t humidity)
 void fxtm_setgps (gpsraw_t latitude, gpsraw_t longitude)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->gpsLt = latitude - GPS_REF_LAT;
-    tm->gpsLg = longitude - GPS_REF_LONG;
+    tm->gps.lat = latitude - GPS_REF_LAT;
+    tm->gps.lon = longitude - GPS_REF_LON;
 }
 
 void fxtm_setflightstatus (uint8_t flightStatus)
@@ -156,14 +156,14 @@ void fxtm_getimu (fxtm_data_t* tm, imuraw_t imu[])
     imu[8] = magn[2];
 }
 
-void fxtm_getgps (fxtm_data_t* tm, gpsraw_t gps[])
+void fxtm_getgps (fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude)
 {
     if (tm == NULL) {
         tm = &fxtmblock.data;
     }
 
-    gps[0] = tm->gpsLt + GPS_REF_LAT;
-    gps[1] = tm->gpsLg + GPS_REF_LONG;
+    *pLongitude = tm->gps.lon + GPS_REF_LON;
+    *pLatitude  = tm->gps.lat + GPS_REF_LAT;
 }
 
 void fxtm_getpressure (fxtm_data_t* tm, uint16_t* ppressure)
@@ -291,9 +291,9 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     imuraw_t   m[3] = {0,0,0};
 
     imuraw_t  a2[3] = {0,0,0};
-    gpsraw_t gps[2] = {0,0};
+    gpsraw_t gps[2] = {0, 0};
 
-    fxtm_getgps(tm, gps);
+    fxtm_getgps(tm, &gps[0], &gps[1]);
 
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
@@ -301,7 +301,8 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     IMU_SENSOR_GET(magn,   tm, m[0],  m[1],  m[2]);
 
     STRINGIFY("\r\n\tid:%u\r\n", tm->id);
-    STRINGIFY("\tgps:%d,%d\r\n", gps[0], gps[1]);
+    STRINGIFY("\tgps:%d", gps[0]);
+    STRINGIFY(",%d\r\n", gps[1]);
 
     STRINGIFY("\tflightstatus:%s(%3d)\r\n",
               FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
@@ -392,7 +393,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
 
     fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (data + fxtm_getdatasize());
 
-    fxtm_getgps(tm, gps);
+    fxtm_getgps(tm, &gps[0], &gps[1]);
 
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);

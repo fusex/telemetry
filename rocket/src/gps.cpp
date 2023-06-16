@@ -47,10 +47,7 @@ static int receiveGPS ()
     if (gps.available()) {
         gps_fix fix = gps.read();
         if (fix.valid.location) {
-            int16_t lat = fix.latitudeL() - GPS_REF_LAT;
-            int16_t lon = fix.longitudeL() - GPS_REF_LONG; 
-
-            fxtm_setgps(lat, lon);
+            fxtm_setgps(fix.latitudeL(), fix.longitudeL());
             ret = 0; 
         }
     }
