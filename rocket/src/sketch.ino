@@ -29,13 +29,16 @@ static void acquire_fake (void)
 {
 #if 0
     gendata((uint8_t*)fxtm_getdata(), fxtm_getdatasize());
-#elif 0
+    fxtm_reset(_mymillis());
+#elif 1
+    fxtm_reset(_mymillis());
     fxtm_setgps(48, 2);
     fxtm_setflightstatus(FXTM_FLIGHTSTATUS_SEPARATION);
     fxtm_setpressure(100);
     fxtm_setdiffpressure(200);
     fxtm_settemperature(-5);
     fxtm_sethumidity(98);
+    fxtm_seterror(FXTM_ERROR_SDCARD);
     imuraw_t a[]  = { 111,  222,  333};
     imuraw_t m[]  = { 444,  555,  666};
     imuraw_t g[]  = { 777,  888,  999};
@@ -44,9 +47,9 @@ static void acquire_fake (void)
     fxtm_setimu2(a2);
 #else
     memset((uint8_t*)fxtm_getdata(), 0xaa, fxtm_getdatasize());
+    fxtm_reset(_mymillis());
 #endif
 
-    fxtm_reset(_mymillis());
 }
 
 static void acquire (void)

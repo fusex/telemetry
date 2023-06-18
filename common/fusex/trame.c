@@ -5,13 +5,21 @@
 
 #include "trame.h"
 
+#define FXTM_ERROR_STRING(x) (\
+    x&FXTM_ERROR_GPS?"GPS":\
+    x&FXTM_ERROR_IMU?"IMU":\
+    x&FXTM_ERROR_RADIO?"RADIO":\
+    x&FXTM_ERROR_SDCARD?"SDCARD":\
+    x&FXTM_ERROR_RSV?"UNKNOWN":\
+    "NONE")
+
 #define FXTM_FLIGHTSTATUS_STRING(x) (\
-    x==FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD": \
-    x==FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF": \
-    x==FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT": \
-    x==FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION": \
-    x==FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY": \
-    x==FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN": \
+    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":\
+    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":\
+    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":\
+    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":\
+    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":\
+    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":\
     "ERROR")
 
 static fxtm_block_t fxtmblock;
@@ -70,10 +78,16 @@ void fxtm_setgps (gpsraw_t latitude, gpsraw_t longitude)
     tm->gps.lon = longitude - GPS_REF_LON;
 }
 
+void fxtm_seterror (uint8_t error)
+{
+    fxtm_data_t* tm = &fxtmblock.data;
+    tm->flightStatus |= error;
+}
+
 void fxtm_setflightstatus (uint8_t flightStatus)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->flightStatus = flightStatus;
+    tm->flightStatus |= flightStatus;
 }
 
 fxtm_txheader_t* fxtm_gettxheader (void)
@@ -304,7 +318,9 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     STRINGIFY("\tgps:%ld,%ld\r\n", (long)gps[0], (long)gps[1]);
 
     STRINGIFY("\tflightstatus:%s(%3u)\r\n",
-              FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), tm->flightStatus);
+              FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), FXTM_FLIGHTSTATUS(tm->flightStatus));
+    STRINGIFY("\terrors:%s (0x%x)\r\n",
+              FXTM_ERROR_STRING(tm->flightStatus), FXTM_ERROR(tm->flightStatus));
     STRINGIFY("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
     STRINGIFY("\ttemperature:%d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
     STRINGIFY("\t accel[x]:%6d,  accel[y]:%6d,  accel[z]:%6d\r\n", a[0], a[1], a[2]);

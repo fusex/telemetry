@@ -90,14 +90,18 @@ static int SD_Init ()
     return 0;
 }
 
-static void SD_RecordBinFile ()
+static int SD_RecordBinFile ()
 {
+    int ret = -1;
     fxtm_block_t *pBlock = fxtm_getblock();
+
     SD.card()->spiStart();
     if (!SD.card()->isBusy()) {
         // Write block to SD.
         if (!SD.card()->writeData((uint8_t *)pBlock)) {
             error("write data failed");
+        } else {
+            ret = 0;
         }
         bn++;
         if (bn == FILE_BLOCK_COUNT) {
@@ -107,9 +111,9 @@ static void SD_RecordBinFile ()
             }
             SD_CreateBinFile();
         }
-    }
-    else
+    } else {
         WTTRACE("SDCard busy\r\n");
+    }
 
     SD.card()->spiStop();
 }
@@ -137,5 +141,7 @@ void setupSdcard ()
 
 void loopSdcard ()
 {
-    SD_RecordBinFile();
+    if (SD_RecordBinFile()) {
+        fxtm_seterror(FXTM_ERROR_SDCARD);
+    }
 }

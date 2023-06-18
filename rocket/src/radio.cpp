@@ -28,5 +28,7 @@ void setupRadio ()
 
 void loopRadio ()
 {
-    lora.send((uint8_t *)fxtm_getdata(), fxtm_getdatasize());
+    if (false == lora.send((uint8_t *)fxtm_getdata(), fxtm_getdatasize())) {
+        fxtm_seterror(FXTM_ERROR_RADIO);
+    }
 }

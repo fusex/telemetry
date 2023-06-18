@@ -19,6 +19,15 @@ extern "C"
 #define PACKED
 #endif
 
+#define FXTM_ERROR(x)                   (x>>3)
+#define FXTM_ERROR_RSV                  (1<<3)
+#define FXTM_ERROR_GPS                  (1<<4)
+#define FXTM_ERROR_IMU                  (1<<5)
+#define FXTM_ERROR_RADIO                (1<<6)
+#define FXTM_ERROR_SDCARD               (1<<7)
+
+#define FXTM_FLIGHTSTATUS_MASK          7
+#define FXTM_FLIGHTSTATUS(x)            (x&FXTM_FLIGHTSTATUS_MASK)
 #define FXTM_FLIGHTSTATUS_LAUNCHPAD     0
 #define FXTM_FLIGHTSTATUS_LIFTOFF       1
 #define FXTM_FLIGHTSTATUS_BURNOUT       2
@@ -163,6 +172,7 @@ void fxtm_setdiffpressure(uint16_t diffpressure);
 void fxtm_sethumidity(uint8_t humidity);
 void fxtm_setflightstatus(uint8_t flightStatus);
 void fxtm_setgps(gpsraw_t latitude, gpsraw_t longitude);
+void fxtm_seterror(uint8_t error);
 
 fxtm_data_t*     fxtm_getdata(void);
 fxtm_block_t*    fxtm_getblock(void);

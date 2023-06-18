@@ -134,7 +134,9 @@ void setupGps ()
 
 void loopGps ()
 {
-    receiveGPS();
+    if (receiveGPS()) {
+        fxtm_seterror(FXTM_ERROR_GPS);
+    }
     if (gps.overrun()) {
         gps.overrun( false );
     }

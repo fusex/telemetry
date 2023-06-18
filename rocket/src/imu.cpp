@@ -109,6 +109,8 @@ void loopIMU ()
         imuraw_t g[] = {agmt.gyr.axes.x, agmt.gyr.axes.y, agmt.gyr.axes.z};
 
         fxtm_setimu(a, m, g);
+    } else {
+        fxtm_seterror(FXTM_ERROR_IMU);
     }
 
     imuraw_t a2[] = {
