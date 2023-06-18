@@ -26,9 +26,16 @@ void setupRadio ()
     }
 }
 
+static boolean previous_failure = false;
+
 void loopRadio ()
 {
-    if (false == lora.send((uint8_t *)fxtm_getdata(), fxtm_getdatasize())) {
+    if (true == previous_failure) {
         fxtm_seterror(FXTM_ERROR_RADIO);
+	previous_failure = false;
+    }
+
+    if (false == lora.send((uint8_t *)fxtm_getdata(), fxtm_getdatasize())) {
+	previous_failure = true;
     }
 }

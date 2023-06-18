@@ -29,6 +29,7 @@ void fxtm_reset (uint32_t ts)
 {
     fxtm_data_t* tm = &fxtmblock.data;
     tm->id = idCounter++;
+    tm->flightStatus = 0;
     memcpy(tm->magic, TRAME_VERSION, TRAME_VERSION_SIZE);
     fxtmblock.txh.timestamp = ts;
 }
