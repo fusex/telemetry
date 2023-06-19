@@ -59,9 +59,8 @@ extern "C"
 #define TRAME_VERSION_SIZE    (sizeof(TRAME_VERSION)- 1)
 
 /* Set Paris as reference for gpsdelta_t */ 
-//TODO
-#define GPS_REF_LAT     10 
-#define GPS_REF_LON    100
+#define GPS_REF_LAT      488252593
+#define GPS_REF_LON      23666452
 
 #if 0
 typedef short myaccum myfloat;
@@ -195,7 +194,7 @@ uint16_t fxtm_check(fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts);
 size_t   fxtm_tojson(uint8_t* data, char* buf, size_t bufsize);
 
 void fxtm_getimu(fxtm_data_t* tm, imuraw_t* imu);
-void fxtm_getgps(fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude);
+void fxtm_getgps(fxtm_data_t* tm, gpsdelta_t* pLatitude, gpsdelta_t* pLongitude);
 void fxtm_getpressure(fxtm_data_t* tm, uint16_t* ppressure);
 void fxtm_gettxts(fxtm_block_t* data, uint32_t* pts);
 void fxtm_getrxts(fxtm_block_t* data, uint32_t* pts);

@@ -20,7 +20,7 @@
   #error You must define NMEAGPS_INTERRUPT_PROCESSING in NMEAGPS_cfg.h!
 #endif
 
-#define RETRYMAX 60 // Retry 60 secondes.
+#define RETRYMAX 10 // Retry 10 secondes.
 static NMEAGPS gps; // This parses the GPS characters
 
 // The parser is expecting only GNGLL messages at 5Hz rate.
@@ -132,11 +132,22 @@ void setupGps ()
     }
 }
 
+
+static uint8_t gps_error = 0;
+
 void loopGps ()
 {
-    if (receiveGPS()) {
+    if (receiveGPS() == 0) {
+        gps_error = 0;
+    } else {
+        gps_error++;
+    }
+
+    /* Annonce a gps errors after several successif retries */
+    if (gps_error > RETRYMAX) {
         fxtm_seterror(FXTM_ERROR_GPS);
     }
+
     if (gps.overrun()) {
         gps.overrun( false );
     }

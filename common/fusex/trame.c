@@ -171,7 +171,17 @@ void fxtm_getimu (fxtm_data_t* tm, imuraw_t imu[])
     imu[8] = magn[2];
 }
 
-void fxtm_getgps (fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude)
+void fxtm_getgps (fxtm_data_t* tm, gpsdelta_t* pLatitude, gpsdelta_t* pLongitude)
+{
+    if (tm == NULL) {
+        tm = &fxtmblock.data;
+    }
+
+    *pLongitude = tm->gps.lon;
+    *pLatitude  = tm->gps.lat;
+}
+
+void fxtm_getrealgps (fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude)
 {
     if (tm == NULL) {
         tm = &fxtmblock.data;
@@ -305,8 +315,8 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     imuraw_t   g[3] = {0,0,0};
     imuraw_t   m[3] = {0,0,0};
 
-    imuraw_t  a2[3] = {0,0,0};
-    gpsraw_t gps[2] = {0,0};
+    imuraw_t    a2[3] = {0,0,0};
+    gpsdelta_t gps[2] = {0,0};
 
     fxtm_getgps(tm, &gps[0], &gps[1]);
 
@@ -316,7 +326,7 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
 
     STRINGIFY("\r\n\tid:%u\r\n", tm->id);
-    STRINGIFY("\tgps:%ld,%ld\r\n", (long)gps[0], (long)gps[1]);
+    STRINGIFY("\tgps:%d,%d\r\n", gps[0], gps[1]);
 
     STRINGIFY("\tflightstatus:%s(%3u)\r\n",
               FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), FXTM_FLIGHTSTATUS(tm->flightStatus));
@@ -411,7 +421,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
 
     fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (data + fxtm_getdatasize());
 
-    fxtm_getgps(tm, &gps[0], &gps[1]);
+    fxtm_getrealgps(tm, &gps[0], &gps[1]);
 
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
