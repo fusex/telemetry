@@ -12,6 +12,7 @@
 #include "rtc.h"
 #include "exec.h"
 #include "sdcard.h"
+#include "gps.h"
 
 static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
@@ -136,6 +137,13 @@ static int sdcardStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+static int gpsStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    dumpGPS(true);
+
+    return 0;
+}
+
 /* #########################################
                     Public
    ######################################### */
@@ -160,6 +168,7 @@ void setupShell ()
     shell.addCommand(F("trace"), dynTraceOn);
     shell.addCommand(F("notrace"), dynTraceOff);
     shell.addCommand(F("sdcard"), sdcardStatus);
+    shell.addCommand(F("gps"), gpsStatus);
 
     TTRACE("init Done.\r\n");
     module_setup(TAG, FXTM_SUCCESS);

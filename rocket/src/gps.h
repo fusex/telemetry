@@ -3,5 +3,6 @@
 
 void setupGps();
 void loopGps();
+void dumpGPS(bool isConsole);
 
 #endif //define _GPS_H

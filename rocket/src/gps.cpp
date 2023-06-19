@@ -55,6 +55,13 @@ static int receiveGPS ()
     return ret;
 }
 
+void dumpGPS (bool isConsole)
+{
+    MYTRACE("GPS:\r\n");
+    Serial.println( gps.string_for( gps.nmeaMessage ) );
+
+}
+
 const unsigned char ubxRate5Hz[] PROGMEM =
   { 0x06,0x08,0x06,0x00,200,0x00,0x01,0x00,0x01,0x00 };
 // Disable specific NMEA sentences
