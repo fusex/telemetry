@@ -17,8 +17,8 @@
 #define error(msg) {SD.errorPrint(&Serial, F(msg));}
 #define FILE_BLOCK_COUNT (120*60*10L) // 120 minutes logging at 10HZ
 
-static SdFat      SD;
-static SdBaseFile binFile;
+static SdFat32      SD;
+static File32       binFile;
 
 static uint32_t   bn = 0;  
 static uint16_t   filepart = 0;
@@ -42,80 +42,57 @@ static void SD_CreateBinFile ()
     // Create new file.
     binFile.close();
 
-    uint32_t usec = micros();
-    if (!binFile.createContiguous(filename, 512 * FILE_BLOCK_COUNT)) {
-        error("createContiguous failed");
-    }
-    TTRACE("sdcard createBinFile1 in usec: %ld\r\n", micros() - usec);
-    usec = micros();
-    // Get the address of the file on the SD.
-    if (!binFile.contiguousRange(&bgnBlock, &endBlock)) {
-        error("contiguousRange failed");
+    if (!binFile.open(filename, O_RDWR | O_CREAT)) {
+        error("open failed");
     }
 
-    TTRACE("sdcard createBinFile2 in usec: %ld\r\n", micros() - usec);
-
-    // Flash erase all data in the file.
-    usec = micros();
-    uint32_t bgnErase = bgnBlock;
-    uint32_t endErase;
-    while (bgnErase < endBlock) {
-        endErase = bgnErase + ERASE_SIZE;
-        if (endErase > endBlock) {
-            endErase = endBlock;
-        }
-        if (!SD.card()->erase(bgnErase, endErase)) {
-            error("erase failed");
-        }
-        bgnErase = endErase + 1;
+    if (!binFile.preAllocate(512UL * FILE_BLOCK_COUNT)) {
+        error("preAllocate failed");
     }
-    TTRACE("sdcard createBinFile3 in usec: %ld\r\n", micros() - usec);
-
-    usec = micros();
-    if (!SD.card()->writeStart(binFile.firstBlock()))
-        error("writeStart failed");
-    TTRACE("sdcard createBinFile4 in usec: %ld\r\n", micros() - usec);
 
     bn = 0;
 }
 
+#define SPI_CLOCK SD_SCK_MHZ(8)
+#define SD_CONFIG SdSpiConfig(BGC_SD_CS, SHARED_SPI, SPI_CLOCK)
+
 static int SD_Init ()
 {
-    pinMode(BGC_SD_CS, OUTPUT);
-    digitalWrite(BGC_SD_CS, HIGH);
-
-    if (!SD.begin(BGC_SD_CS))
+    if (!SD.begin(SD_CONFIG))
         return -1;
 
     return 0;
 }
 
+#define MAX_RETRY 100 
+
 static int SD_RecordBinFile ()
 {
-    int ret = -1;
     fxtm_block_t *pBlock = fxtm_getblock();
+    int ret = 0;
 
-    SD.card()->spiStart();
-    if (!SD.card()->isBusy()) {
-        // Write block to SD.
-        if (!SD.card()->writeData((uint8_t *)pBlock)) {
-            error("write data failed");
-        } else {
-            ret = 0;
-        }
-        bn++;
-        if (bn == FILE_BLOCK_COUNT) {
-            // File full so stop
-            if (!SD.card()->writeStop()) {
-                error("writeStop failed");
-            }
-            SD_CreateBinFile();
-        }
-    } else {
-        WTTRACE("SDCard busy\r\n");
+    // Write block to SD.
+    if (!binFile.write((uint8_t *)pBlock, fxtm_getblocksize())) {
+        //error("write data failed");
+        ret = -1;
     }
 
-    SD.card()->spiStop();
+    if (ret == 0) {
+        bn++;
+        if (bn == FILE_BLOCK_COUNT) {
+            // File full so create new file.
+            SD_CreateBinFile();
+        }
+        int retry = 0;
+        while (retry<MAX_RETRY) {
+            if (!SD.card()->isBusy())
+                break;
+            delay(1);
+            retry++;
+        }
+    }
+
+    return ret;
 }
 
 void dumpSdcard (bool isConsole)
@@ -135,12 +112,11 @@ void setupSdcard ()
         SD_CreateBinFile();
         module_setup(TAG, FXTM_SUCCESS);
     }
-    SD.card()->spiStop();
 }
 
 void loopSdcard ()
 {
-    if (SD_RecordBinFile()) {
+    if (0 != SD_RecordBinFile()) {
         fxtm_seterror(FXTM_ERROR_SDCARD);
     }
 }

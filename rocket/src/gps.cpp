@@ -35,7 +35,7 @@ static NMEAGPS gps; // This parses the GPS characters
 
 #define GPSdevice NAME(BGC_SerialGPS)
 
-static void GPSisr ( uint8_t c )
+static void GPSisr (uint8_t c)
 {
     gps.handle( c );
 }
@@ -59,7 +59,6 @@ void dumpGPS (bool isConsole)
 {
     MYTRACE("GPS:\r\n");
     Serial.println( gps.string_for( gps.nmeaMessage ) );
-
 }
 
 const unsigned char ubxRate5Hz[] PROGMEM =
@@ -79,7 +78,7 @@ const unsigned char ubxDisableZDA[] PROGMEM =
   { 0x06,0x01,0x08,0x00,0xF0,0x08,0x00,0x00,0x00,0x00,0x00,0x01 };
 const uint32_t COMMAND_DELAY = 250;
 
-void sendUBX (const unsigned char *progmemBytes, size_t len )
+void sendUBX (const unsigned char *progmemBytes, size_t len)
 {
     GPSdevice.write( 0xB5 ); // SYNC1
     GPSdevice.write( 0x62 ); // SYNC2
