@@ -31,10 +31,10 @@ void loopRadio ()
 {
     if (true == previous_failure) {
         fxtm_seterror(FXTM_ERROR_RADIO);
-	previous_failure = false;
+        previous_failure = false;
     }
 
     if (false == lora.send((uint8_t *)fxtm_getdata(), fxtm_getdatasize())) {
-	previous_failure = true;
+        previous_failure = true;
     }
 }

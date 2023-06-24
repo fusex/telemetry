@@ -49,14 +49,14 @@ void RTC_DumpDebug (bool isConsole)
     MYTTRACE("date and time: ");
 
     MYTRACE("%2d:%2d:%2d %s %d %s %4d\r\n",
-		hour(t),
-		minute(t),
-		second(t),
-		dayShortStr(weekday(t)),
-		day(t),
-		monthShortStr(month(t)),
-		year(t)
-	  );
+            hour(t),
+            minute(t),
+            second(t),
+            dayShortStr(weekday(t)),
+            day(t),
+            monthShortStr(month(t)),
+            year(t)
+           );
 }
 
 static time_t RTC_GetCompileTime ()
