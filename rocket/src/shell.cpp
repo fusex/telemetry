@@ -4,6 +4,7 @@
 #include <SimpleSerialShell.h>
 #include <fusexutil.h>
 #include <trame.h>
+#include <stdlib.h>
 
 #include "init.h"
 #include "debug.h"
@@ -13,6 +14,7 @@
 #include "exec.h"
 #include "sdcard.h"
 #include "gps.h"
+#include "flash.h"
 
 static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
@@ -81,9 +83,10 @@ static int fxtmStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
     size_t len = fxtm_dumpdata(NULL, consolebuf, CONSOLE_BUF_SIZE);
     SHELLPRINTS(consolebuf);
 
-    _SHELLTRACE("fxtm string size:%3d Bytes\n\r", len);
-    _SHELLTRACE("fxtm block  size:%3d Bytes\n\r", fxtm_getblocksize());
-    _SHELLTRACE("fxtm data   size:%3d Bytes\n\r", fxtm_getdatasize());
+    _SHELLTRACE("fxtm string (serial) size:%3d Bytes\n\r", len);
+    _SHELLTRACE("fxtm txdata (flash)  size:%3d Bytes\n\r", fxtm_gettxdatasize());
+    _SHELLTRACE("fxtm block  (sdcard) size:%3d Bytes\n\r", fxtm_getblocksize());
+    _SHELLTRACE("fxtm data   (radio)  size:%3d Bytes\n\r", fxtm_getdatasize());
 
     return 0;
 }
@@ -144,6 +147,68 @@ static int gpsStatus (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+static int flashDump (int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    dumpFlash(true);
+
+    return 0;
+}
+
+static int flashRead (int argc, char** argv)
+{
+    uint32_t addr = 0;
+
+    if (argc > 0) {
+        addr = strtol(argv[1], NULL, 16);
+    }
+
+    readFlash(true, addr);
+
+    return 0;
+}
+
+static int flashSlice_setup (int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+#if 0
+    char c = (char)shell.read();
+    if (c == 'Y' || c == 'y') {
+#else
+    if (1) {
+#endif
+        _SHELLTRACE(" Start Flash setup of Slices ... ");
+        setupFlashSlice();
+        _SHELLTRACE(" done\n\r");
+    }
+
+    return 0;
+}
+
+static int flashErase (int argc, char** argv)
+{
+    uint32_t addr = 0;
+
+
+    if (argc > 0) {
+        //addr = strtol(argv[1], NULL, 16);
+        return 1;
+    }
+
+    _SHELLTRACE("Flash erase 64KB block from:0x%lx! are you sure?\n\r", addr);
+
+#if 0
+    char c = (char)shell.read();
+    if (c == 'Y' || c == 'y') {
+#else
+    if (1) {
+#endif
+        _SHELLTRACE(" Start Flash erase of 64KB block from:0x%lx ... ", addr);
+        eraseFlash(addr);
+        _SHELLTRACE(" done\n\r");
+    }
+
+    return 0;
+}
+
 /* #########################################
                     Public
    ######################################### */
@@ -169,6 +234,10 @@ void setupShell ()
     shell.addCommand(F("notrace"), dynTraceOff);
     shell.addCommand(F("sdcard"), sdcardStatus);
     shell.addCommand(F("gps"), gpsStatus);
+    shell.addCommand(F("flash"), flashDump);
+    shell.addCommand(F("flash-read"), flashRead);
+    shell.addCommand(F("flash-erase"), flashErase);
+    shell.addCommand(F("flash-slice-setup"), flashSlice_setup);
 
     module_setup(TAG, FXTM_SUCCESS);
 }

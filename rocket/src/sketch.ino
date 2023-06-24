@@ -16,6 +16,7 @@
 #include "debug.h"
 #include "shell.h"
 #include "exec.h"
+#include "flash.h"
 
 #if 1
 #define ENABLE_GPS
@@ -49,7 +50,6 @@ static void acquire_fake (void)
     memset((uint8_t*)fxtm_getdata(), 0xaa, fxtm_getdatasize());
     fxtm_reset(_mymillis());
 #endif
-
 }
 
 static void acquire (void)
@@ -66,6 +66,7 @@ static void acquire (void)
 
 static void log (void)
 {
+    loopFlash();
     loopSdcard();
 }
 
@@ -104,6 +105,7 @@ void setup (void)
     setupGps();
 #endif
     setupSdcard();
+    setupFlash();
 #endif
 
     setupRadio();

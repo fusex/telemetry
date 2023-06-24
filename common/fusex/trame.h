@@ -20,7 +20,7 @@ extern "C"
 #endif
 
 #define FXTM_ERROR(x)                   (x>>3)
-#define FXTM_ERROR_RSV                  (1<<3)
+#define FXTM_ERROR_FLASH                (1<<3)
 #define FXTM_ERROR_GPS                  (1<<4)
 #define FXTM_ERROR_IMU                  (1<<5)
 #define FXTM_ERROR_RADIO                (1<<6)
@@ -141,6 +141,8 @@ int head = 0;
 
 typedef struct {
     uint32_t     timestamp;
+    uint8_t      padding[64 - sizeof(fxtm_data_t)
+                            - sizeof(uint32_t)];
 } PACKED fxtm_txheader_t;
 
 typedef struct {
