@@ -32,6 +32,11 @@ void setupInit ()
     while (!DEBUGdevice) ; // Wait for DEBUG serial port to be available
 #endif
 
+    pinMode(BGC_SD_CS, OUTPUT);
+    digitalWrite(BGC_SD_CS, HIGH);
+
+    pinMode(BGC_LORA_SS, OUTPUT);
+    digitalWrite(BGC_LORA_SS, HIGH);
 
     BOOTTRACE("#######################\r\n");
     BOOTTRACE("Rocket init Start\r\n");

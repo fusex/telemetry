@@ -17,9 +17,10 @@
 #define LED_MAX      LED_FERROR
 
 #define BUZZER          A12
-#define SD_CS_PIN       10
-//#define SPIFLASH_CS_PIN 10
-#define SPIFLASH_CS_PIN 11
+
+#define SD_CS_PIN       11
+#define SPIFLASH_CS_PIN 10
+
 #define LORA_CS_PIN     25
 #define LORA_RST_PIN    27
 #define LORA_DIO0        2
@@ -427,6 +428,9 @@ void setup()
 
     DEBUGdevice.begin(DEBUGSERIALBAUD);
     while (!DEBUGdevice) ; // Wait for DEBUG serial port to be available
+
+    pinMode(25, OUTPUT);
+    digitalWrite(25, HIGH);
 
     Wire.begin();
 }
