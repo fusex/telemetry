@@ -32,9 +32,10 @@ void setupInit ()
     while (!DEBUGdevice) ; // Wait for DEBUG serial port to be available
 #endif
 
-    TTRACE("#######################\r\n");
-    TTRACE("Rocket init Start\r\n");
-    TTRACE("    Version: %s\r\n", VERSION);
+
+    BOOTTRACE("#######################\r\n");
+    BOOTTRACE("Rocket init Start\r\n");
+    BOOTTRACE("    Version: %s\r\n", VERSION);
 
     module_setup(TAG, FXTM_SUCCESS);
 }
@@ -57,9 +58,9 @@ void Init_Finish ()
 
     if (!initfailed) {
         digitalWrite(BGC_LED4_FERROR, LOW);
-        TTRACE("Rocket init Done\r\n");
+        BOOTTRACE("Rocket init Done\r\n");
     } else {
-        TTRACE("Rocket init failed !\r\n");
+        BOOTTRACE("Rocket init failed !\r\n");
         for(int i=0;i<100;i++) {
             digitalWrite(BGC_LED4_FERROR, LOW);
             delay(100);
@@ -67,15 +68,15 @@ void Init_Finish ()
             delay(100);
         }
 
-        TTRACE("rid :%d and semifatalcount:%d!\r\n",rid,semifatalcount);
+        BOOTTRACE("rid :%d and semifatalcount:%d!\r\n",rid,semifatalcount);
 
         if (semifatalcount == MAXFATAL && rid<MAXRESET) {
             RTC_SetResetID();
-            TTRACE("FATAL init detected! reset !\r\n");
+            BOOTTRACE("FATAL init detected! reset !\r\n");
             Init_ResetBoard();
         }
     }
-    TTRACE("#######################\r\n");
+    BOOTTRACE("#######################\r\n");
 }
 
 void Init_SetFailed ()

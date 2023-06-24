@@ -170,7 +170,6 @@ void setupShell ()
     shell.addCommand(F("sdcard"), sdcardStatus);
     shell.addCommand(F("gps"), gpsStatus);
 
-    TTRACE("init Done.\r\n");
     module_setup(TAG, FXTM_SUCCESS);
 }
 

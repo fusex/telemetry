@@ -252,6 +252,12 @@ void module_setup(const char* tag, fxtm_error_t error)
             break;
         }
     }
+
+    if (error == FXTM_SUCCESS) {
+        BOOTTRACE("%s init Done.\r\n", tag);
+    } else {
+        BOOTTRACE("%s init Failed.\r\n", tag);
+    }
 }
 
 void modules_printall(bool isConsole)

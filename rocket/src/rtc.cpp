@@ -110,7 +110,6 @@ void setupRTC ()
     RTC_DumpDebug(false);
 #endif
 
-    TTRACE("init Done.\r\n");
     module_setup(TAG, FXTM_SUCCESS);
 }
 

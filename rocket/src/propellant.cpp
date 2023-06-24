@@ -15,7 +15,6 @@ const static int thresholdvalue=490; //The threshold
 void setupPropellant ()
 {
     module_add(TAG);
-    TTRACE("init Done\n\r");
     module_setup(TAG, FXTM_SUCCESS);
 }
 

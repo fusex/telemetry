@@ -19,7 +19,6 @@ void setupExec ()
 {
     module_add(TAG);
     scheduler.setTimer(BGC_ACQ_PERIOD, subLoop, scheduler.RUN_FOREVER);
-    TTRACE("init Done.\r\n");
     module_setup(TAG, FXTM_SUCCESS);
 }
 

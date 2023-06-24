@@ -117,6 +117,11 @@ void modules_printall(bool isConsole);
     myprintf(":" TAG "\t: " x, ##__VA_ARGS__); \
 } while(0)
 
+#define BOOTTRACE(x, ...) do { \
+    TTRACE(x, ##__VA_ARGS__); \
+    SHELLTRACE(x, ##__VA_ARGS__) ; \
+} while(0)
+
 #define CTTRACE(x, ...) do { \
     PRINTMILLIS(); \
     mycprintf(":" TAG "\t: " x, ##__VA_ARGS__); \

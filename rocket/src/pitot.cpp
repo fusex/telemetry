@@ -49,7 +49,6 @@ static fxtm_error_t readSensor ()
 void setupPitot ()
 {
     module_add(TAG);
-    TTRACE("init Done.\r\n");
     module_setup(TAG, FXTM_SUCCESS);
 }
 

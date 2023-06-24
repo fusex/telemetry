@@ -123,22 +123,20 @@ void setupGps ()
     int retry = 0;
     while (retry++ < RETRYMAX) {
         if (receiveGPS() == 0) {
+            BOOTTRACE("GPS got fix after retry:%d\r\n", retry);
             gpsFixed = true;
             break;
         }
         delay(1000);
     }
 
-    //
     if (gpsFixed == false) {
-        TTRACE("init Failed ! retry later.\r\n");
+        module_setup(TAG, FXTM_FAILURE);
         Init_SetFailed();
     } else {
-        TTRACE("init Done: retry:%d\r\n", retry);
         module_setup(TAG, FXTM_SUCCESS);
     }
 }
-
 
 static uint8_t gps_error = 0;
 

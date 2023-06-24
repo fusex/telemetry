@@ -129,11 +129,10 @@ void setupSdcard ()
 {
     module_add(TAG);
     if (SD_Init() != 0) {
+        module_setup(TAG, FXTM_FAILURE);
         Init_SetSemiFatal();
-        TTRACE("init Failed!\r\n");
     } else {
         SD_CreateBinFile();
-        TTRACE("init Done.\r\n");
         module_setup(TAG, FXTM_SUCCESS);
     }
     SD.card()->spiStop();

@@ -17,11 +17,10 @@ void setupRadio ()
 {
     module_add(TAG);
     if (!lora.init()) {
-        TTRACE("init failed ! Fatal !!!\n\r");
+        module_setup(TAG, FXTM_FAILURE);
         Init_SetFatal();
         return;
     } else {
-        TTRACE("init Done\n\r");
         module_setup(TAG, FXTM_SUCCESS);
     }
 }

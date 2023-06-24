@@ -20,6 +20,7 @@ void setupAtmos ()
     module_add(TAG);
 
     if (!bmp.begin(BGC_I2C_PRESSURE_ADDR, 0x58)) {
+        module_setup(TAG, FXTM_FAILURE);
         Init_SetFailed();
         return;
     }
@@ -27,11 +28,11 @@ void setupAtmos ()
     hdc1080.begin(BGC_I2C_TEMP_HUM_ADDR);
     if (hdc1080.readManufacturerId() != 0x5449 ||
             hdc1080.readDeviceId() != 0x1050) {
+        module_setup(TAG, FXTM_FAILURE);
         Init_SetFailed();
         return;
     }
 
-    TTRACE("init Done.\r\n");
     module_setup(TAG, FXTM_SUCCESS);
 }
 

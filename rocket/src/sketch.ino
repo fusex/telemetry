@@ -112,8 +112,8 @@ void setup (void)
 
     Init_Finish();
 
-    TTRACE("#########################\n\r");
-    TTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
+    BOOTTRACE("#########################\n\r");
+    BOOTTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());
 }
 
 void loop (void)

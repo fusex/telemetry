@@ -80,17 +80,16 @@ void setupIMU ()
 
     if (initICM20948() == false)
     {
-        TTRACE("init ICM20948 Failed! fatal !!!\r\n");
+        BOOTTRACE("init ICM20948 Failed! fatal !!!\r\n");
         failed = true;
     }
 
     if (initICM20600() == false) {
-        TTRACE("init ICM20600 Failed! fatal !!!\r\n");
+        BOOTTRACE("init ICM20600 Failed! fatal !!!\r\n");
         failed = true;
     }
 
     if (failed == false) {
-        TTRACE("init Done.\r\n");
         module_setup(TAG, FXTM_SUCCESS);
     } else {
         module_setup(TAG, FXTM_FAILURE);
