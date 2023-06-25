@@ -24,9 +24,9 @@ void i2c_scanner (bool isConsole)
       }
   }
   if (nDevices == 0) {
-    MYTRACE("No I2C devices found\n\r");
+      MYTRACE("No I2C devices found\n\r");
   } else {
-    MYTRACE("done\n\r");
+      MYTRACE("done\n\r");
   }
   delay(5000); // Wait 5 seconds for next scan
 }

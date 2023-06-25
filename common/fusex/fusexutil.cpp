@@ -254,9 +254,9 @@ void module_setup(const char* tag, fxtm_error_t error)
     }
 
     if (error == FXTM_SUCCESS) {
-        BOOTTRACE("%s init Done.\r\n", tag);
+        BOOTTRACE("%8s init Done.\r\n", tag);
     } else {
-        BOOTTRACE("%s init Failed.\r\n", tag);
+        BOOTTRACE("%8s init Failed.\r\n", tag);
     }
 }
 
