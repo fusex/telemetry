@@ -20,18 +20,16 @@
 #define FRONT_SLICE_INFO_ADDR      (FIRST_PAGE*SPI_PAGESIZE) 
 #define BACK_SLICE_INFO_ADDR       (LAST_PAGE*SPI_PAGESIZE) 
 
-#define CURRENT_SLICE_COUNTER_ADDR FRONT_SLICE_INFO_ADDR 
-#define NEXT_SLICE_COUNTER_ADDR    BACK_SLICE_INFO_ADDR
-#define FRONT_MAGIC_ADDR           (FRONT_SLICE_INFO_ADDR+sizeof(slice_current))
-#define BACK_MAGIC_ADDR            (BACK_SLICE_INFO_ADDR+sizeof(slice_current))
-
-#define MAX_SLICES                 (16ul)
-#define SLICE_SIZE                 (SPI_PAGESIZE*flash.getMaxPage()/(MAX_SLICES))
+#define SLICE_SIZE                 (64ul)
+#define MAX_SLICES                 ((LAST_PAGE - 1)*SPI_PAGESIZE/SLICE_SIZE)
 
 #define FIRST_SLICE_START_ADDR     (FRONT_SLICE_INFO_ADDR + SPI_PAGESIZE)
 #define MAX_SLICE_LAST_ADDR        BACK_SLICE_INFO_ADDR 
 
 #define SLICE_START_ADDR(x)        (FIRST_SLICE_START_ADDR + (x*SLICE_SIZE))
+
+#define FRONT_MAGIC_ADDR           FRONT_SLICE_INFO_ADDR
+#define BACK_MAGIC_ADDR            BACK_SLICE_INFO_ADDR
 
 static SPIFlash flash(BGC_SPIFLASH_CS);
 
@@ -57,115 +55,31 @@ static bool flash_getInfos ()
 
     return true;
 }
-# if 0
+
 static bool flashSlice_init ()
 {
-    uint8_t buffer[SPI_PAGESIZE];
+    for (slice_current=0; slice_current<MAX_SLICES; slice_current++) {
+        bool    empty = true;
+        uint8_t buffer[SPI_PAGESIZE];
 
-    /* 1. sanity check */
-    memset(buffer, 0, FLASH_MAGIC_LEN);
-    flash.readByteArray(FRONT_MAGIC_ADDR, buffer, FLASH_MAGIC_LEN);
-    if (strncmp(buffer, FLASH_MAGIC, FLASH_MAGIC_LEN)) {
-	BOOTTRACE("FLASH: Slice info page (front) not installed ... abort!\r\n");
-        return false;
-    }
+        flash_address = SLICE_START_ADDR(slice_current);
+        memset(buffer, 0, SPI_PAGESIZE);
+        flash.readByteArray(flash_address, buffer, SPI_PAGESIZE);
 
-    memset(buffer, 0, FLASH_MAGIC_LEN);
-    flash.readByteArray(BACK_MAGIC_ADDR, buffer, FLASH_MAGIC_LEN);
-    if (strncmp(buffer, FLASH_MAGIC, FLASH_MAGIC_LEN)) {
-	BOOTTRACE("FLASH: Slice info page (back) not installed ... abort!\r\n");
-        return false;
-    }
-
-    /* 2. read first page to get current slice */
-    slice_current = flash.readULong(CURRENT_SLICE_COUNTER_ADDR);
-    uint32_t slice_next = flash.readULong(NEXT_SLICE_COUNTER_ADDR);
-    if (slice_next != 0) {
-	if (slice_current != (slice_next - 1)) {
-	    BOOTTRACE("FLASH: Slice info counters mismatch %llu vs %llu ... abort!\r\n", slice_current, slice_next);
-	    return false;
-	}
-    } else if (slice_current == 0 && slice_next == 0) {
-    }
-
-    /* 3. set flash_address */
-    flash_address = SLICE_START_ADDR(slice_next);
-
-    /* 4. read first page of the slice */
-    memset(buffer, 0, SPI_PAGESIZE);
-    flash.readByteArray(flash_address, buffer, SPI_PAGESIZE);
-
-    /* 5. check if the content is empty */
-    for (int i=0; i<SPI_PAGESIZE; i++) {
-        if (buffer[i] != 0xff) {
-	    BOOTTRACE("FLASH: Current Slice is not empty at "
-		      "buffer[%d]=%x ... abort!\r\n", i, buffer[i]);
-	    hexdump(true, flash_address, buffer, SPI_PAGESIZE);
-            return false;
+        for (int i=0; i<SPI_PAGESIZE; i++) {
+            if (buffer[i] != 0xff) {
+                empty = false;
+                break;
+            }
+        }
+        if (empty == true) {
+            BOOTTRACE("FLASH: Slice Current id: %lu\n\r", slice_current);
+            return true;
         }
     }
 
-    /* 6. update slice counters */
-    slice_current++;
-    flash.writeULong(CURRENT_SLICE_COUNTER_ADDR, slice_current);
-    flash.writeULong(NEXT_SLICE_COUNTER_ADDR, slice_current+1);
-
-    return true;
+    return false;
 }
-#else
-static bool flashSlice_init ()
-{
-    uint8_t buffer[SPI_PAGESIZE];
-
-    /* 1. sanity check */
-    memset(buffer, 0, FLASH_MAGIC_LEN);
-    flash.readByteArray(FRONT_MAGIC_ADDR, buffer, FLASH_MAGIC_LEN);
-    if (strncmp(buffer, FLASH_MAGIC, FLASH_MAGIC_LEN)) {
-	BOOTTRACE("FLASH: Slice info page (front) not installed ... abort!\r\n");
-        return false;
-    }
-
-    memset(buffer, 0, FLASH_MAGIC_LEN);
-    flash.readByteArray(BACK_MAGIC_ADDR, buffer, FLASH_MAGIC_LEN);
-    if (strncmp(buffer, FLASH_MAGIC, FLASH_MAGIC_LEN)) {
-	BOOTTRACE("FLASH: Slice info page (back) not installed ... abort!\r\n");
-        return false;
-    }
-
-    /* 2. read first page to get current slice */
-    slice_current = flash.readULong(CURRENT_SLICE_COUNTER_ADDR);
-    uint32_t slice_next = flash.readULong(NEXT_SLICE_COUNTER_ADDR);
-    if (slice_current != slice_next) {
-	BOOTTRACE("FLASH: Slice info counters mismatch %lu vs %lu ... abort!\r\n", slice_current, slice_next);
-	return false;
-    }
-    BOOTTRACE("FLASH: Slice Current id: %lu\n\r", slice_current);
-
-    /* 3. set flash_address */
-    flash_address = SLICE_START_ADDR(slice_next);
-
-    /* 4. read first page of the slice */
-    memset(buffer, 0, SPI_PAGESIZE);
-    flash.readByteArray(flash_address, buffer, SPI_PAGESIZE);
-
-    /* 5. check if the content is empty */
-    for (int i=0; i<SPI_PAGESIZE; i++) {
-        if (buffer[i] != 0xff) {
-	    BOOTTRACE("FLASH: Current Slice is not empty at "
-		      "buffer[%d]=%x ... abort!\r\n", i, buffer[i]);
-	    hexdump(true, flash_address, buffer, SPI_PAGESIZE);
-            return false;
-        }
-    }
-
-    /* 6. update slice counters */
-    slice_current++;
-    flash.writeULong(CURRENT_SLICE_COUNTER_ADDR, slice_current);
-    flash.writeULong(NEXT_SLICE_COUNTER_ADDR, slice_current);
-
-    return true;
-}
-#endif
 
 void dumpFlash (bool isConsole)
 {
@@ -177,11 +91,12 @@ void dumpFlash (bool isConsole)
     MYTRACE("Flash txdata size     %u\r\n", fxtm_gettxdatasize());
     MYTRACE("Flash CurrentAddress: 0x%08lx\r\n", flash_address);
     MYTRACE("Flash Slice init:     %s\r\n", flash_slice_initialized?"true":"false");
-    MYTRACE("Flash Current Slice:  0x%lx/%lu\r\n", slice_current, MAX_SLICES);
+    MYTRACE("Flash Current Slice:  %lu/%lu\r\n", slice_current, MAX_SLICES);
     MYTRACE("Flash Slice size:     %lu\r\n", SLICE_SIZE);
 
     MYTRACE("Flash FSlice Address: 0x%08lx\r\n", FRONT_SLICE_INFO_ADDR);
     MYTRACE("Flash BSlice Address: 0x%08lx\r\n", BACK_SLICE_INFO_ADDR);
+
 }
 
 void readFlash (bool isConsole, uint32_t address)
@@ -199,17 +114,11 @@ void writeFlash (uint32_t addr, uint32_t value)
     flash.writeULong(addr, value);
 }
 
-void setupFlashSlice ()
+void setupFlashSlice()
 {
-#if 0
     flash.eraseChip();
-#endif
     flash.writeByteArray(FRONT_MAGIC_ADDR, FLASH_MAGIC, FLASH_MAGIC_LEN);
     flash.writeByteArray(BACK_MAGIC_ADDR, FLASH_MAGIC, FLASH_MAGIC_LEN);
-
-    slice_current = 0ul;
-    flash.writeULong(CURRENT_SLICE_COUNTER_ADDR, slice_current);
-    flash.writeULong(NEXT_SLICE_COUNTER_ADDR, slice_current);
 }
 
 void eraseFlash (uint32_t address)
@@ -278,11 +187,7 @@ void loopFlash ()
     }
 
     flash_address += fxtm_gettxdatasize();
-    if (flash_address >= SLICE_START_ADDR(slice_current+1)) {
-        slice_current++;
-        flash.writeULong(CURRENT_SLICE_COUNTER_ADDR, slice_current);
-        flash.writeULong(NEXT_SLICE_COUNTER_ADDR, slice_current+1);
-    }
+    slice_current++;
 
     if (flash_address >= MAX_SLICE_LAST_ADDR) {
         flash_slice_initialized = false;
