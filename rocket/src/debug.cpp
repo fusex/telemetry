@@ -58,13 +58,13 @@ void i2c_write (bool isConsole, uint8_t address, uint8_t reg, uint8_t value)
 
 void hexdump (bool isConsole, uint32_t addr, const uint8_t* buf, size_t len)
 {
-    unsigned char *p;
-    MYTRACE("%08x:", addr);
-    for (p = (unsigned char*) buf; len-- > 0; p++) {
+    uint8_t *p;
+    MYTRACE("%08lx:", addr);
+    for (p = (uint8_t*) buf; len-- > 0; p++) {
         MYTRACE(" 0x%02x", *p);
         if (!(len%8)) {
             addr += 8;
-            MYTRACE("\n\r %08x:", addr);
+            MYTRACE("\n\r %08lx:", addr);
         }
     }
     MYTRACE("\n\r");
