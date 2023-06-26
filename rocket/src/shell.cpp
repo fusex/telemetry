@@ -159,26 +159,36 @@ static int flashRead (int argc, char** argv)
     uint32_t addr = 0;
 
     if (argc > 0) {
-        addr = strtol(argv[1], NULL, 16);
+        addr = strtoul(argv[1], NULL, 16);
     }
 
+    _SHELLTRACE("Flash page read from:0x%lx:\n\r", addr);
     readFlash(true, addr);
+
+    return 0;
+}
+
+static int flashWrite (int argc, char** argv)
+{
+    uint32_t addr = 0;
+    uint32_t val = 0;
+
+    if (argc > 1) {
+        addr = strtoul(argv[1], NULL, 16);
+        val  = strtoul(argv[2], NULL, 16);
+    }
+
+    _SHELLTRACE("Flash write u32 value:0x%lx at:0x%lx:\n\r", val, addr);
+    writeFlash(addr, val);
 
     return 0;
 }
 
 static int flashSlice_setup (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
-#if 0
-    char c = (char)shell.read();
-    if (c == 'Y' || c == 'y') {
-#else
-    if (1) {
-#endif
-        _SHELLTRACE(" Start Flash setup of Slices ... ");
-        setupFlashSlice();
-        _SHELLTRACE(" done\n\r");
-    }
+    _SHELLTRACE(" Start Flash setup of Slices ... ");
+    setupFlashSlice();
+    _SHELLTRACE(" done\n\r");
 
     return 0;
 }
@@ -187,24 +197,13 @@ static int flashErase (int argc, char** argv)
 {
     uint32_t addr = 0;
 
-
     if (argc > 0) {
-        //addr = strtol(argv[1], NULL, 16);
-        return 1;
+	addr = strtoul(argv[1], NULL, 16);
     }
 
-    _SHELLTRACE("Flash erase 64KB block from:0x%lx! are you sure?\n\r", addr);
-
-#if 0
-    char c = (char)shell.read();
-    if (c == 'Y' || c == 'y') {
-#else
-    if (1) {
-#endif
-        _SHELLTRACE(" Start Flash erase of 64KB block from:0x%lx ... ", addr);
-        eraseFlash(addr);
-        _SHELLTRACE(" done\n\r");
-    }
+    _SHELLTRACE("Flash erase chip ...", addr);
+    eraseFlash(addr);
+    _SHELLTRACE(" done\n\r");
 
     return 0;
 }
@@ -236,6 +235,7 @@ void setupShell ()
     shell.addCommand(F("gps"), gpsStatus);
     shell.addCommand(F("flash"), flashDump);
     shell.addCommand(F("flash-read"), flashRead);
+    shell.addCommand(F("flash-write"), flashWrite);
     shell.addCommand(F("flash-erase"), flashErase);
     shell.addCommand(F("flash-slice-setup"), flashSlice_setup);
 
