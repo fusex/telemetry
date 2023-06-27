@@ -181,7 +181,10 @@ void loopFlash ()
         return;
     }
 
-    if (flash.writeByteArray(flash_address, (uint8_t *)fxtm_getblock(), fxtm_gettxdatasize())) {
+    if (!flash.writeByteArray(flash_address,
+                             (uint8_t *)fxtm_getblock(),
+                             fxtm_gettxdatasize(),
+                             false)) {
         fxtm_seterror(FXTM_ERROR_FLASH);
         return;
     }

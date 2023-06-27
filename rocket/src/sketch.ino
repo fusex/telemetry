@@ -81,11 +81,11 @@ void subLoop (void)
 
 #ifndef ENABLE_FAKE
     acquire();
-    log();
 #else
     acquire_fake();
 #endif
 
+    log();
     send();
 
     prof_report();
@@ -104,10 +104,10 @@ void setup (void)
 #ifdef ENABLE_GPS
     setupGps();
 #endif
-    setupSdcard();
-    setupFlash();
 #endif
 
+    setupSdcard();
+    setupFlash();
     setupRadio();
 
     setupExec();
