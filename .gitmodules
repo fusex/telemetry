@@ -16,7 +16,7 @@
 	url = https://github.com/adafruit/Adafruit_BMP280_Library
 [submodule "common/SPIMemory"]
 	path = common/SPIMemory
-	url = https://github.com/Marzogh/SPIMemory/
+	url = git@github.com:zskdan/SPIMemory.git
 [submodule "common/Adafruit_Sensor"]
 	path = common/Adafruit_Sensor
 	url = https://github.com/adafruit/Adafruit_Sensor
