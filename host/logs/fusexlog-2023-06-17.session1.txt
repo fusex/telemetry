@@ -1,0 +1,1667 @@
+[17 juin 18:47: zakaria@orojackson: /home/.../telemetry/host -(andromede)-]
+ $
+[17 juin 18:47: zakaria@orojackson: /home/.../telemetry/host -(andromede)-]
+ $ cu^C
+[17 juin 18:47: zakaria@orojackson: /home/zakaria/workspace/perso/fosm/adastra/bgc/firmware/telemetry/host -(andromede)-]
+ $ cu -lttyACM0 -s115200
+Connected.
+~.
+^C
+Disconnected.
+[17 juin 18:47: zakaria@orojackson: /home/zakaria/workspace/perso/fosm/adastra/bgc/firmware/telemetry/host -(andromede)-]
+ $ ^C
+[17 juin 18:47: zakaria@orojackson: /home/zakaria/workspace/perso/fosm/adastra/bgc/firmware/telemetry/host -(andromede)-]
+ $ cu -lttyACM0 -s115200
+Connected.
+0.002000:BASE   : --------------------------------------
+0.002000:BASE   : --------------------------------------
+0.002000:BASE   : --------------------------------------
+0.005000:BASE   : Fusex base Receiver Start
+0.009000:BASE   : --------------------------------------
+0.013000:BASE   : --------------------------------------
+0.128000:BASE   : Radio init Done
+0.128000:BASE   : #########################
+0.129000:BASE   : Radio transfer packet size:42
+0.129000:BASE   :    PC transfer packet size:52
+0.132000:BASE   : Waiting for packets ....
+138.307007:BASE : Discontinuation at id: 141 at ts: 138306, lastid:139 lastts:138150
+138.307007:BASE : SNR: 6 RSSI: -66 Freq ERROR: -7054
+142.684006:BASE : Discontinuation at id: 197 at ts: 142683, lastid:195 lastts:142527
+142.684006:BASE : SNR: 6 RSSI: -66 Freq ERROR: -7491
+379.765991:BASE : Discontinuation at id: 2724 at ts: 379766, lastid:2722 lastts:379567
+379.766998:BASE : SNR: 8 RSSI: -58 Freq ERROR: -6819
+500.967010:BASE : Discontinuation at id: 3936 at ts: 500967, lastid:3934 lastts:500766
+500.967987:BASE : SNR: 6 RSSI: -95 Freq ERROR: -7205
+533.666992:BASE : Discontinuation at id: 4263 at ts: 533667, lastid:4261 lastts:533467
+533.666992:BASE : SNR: 4 RSSI: -101 Freq ERROR: -7071
+547.567017:BASE : Discontinuation at id: 4402 at ts: 547566, lastid:4400 lastts:547367
+547.567017:BASE : SNR: 7 RSSI: -88 Freq ERROR: -7071
+567.767029:BASE : Discontinuation at id: 4604 at ts: 567767, lastid:4602 lastts:567567
+567.767029:BASE : SNR: 3 RSSI: -105 Freq ERROR: -7038
+570.466980:BASE : Discontinuation at id: 4631 at ts: 570467, lastid:4629 lastts:570266
+570.468018:BASE : SNR: -2 RSSI: -106 Freq ERROR: -7071
+571.267029:BASE : Discontinuation at id: 4639 at ts: 571267, lastid:4637 lastts:571067
+571.267029:BASE : SNR: 2 RSSI: -102 Freq ERROR: -7021
+581.966980:BASE : Discontinuation at id: 4746 at ts: 581967, lastid:4744 lastts:581767
+581.966980:BASE : SNR: 5 RSSI: -96 Freq ERROR: -7038
+584.466980:BASE : Discontinuation at id: 4771 at ts: 584467, lastid:4769 lastts:584267
+584.468018:BASE : SNR: 6 RSSI: -96 Freq ERROR: -7004
+585.666016:BASE : Discontinuation at id: 4783 at ts: 585666, lastid:4781 lastts:585467
+585.666992:BASE : SNR: 7 RSSI: -98 Freq ERROR: -7021
+586.367004:BASE : Discontinuation at id: 4790 at ts: 586367, lastid:4787 lastts:586067
+586.367004:BASE : SNR: -5 RSSI: -106 Freq ERROR: -6484
+592.567017:BASE : Discontinuation at id: 4852 at ts: 592567, lastid:4850 lastts:592366
+592.567993:BASE : SNR: 2 RSSI: -101 Freq ERROR: -7004
+593.666992:BASE : Discontinuation at id: 4863 at ts: 593667, lastid:4861 lastts:593467
+593.666992:BASE : SNR: 2 RSSI: -101 Freq ERROR: -7021
+594.767029:BASE : Discontinuation at id: 4874 at ts: 594767, lastid:4872 lastts:594567
+594.767029:BASE : SNR: 0 RSSI: -101 Freq ERROR: -7021
+596.567017:BASE : Discontinuation at id: 4892 at ts: 596567, lastid:4890 lastts:596367
+596.567017:BASE : SNR: -3 RSSI: -112 Freq ERROR: -6987
+596.966980:BASE : Discontinuation at id: 4896 at ts: 596967, lastid:4894 lastts:596767
+596.968018:BASE : SNR: 3 RSSI: -99 Freq ERROR: -7004
+599.466980:BASE : Discontinuation at id: 4921 at ts: 599467, lastid:4919 lastts:599267
+599.466980:BASE : SNR: -3 RSSI: -108 Freq ERROR: -6920
+602.067017:BASE : Discontinuation at id: 4947 at ts: 602067, lastid:4944 lastts:601767
+602.067017:BASE : SNR: 3 RSSI: -96 Freq ERROR: -6467
+602.666992:BASE : Discontinuation at id: 4953 at ts: 602667, lastid:4951 lastts:602467
+602.666992:BASE : SNR: 3 RSSI: -96 Freq ERROR: -6987
+603.267029:BASE : Discontinuation at id: 4959 at ts: 603267, lastid:4957 lastts:603067
+603.267029:BASE : SNR: -5 RSSI: -108 Freq ERROR: -7004
+603.567017:BASE : Discontinuation at id: 4962 at ts: 603567, lastid:4960 lastts:603367
+603.567993:BASE : SNR: -4 RSSI: -103 Freq ERROR: -7021
+608.567017:BASE : Discontinuation at id: 5012 at ts: 608567, lastid:5010 lastts:608366
+608.567993:BASE : SNR: 3 RSSI: -91 Freq ERROR: -6970
+610.666016:BASE : Discontinuation at id: 5033 at ts: 610666, lastid:5031 lastts:610467
+610.666992:BASE : SNR: -1 RSSI: -99 Freq ERROR: -6887
+611.166992:BASE : Discontinuation at id: 5038 at ts: 611167, lastid:5035 lastts:610867
+611.168030:BASE : SNR: -2 RSSI: -100 Freq ERROR: -6417
+611.466980:BASE : Discontinuation at id: 5041 at ts: 611467, lastid:5039 lastts:611266
+611.468018:BASE : SNR: 0 RSSI: -101 Freq ERROR: -6970
+612.067017:BASE : Discontinuation at id: 5047 at ts: 612067, lastid:5045 lastts:611866
+612.067993:BASE : SNR: 3 RSSI: -98 Freq ERROR: -6987
+612.666992:BASE : Discontinuation at id: 5053 at ts: 612667, lastid:5050 lastts:612367
+612.668030:BASE : SNR: 2 RSSI: -102 Freq ERROR: -6417
+615.567017:BASE : Discontinuation at id: 5082 at ts: 615567, lastid:5080 lastts:615367
+615.567993:BASE : SNR: 4 RSSI: -101 Freq ERROR: -6970
+617.366028:BASE : Discontinuation at id: 5100 at ts: 617366, lastid:5098 lastts:617167
+617.367004:BASE : SNR: 5 RSSI: -102 Freq ERROR: -6954
+619.666992:BASE : Discontinuation at id: 5123 at ts: 619667, lastid:5121 lastts:619467
+619.668030:BASE : SNR: 1 RSSI: -100 Freq ERROR: -6987
+620.567017:BASE : Discontinuation at id: 5132 at ts: 620566, lastid:5130 lastts:620367
+620.567017:BASE : SNR: 3 RSSI: -100 Freq ERROR: -6954
+621.166992:BASE : Discontinuation at id: 5138 at ts: 621166, lastid:5136 lastts:620967
+621.166992:BASE : SNR: -10 RSSI: -112 Freq ERROR: -6970
+621.567017:BASE : Discontinuation at id: 5142 at ts: 621567, lastid:5140 lastts:621367
+621.567017:BASE : SNR: -2 RSSI: -105 Freq ERROR: -6920
+622.267029:BASE : Discontinuation at id: 5149 at ts: 622267, lastid:5147 lastts:622067
+622.268005:BASE : SNR: -2 RSSI: -102 Freq ERROR: 2457
+622.666992:BASE : Discontinuation at id: 5153 at ts: 622667, lastid:5151 lastts:622467
+622.666992:BASE : SNR: 0 RSSI: -105 Freq ERROR: -6870
+626.267029:BASE : Discontinuation at id: 5189 at ts: 626267, lastid:5187 lastts:626067
+626.268005:BASE : SNR: -2 RSSI: -112 Freq ERROR: -6920
+629.867004:BASE : Discontinuation at id: 5225 at ts: 629866, lastid:5223 lastts:629667
+629.867004:BASE : SNR: -2 RSSI: -111 Freq ERROR: -6920
+630.666992:BASE : Discontinuation at id: 5233 at ts: 630667, lastid:5231 lastts:630466
+630.668030:BASE : SNR: -2 RSSI: -108 Freq ERROR: -7021
+631.966980:BASE : Discontinuation at id: 5246 at ts: 631967, lastid:5244 lastts:631767
+631.966980:BASE : SNR: -4 RSSI: -110 Freq ERROR: -6920
+633.267029:BASE : Discontinuation at id: 5259 at ts: 633267, lastid:5257 lastts:633066
+633.268005:BASE : SNR: 3 RSSI: -100 Freq ERROR: -6920
+634.567017:BASE : Discontinuation at id: 5272 at ts: 634567, lastid:5270 lastts:634367
+634.567017:BASE : SNR: 1 RSSI: -103 Freq ERROR: -6920
+642.067993:BASE : Discontinuation at id: 5347 at ts: 642067, lastid:5345 lastts:641867
+642.067993:BASE : SNR: -1 RSSI: -104 Freq ERROR: -6920
+646.166992:BASE : Discontinuation at id: 5388 at ts: 646166, lastid:5386 lastts:645967
+646.166992:BASE : SNR: 0 RSSI: -108 Freq ERROR: -6920
+661.567017:BASE : Discontinuation at id: 5542 at ts: 661566, lastid:5540 lastts:661367
+661.567017:BASE : SNR: 1 RSSI: -106 Freq ERROR: -6870
+680.867004:BASE : Discontinuation at id: 5735 at ts: 680867, lastid:5733 lastts:680667
+680.867004:BASE : SNR: 3 RSSI: -103 Freq ERROR: -6819
+685.367004:BASE : Discontinuation at id: 5780 at ts: 685367, lastid:5778 lastts:685167
+685.367981:BASE : SNR: 5 RSSI: -100 Freq ERROR: -6819
+692.367981:BASE : Discontinuation at id: 5850 at ts: 692367, lastid:5847 lastts:692067
+692.367981:BASE : SNR: 2 RSSI: -99 Freq ERROR: -6786
+695.367004:BASE : Discontinuation at id: 5880 at ts: 695367, lastid:5878 lastts:695167
+695.367004:BASE : SNR: 0 RSSI: -99 Freq ERROR: -6786
+695.666992:BASE : Discontinuation at id: 5883 at ts: 695667, lastid:5881 lastts:695467
+695.666992:BASE : SNR: -4 RSSI: -103 Freq ERROR: -6769
+695.966980:BASE : Discontinuation at id: 5886 at ts: 695967, lastid:5883 lastts:695667
+695.966980:BASE : SNR: -6 RSSI: -111 Freq ERROR: -6249
+696.267029:BASE : Discontinuation at id: 5889 at ts: 696267, lastid:5887 lastts:696067
+696.267029:BASE : SNR: 3 RSSI: -100 Freq ERROR: -6819
+696.867004:BASE : Discontinuation at id: 5895 at ts: 696867, lastid:5893 lastts:696667
+696.867004:BASE : SNR: 4 RSSI: -102 Freq ERROR: -6786
+698.067017:BASE : Discontinuation at id: 5907 at ts: 698067, lastid:5902 lastts:697567
+698.067993:BASE : SNR: -10 RSSI: -107 Freq ERROR: -6786
+698.867004:BASE : Discontinuation at id: 5915 at ts: 698867, lastid:5907 lastts:698067
+698.867004:BASE : SNR: -6 RSSI: -106 Freq ERROR: -6786
+700.367004:BASE : Discontinuation at id: 5930 at ts: 700367, lastid:5928 lastts:700167
+700.367004:BASE : SNR: -2 RSSI: -104 Freq ERROR: -6266
+706.466980:BASE : Discontinuation at id: 5991 at ts: 706467, lastid:5989 lastts:706267
+706.466980:BASE : SNR: -1 RSSI: -110 Freq ERROR: -6736
+706.767029:BASE : Discontinuation at id: 5994 at ts: 706767, lastid:5991 lastts:706467
+706.767029:BASE : SNR: 1 RSSI: -102 Freq ERROR: -6803
+709.767029:BASE : Discontinuation at id: 6024 at ts: 709767, lastid:6022 lastts:709567
+709.768005:BASE : SNR: 1 RSSI: -98 Freq ERROR: -6786
+710.067017:BASE : Discontinuation at id: 6027 at ts: 710067, lastid:6025 lastts:709867
+710.067993:BASE : SNR: -1 RSSI: -109 Freq ERROR: -6786
+713.067017:BASE : Discontinuation at id: 6057 at ts: 713067, lastid:6055 lastts:712867
+713.067017:BASE : SNR: 0 RSSI: -104 Freq ERROR: -6786
+713.267029:BASE : Discontinuation at id: 6059 at ts: 713267, lastid:6057 lastts:713067
+713.268005:BASE : SNR: -1 RSSI: -109 Freq ERROR: -6736
+713.966980:BASE : Discontinuation at id: 6066 at ts: 713967, lastid:6064 lastts:713767
+713.966980:BASE : SNR: -5 RSSI: -109 Freq ERROR: -6803
+721.468018:BASE : Discontinuation at id: 6141 at ts: 721467, lastid:6137 lastts:721067
+721.468018:BASE : SNR: -5 RSSI: -108 Freq ERROR: -6215
+723.867004:BASE : Discontinuation at id: 6165 at ts: 723867, lastid:6163 lastts:723667
+723.867004:BASE : SNR: -7 RSSI: -107 Freq ERROR: -6719
+724.067993:BASE : Discontinuation at id: 6167 at ts: 724067, lastid:6165 lastts:723867
+724.067993:BASE : SNR: -2 RSSI: -101 Freq ERROR: -6769
+726.367004:BASE : Discontinuation at id: 6190 at ts: 726367, lastid:6188 lastts:726167
+726.367981:BASE : SNR: -7 RSSI: -104 Freq ERROR: -6215
+727.166992:BASE : Discontinuation at id: 6198 at ts: 727167, lastid:6193 lastts:726667
+727.168030:BASE : SNR: -13 RSSI: -118 Freq ERROR: -6786
+727.367004:BASE : Discontinuation at id: 6200 at ts: 727367, lastid:6198 lastts:727167
+727.367004:BASE : SNR: -4 RSSI: -105 Freq ERROR: -6769
+727.966980:BASE : Discontinuation at id: 6206 at ts: 727967, lastid:6204 lastts:727767
+727.966980:BASE : SNR: -13 RSSI: -117 Freq ERROR: -6786
+728.468018:BASE : Discontinuation at id: 6211 at ts: 728468, lastid:6209 lastts:728267
+728.468018:BASE : SNR: -6 RSSI: -108 Freq ERROR: -6819
+729.166992:BASE : Discontinuation at id: 6218 at ts: 729167, lastid:6215 lastts:728867
+729.168030:BASE : SNR: -10 RSSI: -113 Freq ERROR: -6685
+729.567993:BASE : Discontinuation at id: 6222 at ts: 729567, lastid:6220 lastts:729367
+729.567993:BASE : SNR: -10 RSSI: -105 Freq ERROR: -6215
+729.867004:BASE : Discontinuation at id: 6225 at ts: 729867, lastid:6223 lastts:729667
+729.867981:BASE : SNR: -12 RSSI: -113 Freq ERROR: -6702
+730.867004:BASE : Discontinuation at id: 6235 at ts: 730867, lastid:6230 lastts:730367
+730.867004:BASE : SNR: -9 RSSI: -105 Freq ERROR: -6215
+731.166992:BASE : Discontinuation at id: 6238 at ts: 731167, lastid:6236 lastts:730967
+731.166992:BASE : SNR: -14 RSSI: -107 Freq ERROR: -6249
+731.867004:BASE : Discontinuation at id: 6245 at ts: 731867, lastid:6242 lastts:731567
+731.867981:BASE : SNR: -8 RSSI: -105 Freq ERROR: -6199
+732.466980:BASE : Discontinuation at id: 6251 at ts: 732467, lastid:6247 lastts:732067
+732.468018:BASE : SNR: -10 RSSI: -109 Freq ERROR: -6819
+732.768005:BASE : Discontinuation at id: 6254 at ts: 732767, lastid:6252 lastts:732567
+732.768005:BASE : SNR: -12 RSSI: -108 Freq ERROR: -6249
+732.966980:BASE : Discontinuation at id: 6256 at ts: 732967, lastid:6254 lastts:732767
+732.968018:BASE : SNR: -9 RSSI: -109 Freq ERROR: -6769
+733.267029:BASE : Discontinuation at id: 6259 at ts: 733267, lastid:6257 lastts:733067
+733.268005:BASE : SNR: -10 RSSI: -111 Freq ERROR: -6752
+733.567017:BASE : Discontinuation at id: 6262 at ts: 733567, lastid:6260 lastts:733367
+733.567993:BASE : SNR: -9 RSSI: -105 Freq ERROR: -6266
+734.367004:BASE : Discontinuation at id: 6270 at ts: 734367, lastid:6262 lastts:733567
+734.367004:BASE : SNR: -9 RSSI: -105 Freq ERROR: -6769
+734.767029:BASE : Discontinuation at id: 6274 at ts: 734767, lastid:6272 lastts:734568
+734.768005:BASE : SNR: -11 RSSI: -107 Freq ERROR: -6786
+735.067017:BASE : Discontinuation at id: 6277 at ts: 735067, lastid:6274 lastts:734767
+735.067993:BASE : SNR: -13 RSSI: -112 Freq ERROR: -6752
+735.567017:BASE : Discontinuation at id: 6282 at ts: 735567, lastid:6277 lastts:735067
+735.567993:BASE : SNR: -9 RSSI: -108 Freq ERROR: -6803
+736.367004:BASE : Discontinuation at id: 6290 at ts: 736367, lastid:6285 lastts:735867
+736.367004:BASE : SNR: -11 RSSI: -110 Freq ERROR: -6232
+737.367004:BASE : Discontinuation at id: 6300 at ts: 737367, lastid:6296 lastts:736967
+737.367981:BASE : SNR: -8 RSSI: -111 Freq ERROR: -6215
+738.666992:BASE : Discontinuation at id: 6313 at ts: 738667, lastid:6307 lastts:738068
+738.666992:BASE : SNR: -9 RSSI: -113 Freq ERROR: -6786
+739.267029:BASE : Discontinuation at id: 6319 at ts: 739267, lastid:6317 lastts:739067
+739.267029:BASE : SNR: -11 RSSI: -113 Freq ERROR: -6719
+739.768005:BASE : Discontinuation at id: 6324 at ts: 739767, lastid:6322 lastts:739567
+739.768005:BASE : SNR: -11 RSSI: -114 Freq ERROR: -6182
+739.966980:BASE : Discontinuation at id: 6326 at ts: 739967, lastid:6324 lastts:739767
+739.968018:BASE : SNR: -9 RSSI: -107 Freq ERROR: -6182
+741.567017:BASE : Discontinuation at id: 6342 at ts: 741567, lastid:6327 lastts:740068
+741.567017:BASE : SNR: -13 RSSI: -112 Freq ERROR: -6752
+741.867004:BASE : Discontinuation at id: 6345 at ts: 741867, lastid:6342 lastts:741567
+741.867004:BASE : SNR: -11 RSSI: -114 Freq ERROR: -6652
+742.067017:BASE : Discontinuation at id: 6347 at ts: 742067, lastid:6345 lastts:741867
+742.067993:BASE : SNR: -9 RSSI: -110 Freq ERROR: -6836
+742.466980:BASE : Discontinuation at id: 6351 at ts: 742467, lastid:6347 lastts:742067
+742.466980:BASE : SNR: -4 RSSI: -101 Freq ERROR: -6249
+743.067017:BASE : Discontinuation at id: 6357 at ts: 743067, lastid:6355 lastts:742867
+743.067017:BASE : SNR: -3 RSSI: -103 Freq ERROR: -6719
+744.168030:BASE : Discontinuation at id: 6368 at ts: 744168, lastid:6366 lastts:743967
+744.168030:BASE : SNR: -5 RSSI: -108 Freq ERROR: -6752
+744.367004:BASE : Discontinuation at id: 6370 at ts: 744367, lastid:6368 lastts:744168
+744.367981:BASE : SNR: -7 RSSI: -104 Freq ERROR: -6769
+744.567017:BASE : Discontinuation at id: 6372 at ts: 744567, lastid:6370 lastts:744367
+744.567993:BASE : SNR: -9 RSSI: -110 Freq ERROR: -6719
+745.267029:BASE : Discontinuation at id: 6379 at ts: 745267, lastid:6377 lastts:745067
+745.268005:BASE : SNR: -6 RSSI: -104 Freq ERROR: -6601
+745.567993:BASE : Discontinuation at id: 6382 at ts: 745567, lastid:6380 lastts:745367
+745.567993:BASE : SNR: -11 RSSI: -113 Freq ERROR: -6215
+746.468018:BASE : Discontinuation at id: 6391 at ts: 746467, lastid:6388 lastts:746167
+746.468018:BASE : SNR: -8 RSSI: -108 Freq ERROR: -6719
+746.966980:BASE : Discontinuation at id: 6396 at ts: 746967, lastid:6394 lastts:746768
+746.968018:BASE : SNR: -10 RSSI: -110 Freq ERROR: -6752
+747.466980:BASE : Discontinuation at id: 6401 at ts: 747467, lastid:6398 lastts:747167
+747.466980:BASE : SNR: -8 RSSI: -108 Freq ERROR: -6803
+747.668030:BASE : Discontinuation at id: 6403 at ts: 747668, lastid:6401 lastts:747467
+747.668030:BASE : SNR: -6 RSSI: -102 Freq ERROR: -6752
+748.666992:BASE : Discontinuation at id: 6413 at ts: 748667, lastid:6404 lastts:747767
+748.668030:BASE : SNR: -10 RSSI: -109 Freq ERROR: -6786
+749.166992:BASE : Discontinuation at id: 6418 at ts: 749167, lastid:6415 lastts:748867
+749.166992:BASE : SNR: -9 RSSI: -106 Freq ERROR: -6786
+749.668030:BASE : Discontinuation at id: 6423 at ts: 749667, lastid:6420 lastts:749367
+749.668030:BASE : SNR: -10 RSSI: -108 Freq ERROR: -6249
+751.166992:BASE : Discontinuation at id: 6438 at ts: 751167, lastid:6423 lastts:749667
+751.166992:BASE : SNR: -13 RSSI: -107 Freq ERROR: -6165
+751.466980:BASE : Discontinuation at id: 6441 at ts: 751467, lastid:6439 lastts:751267
+751.466980:BASE : SNR: -6 RSSI: -101 Freq ERROR: -6668
+752.268005:BASE : Discontinuation at id: 6449 at ts: 752267, lastid:6442 lastts:751567
+752.268005:BASE : SNR: -9 RSSI: -107 Freq ERROR: -6249
+753.067017:BASE : Discontinuation at id: 6457 at ts: 753067, lastid:6453 lastts:752667
+753.067993:BASE : SNR: -8 RSSI: -107 Freq ERROR: -6752
+753.367004:BASE : Discontinuation at id: 6460 at ts: 753367, lastid:6457 lastts:753067
+753.367981:BASE : SNR: -9 RSSI: -107 Freq ERROR: -6266
+753.966980:BASE : Discontinuation at id: 6466 at ts: 753967, lastid:6462 lastts:753567
+753.968018:BASE : SNR: -12 RSSI: -110 Freq ERROR: -6803
+754.466980:BASE : Discontinuation at id: 6471 at ts: 754467, lastid:6469 lastts:754267
+754.468018:BASE : SNR: -7 RSSI: -106 Freq ERROR: -6752
+755.067017:BASE : Discontinuation at id: 6477 at ts: 755067, lastid:6471 lastts:754467
+755.067993:BASE : SNR: -7 RSSI: -108 Freq ERROR: -6635
+755.567017:BASE : Discontinuation at id: 6482 at ts: 755567, lastid:6480 lastts:755367
+755.567017:BASE : SNR: -12 RSSI: -116 Freq ERROR: -6249
+755.768005:BASE : Discontinuation at id: 6484 at ts: 755767, lastid:6482 lastts:755567
+755.768005:BASE : SNR: -10 RSSI: -112 Freq ERROR: -6769
+756.067993:BASE : Discontinuation at id: 6487 at ts: 756067, lastid:6484 lastts:755767
+756.067993:BASE : SNR: -8 RSSI: -109 Freq ERROR: -6736
+756.767029:BASE : Discontinuation at id: 6494 at ts: 756767, lastid:6489 lastts:756267
+756.767029:BASE : SNR: -10 RSSI: -103 Freq ERROR: -6199
+757.367004:BASE : Discontinuation at id: 6500 at ts: 757367, lastid:6495 lastts:756867
+757.367004:BASE : SNR: -10 RSSI: -108 Freq ERROR: -7809
+758.267029:BASE : Discontinuation at id: 6509 at ts: 758267, lastid:6504 lastts:757767
+758.268005:BASE : SNR: -10 RSSI: -107 Freq ERROR: -6182
+758.466980:BASE : Discontinuation at id: 6511 at ts: 758467, lastid:6509 lastts:758267
+758.466980:BASE : SNR: -10 RSSI: -111 Freq ERROR: -6719
+758.668030:BASE : Discontinuation at id: 6513 at ts: 758667, lastid:6511 lastts:758467
+758.668030:BASE : SNR: -12 RSSI: -109 Freq ERROR: -6786
+759.466980:BASE : Discontinuation at id: 6521 at ts: 759467, lastid:6514 lastts:758767
+759.468018:BASE : SNR: -11 RSSI: -108 Freq ERROR: -6685
+759.666992:BASE : Discontinuation at id: 6523 at ts: 759667, lastid:6521 lastts:759467
+759.666992:BASE : SNR: -12 RSSI: -110 Freq ERROR: -6803
+760.468018:BASE : Discontinuation at id: 6531 at ts: 760468, lastid:6526 lastts:759967
+760.468018:BASE : SNR: -8 RSSI: -106 Freq ERROR: -6769
+760.867004:BASE : Discontinuation at id: 6535 at ts: 760867, lastid:6533 lastts:760667
+760.867981:BASE : SNR: -8 RSSI: -108 Freq ERROR: -6668
+761.067017:BASE : Discontinuation at id: 6537 at ts: 761067, lastid:6535 lastts:760867
+761.067017:BASE : SNR: -9 RSSI: -113 Freq ERROR: -6786
+761.466980:BASE : Discontinuation at id: 6541 at ts: 761467, lastid:6537 lastts:761067
+761.468018:BASE : SNR: -10 RSSI: -110 Freq ERROR: -6719
+762.867004:BASE : Discontinuation at id: 6555 at ts: 762867, lastid:6551 lastts:762467
+762.867004:BASE : SNR: -6 RSSI: -105 Freq ERROR: -6702
+763.567017:BASE : Discontinuation at id: 6562 at ts: 763567, lastid:6560 lastts:763368
+763.567993:BASE : SNR: -7 RSSI: -105 Freq ERROR: -6752
+764.168030:BASE : Discontinuation at id: 6568 at ts: 764167, lastid:6565 lastts:763867
+764.168030:BASE : SNR: -5 RSSI: -110 Freq ERROR: -6232
+765.968018:BASE : Discontinuation at id: 6586 at ts: 765968, lastid:6584 lastts:765767
+765.968018:BASE : SNR: -5 RSSI: -103 Freq ERROR: -6769
+766.966980:BASE : Discontinuation at id: 6596 at ts: 766967, lastid:6592 lastts:766568
+766.968018:BASE : SNR: -8 RSSI: -108 Freq ERROR: -6182
+767.668030:BASE : Discontinuation at id: 6603 at ts: 767667, lastid:6601 lastts:767467
+767.668030:BASE : SNR: -1 RSSI: -107 Freq ERROR: -6752
+768.466980:BASE : Discontinuation at id: 6611 at ts: 768467, lastid:6609 lastts:768268
+768.468018:BASE : SNR: -5 RSSI: -113 Freq ERROR: -6719
+769.468018:BASE : Discontinuation at id: 6621 at ts: 769468, lastid:6619 lastts:769267
+769.468018:BASE : SNR: 3 RSSI: -102 Freq ERROR: -6736
+770.567993:BASE : Discontinuation at id: 6632 at ts: 770567, lastid:6630 lastts:770367
+770.567993:BASE : SNR: -5 RSSI: -115 Freq ERROR: -6752
+770.867981:BASE : Discontinuation at id: 6635 at ts: 770867, lastid:6633 lastts:770667
+770.867981:BASE : SNR: 1 RSSI: -104 Freq ERROR: -6719
+772.267029:BASE : Discontinuation at id: 6649 at ts: 772267, lastid:6647 lastts:772068
+772.268005:BASE : SNR: 0 RSSI: -108 Freq ERROR: -6719
+777.466980:BASE : Discontinuation at id: 6701 at ts: 777467, lastid:6699 lastts:777267
+777.468018:BASE : SNR: 3 RSSI: -104 Freq ERROR: -6702
+777.666992:BASE : Discontinuation at id: 6703 at ts: 777667, lastid:6701 lastts:777467
+777.666992:BASE : SNR: 2 RSSI: -105 Freq ERROR: -6719
+779.067993:BASE : Discontinuation at id: 6717 at ts: 779068, lastid:6715 lastts:778867
+779.067993:BASE : SNR: 2 RSSI: -105 Freq ERROR: -6736
+802.466980:BASE : Discontinuation at id: 6951 at ts: 802467, lastid:6949 lastts:802267
+802.468018:BASE : SNR: 7 RSSI: -95 Freq ERROR: -6719
+809.466980:BASE : Discontinuation at id: 7021 at ts: 809467, lastid:7019 lastts:809268
+809.468018:BASE : SNR: 5 RSSI: -100 Freq ERROR: -6719
+831.067993:BASE : Discontinuation at id: 7237 at ts: 831067, lastid:7235 lastts:830868
+831.067993:BASE : SNR: 6 RSSI: -98 Freq ERROR: -6736
+832.367004:BASE : Discontinuation at id: 7250 at ts: 832367, lastid:7248 lastts:832167
+832.367004:BASE : SNR: 7 RSSI: -98 Freq ERROR: -6736
+841.767029:BASE : Discontinuation at id: 7344 at ts: 841767, lastid:7342 lastts:841568
+841.768005:BASE : SNR: 7 RSSI: -98 Freq ERROR: -6719
+845.267029:BASE : Discontinuation at id: 7379 at ts: 845267, lastid:7377 lastts:845068
+845.268005:BASE : SNR: 6 RSSI: -99 Freq ERROR: -6736
+856.867004:BASE : Discontinuation at id: 7495 at ts: 856867, lastid:7493 lastts:856668
+856.867981:BASE : SNR: 4 RSSI: -100 Freq ERROR: -6752
+858.668030:BASE : Discontinuation at id: 7513 at ts: 858667, lastid:7511 lastts:858468
+858.668030:BASE : SNR: 5 RSSI: -100 Freq ERROR: -6752
+866.867981:BASE : Discontinuation at id: 7595 at ts: 866868, lastid:7593 lastts:866667
+866.867981:BASE : SNR: 6 RSSI: -99 Freq ERROR: -6752
+867.768005:BASE : Discontinuation at id: 7604 at ts: 867768, lastid:7602 lastts:867567
+867.768005:BASE : SNR: 6 RSSI: -99 Freq ERROR: -6752
+872.168030:BASE : Discontinuation at id: 7648 at ts: 872168, lastid:7646 lastts:871967
+872.168030:BASE : SNR: 5 RSSI: -98 Freq ERROR: -6752
+905.666992:BASE : Discontinuation at id: 7983 at ts: 905667, lastid:7981 lastts:905467
+905.668030:BASE : SNR: 5 RSSI: -100 Freq ERROR: -6752
+909.867981:BASE : Discontinuation at id: 8025 at ts: 909868, lastid:8023 lastts:909668
+909.867981:BASE : SNR: 5 RSSI: -100 Freq ERROR: -6786
+910.666992:BASE : Discontinuation at id: 8033 at ts: 910667, lastid:8031 lastts:910468
+910.668030:BASE : SNR: 5 RSSI: -101 Freq ERROR: -6769
+912.067017:BASE : Discontinuation at id: 8047 at ts: 912067, lastid:8045 lastts:911867
+912.067993:BASE : SNR: 5 RSSI: -100 Freq ERROR: -6786
+930.067993:BASE : Discontinuation at id: 8227 at ts: 930068, lastid:8225 lastts:929867
+930.068970:BASE : SNR: 3 RSSI: -102 Freq ERROR: -6803
+1073.167969:BASE        : Discontinuation at id: 9658 at ts: 1073168, lastid:9656 lastts:1072967
+1073.168945:BASE        : SNR: -3 RSSI: -114 Freq ERROR: -6903
+1073.567993:BASE        : Discontinuation at id: 9662 at ts: 1073568, lastid:9660 lastts:1073368
+1073.567993:BASE        : SNR: 0 RSSI: -108 Freq ERROR: -6887
+1112.868042:BASE        : Discontinuation at id: 10055 at ts: 1112868, lastid:10053 lastts:1112668
+1112.868042:BASE        : SNR: 0 RSSI: -91 Freq ERROR: -6786
+1116.868042:BASE        : Discontinuation at id: 10095 at ts: 1116867, lastid:10093 lastts:1116668
+1116.868042:BASE        : SNR: -2 RSSI: -108 Freq ERROR: -6786
+1118.167969:BASE        : Discontinuation at id: 10108 at ts: 1118168, lastid:10105 lastts:1117868
+1118.168945:BASE        : SNR: -6 RSSI: -114 Freq ERROR: -6299
+1121.667969:BASE        : Discontinuation at id: 10143 at ts: 1121668, lastid:10141 lastts:1121468
+1121.668945:BASE        : SNR: 5 RSSI: -100 Freq ERROR: -6786
+1135.868042:BASE        : Discontinuation at id: 10285 at ts: 1135868, lastid:10283 lastts:1135668
+1135.868042:BASE        : SNR: 2 RSSI: -107 Freq ERROR: -6702
+1136.868042:BASE        : Discontinuation at id: 10295 at ts: 1136868, lastid:10293 lastts:1136668
+1136.869019:BASE        : SNR: 3 RSSI: -93 Freq ERROR: -6736
+1137.769043:BASE        : Discontinuation at id: 10304 at ts: 1137768, lastid:10302 lastts:1137568
+1137.769043:BASE        : SNR: 5 RSSI: -103 Freq ERROR: -6736
+1140.868042:BASE        : Discontinuation at id: 10335 at ts: 1140868, lastid:10333 lastts:1140668
+1140.869019:BASE        : SNR: 0 RSSI: -105 Freq ERROR: -6752
+1145.567993:BASE        : Discontinuation at id: 10382 at ts: 1145568, lastid:10380 lastts:1145368
+1145.568970:BASE        : SNR: -5 RSSI: -116 Freq ERROR: -6769
+1148.868042:BASE        : Discontinuation at id: 10415 at ts: 1148868, lastid:10413 lastts:1148668
+1148.868042:BASE        : SNR: 4 RSSI: -103 Freq ERROR: -6736
+1150.667969:BASE        : Discontinuation at id: 10433 at ts: 1150668, lastid:10431 lastts:1150468
+1150.667969:BASE        : SNR: -3 RSSI: -115 Freq ERROR: -6702
+1151.567993:BASE        : Discontinuation at id: 10442 at ts: 1151568, lastid:10440 lastts:1151368
+1151.567993:BASE        : SNR: -10 RSSI: -123 Freq ERROR: -6283
+1153.168945:BASE        : Discontinuation at id: 10458 at ts: 1153168, lastid:10453 lastts:1152668
+1153.168945:BASE        : SNR: -11 RSSI: -120 Freq ERROR: -6182
+1174.267944:BASE        : Discontinuation at id: 10669 at ts: 1174268, lastid:10667 lastts:1174068
+1174.269043:BASE        : SNR: -1 RSSI: -102 Freq ERROR: -6719
+1182.869019:BASE        : Discontinuation at id: 10755 at ts: 1182869, lastid:10753 lastts:1182668
+1182.869019:BASE        : SNR: 7 RSSI: -98 Freq ERROR: -6752
+1183.267944:BASE        : Discontinuation at id: 10759 at ts: 1183268, lastid:10757 lastts:1183068
+1183.267944:BASE        : SNR: 7 RSSI: -96 Freq ERROR: -6736
+1193.269043:BASE        : Discontinuation at id: 10859 at ts: 1193268, lastid:10857 lastts:1193068
+1193.269043:BASE        : SNR: -4 RSSI: -117 Freq ERROR: -6719
+1193.968018:BASE        : Discontinuation at id: 10866 at ts: 1193968, lastid:10864 lastts:1193768
+1193.968018:BASE        : SNR: 1 RSSI: -105 Freq ERROR: -6752
+1198.468018:BASE        : Discontinuation at id: 10911 at ts: 1198468, lastid:10909 lastts:1198269
+1198.468994:BASE        : SNR: 3 RSSI: -103 Freq ERROR: -6702
+1200.968018:BASE        : Discontinuation at id: 10936 at ts: 1200968, lastid:10934 lastts:1200768
+1200.968018:BASE        : SNR: 5 RSSI: -100 Freq ERROR: -6685
+1203.868042:BASE        : Discontinuation at id: 10965 at ts: 1203868, lastid:10963 lastts:1203668
+1203.868042:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6685
+1210.468994:BASE        : Discontinuation at id: 11031 at ts: 1210468, lastid:11029 lastts:1210268
+1210.468994:BASE        : SNR: -4 RSSI: -111 Freq ERROR: -6652
+1211.369019:BASE        : Discontinuation at id: 11040 at ts: 1211369, lastid:11038 lastts:1211168
+1211.369019:BASE        : SNR: -4 RSSI: -109 Freq ERROR: -6685
+1211.668945:BASE        : Discontinuation at id: 11043 at ts: 1211669, lastid:11041 lastts:1211468
+1211.668945:BASE        : SNR: 1 RSSI: -100 Freq ERROR: -6652
+1216.667969:BASE        : Discontinuation at id: 11093 at ts: 1216668, lastid:11091 lastts:1216468
+1216.667969:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6635
+1216.968018:BASE        : Discontinuation at id: 11096 at ts: 1216968, lastid:11094 lastts:1216768
+1216.968018:BASE        : SNR: 1 RSSI: -104 Freq ERROR: -6618
+1221.067993:BASE        : Discontinuation at id: 11137 at ts: 1221068, lastid:11135 lastts:1220868
+1221.068970:BASE        : SNR: 0 RSSI: -101 Freq ERROR: -6685
+1227.668945:BASE        : Discontinuation at id: 11203 at ts: 1227669, lastid:11201 lastts:1227468
+1227.668945:BASE        : SNR: -4 RSSI: -108 Freq ERROR: -6132
+1234.068970:BASE        : Discontinuation at id: 11267 at ts: 1234069, lastid:11265 lastts:1233868
+1234.068970:BASE        : SNR: 1 RSSI: -99 Freq ERROR: -6635
+1237.067993:BASE        : Discontinuation at id: 11297 at ts: 1237068, lastid:11295 lastts:1236868
+1237.068970:BASE        : SNR: 0 RSSI: -101 Freq ERROR: -6652
+1247.369019:BASE        : Discontinuation at id: 11400 at ts: 1247368, lastid:11398 lastts:1247168
+1247.369019:BASE        : SNR: 3 RSSI: -104 Freq ERROR: -6635
+1253.269043:BASE        : Discontinuation at id: 11459 at ts: 1253269, lastid:11457 lastts:1253068
+1253.269043:BASE        : SNR: 6 RSSI: -98 Freq ERROR: -6635
+1273.368042:BASE        : Discontinuation at id: 11660 at ts: 1273368, lastid:11658 lastts:1273168
+1273.368042:BASE        : SNR: 5 RSSI: -99 Freq ERROR: -6601
+1276.968018:BASE        : Discontinuation at id: 11696 at ts: 1276968, lastid:11694 lastts:1276769
+1276.968994:BASE        : SNR: 4 RSSI: -99 Freq ERROR: -6585
+1281.769043:BASE        : Discontinuation at id: 11744 at ts: 1281769, lastid:11742 lastts:1281568
+1281.769043:BASE        : SNR: 4 RSSI: -101 Freq ERROR: -6601
+1304.868042:BASE        : Discontinuation at id: 11975 at ts: 1304868, lastid:11973 lastts:1304668
+1304.869019:BASE        : SNR: 1 RSSI: -103 Freq ERROR: -6635
+1309.468018:BASE        : Discontinuation at id: 12021 at ts: 1309468, lastid:12019 lastts:1309268
+1309.468994:BASE        : SNR: 2 RSSI: -103 Freq ERROR: -6635
+1312.168945:BASE        : Discontinuation at id: 12048 at ts: 1312168, lastid:12046 lastts:1311969
+1312.168945:BASE        : SNR: 7 RSSI: -97 Freq ERROR: -6618
+1316.369019:BASE        : Discontinuation at id: 12090 at ts: 1316369, lastid:12088 lastts:1316168
+1316.369019:BASE        : SNR: -3 RSSI: -108 Freq ERROR: -6148
+1318.468018:BASE        : Discontinuation at id: 12111 at ts: 1318468, lastid:12109 lastts:1318268
+1318.468994:BASE        : SNR: 6 RSSI: -93 Freq ERROR: -6585
+1326.769043:BASE        : Discontinuation at id: 12194 at ts: 1326769, lastid:12192 lastts:1326569
+1326.769043:BASE        : SNR: 4 RSSI: -93 Freq ERROR: -6652
+1330.468018:BASE        : Discontinuation at id: 12231 at ts: 1330468, lastid:12229 lastts:1330269
+1330.468994:BASE        : SNR: 6 RSSI: -92 Freq ERROR: -6652
+1332.568970:BASE        : Discontinuation at id: 12252 at ts: 1332569, lastid:12250 lastts:1332369
+1332.568970:BASE        : SNR: -5 RSSI: -110 Freq ERROR: -6652
+1333.667969:BASE        : Discontinuation at id: 12263 at ts: 1333668, lastid:12261 lastts:1333469
+1333.668945:BASE        : SNR: 2 RSSI: -101 Freq ERROR: -6618
+1341.668945:BASE        : Discontinuation at id: 12343 at ts: 1341669, lastid:12341 lastts:1341468
+1341.668945:BASE        : SNR: 7 RSSI: -97 Freq ERROR: -6618
+1378.568970:BASE        : Discontinuation at id: 12712 at ts: 1378569, lastid:12709 lastts:1378269
+1378.568970:BASE        : SNR: -3 RSSI: -114 Freq ERROR: -5058
+1381.567993:BASE        : Discontinuation at id: 12742 at ts: 1381568, lastid:12740 lastts:1381368
+1381.568970:BASE        : SNR: 1 RSSI: -104 Freq ERROR: -6618
+1390.067993:BASE        : Discontinuation at id: 12827 at ts: 1390068, lastid:12825 lastts:1389869
+1390.068970:BASE        : SNR: 1 RSSI: -105 Freq ERROR: -6618
+1406.068970:BASE        : Discontinuation at id: 12987 at ts: 1406068, lastid:12985 lastts:1405869
+1406.068970:BASE        : SNR: -2 RSSI: -101 Freq ERROR: -6635
+1412.769043:BASE        : Discontinuation at id: 13054 at ts: 1412768, lastid:13049 lastts:1412269
+1412.769043:BASE        : SNR: -8 RSSI: -105 Freq ERROR: -6048
+1415.769043:BASE        : Discontinuation at id: 13084 at ts: 1415769, lastid:13082 lastts:1415569
+1415.769043:BASE        : SNR: -2 RSSI: -106 Freq ERROR: -6618
+1415.968994:BASE        : Discontinuation at id: 13086 at ts: 1415968, lastid:13084 lastts:1415769
+1415.968994:BASE        : SNR: -3 RSSI: -106 Freq ERROR: -6618
+1416.269043:BASE        : Discontinuation at id: 13089 at ts: 1416268, lastid:13087 lastts:1416069
+1416.269043:BASE        : SNR: 5 RSSI: -95 Freq ERROR: -6064
+1441.769043:BASE        : Discontinuation at id: 13344 at ts: 1441769, lastid:13340 lastts:1441369
+1441.770020:BASE        : SNR: -9 RSSI: -118 Freq ERROR: -6551
+1444.769043:BASE        : Discontinuation at id: 13374 at ts: 1444768, lastid:13372 lastts:1444569
+1444.769043:BASE        : SNR: -6 RSSI: -115 Freq ERROR: -6585
+1445.068970:BASE        : Discontinuation at id: 13377 at ts: 1445068, lastid:13375 lastts:1444869
+1445.068970:BASE        : SNR: -1 RSSI: -109 Freq ERROR: -6551
+1453.568970:BASE        : Discontinuation at id: 13462 at ts: 1453569, lastid:13460 lastts:1453369
+1453.568970:BASE        : SNR: -2 RSSI: -108 Freq ERROR: -6568
+1459.668945:BASE        : Discontinuation at id: 13523 at ts: 1459669, lastid:13520 lastts:1459369
+1459.668945:BASE        : SNR: -1 RSSI: -109 Freq ERROR: -6048
+1460.869019:BASE        : Discontinuation at id: 13535 at ts: 1460869, lastid:13533 lastts:1460669
+1460.869019:BASE        : SNR: 0 RSSI: -104 Freq ERROR: -6585
+1461.769043:BASE        : Discontinuation at id: 13544 at ts: 1461769, lastid:13542 lastts:1461568
+1461.770020:BASE        : SNR: -2 RSSI: -109 Freq ERROR: -6551
+1462.468994:BASE        : Discontinuation at id: 13551 at ts: 1462468, lastid:13549 lastts:1462269
+1462.468994:BASE        : SNR: -4 RSSI: -113 Freq ERROR: -6551
+1463.269043:BASE        : Discontinuation at id: 13559 at ts: 1463269, lastid:13557 lastts:1463068
+1463.270020:BASE        : SNR: -1 RSSI: -106 Freq ERROR: -6601
+1464.968994:BASE        : Discontinuation at id: 13576 at ts: 1464969, lastid:13573 lastts:1464669
+1464.969971:BASE        : SNR: -14 RSSI: -118 Freq ERROR: -5997
+1465.269043:BASE        : Discontinuation at id: 13579 at ts: 1465269, lastid:13576 lastts:1464969
+1465.270020:BASE        : SNR: -7 RSSI: -112 Freq ERROR: -6517
+1465.668945:BASE        : Discontinuation at id: 13583 at ts: 1465668, lastid:13581 lastts:1465469
+1465.668945:BASE        : SNR: -7 RSSI: -112 Freq ERROR: -6048
+1466.168945:BASE        : Discontinuation at id: 13588 at ts: 1466169, lastid:13583 lastts:1465668
+1466.170044:BASE        : SNR: -6 RSSI: -111 Freq ERROR: -6031
+1466.468994:BASE        : Discontinuation at id: 13591 at ts: 1466469, lastid:13589 lastts:1466268
+1466.469971:BASE        : SNR: -8 RSSI: -113 Freq ERROR: -6585
+1467.068970:BASE        : Discontinuation at id: 13597 at ts: 1467069, lastid:13591 lastts:1466469
+1467.069946:BASE        : SNR: -6 RSSI: -112 Freq ERROR: -6014
+1467.668945:BASE        : Discontinuation at id: 13603 at ts: 1467669, lastid:13600 lastts:1467369
+1467.670044:BASE        : SNR: -4 RSSI: -109 Freq ERROR: -6014
+1467.869019:BASE        : Discontinuation at id: 13605 at ts: 1467869, lastid:13603 lastts:1467669
+1467.869995:BASE        : SNR: -4 RSSI: -108 Freq ERROR: -6618
+1468.168945:BASE        : Discontinuation at id: 13608 at ts: 1468169, lastid:13605 lastts:1467869
+1468.170044:BASE        : SNR: -2 RSSI: -106 Freq ERROR: -6031
+1469.369019:BASE        : Discontinuation at id: 13620 at ts: 1469369, lastid:13616 lastts:1468969
+1469.369995:BASE        : SNR: -11 RSSI: -117 Freq ERROR: -5981
+1469.568970:BASE        : Discontinuation at id: 13622 at ts: 1469569, lastid:13620 lastts:1469369
+1469.568970:BASE        : SNR: -9 RSSI: -112 Freq ERROR: -5930
+1470.068970:BASE        : Discontinuation at id: 13627 at ts: 1470068, lastid:13623 lastts:1469669
+1470.068970:BASE        : SNR: -13 RSSI: -121 Freq ERROR: -6064
+1470.468994:BASE        : Discontinuation at id: 13631 at ts: 1470469, lastid:13629 lastts:1470269
+1470.468994:BASE        : SNR: -5 RSSI: -112 Freq ERROR: -6064
+1471.468018:BASE        : Discontinuation at id: 13641 at ts: 1471468, lastid:13639 lastts:1471269
+1471.468994:BASE        : SNR: -6 RSSI: -115 Freq ERROR: -6618
+1471.767944:BASE        : Discontinuation at id: 13644 at ts: 1471768, lastid:13642 lastts:1471569
+1471.769043:BASE        : SNR: 0 RSSI: -102 Freq ERROR: -6568
+1474.769043:BASE        : Discontinuation at id: 13674 at ts: 1474769, lastid:13670 lastts:1474368
+1474.769043:BASE        : SNR: -4 RSSI: -115 Freq ERROR: -6551
+1475.869019:BASE        : Discontinuation at id: 13685 at ts: 1475868, lastid:13683 lastts:1475669
+1475.869019:BASE        : SNR: 0 RSSI: -105 Freq ERROR: -6601
+1476.869019:BASE        : Discontinuation at id: 13695 at ts: 1476869, lastid:13693 lastts:1476669
+1476.869019:BASE        : SNR: 0 RSSI: -106 Freq ERROR: -6551
+1477.068970:BASE        : Discontinuation at id: 13697 at ts: 1477069, lastid:13695 lastts:1476869
+1477.068970:BASE        : SNR: 0 RSSI: -107 Freq ERROR: -6652
+1477.269043:BASE        : Discontinuation at id: 13699 at ts: 1477269, lastid:13697 lastts:1477069
+1477.270020:BASE        : SNR: 0 RSSI: -108 Freq ERROR: -6534
+1537.068970:BASE        : Discontinuation at id: 14297 at ts: 1537069, lastid:14295 lastts:1536869
+1537.069946:BASE        : SNR: 3 RSSI: -106 Freq ERROR: -6534
+1537.968994:BASE        : Discontinuation at id: 14306 at ts: 1537969, lastid:14304 lastts:1537769
+1537.969971:BASE        : SNR: 3 RSSI: -106 Freq ERROR: -6551
+1540.668945:BASE        : Discontinuation at id: 14333 at ts: 1540669, lastid:14331 lastts:1540469
+1540.670044:BASE        : SNR: 3 RSSI: -107 Freq ERROR: -6551
+1544.769043:BASE        : Discontinuation at id: 14374 at ts: 1544769, lastid:14371 lastts:1544469
+1544.769043:BASE        : SNR: 2 RSSI: -108 Freq ERROR: -6048
+1547.769043:BASE        : Discontinuation at id: 14404 at ts: 1547769, lastid:14402 lastts:1547569
+1547.769043:BASE        : SNR: 1 RSSI: -108 Freq ERROR: -6551
+1548.668945:BASE        : Discontinuation at id: 14413 at ts: 1548669, lastid:14411 lastts:1548469
+1548.670044:BASE        : SNR: -5 RSSI: -121 Freq ERROR: -6585
+1548.968994:BASE        : Discontinuation at id: 14416 at ts: 1548969, lastid:14414 lastts:1548769
+1548.969971:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6551
+1549.869019:BASE        : Discontinuation at id: 14425 at ts: 1549869, lastid:14423 lastts:1549669
+1549.869995:BASE        : SNR: 0 RSSI: -111 Freq ERROR: -6551
+1577.269043:BASE        : Discontinuation at id: 14699 at ts: 1577269, lastid:14697 lastts:1577069
+1577.270020:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6568
+1620.670044:BASE        : Discontinuation at id: 15133 at ts: 1620669, lastid:15131 lastts:1620469
+1620.670044:BASE        : SNR: 4 RSSI: -103 Freq ERROR: -6601
+1637.568970:BASE        : Discontinuation at id: 15302 at ts: 1637569, lastid:15300 lastts:1637369
+1637.568970:BASE        : SNR: 6 RSSI: -103 Freq ERROR: -6601
+1645.369995:BASE        : Discontinuation at id: 15380 at ts: 1645369, lastid:15378 lastts:1645169
+1645.369995:BASE        : SNR: 4 RSSI: -104 Freq ERROR: -6601
+1647.568970:BASE        : Discontinuation at id: 15402 at ts: 1647569, lastid:15400 lastts:1647369
+1647.569946:BASE        : SNR: 2 RSSI: -104 Freq ERROR: -6601
+1651.770020:BASE        : Discontinuation at id: 15444 at ts: 1651770, lastid:15442 lastts:1651569
+1651.770020:BASE        : SNR: 3 RSSI: -105 Freq ERROR: -6585
+1668.869995:BASE        : Discontinuation at id: 15615 at ts: 1668869, lastid:15613 lastts:1668670
+1668.869995:BASE        : SNR: 3 RSSI: -105 Freq ERROR: -6585
+1681.369019:BASE        : Discontinuation at id: 15740 at ts: 1681369, lastid:15738 lastts:1681170
+1681.369995:BASE        : SNR: 3 RSSI: -105 Freq ERROR: -6601
+1687.770020:BASE        : Discontinuation at id: 15804 at ts: 1687769, lastid:15802 lastts:1687570
+1687.770020:BASE        : SNR: 4 RSSI: -104 Freq ERROR: -6601
+1691.670044:BASE        : Discontinuation at id: 15843 at ts: 1691670, lastid:15841 lastts:1691469
+1691.670044:BASE        : SNR: 5 RSSI: -103 Freq ERROR: -6601
+1709.569946:BASE        : Discontinuation at id: 16022 at ts: 1709569, lastid:16020 lastts:1709370
+1709.569946:BASE        : SNR: 6 RSSI: -101 Freq ERROR: -6618
+1720.069946:BASE        : Discontinuation at id: 16127 at ts: 1720069, lastid:16125 lastts:1719870
+1720.069946:BASE        : SNR: 4 RSSI: -104 Freq ERROR: -6652
+1722.068970:BASE        : Discontinuation at id: 16147 at ts: 1722069, lastid:16145 lastts:1721870
+1722.069946:BASE        : SNR: 4 RSSI: -105 Freq ERROR: -6618
+1734.869019:BASE        : Discontinuation at id: 16275 at ts: 1734869, lastid:16273 lastts:1734670
+1734.869995:BASE        : SNR: 3 RSSI: -106 Freq ERROR: -6585
+1745.170044:BASE        : Discontinuation at id: 16378 at ts: 1745170, lastid:16376 lastts:1744969
+1745.170044:BASE        : SNR: 2 RSSI: -107 Freq ERROR: -6618
+1746.869995:BASE        : Discontinuation at id: 16395 at ts: 1746870, lastid:16393 lastts:1746669
+1746.869995:BASE        : SNR: 3 RSSI: -107 Freq ERROR: -6601
+1749.969971:BASE        : Discontinuation at id: 16426 at ts: 1749969, lastid:16424 lastts:1749770
+1749.969971:BASE        : SNR: 3 RSSI: -105 Freq ERROR: -6618
+1756.670044:BASE        : Discontinuation at id: 16493 at ts: 1756669, lastid:16491 lastts:1756470
+1756.670044:BASE        : SNR: 1 RSSI: -109 Freq ERROR: -6601
+1760.469971:BASE        : Discontinuation at id: 16531 at ts: 1760469, lastid:16529 lastts:1760270
+1760.469971:BASE        : SNR: 2 RSSI: -108 Freq ERROR: -6618
+1761.869019:BASE        : Discontinuation at id: 16545 at ts: 1761869, lastid:16543 lastts:1761670
+1761.869995:BASE        : SNR: 3 RSSI: -107 Freq ERROR: -6618
+1762.569946:BASE        : Discontinuation at id: 16552 at ts: 1762570, lastid:16550 lastts:1762369
+1762.569946:BASE        : SNR: 3 RSSI: -106 Freq ERROR: -6618
+1765.668945:BASE        : Discontinuation at id: 16583 at ts: 1765669, lastid:16581 lastts:1765470
+1765.670044:BASE        : SNR: 2 RSSI: -107 Freq ERROR: -6601
+1767.869995:BASE        : Discontinuation at id: 16605 at ts: 1767870, lastid:16603 lastts:1767669
+1767.870972:BASE        : SNR: 2 RSSI: -108 Freq ERROR: -6635
+1770.869019:BASE        : Discontinuation at id: 16635 at ts: 1770869, lastid:16633 lastts:1770670
+1770.869995:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6635
+1784.670044:BASE        : Discontinuation at id: 16773 at ts: 1784670, lastid:16771 lastts:1784470
+1784.670044:BASE        : SNR: 2 RSSI: -105 Freq ERROR: -6635
+1785.170044:BASE        : Discontinuation at id: 16778 at ts: 1785169, lastid:16776 lastts:1784970
+1785.170044:BASE        : SNR: 0 RSSI: -108 Freq ERROR: -6618
+1792.869995:BASE        : Discontinuation at id: 16855 at ts: 1792870, lastid:16853 lastts:1792669
+1792.869995:BASE        : SNR: 3 RSSI: -106 Freq ERROR: -6635
+1793.369995:BASE        : Discontinuation at id: 16860 at ts: 1793370, lastid:16858 lastts:1793170
+1793.369995:BASE        : SNR: -2 RSSI: -115 Freq ERROR: -6652
+1795.170044:BASE        : Discontinuation at id: 16878 at ts: 1795170, lastid:16876 lastts:1794969
+1795.170044:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6652
+1806.270020:BASE        : Discontinuation at id: 16989 at ts: 1806270, lastid:16987 lastts:1806069
+1806.270996:BASE        : SNR: -2 RSSI: -116 Freq ERROR: -6652
+1816.270020:BASE        : Discontinuation at id: 17089 at ts: 1816269, lastid:17087 lastts:1816070
+1816.270020:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6652
+1820.770020:BASE        : Discontinuation at id: 17134 at ts: 1820770, lastid:17132 lastts:1820569
+1820.770996:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6652
+1821.270020:BASE        : Discontinuation at id: 17139 at ts: 1821270, lastid:17137 lastts:1821070
+1821.270020:BASE        : SNR: 0 RSSI: -111 Freq ERROR: -6668
+1839.969971:BASE        : Discontinuation at id: 17326 at ts: 1839970, lastid:17324 lastts:1839769
+1839.970947:BASE        : SNR: 3 RSSI: -100 Freq ERROR: -6668
+1841.369995:BASE        : Discontinuation at id: 17340 at ts: 1841370, lastid:17338 lastts:1841170
+1841.369995:BASE        : SNR: 3 RSSI: -107 Freq ERROR: -6652
+1845.869019:BASE        : Discontinuation at id: 17385 at ts: 1845869, lastid:17383 lastts:1845669
+1845.869995:BASE        : SNR: 2 RSSI: -101 Freq ERROR: -6652
+1860.069946:BASE        : Discontinuation at id: 17527 at ts: 1860070, lastid:17525 lastts:1859869
+1860.071045:BASE        : SNR: -1 RSSI: -104 Freq ERROR: -6652
+1863.069946:BASE        : Discontinuation at id: 17557 at ts: 1863069, lastid:17555 lastts:1862870
+1863.069946:BASE        : SNR: 0 RSSI: -97 Freq ERROR: -6685
+1871.270020:BASE        : Discontinuation at id: 17639 at ts: 1871270, lastid:17637 lastts:1871070
+1871.270020:BASE        : SNR: 0 RSSI: -101 Freq ERROR: -6652
+1873.369995:BASE        : Discontinuation at id: 17660 at ts: 1873370, lastid:17658 lastts:1873170
+1873.369995:BASE        : SNR: -8 RSSI: -122 Freq ERROR: -6652
+1879.270020:BASE        : Discontinuation at id: 17719 at ts: 1879270, lastid:17717 lastts:1879069
+1879.270996:BASE        : SNR: -14 RSSI: -128 Freq ERROR: -6585
+1879.869995:BASE        : Discontinuation at id: 17725 at ts: 1879870, lastid:17722 lastts:1879570
+1879.870972:BASE        : SNR: -12 RSSI: -124 Freq ERROR: -6098
+1880.069946:BASE        : Discontinuation at id: 17727 at ts: 1880070, lastid:17725 lastts:1879870
+1880.069946:BASE        : SNR: -9 RSSI: -123 Freq ERROR: -6601
+1880.569946:BASE        : Discontinuation at id: 17732 at ts: 1880570, lastid:17730 lastts:1880370
+1880.569946:BASE        : SNR: -5 RSSI: -118 Freq ERROR: -6668
+1881.869995:BASE        : Discontinuation at id: 17745 at ts: 1881870, lastid:17743 lastts:1881669
+1881.870972:BASE        : SNR: -5 RSSI: -115 Freq ERROR: -6668
+1882.569946:BASE        : Discontinuation at id: 17752 at ts: 1882569, lastid:17750 lastts:1882370
+1882.569946:BASE        : SNR: -5 RSSI: -112 Freq ERROR: -6652
+1882.869995:BASE        : Discontinuation at id: 17755 at ts: 1882869, lastid:17753 lastts:1882670
+1882.869995:BASE        : SNR: -5 RSSI: -111 Freq ERROR: -6668
+1883.770020:BASE        : Discontinuation at id: 17764 at ts: 1883770, lastid:17762 lastts:1883570
+1883.770020:BASE        : SNR: -3 RSSI: -108 Freq ERROR: -6668
+1891.270020:BASE        : Discontinuation at id: 17839 at ts: 1891269, lastid:17837 lastts:1891070
+1891.270020:BASE        : SNR: 1 RSSI: -105 Freq ERROR: -6702
+1896.769043:BASE        : Discontinuation at id: 17894 at ts: 1896769, lastid:17892 lastts:1896570
+1896.770020:BASE        : SNR: 1 RSSI: -103 Freq ERROR: -6668
+1911.869995:BASE        : Discontinuation at id: 18045 at ts: 1911870, lastid:18043 lastts:1911670
+1911.870972:BASE        : SNR: 2 RSSI: -102 Freq ERROR: -6668
+1923.869995:BASE        : Discontinuation at id: 18165 at ts: 1923869, lastid:18162 lastts:1923569
+1923.869995:BASE        : SNR: 2 RSSI: -103 Freq ERROR: -6668
+1933.869995:BASE        : Discontinuation at id: 18265 at ts: 1933870, lastid:18262 lastts:1933570
+1933.870972:BASE        : SNR: 2 RSSI: -101 Freq ERROR: -6668
+1936.569946:BASE        : Discontinuation at id: 18292 at ts: 1936570, lastid:18289 lastts:1936270
+1936.571045:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6702
+1938.170044:BASE        : Discontinuation at id: 18308 at ts: 1938170, lastid:18301 lastts:1937470
+1938.170044:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6702
+1942.469971:BASE        : Discontinuation at id: 18351 at ts: 1942469, lastid:18349 lastts:1942270
+1942.469971:BASE        : SNR: 3 RSSI: -106 Freq ERROR: -6685
+1955.069946:BASE        : Discontinuation at id: 18477 at ts: 1955070, lastid:18475 lastts:1954870
+1955.069946:BASE        : SNR: 1 RSSI: -105 Freq ERROR: -6652
+1975.270020:BASE        : Discontinuation at id: 18679 at ts: 1975270, lastid:18677 lastts:1975070
+1975.270996:BASE        : SNR: 0 RSSI: -104 Freq ERROR: -6668
+1982.770020:BASE        : Discontinuation at id: 18754 at ts: 1982770, lastid:18752 lastts:1982570
+1982.770996:BASE        : SNR: 0 RSSI: -104 Freq ERROR: -6685
+1983.369995:BASE        : Discontinuation at id: 18760 at ts: 1983370, lastid:18758 lastts:1983170
+1983.370972:BASE        : SNR: 1 RSSI: -106 Freq ERROR: -6098
+1996.369995:BASE        : Discontinuation at id: 18890 at ts: 1996370, lastid:18887 lastts:1996070
+1996.369995:BASE        : SNR: -9 RSSI: -124 Freq ERROR: -6182
+2001.369995:BASE        : Discontinuation at id: 18940 at ts: 2001370, lastid:18937 lastts:2001070
+2001.370972:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6098
+2001.569946:BASE        : Discontinuation at id: 18942 at ts: 2001570, lastid:18940 lastts:2001370
+2001.569946:BASE        : SNR: -10 RSSI: -125 Freq ERROR: -6568
+2002.770020:BASE        : Discontinuation at id: 18954 at ts: 2002770, lastid:18946 lastts:2001970
+2002.770996:BASE        : SNR: -9 RSSI: -124 Freq ERROR: -6685
+2003.270020:BASE        : Discontinuation at id: 18959 at ts: 2003270, lastid:18956 lastts:2002970
+2003.270020:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6165
+2003.569946:BASE        : Discontinuation at id: 18962 at ts: 2003570, lastid:18960 lastts:2003370
+2003.569946:BASE        : SNR: -6 RSSI: -122 Freq ERROR: -6719
+2004.370972:BASE        : Discontinuation at id: 18970 at ts: 2004370, lastid:18965 lastts:2003870
+2004.370972:BASE        : SNR: -9 RSSI: -123 Freq ERROR: -6668
+2010.171021:BASE        : Discontinuation at id: 19028 at ts: 2010170, lastid:19026 lastts:2009970
+2010.171021:BASE        : SNR: -6 RSSI: -119 Freq ERROR: -6668
+2020.270020:BASE        : Discontinuation at id: 19129 at ts: 2020270, lastid:19127 lastts:2020070
+2020.270996:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6702
+2026.969971:BASE        : Discontinuation at id: 19196 at ts: 2026970, lastid:19194 lastts:2026771
+2026.970947:BASE        : SNR: -12 RSSI: -122 Freq ERROR: -6652
+2028.969971:BASE        : Discontinuation at id: 19216 at ts: 2028970, lastid:19210 lastts:2028370
+2028.970947:BASE        : SNR: -6 RSSI: -117 Freq ERROR: -6199
+2032.270996:BASE        : Discontinuation at id: 19249 at ts: 2032270, lastid:19237 lastts:2031070
+2032.270996:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6148
+2036.370972:BASE        : Discontinuation at id: 19290 at ts: 2036371, lastid:19287 lastts:2036070
+2036.370972:BASE        : SNR: -10 RSSI: -121 Freq ERROR: -6132
+2039.770020:BASE        : Discontinuation at id: 19324 at ts: 2039770, lastid:19322 lastts:2039570
+2039.770996:BASE        : SNR: 1 RSSI: -107 Freq ERROR: -6668
+2042.171021:BASE        : Discontinuation at id: 19348 at ts: 2042171, lastid:19346 lastts:2041970
+2042.171021:BASE        : SNR: -8 RSSI: -120 Freq ERROR: -6652
+2043.071045:BASE        : Discontinuation at id: 19357 at ts: 2043070, lastid:19353 lastts:2042670
+2043.071045:BASE        : SNR: -13 RSSI: -125 Freq ERROR: -6148
+2043.469971:BASE        : Discontinuation at id: 19361 at ts: 2043470, lastid:19359 lastts:2043270
+2043.470947:BASE        : SNR: -11 RSSI: -122 Freq ERROR: -6736
+2059.071045:BASE        : Discontinuation at id: 19517 at ts: 2059071, lastid:19515 lastts:2058870
+2059.071045:BASE        : SNR: -4 RSSI: -115 Freq ERROR: -6652
+2062.871094:BASE        : Discontinuation at id: 19555 at ts: 2062871, lastid:19553 lastts:2062670
+2062.871094:BASE        : SNR: -6 RSSI: -117 Freq ERROR: -6702
+2070.270020:BASE        : Discontinuation at id: 19629 at ts: 2070270, lastid:19627 lastts:2070070
+2070.270996:BASE        : SNR: -4 RSSI: -115 Freq ERROR: -6668
+2076.870117:BASE        : Discontinuation at id: 19695 at ts: 2076870, lastid:19693 lastts:2076670
+2076.870117:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6685
+2078.469971:BASE        : Discontinuation at id: 19711 at ts: 2078470, lastid:19709 lastts:2078271
+2078.470947:BASE        : SNR: -7 RSSI: -119 Freq ERROR: -6702
+2086.270020:BASE        : Discontinuation at id: 19789 at ts: 2086270, lastid:19787 lastts:2086070
+2086.270996:BASE        : SNR: -10 RSSI: -122 Freq ERROR: -6618
+2087.669922:BASE        : Discontinuation at id: 19803 at ts: 2087670, lastid:19794 lastts:2086770
+2087.670898:BASE        : SNR: -7 RSSI: -118 Freq ERROR: -6165
+2093.169922:BASE        : Discontinuation at id: 19858 at ts: 2093170, lastid:19855 lastts:2092870
+2093.169922:BASE        : SNR: -8 RSSI: -121 Freq ERROR: -6132
+2097.970947:BASE        : Discontinuation at id: 19906 at ts: 2097970, lastid:19904 lastts:2097771
+2097.970947:BASE        : SNR: -7 RSSI: -120 Freq ERROR: -6668
+2102.371094:BASE        : Discontinuation at id: 19950 at ts: 2102371, lastid:19948 lastts:2102170
+2102.371094:BASE        : SNR: -3 RSSI: -115 Freq ERROR: -6668
+2111.270020:BASE        : Discontinuation at id: 20039 at ts: 2111270, lastid:20037 lastts:2111070
+2111.270996:BASE        : SNR: -5 RSSI: -118 Freq ERROR: -6668
+2117.070068:BASE        : Discontinuation at id: 20097 at ts: 2117070, lastid:20094 lastts:2116770
+2117.071045:BASE        : SNR: -4 RSSI: -117 Freq ERROR: -6702
+2132.469971:BASE        : Discontinuation at id: 20251 at ts: 2132470, lastid:20249 lastts:2132270
+2132.470947:BASE        : SNR: -2 RSSI: -114 Freq ERROR: -6685
+2135.270996:BASE        : Discontinuation at id: 20279 at ts: 2135271, lastid:20277 lastts:2135070
+2135.270996:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6702
+2161.470947:BASE        : Discontinuation at id: 20541 at ts: 2161471, lastid:20539 lastts:2161270
+2161.470947:BASE        : SNR: -2 RSSI: -115 Freq ERROR: -6685
+2200.970947:BASE        : Discontinuation at id: 20936 at ts: 2200971, lastid:20934 lastts:2200770
+2200.970947:BASE        : SNR: -9 RSSI: -120 Freq ERROR: -6736
+2202.570068:BASE        : Discontinuation at id: 20952 at ts: 2202570, lastid:20950 lastts:2202371
+2202.571045:BASE        : SNR: -12 RSSI: -124 Freq ERROR: -6819
+2204.070068:BASE        : Discontinuation at id: 20967 at ts: 2204070, lastid:20965 lastts:2203871
+2204.071045:BASE        : SNR: -13 RSSI: -122 Freq ERROR: -6719
+2205.270996:BASE        : Discontinuation at id: 20979 at ts: 2205270, lastid:20974 lastts:2204771
+2205.270996:BASE        : SNR: -15 RSSI: -126 Freq ERROR: -6148
+2205.469971:BASE        : Discontinuation at id: 20981 at ts: 2205470, lastid:20979 lastts:2205270
+2205.470947:BASE        : SNR: -11 RSSI: -123 Freq ERROR: -6736
+2218.071045:BASE        : Discontinuation at id: 21107 at ts: 2218070, lastid:21105 lastts:2217871
+2218.071045:BASE        : SNR: -6 RSSI: -117 Freq ERROR: -6786
+2222.470947:BASE        : Discontinuation at id: 21151 at ts: 2222471, lastid:21143 lastts:2221671
+2222.470947:BASE        : SNR: -13 RSSI: -125 Freq ERROR: -6719
+2223.469971:BASE        : Discontinuation at id: 21161 at ts: 2223470, lastid:21158 lastts:2223170
+2223.470947:BASE        : SNR: -11 RSSI: -123 Freq ERROR: -6215
+2229.870117:BASE        : Discontinuation at id: 21225 at ts: 2229870, lastid:21173 lastts:2224670
+2229.871094:BASE        : SNR: -13 RSSI: -125 Freq ERROR: -6702
+2230.169922:BASE        : Discontinuation at id: 21228 at ts: 2230170, lastid:21226 lastts:2229970
+2230.170898:BASE        : SNR: -12 RSSI: -123 Freq ERROR: -6266
+2230.670898:BASE        : Discontinuation at id: 21233 at ts: 2230671, lastid:21231 lastts:2230470
+2230.670898:BASE        : SNR: -11 RSSI: -123 Freq ERROR: -6752
+2236.270020:BASE        : Discontinuation at id: 21289 at ts: 2236270, lastid:21270 lastts:2234371
+2236.270996:BASE        : SNR: -13 RSSI: -124 Freq ERROR: -6299
+2240.470947:BASE        : Discontinuation at id: 21331 at ts: 2240470, lastid:21329 lastts:2240271
+2240.470947:BASE        : SNR: -11 RSSI: -123 Freq ERROR: -6803
+2250.970947:BASE        : Discontinuation at id: 21436 at ts: 2250971, lastid:21434 lastts:2250771
+2250.970947:BASE        : SNR: -12 RSSI: -124 Freq ERROR: -6786
+2255.670898:BASE        : Discontinuation at id: 21483 at ts: 2255671, lastid:21481 lastts:2255470
+2255.670898:BASE        : SNR: -10 RSSI: -122 Freq ERROR: -6719
+2256.669922:BASE        : Discontinuation at id: 21493 at ts: 2256670, lastid:21491 lastts:2256471
+2256.670898:BASE        : SNR: -10 RSSI: -123 Freq ERROR: -6769
+2256.969971:BASE        : Discontinuation at id: 21496 at ts: 2256970, lastid:21494 lastts:2256771
+2256.970947:BASE        : SNR: -10 RSSI: -122 Freq ERROR: -6736
+2257.371094:BASE        : Discontinuation at id: 21500 at ts: 2257371, lastid:21497 lastts:2257071
+2257.371094:BASE        : SNR: -11 RSSI: -123 Freq ERROR: -6199
+2258.571045:BASE        : Discontinuation at id: 21512 at ts: 2258571, lastid:21500 lastts:2257371
+2258.571045:BASE        : SNR: -12 RSSI: -124 Freq ERROR: -6786
+2258.770996:BASE        : Discontinuation at id: 21514 at ts: 2258771, lastid:21512 lastts:2258571
+2258.770996:BASE        : SNR: -10 RSSI: -122 Freq ERROR: -6786
+2260.071045:BASE        : Discontinuation at id: 21527 at ts: 2260071, lastid:21523 lastts:2259671
+2260.072021:BASE        : SNR: -10 RSSI: -122 Freq ERROR: -6786
+2261.670898:BASE        : Discontinuation at id: 21543 at ts: 2261670, lastid:21538 lastts:2261171
+2261.670898:BASE        : SNR: -9 RSSI: -118 Freq ERROR: -6215
+2267.571045:BASE        : Discontinuation at id: 21602 at ts: 2267571, lastid:21599 lastts:2267271
+2267.571045:BASE        : SNR: -6 RSSI: -118 Freq ERROR: -6249
+2272.970947:BASE        : Discontinuation at id: 21656 at ts: 2272970, lastid:21650 lastts:2272370
+2272.970947:BASE        : SNR: -10 RSSI: -121 Freq ERROR: -6736
+2276.770996:BASE        : Discontinuation at id: 21694 at ts: 2276770, lastid:21692 lastts:2276571
+2276.770996:BASE        : SNR: -7 RSSI: -118 Freq ERROR: -6786
+2286.670898:BASE        : Discontinuation at id: 21793 at ts: 2286670, lastid:21790 lastts:2286370
+2286.670898:BASE        : SNR: -6 RSSI: -116 Freq ERROR: -6769
+2307.870117:BASE        : Discontinuation at id: 22005 at ts: 2307870, lastid:22003 lastts:2307671
+2307.871094:BASE        : SNR: -3 RSSI: -113 Freq ERROR: -6786
+2312.571045:BASE        : Discontinuation at id: 22052 at ts: 2312571, lastid:22050 lastts:2312371
+2312.571045:BASE        : SNR: -5 RSSI: -116 Freq ERROR: -6803
+2316.870117:BASE        : Discontinuation at id: 22095 at ts: 2316870, lastid:22093 lastts:2316671
+2316.871094:BASE        : SNR: -4 RSSI: -116 Freq ERROR: -6803
+2331.871094:BASE        : Discontinuation at id: 22245 at ts: 2331871, lastid:22243 lastts:2331671
+2331.871094:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6786
+2333.670898:BASE        : Discontinuation at id: 22263 at ts: 2333671, lastid:22261 lastts:2333470
+2333.672119:BASE        : SNR: -2 RSSI: -112 Freq ERROR: -6819
+2337.770996:BASE        : Discontinuation at id: 22304 at ts: 2337771, lastid:22302 lastts:2337571
+2337.771973:BASE        : SNR: -1 RSSI: -112 Freq ERROR: -6819
+2356.470947:BASE        : Discontinuation at id: 22491 at ts: 2356470, lastid:22489 lastts:2356271
+2356.470947:BASE        : SNR: -3 RSSI: -113 Freq ERROR: -6786
+2364.571045:BASE        : Discontinuation at id: 22572 at ts: 2364570, lastid:22570 lastts:2364371
+2364.571045:BASE        : SNR: -2 RSSI: -112 Freq ERROR: -6836
+2374.571045:BASE        : Discontinuation at id: 22672 at ts: 2374571, lastid:22670 lastts:2374371
+2374.571045:BASE        : SNR: -5 RSSI: -116 Freq ERROR: -6819
+2380.270020:BASE        : Discontinuation at id: 22729 at ts: 2380270, lastid:22727 lastts:2380071
+2380.270996:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6836
+2380.470947:BASE        : Discontinuation at id: 22731 at ts: 2380471, lastid:22729 lastts:2380270
+2380.471924:BASE        : SNR: -2 RSSI: -114 Freq ERROR: -6836
+2382.270996:BASE        : Discontinuation at id: 22749 at ts: 2382271, lastid:22747 lastts:2382071
+2382.271973:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6836
+2388.372070:BASE        : Discontinuation at id: 22810 at ts: 2388371, lastid:22808 lastts:2388171
+2388.372070:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6803
+2402.371094:BASE        : Discontinuation at id: 22950 at ts: 2402370, lastid:22948 lastts:2402171
+2402.371094:BASE        : SNR: -5 RSSI: -115 Freq ERROR: -6853
+2414.170898:BASE        : Discontinuation at id: 23068 at ts: 2414171, lastid:23066 lastts:2413971
+2414.172119:BASE        : SNR: -7 RSSI: -116 Freq ERROR: -6786
+2414.371094:BASE        : Discontinuation at id: 23070 at ts: 2414371, lastid:23068 lastts:2414171
+2414.371094:BASE        : SNR: -8 RSSI: -117 Freq ERROR: -6819
+2414.970947:BASE        : Discontinuation at id: 23076 at ts: 2414971, lastid:23071 lastts:2414471
+2414.970947:BASE        : SNR: -7 RSSI: -117 Freq ERROR: -6786
+2415.470947:BASE        : Discontinuation at id: 23081 at ts: 2415470, lastid:23078 lastts:2415170
+2415.470947:BASE        : SNR: -6 RSSI: -116 Freq ERROR: -6769
+2417.571045:BASE        : Discontinuation at id: 23102 at ts: 2417571, lastid:23100 lastts:2417371
+2417.571045:BASE        : SNR: -6 RSSI: -117 Freq ERROR: -6786
+2418.470947:BASE        : Discontinuation at id: 23111 at ts: 2418471, lastid:23108 lastts:2418171
+2418.470947:BASE        : SNR: -4 RSSI: -116 Freq ERROR: -6249
+2419.270996:BASE        : Discontinuation at id: 23119 at ts: 2419270, lastid:23117 lastts:2419071
+2419.270996:BASE        : SNR: -4 RSSI: -115 Freq ERROR: -6769
+2420.072021:BASE        : Discontinuation at id: 23127 at ts: 2420071, lastid:23125 lastts:2419871
+2420.072021:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6819
+2420.770996:BASE        : Discontinuation at id: 23134 at ts: 2420771, lastid:23131 lastts:2420471
+2420.770996:BASE        : SNR: -4 RSSI: -115 Freq ERROR: -6249
+2421.271973:BASE        : Discontinuation at id: 23139 at ts: 2421271, lastid:23137 lastts:2421071
+2421.271973:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6786
+2421.571045:BASE        : Discontinuation at id: 23142 at ts: 2421571, lastid:23140 lastts:2421371
+2421.571045:BASE        : SNR: 0 RSSI: -106 Freq ERROR: -6786
+2423.970947:BASE        : Discontinuation at id: 23166 at ts: 2423971, lastid:23164 lastts:2423771
+2423.970947:BASE        : SNR: -10 RSSI: -124 Freq ERROR: -6249
+2424.571045:BASE        : Discontinuation at id: 23172 at ts: 2424571, lastid:23170 lastts:2424371
+2424.571045:BASE        : SNR: -3 RSSI: -114 Freq ERROR: -6853
+2425.071045:BASE        : Discontinuation at id: 23177 at ts: 2425070, lastid:23175 lastts:2424871
+2425.071045:BASE        : SNR: -1 RSSI: -112 Freq ERROR: -6266
+2425.371094:BASE        : Discontinuation at id: 23180 at ts: 2425370, lastid:23178 lastts:2425171
+2425.371094:BASE        : SNR: -2 RSSI: -113 Freq ERROR: -6803
+2427.770996:BASE        : Discontinuation at id: 23204 at ts: 2427771, lastid:23202 lastts:2427571
+2427.770996:BASE        : SNR: -8 RSSI: -120 Freq ERROR: -6786
+2428.371094:BASE        : Discontinuation at id: 23210 at ts: 2428371, lastid:23208 lastts:2428171
+2428.371094:BASE        : SNR: 0 RSSI: -106 Freq ERROR: -6769
+2428.571045:BASE        : Discontinuation at id: 23212 at ts: 2428571, lastid:23210 lastts:2428371
+2428.571045:BASE        : SNR: -5 RSSI: -117 Freq ERROR: -6819
+2429.571045:BASE        : Discontinuation at id: 23222 at ts: 2429571, lastid:23219 lastts:2429271
+2429.572021:BASE        : SNR: -3 RSSI: -115 Freq ERROR: -6836
+2430.071045:BASE        : Discontinuation at id: 23227 at ts: 2430071, lastid:23225 lastts:2429871
+2430.071045:BASE        : SNR: -9 RSSI: -121 Freq ERROR: -6769
+2433.172119:BASE        : Discontinuation at id: 23258 at ts: 2433171, lastid:23250 lastts:2432371
+2433.172119:BASE        : SNR: -11 RSSI: -123 Freq ERROR: -6199
+2433.670898:BASE        : Discontinuation at id: 23263 at ts: 2433671, lastid:23261 lastts:2433471
+2433.672119:BASE        : SNR: -9 RSSI: -121 Freq ERROR: -6752
+2435.270996:BASE        : Discontinuation at id: 23279 at ts: 2435270, lastid:23277 lastts:2435071
+2435.270996:BASE        : SNR: -10 RSSI: -124 Freq ERROR: -6266
+2435.871094:BASE        : Discontinuation at id: 23285 at ts: 2435871, lastid:23281 lastts:2435471
+2435.871094:BASE        : SNR: -9 RSSI: -122 Freq ERROR: -6249
+2442.371094:BASE        : Discontinuation at id: 23350 at ts: 2442371, lastid:23348 lastts:2442171
+2442.372070:BASE        : SNR: -2 RSSI: -114 Freq ERROR: -6803
+2444.571045:BASE        : Discontinuation at id: 23372 at ts: 2444571, lastid:23370 lastts:2444371
+2444.571045:BASE        : SNR: -1 RSSI: -113 Freq ERROR: -6752
+2444.871094:BASE        : Discontinuation at id: 23375 at ts: 2444871, lastid:23372 lastts:2444571
+2444.871094:BASE        : SNR: -9 RSSI: -123 Freq ERROR: -6350
+2445.071045:BASE        : Discontinuation at id: 23377 at ts: 2445071, lastid:23375 lastts:2444871
+2445.072021:BASE        : SNR: -2 RSSI: -114 Freq ERROR: -6249
+2446.170898:BASE        : Discontinuation at id: 23388 at ts: 2446171, lastid:23386 lastts:2445971
+2446.172119:BASE        : SNR: 0 RSSI: -107 Freq ERROR: -6803
+2446.670898:BASE        : Discontinuation at id: 23393 at ts: 2446671, lastid:23391 lastts:2446471
+2446.670898:BASE        : SNR: -7 RSSI: -121 Freq ERROR: -6786
+2446.872070:BASE        : Discontinuation at id: 23395 at ts: 2446871, lastid:23393 lastts:2446671
+2446.872070:BASE        : SNR: -9 RSSI: -123 Freq ERROR: -6887
+2447.270996:BASE        : Discontinuation at id: 23399 at ts: 2447271, lastid:23396 lastts:2446971
+2447.270996:BASE        : SNR: -6 RSSI: -119 Freq ERROR: -6769
+2447.470947:BASE        : Discontinuation at id: 23401 at ts: 2447470, lastid:23399 lastts:2447271
+2447.470947:BASE        : SNR: -7 RSSI: -120 Freq ERROR: -6736
+2452.571045:BASE        : Discontinuation at id: 23452 at ts: 2452571, lastid:23444 lastts:2451771
+2452.572021:BASE        : SNR: -11 RSSI: -123 Freq ERROR: -6215
+2456.670898:BASE        : Discontinuation at id: 23493 at ts: 2456671, lastid:23487 lastts:2456071
+2456.672119:BASE        : SNR: -11 RSSI: -126 Freq ERROR: -6299
+2456.970947:BASE        : Discontinuation at id: 23496 at ts: 2456971, lastid:23494 lastts:2456771
+2456.971924:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6803
+2457.170898:BASE        : Discontinuation at id: 23498 at ts: 2457171, lastid:23496 lastts:2456971
+2457.172119:BASE        : SNR: -10 RSSI: -125 Freq ERROR: -6769
+2457.371094:BASE        : Discontinuation at id: 23500 at ts: 2457371, lastid:23498 lastts:2457171
+2457.371094:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6635
+2469.371094:BASE        : Discontinuation at id: 23620 at ts: 2469371, lastid:23618 lastts:2469171
+2469.372070:BASE        : SNR: -6 RSSI: -118 Freq ERROR: -6752
+2471.071045:BASE        : Discontinuation at id: 23637 at ts: 2471071, lastid:23635 lastts:2470871
+2471.071045:BASE        : SNR: -11 RSSI: -125 Freq ERROR: -6266
+2472.871094:BASE        : Discontinuation at id: 23655 at ts: 2472871, lastid:23651 lastts:2472471
+2472.871094:BASE        : SNR: -10 RSSI: -124 Freq ERROR: -6786
+2478.170898:BASE        : Discontinuation at id: 23708 at ts: 2478171, lastid:23706 lastts:2477972
+2478.172119:BASE        : SNR: -8 RSSI: -122 Freq ERROR: -6803
+2480.071045:BASE        : Discontinuation at id: 23727 at ts: 2480071, lastid:23724 lastts:2479771
+2480.071045:BASE        : SNR: -10 RSSI: -125 Freq ERROR: -6215
+2482.970947:BASE        : Discontinuation at id: 23756 at ts: 2482971, lastid:23752 lastts:2482571
+2482.970947:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6803
+2485.470947:BASE        : Discontinuation at id: 23781 at ts: 2485471, lastid:23778 lastts:2485171
+2485.471924:BASE        : SNR: -9 RSSI: -123 Freq ERROR: -6752
+2486.672119:BASE        : Discontinuation at id: 23793 at ts: 2486671, lastid:23791 lastts:2486471
+2486.672119:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6752
+2487.371094:BASE        : Discontinuation at id: 23800 at ts: 2487371, lastid:23797 lastts:2487071
+2487.371094:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6199
+2489.670898:BASE        : Discontinuation at id: 23823 at ts: 2489671, lastid:23821 lastts:2489471
+2489.670898:BASE        : SNR: -5 RSSI: -118 Freq ERROR: -6752
+2495.770996:BASE        : Discontinuation at id: 23884 at ts: 2495771, lastid:23882 lastts:2495571
+2495.770996:BASE        : SNR: -11 RSSI: -124 Freq ERROR: -6199
+2522.970947:BASE        : Discontinuation at id: 24156 at ts: 2522971, lastid:24154 lastts:2522772
+2522.971924:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6769
+2526.470947:BASE        : Discontinuation at id: 24191 at ts: 2526471, lastid:24189 lastts:2526272
+2526.471924:BASE        : SNR: 1 RSSI: -109 Freq ERROR: -6736
+2528.271973:BASE        : Discontinuation at id: 24209 at ts: 2528271, lastid:24207 lastts:2528071
+2528.271973:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6702
+2531.172119:BASE        : Discontinuation at id: 24238 at ts: 2531171, lastid:24236 lastts:2530971
+2531.172119:BASE        : SNR: 1 RSSI: -108 Freq ERROR: -6736
+2537.071045:BASE        : Discontinuation at id: 24297 at ts: 2537071, lastid:24290 lastts:2536371
+2537.071045:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6719
+2537.670898:BASE        : Discontinuation at id: 24303 at ts: 2537671, lastid:24301 lastts:2537471
+2537.670898:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6719
+2544.271973:BASE        : Discontinuation at id: 24369 at ts: 2544271, lastid:24363 lastts:2543671
+2544.271973:BASE        : SNR: -11 RSSI: -125 Freq ERROR: -6232
+2544.770996:BASE        : Discontinuation at id: 24374 at ts: 2544771, lastid:24372 lastts:2544572
+2544.771973:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6668
+2547.571045:BASE        : Discontinuation at id: 24402 at ts: 2547571, lastid:24400 lastts:2547371
+2547.571045:BASE        : SNR: -2 RSSI: -115 Freq ERROR: -6752
+2555.470947:BASE        : Discontinuation at id: 24481 at ts: 2555471, lastid:24478 lastts:2555171
+2555.471924:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6719
+2556.471924:BASE        : Discontinuation at id: 24491 at ts: 2556471, lastid:24483 lastts:2555672
+2556.471924:BASE        : SNR: -11 RSSI: -125 Freq ERROR: -6803
+2557.372070:BASE        : Discontinuation at id: 24500 at ts: 2557372, lastid:24497 lastts:2557072
+2557.372070:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6752
+2557.871094:BASE        : Discontinuation at id: 24505 at ts: 2557871, lastid:24503 lastts:2557672
+2557.872070:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6685
+2558.771973:BASE        : Discontinuation at id: 24514 at ts: 2558771, lastid:24512 lastts:2558572
+2558.771973:BASE        : SNR: -11 RSSI: -125 Freq ERROR: -6635
+2559.770996:BASE        : Discontinuation at id: 24524 at ts: 2559771, lastid:24519 lastts:2559271
+2559.771973:BASE        : SNR: -7 RSSI: -121 Freq ERROR: -6702
+2560.071045:BASE        : Discontinuation at id: 24527 at ts: 2560071, lastid:24525 lastts:2559871
+2560.071045:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6736
+2565.771973:BASE        : Discontinuation at id: 24584 at ts: 2565772, lastid:24582 lastts:2565571
+2565.771973:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6719
+2571.072021:BASE        : Discontinuation at id: 24637 at ts: 2571072, lastid:24632 lastts:2570571
+2571.072021:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6148
+2571.372070:BASE        : Discontinuation at id: 24640 at ts: 2571372, lastid:24637 lastts:2571072
+2571.372070:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6064
+2579.371094:BASE        : Discontinuation at id: 24720 at ts: 2579371, lastid:24710 lastts:2578371
+2579.372070:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6148
+2580.572021:BASE        : Discontinuation at id: 24732 at ts: 2580571, lastid:24722 lastts:2579571
+2580.572021:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6148
+2580.872070:BASE        : Discontinuation at id: 24735 at ts: 2580871, lastid:24733 lastts:2580672
+2580.872070:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6719
+2581.172119:BASE        : Discontinuation at id: 24738 at ts: 2581171, lastid:24735 lastts:2580871
+2581.172119:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6668
+2583.572021:BASE        : Discontinuation at id: 24762 at ts: 2583572, lastid:24760 lastts:2583371
+2583.572021:BASE        : SNR: -9 RSSI: -120 Freq ERROR: -6719
+2585.572021:BASE        : Discontinuation at id: 24782 at ts: 2585572, lastid:24773 lastts:2584671
+2585.572021:BASE        : SNR: -13 RSSI: -126 Freq ERROR: -6652
+2586.071045:BASE        : Discontinuation at id: 24787 at ts: 2586071, lastid:24785 lastts:2585872
+2586.072021:BASE        : SNR: -12 RSSI: -125 Freq ERROR: -6668
+2589.770996:BASE        : Discontinuation at id: 24824 at ts: 2589771, lastid:24814 lastts:2588772
+2589.771973:BASE        : SNR: -13 RSSI: -125 Freq ERROR: -6719
+2590.172119:BASE        : Discontinuation at id: 24828 at ts: 2590171, lastid:24826 lastts:2589972
+2590.172119:BASE        : SNR: -12 RSSI: -124 Freq ERROR: -6685
+2590.371094:BASE        : Discontinuation at id: 24830 at ts: 2590371, lastid:24828 lastts:2590171
+2590.372070:BASE        : SNR: -12 RSSI: -125 Freq ERROR: -6736
+2596.072021:BASE        : Discontinuation at id: 24887 at ts: 2596072, lastid:24885 lastts:2595871
+2596.072021:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6719
+2599.872070:BASE        : Discontinuation at id: 24925 at ts: 2599872, lastid:24923 lastts:2599671
+2599.872070:BASE        : SNR: -13 RSSI: -126 Freq ERROR: -6115
+2600.471924:BASE        : Discontinuation at id: 24931 at ts: 2600472, lastid:24926 lastts:2599971
+2600.471924:BASE        : SNR: -14 RSSI: -127 Freq ERROR: -6232
+2608.572021:BASE        : Discontinuation at id: 25012 at ts: 2608572, lastid:25009 lastts:2608272
+2608.572021:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6249
+2609.971924:BASE        : Discontinuation at id: 25026 at ts: 2609972, lastid:25024 lastts:2609772
+2609.971924:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6887
+2610.271973:BASE        : Discontinuation at id: 25029 at ts: 2610272, lastid:25027 lastts:2610072
+2610.271973:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6769
+2610.872070:BASE        : Discontinuation at id: 25035 at ts: 2610872, lastid:25030 lastts:2610371
+2610.872070:BASE        : SNR: -11 RSSI: -125 Freq ERROR: -6803
+2612.672119:BASE        : Discontinuation at id: 25053 at ts: 2612672, lastid:25044 lastts:2611772
+2612.672119:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6064
+2612.971924:BASE        : Discontinuation at id: 25056 at ts: 2612972, lastid:25053 lastts:2612672
+2612.971924:BASE        : SNR: -14 RSSI: -127 Freq ERROR: -6232
+2613.871094:BASE        : Discontinuation at id: 25065 at ts: 2613871, lastid:25057 lastts:2613071
+2613.871094:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6736
+2617.872070:BASE        : Discontinuation at id: 25105 at ts: 2617872, lastid:25088 lastts:2616172
+2617.872070:BASE        : SNR: -13 RSSI: -126 Freq ERROR: -6148
+2621.372070:BASE        : Discontinuation at id: 25140 at ts: 2621372, lastid:25137 lastts:2621072
+2621.372070:BASE        : SNR: -11 RSSI: -124 Freq ERROR: -6752
+2645.571045:BASE        : Discontinuation at id: 25382 at ts: 2645571, lastid:25380 lastts:2645371
+2645.572021:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6702
+2645.871094:BASE        : Discontinuation at id: 25385 at ts: 2645871, lastid:25383 lastts:2645671
+2645.872070:BASE        : SNR: -11 RSSI: -126 Freq ERROR: -6702
+2650.270996:BASE        : Discontinuation at id: 25429 at ts: 2650271, lastid:25427 lastts:2650071
+2650.271973:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6685
+2650.571045:BASE        : Discontinuation at id: 25432 at ts: 2650571, lastid:25429 lastts:2650271
+2650.572021:BASE        : SNR: -14 RSSI: -128 Freq ERROR: -6668
+2650.871094:BASE        : Discontinuation at id: 25435 at ts: 2650871, lastid:25433 lastts:2650672
+2650.872070:BASE        : SNR: -12 RSSI: -125 Freq ERROR: -6736
+2651.372070:BASE        : Discontinuation at id: 25440 at ts: 2651372, lastid:25438 lastts:2651171
+2651.373047:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6769
+2652.771973:BASE        : Discontinuation at id: 25454 at ts: 2652772, lastid:25450 lastts:2652371
+2652.771973:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6736
+2653.271973:BASE        : Discontinuation at id: 25459 at ts: 2653271, lastid:25457 lastts:2653072
+2653.271973:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6819
+2659.172119:BASE        : Discontinuation at id: 25518 at ts: 2659172, lastid:25516 lastts:2658971
+2659.172119:BASE        : SNR: -3 RSSI: -116 Freq ERROR: -6752
+2662.072021:BASE        : Discontinuation at id: 25547 at ts: 2662072, lastid:25545 lastts:2661871
+2662.072021:BASE        : SNR: -5 RSSI: -118 Freq ERROR: -6769
+2664.871094:BASE        : Discontinuation at id: 25575 at ts: 2664871, lastid:25573 lastts:2664672
+2664.872070:BASE        : SNR: -12 RSSI: -125 Freq ERROR: -6736
+2666.270996:BASE        : Discontinuation at id: 25589 at ts: 2666271, lastid:25585 lastts:2665872
+2666.271973:BASE        : SNR: -9 RSSI: -122 Freq ERROR: -6752
+2669.271973:BASE        : Discontinuation at id: 25619 at ts: 2669271, lastid:25609 lastts:2668271
+2669.271973:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6266
+2670.670898:BASE        : Discontinuation at id: 25633 at ts: 2670671, lastid:25620 lastts:2669372
+2670.672119:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6182
+2671.672119:BASE        : Discontinuation at id: 25643 at ts: 2671672, lastid:25633 lastts:2670671
+2671.672119:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6752
+2672.371094:BASE        : Discontinuation at id: 25650 at ts: 2672371, lastid:25648 lastts:2672171
+2672.372070:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6819
+2672.670898:BASE        : Discontinuation at id: 25653 at ts: 2672671, lastid:25651 lastts:2672471
+2672.672119:BASE        : SNR: -15 RSSI: -129 Freq ERROR: -6752
+2672.970947:BASE        : Discontinuation at id: 25656 at ts: 2672971, lastid:25653 lastts:2672671
+2672.971924:BASE        : SNR: -14 RSSI: -128 Freq ERROR: -6148
+2673.471924:BASE        : Discontinuation at id: 25661 at ts: 2673472, lastid:25658 lastts:2673172
+2673.472900:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6803
+2674.471924:BASE        : Discontinuation at id: 25671 at ts: 2674471, lastid:25664 lastts:2673772
+2674.471924:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6752
+2675.471924:BASE        : Discontinuation at id: 25681 at ts: 2675472, lastid:25672 lastts:2674572
+2675.471924:BASE        : SNR: -14 RSSI: -128 Freq ERROR: -6736
+2675.672119:BASE        : Discontinuation at id: 25683 at ts: 2675671, lastid:25681 lastts:2675472
+2675.672119:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6752
+2676.672119:BASE        : Discontinuation at id: 25693 at ts: 2676672, lastid:25691 lastts:2676471
+2676.673096:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6702
+2677.172119:BASE        : Discontinuation at id: 25698 at ts: 2677172, lastid:25695 lastts:2676872
+2677.172119:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6182
+2679.471924:BASE        : Discontinuation at id: 25721 at ts: 2679471, lastid:25718 lastts:2679172
+2679.471924:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6199
+2680.270996:BASE        : Discontinuation at id: 25729 at ts: 2680271, lastid:25726 lastts:2679971
+2680.271973:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6199
+2680.770996:BASE        : Discontinuation at id: 25734 at ts: 2680771, lastid:25732 lastts:2680571
+2680.771973:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6702
+2702.172119:BASE        : Discontinuation at id: 25948 at ts: 2702172, lastid:25946 lastts:2701972
+2702.172119:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6769
+2717.672119:BASE        : Discontinuation at id: 26103 at ts: 2717672, lastid:26101 lastts:2717471
+2717.673096:BASE        : SNR: -8 RSSI: -123 Freq ERROR: -6752
+2730.072021:BASE        : Discontinuation at id: 26227 at ts: 2730072, lastid:26225 lastts:2729872
+2730.072021:BASE        : SNR: -2 RSSI: -114 Freq ERROR: -6786
+2732.372070:BASE        : Discontinuation at id: 26250 at ts: 2732372, lastid:26248 lastts:2732172
+2732.372070:BASE        : SNR: -3 RSSI: -114 Freq ERROR: -6786
+2736.670898:BASE        : Discontinuation at id: 26293 at ts: 2736671, lastid:26291 lastts:2736472
+2736.672119:BASE        : SNR: -14 RSSI: -123 Freq ERROR: -6752
+2736.971924:BASE        : Discontinuation at id: 26296 at ts: 2736971, lastid:26293 lastts:2736671
+2736.971924:BASE        : SNR: -12 RSSI: -121 Freq ERROR: -6769
+2739.672119:BASE        : Discontinuation at id: 26323 at ts: 2739672, lastid:26321 lastts:2739472
+2739.672119:BASE        : SNR: -9 RSSI: -120 Freq ERROR: -6752
+2740.072021:BASE        : Discontinuation at id: 26327 at ts: 2740072, lastid:26325 lastts:2739871
+2740.072998:BASE        : SNR: -6 RSSI: -117 Freq ERROR: -6786
+2744.770996:BASE        : Discontinuation at id: 26374 at ts: 2744771, lastid:26356 lastts:2742972
+2744.771973:BASE        : SNR: -14 RSSI: -126 Freq ERROR: -6819
+2747.572021:BASE        : Discontinuation at id: 26402 at ts: 2747572, lastid:26376 lastts:2744972
+2747.572021:BASE        : SNR: -12 RSSI: -124 Freq ERROR: -6719
+2749.372070:BASE        : Discontinuation at id: 26420 at ts: 2749372, lastid:26410 lastts:2748372
+2749.373047:BASE        : SNR: -11 RSSI: -124 Freq ERROR: -6736
+2752.471924:BASE        : Discontinuation at id: 26451 at ts: 2752472, lastid:26448 lastts:2752172
+2752.471924:BASE        : SNR: -10 RSSI: -122 Freq ERROR: -6769
+2754.072021:BASE        : Discontinuation at id: 26467 at ts: 2754072, lastid:26465 lastts:2753871
+2754.072998:BASE        : SNR: 0 RSSI: -108 Freq ERROR: -6769
+2755.270996:BASE        : Discontinuation at id: 26479 at ts: 2755271, lastid:26477 lastts:2755072
+2755.271973:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6803
+2755.971924:BASE        : Discontinuation at id: 26486 at ts: 2755972, lastid:26483 lastts:2755672
+2755.971924:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6232
+2756.572021:BASE        : Discontinuation at id: 26492 at ts: 2756572, lastid:26490 lastts:2756372
+2756.572021:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6719
+2757.271973:BASE        : Discontinuation at id: 26499 at ts: 2757272, lastid:26497 lastts:2757071
+2757.272949:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6870
+2757.571045:BASE        : Discontinuation at id: 26502 at ts: 2757571, lastid:26500 lastts:2757371
+2757.572021:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -6803
+2757.871094:BASE        : Discontinuation at id: 26505 at ts: 2757871, lastid:26503 lastts:2757671
+2757.872070:BASE        : SNR: -11 RSSI: -126 Freq ERROR: -6199
+2758.072021:BASE        : Discontinuation at id: 26507 at ts: 2758072, lastid:26505 lastts:2757871
+2758.072998:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6786
+2758.470947:BASE        : Discontinuation at id: 26511 at ts: 2758471, lastid:26507 lastts:2758072
+2758.471924:BASE        : SNR: -8 RSSI: -123 Freq ERROR: -6199
+2759.271973:BASE        : Discontinuation at id: 26519 at ts: 2759272, lastid:26516 lastts:2758972
+2759.272949:BASE        : SNR: -9 RSSI: -123 Freq ERROR: -6752
+2759.471924:BASE        : Discontinuation at id: 26521 at ts: 2759472, lastid:26519 lastts:2759272
+2759.471924:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6752
+2760.971924:BASE        : Discontinuation at id: 26536 at ts: 2760972, lastid:26534 lastts:2760771
+2760.972900:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6752
+2761.271973:BASE        : Discontinuation at id: 26539 at ts: 2761272, lastid:26537 lastts:2761071
+2761.271973:BASE        : SNR: -3 RSSI: -118 Freq ERROR: -6769
+2770.271973:BASE        : Discontinuation at id: 26629 at ts: 2770272, lastid:26627 lastts:2770072
+2770.271973:BASE        : SNR: -2 RSSI: -115 Freq ERROR: -6752
+2773.271973:BASE        : Discontinuation at id: 26659 at ts: 2773272, lastid:26657 lastts:2773071
+2773.272949:BASE        : SNR: 2 RSSI: -107 Freq ERROR: -6736
+2776.172119:BASE        : Discontinuation at id: 26688 at ts: 2776172, lastid:26686 lastts:2775971
+2776.173096:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6736
+2777.172119:BASE        : Discontinuation at id: 26698 at ts: 2777172, lastid:26696 lastts:2776972
+2777.172119:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6215
+2777.971924:BASE        : Discontinuation at id: 26706 at ts: 2777971, lastid:26704 lastts:2777772
+2777.971924:BASE        : SNR: -3 RSSI: -116 Freq ERROR: -6182
+2778.672119:BASE        : Discontinuation at id: 26713 at ts: 2778672, lastid:26711 lastts:2778472
+2778.672119:BASE        : SNR: -6 RSSI: -120 Freq ERROR: -6668
+2780.471924:BASE        : Discontinuation at id: 26731 at ts: 2780472, lastid:26728 lastts:2780172
+2780.472900:BASE        : SNR: -9 RSSI: -124 Freq ERROR: -6719
+2780.771973:BASE        : Discontinuation at id: 26734 at ts: 2780772, lastid:26732 lastts:2780571
+2780.772949:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6652
+2781.572021:BASE        : Discontinuation at id: 26742 at ts: 2781572, lastid:26739 lastts:2781272
+2781.572021:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6719
+2782.572021:BASE        : Discontinuation at id: 26752 at ts: 2782572, lastid:26750 lastts:2782371
+2782.572998:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6752
+2783.271973:BASE        : Discontinuation at id: 26759 at ts: 2783272, lastid:26757 lastts:2783072
+2783.271973:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6736
+2784.071045:BASE        : Discontinuation at id: 26767 at ts: 2784071, lastid:26765 lastts:2783872
+2784.072021:BASE        : SNR: -11 RSSI: -126 Freq ERROR: -6148
+2784.372070:BASE        : Discontinuation at id: 26770 at ts: 2784371, lastid:26768 lastts:2784172
+2784.372070:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6215
+2784.572021:BASE        : Discontinuation at id: 26772 at ts: 2784572, lastid:26770 lastts:2784371
+2784.572998:BASE        : SNR: -11 RSSI: -126 Freq ERROR: -6182
+2784.771973:BASE        : Discontinuation at id: 26774 at ts: 2784772, lastid:26772 lastts:2784572
+2784.771973:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6199
+2784.971924:BASE        : Discontinuation at id: 26776 at ts: 2784971, lastid:26774 lastts:2784772
+2784.971924:BASE        : SNR: -5 RSSI: -118 Freq ERROR: -6668
+2785.172119:BASE        : Discontinuation at id: 26778 at ts: 2785172, lastid:26776 lastts:2784971
+2785.173096:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6685
+2785.771973:BASE        : Discontinuation at id: 26784 at ts: 2785772, lastid:26782 lastts:2785571
+2785.772949:BASE        : SNR: -8 RSSI: -122 Freq ERROR: -6215
+2787.072021:BASE        : Discontinuation at id: 26797 at ts: 2787072, lastid:26794 lastts:2786772
+2787.072021:BASE        : SNR: -13 RSSI: -123 Freq ERROR: -6283
+2788.471924:BASE        : Discontinuation at id: 26811 at ts: 2788471, lastid:26801 lastts:2787472
+2788.471924:BASE        : SNR: -13 RSSI: -121 Freq ERROR: -6652
+2789.871094:BASE        : Discontinuation at id: 26825 at ts: 2789871, lastid:26811 lastts:2788471
+2789.872070:BASE        : SNR: -13 RSSI: -120 Freq ERROR: -6736
+2790.672119:BASE        : Discontinuation at id: 26833 at ts: 2790672, lastid:26831 lastts:2790471
+2790.673096:BASE        : SNR: -13 RSSI: -121 Freq ERROR: -6786
+2790.971924:BASE        : Discontinuation at id: 26836 at ts: 2790972, lastid:26833 lastts:2790672
+2790.972900:BASE        : SNR: -14 RSSI: -122 Freq ERROR: -6098
+2791.471924:BASE        : Discontinuation at id: 26841 at ts: 2791472, lastid:26836 lastts:2790972
+2791.471924:BASE        : SNR: -14 RSSI: -123 Freq ERROR: -6685
+2791.672119:BASE        : Discontinuation at id: 26843 at ts: 2791671, lastid:26841 lastts:2791472
+2791.672119:BASE        : SNR: -14 RSSI: -122 Freq ERROR: -6652
+2793.071045:BASE        : Discontinuation at id: 26857 at ts: 2793071, lastid:26843 lastts:2791671
+2793.072021:BASE        : SNR: -14 RSSI: -124 Freq ERROR: -6652
+2793.371094:BASE        : Discontinuation at id: 26860 at ts: 2793371, lastid:26857 lastts:2793071
+2793.372070:BASE        : SNR: -13 RSSI: -122 Freq ERROR: -6148
+2794.771973:BASE        : Discontinuation at id: 26874 at ts: 2794772, lastid:26860 lastts:2793371
+2794.772949:BASE        : SNR: -14 RSSI: -126 Freq ERROR: -6752
+2795.872070:BASE        : Discontinuation at id: 26885 at ts: 2795872, lastid:26875 lastts:2794871
+2795.872070:BASE        : SNR: -9 RSSI: -122 Freq ERROR: -6736
+2796.672119:BASE        : Discontinuation at id: 26893 at ts: 2796672, lastid:26891 lastts:2796472
+2796.672119:BASE        : SNR: -5 RSSI: -118 Freq ERROR: -6199
+2800.271973:BASE        : Discontinuation at id: 26929 at ts: 2800272, lastid:26927 lastts:2800071
+2800.272949:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6736
+2801.471924:BASE        : Discontinuation at id: 26941 at ts: 2801472, lastid:26939 lastts:2801272
+2801.472900:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6165
+2802.971924:BASE        : Discontinuation at id: 26956 at ts: 2802971, lastid:26954 lastts:2802772
+2802.971924:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6199
+2804.072021:BASE        : Discontinuation at id: 26967 at ts: 2804072, lastid:26965 lastts:2803871
+2804.072998:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6685
+2805.271973:BASE        : Discontinuation at id: 26979 at ts: 2805272, lastid:26976 lastts:2804972
+2805.272949:BASE        : SNR: -10 RSSI: -125 Freq ERROR: -6115
+2805.471924:BASE        : Discontinuation at id: 26981 at ts: 2805472, lastid:26979 lastts:2805272
+2805.472900:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6165
+2807.172119:BASE        : Discontinuation at id: 26998 at ts: 2807172, lastid:26996 lastts:2806972
+2807.172119:BASE        : SNR: -9 RSSI: -124 Freq ERROR: -6736
+2807.372070:BASE        : Discontinuation at id: 27000 at ts: 2807372, lastid:26998 lastts:2807172
+2807.372070:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6769
+2807.672119:BASE        : Discontinuation at id: 27003 at ts: 2807671, lastid:27001 lastts:2807472
+2807.672119:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6182
+2808.372070:BASE        : Discontinuation at id: 27010 at ts: 2808372, lastid:27007 lastts:2808072
+2808.373047:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6769
+2809.471924:BASE        : Discontinuation at id: 27021 at ts: 2809472, lastid:27019 lastts:2809272
+2809.471924:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6685
+2810.672119:BASE        : Discontinuation at id: 27033 at ts: 2810672, lastid:27031 lastts:2810472
+2810.672119:BASE        : SNR: -6 RSSI: -120 Freq ERROR: -6736
+2811.072021:BASE        : Discontinuation at id: 27037 at ts: 2811072, lastid:27035 lastts:2810871
+2811.072998:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6182
+2811.372070:BASE        : Discontinuation at id: 27040 at ts: 2811372, lastid:27038 lastts:2811172
+2811.373047:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6719
+2811.672119:BASE        : Discontinuation at id: 27043 at ts: 2811672, lastid:27041 lastts:2811472
+2811.673096:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6752
+2812.270996:BASE        : Discontinuation at id: 27049 at ts: 2812271, lastid:27047 lastts:2812072
+2812.271973:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6685
+2815.672119:BASE        : Discontinuation at id: 27083 at ts: 2815672, lastid:27080 lastts:2815372
+2815.673096:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6182
+2815.872070:BASE        : Discontinuation at id: 27085 at ts: 2815872, lastid:27083 lastts:2815672
+2815.872070:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6719
+2825.971924:BASE        : Discontinuation at id: 27186 at ts: 2825971, lastid:27184 lastts:2825772
+2825.971924:BASE        : SNR: 1 RSSI: -109 Freq ERROR: -6719
+2838.072021:BASE        : Discontinuation at id: 27307 at ts: 2838072, lastid:27305 lastts:2837871
+2838.072998:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6719
+2838.372070:BASE        : Discontinuation at id: 27310 at ts: 2838372, lastid:27308 lastts:2838171
+2838.373047:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6752
+2839.471924:BASE        : Discontinuation at id: 27321 at ts: 2839472, lastid:27319 lastts:2839272
+2839.472900:BASE        : SNR: -1 RSSI: -115 Freq ERROR: -6752
+2841.572021:BASE        : Discontinuation at id: 27342 at ts: 2841572, lastid:27340 lastts:2841371
+2841.572998:BASE        : SNR: -1 RSSI: -115 Freq ERROR: -6736
+2844.872070:BASE        : Discontinuation at id: 27375 at ts: 2844871, lastid:27372 lastts:2844571
+2844.872070:BASE        : SNR: -9 RSSI: -124 Freq ERROR: -6148
+2845.271973:BASE        : Discontinuation at id: 27379 at ts: 2845272, lastid:27375 lastts:2844871
+2845.271973:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6232
+2845.771973:BASE        : Discontinuation at id: 27384 at ts: 2845772, lastid:27382 lastts:2845572
+2845.771973:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6803
+2846.672119:BASE        : Discontinuation at id: 27393 at ts: 2846672, lastid:27389 lastts:2846272
+2846.672119:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6719
+2847.372070:BASE        : Discontinuation at id: 27400 at ts: 2847372, lastid:27398 lastts:2847171
+2847.373047:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6752
+2847.672119:BASE        : Discontinuation at id: 27403 at ts: 2847672, lastid:27401 lastts:2847471
+2847.673096:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6752
+2847.872070:BASE        : Discontinuation at id: 27405 at ts: 2847872, lastid:27403 lastts:2847672
+2847.872070:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6752
+2848.372070:BASE        : Discontinuation at id: 27410 at ts: 2848372, lastid:27408 lastts:2848172
+2848.372070:BASE        : SNR: -6 RSSI: -122 Freq ERROR: -6132
+2849.872070:BASE        : Discontinuation at id: 27425 at ts: 2849872, lastid:27420 lastts:2849372
+2849.872070:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6685
+2850.971924:BASE        : Discontinuation at id: 27436 at ts: 2850971, lastid:27432 lastts:2850572
+2850.971924:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6215
+2851.271973:BASE        : Discontinuation at id: 27439 at ts: 2851271, lastid:27437 lastts:2851072
+2851.271973:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6769
+2852.172119:BASE        : Discontinuation at id: 27448 at ts: 2852172, lastid:27446 lastts:2851972
+2852.172119:BASE        : SNR: 0 RSSI: -111 Freq ERROR: -6736
+2852.771973:BASE        : Discontinuation at id: 27454 at ts: 2852772, lastid:27451 lastts:2852472
+2852.771973:BASE        : SNR: -1 RSSI: -115 Freq ERROR: -6752
+2853.471924:BASE        : Discontinuation at id: 27461 at ts: 2853472, lastid:27459 lastts:2853272
+2853.472900:BASE        : SNR: -1 RSSI: -115 Freq ERROR: -6736
+2856.072021:BASE        : Discontinuation at id: 27487 at ts: 2856072, lastid:27484 lastts:2855772
+2856.072998:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6215
+2858.172119:BASE        : Discontinuation at id: 27508 at ts: 2858172, lastid:27506 lastts:2857972
+2858.173096:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6215
+2864.271973:BASE        : Discontinuation at id: 27569 at ts: 2864272, lastid:27567 lastts:2864072
+2864.272949:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6719
+2864.471924:BASE        : Discontinuation at id: 27571 at ts: 2864472, lastid:27569 lastts:2864272
+2864.471924:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6266
+2867.471924:BASE        : Discontinuation at id: 27601 at ts: 2867472, lastid:27599 lastts:2867271
+2867.472900:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6736
+2869.172119:BASE        : Discontinuation at id: 27618 at ts: 2869172, lastid:27616 lastts:2868972
+2869.173096:BASE        : SNR: -3 RSSI: -118 Freq ERROR: -6786
+2869.971924:BASE        : Discontinuation at id: 27626 at ts: 2869972, lastid:27624 lastts:2869772
+2869.971924:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6786
+2871.172119:BASE        : Discontinuation at id: 27638 at ts: 2871172, lastid:27636 lastts:2870972
+2871.173096:BASE        : SNR: -5 RSSI: -121 Freq ERROR: -6752
+2880.271973:BASE        : Discontinuation at id: 27729 at ts: 2880272, lastid:27727 lastts:2880072
+2880.272949:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6769
+2881.372070:BASE        : Discontinuation at id: 27740 at ts: 2881372, lastid:27738 lastts:2881172
+2881.373047:BASE        : SNR: 0 RSSI: -111 Freq ERROR: -6752
+2881.572021:BASE        : Discontinuation at id: 27742 at ts: 2881572, lastid:27740 lastts:2881372
+2881.572021:BASE        : SNR: -1 RSSI: -115 Freq ERROR: -6752
+2885.471924:BASE        : Discontinuation at id: 27781 at ts: 2885472, lastid:27779 lastts:2885272
+2885.472900:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6752
+2885.771973:BASE        : Discontinuation at id: 27784 at ts: 2885772, lastid:27782 lastts:2885572
+2885.772949:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6786
+2888.872070:BASE        : Discontinuation at id: 27815 at ts: 2888872, lastid:27813 lastts:2888672
+2888.872070:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6752
+2889.172119:BASE        : Discontinuation at id: 27818 at ts: 2889172, lastid:27816 lastts:2888972
+2889.173096:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6803
+2889.471924:BASE        : Discontinuation at id: 27821 at ts: 2889472, lastid:27818 lastts:2889172
+2889.472900:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6803
+2890.271973:BASE        : Discontinuation at id: 27829 at ts: 2890272, lastid:27827 lastts:2890072
+2890.271973:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6786
+2890.572021:BASE        : Discontinuation at id: 27832 at ts: 2890572, lastid:27830 lastts:2890372
+2890.572021:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6769
+2890.971924:BASE        : Discontinuation at id: 27836 at ts: 2890972, lastid:27834 lastts:2890772
+2890.972900:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6232
+2891.271973:BASE        : Discontinuation at id: 27839 at ts: 2891272, lastid:27836 lastts:2890972
+2891.272949:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6215
+2891.673096:BASE        : Discontinuation at id: 27843 at ts: 2891672, lastid:27840 lastts:2891373
+2891.673096:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6215
+2897.271973:BASE        : Discontinuation at id: 27899 at ts: 2897272, lastid:27897 lastts:2897072
+2897.271973:BASE        : SNR: -3 RSSI: -118 Freq ERROR: -6769
+2903.272949:BASE        : Discontinuation at id: 27959 at ts: 2903272, lastid:27957 lastts:2903072
+2903.272949:BASE        : SNR: 0 RSSI: -111 Freq ERROR: -6752
+2908.271973:BASE        : Discontinuation at id: 28009 at ts: 2908271, lastid:28007 lastts:2908072
+2908.271973:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6736
+2908.672119:BASE        : Discontinuation at id: 28013 at ts: 2908672, lastid:28011 lastts:2908472
+2908.672119:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6736
+2909.271973:BASE        : Discontinuation at id: 28019 at ts: 2909272, lastid:28017 lastts:2909072
+2909.272949:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -6786
+2909.471924:BASE        : Discontinuation at id: 28021 at ts: 2909472, lastid:28019 lastts:2909272
+2909.471924:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6752
+2915.271973:BASE        : Discontinuation at id: 28079 at ts: 2915272, lastid:28076 lastts:2914972
+2915.271973:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6719
+2915.772949:BASE        : Discontinuation at id: 28084 at ts: 2915772, lastid:28082 lastts:2915572
+2915.772949:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6752
+2918.771973:BASE        : Discontinuation at id: 28114 at ts: 2918772, lastid:28112 lastts:2918572
+2918.771973:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6752
+2921.072021:BASE        : Discontinuation at id: 28137 at ts: 2921072, lastid:28135 lastts:2920872
+2921.072021:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6736
+2922.772949:BASE        : Discontinuation at id: 28154 at ts: 2922772, lastid:28152 lastts:2922572
+2922.772949:BASE        : SNR: -2 RSSI: -117 Freq ERROR: -6752
+2922.971924:BASE        : Discontinuation at id: 28156 at ts: 2922972, lastid:28154 lastts:2922772
+2922.972900:BASE        : SNR: -2 RSSI: -116 Freq ERROR: -6752
+2925.271973:BASE        : Discontinuation at id: 28179 at ts: 2925272, lastid:28177 lastts:2925072
+2925.272949:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6736
+2925.972900:BASE        : Discontinuation at id: 28186 at ts: 2925972, lastid:28184 lastts:2925772
+2925.972900:BASE        : SNR: -3 RSSI: -116 Freq ERROR: -6736
+2926.873047:BASE        : Discontinuation at id: 28195 at ts: 2926872, lastid:28193 lastts:2926672
+2926.873047:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6215
+2929.072021:BASE        : Discontinuation at id: 28217 at ts: 2929072, lastid:28215 lastts:2928872
+2929.072998:BASE        : SNR: -2 RSSI: -116 Freq ERROR: -6752
+2929.472900:BASE        : Discontinuation at id: 28221 at ts: 2929472, lastid:28219 lastts:2929272
+2929.472900:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6769
+2930.572021:BASE        : Discontinuation at id: 28232 at ts: 2930572, lastid:28229 lastts:2930272
+2930.572998:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6232
+2931.271973:BASE        : Discontinuation at id: 28239 at ts: 2931272, lastid:28237 lastts:2931072
+2931.271973:BASE        : SNR: -6 RSSI: -122 Freq ERROR: -6752
+2931.472900:BASE        : Discontinuation at id: 28241 at ts: 2931472, lastid:28239 lastts:2931272
+2931.472900:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6182
+2931.672119:BASE        : Discontinuation at id: 28243 at ts: 2931672, lastid:28241 lastts:2931472
+2931.673096:BASE        : SNR: -5 RSSI: -121 Freq ERROR: -6752
+2932.373047:BASE        : Discontinuation at id: 28250 at ts: 2932373, lastid:28248 lastts:2932172
+2932.373047:BASE        : SNR: -3 RSSI: -118 Freq ERROR: -6736
+2933.172119:BASE        : Discontinuation at id: 28258 at ts: 2933172, lastid:28256 lastts:2932973
+2933.173096:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6752
+2933.572021:BASE        : Discontinuation at id: 28262 at ts: 2933572, lastid:28260 lastts:2933372
+2933.572021:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6719
+2934.172119:BASE        : Discontinuation at id: 28268 at ts: 2934172, lastid:28266 lastts:2933972
+2934.172119:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6736
+2935.672119:BASE        : Discontinuation at id: 28283 at ts: 2935672, lastid:28281 lastts:2935472
+2935.672119:BASE        : SNR: -8 RSSI: -123 Freq ERROR: -6215
+2936.372070:BASE        : Discontinuation at id: 28290 at ts: 2936372, lastid:28288 lastts:2936173
+2936.373047:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6786
+2937.872070:BASE        : Discontinuation at id: 28305 at ts: 2937872, lastid:28303 lastts:2937672
+2937.873047:BASE        : SNR: -4 RSSI: -118 Freq ERROR: -6736
+2938.072021:BASE        : Discontinuation at id: 28307 at ts: 2938072, lastid:28305 lastts:2937872
+2938.072998:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6752
+2938.971924:BASE        : Discontinuation at id: 28316 at ts: 2938972, lastid:28314 lastts:2938772
+2938.972900:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6803
+2939.373047:BASE        : Discontinuation at id: 28320 at ts: 2939373, lastid:28316 lastts:2938972
+2939.373047:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6165
+2939.673096:BASE        : Discontinuation at id: 28323 at ts: 2939673, lastid:28321 lastts:2939472
+2939.673096:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6215
+2939.872070:BASE        : Discontinuation at id: 28325 at ts: 2939872, lastid:28323 lastts:2939673
+2939.873047:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6752
+2940.672119:BASE        : Discontinuation at id: 28333 at ts: 2940672, lastid:28331 lastts:2940472
+2940.673096:BASE        : SNR: -10 RSSI: -125 Freq ERROR: -6215
+2940.971924:BASE        : Discontinuation at id: 28336 at ts: 2940972, lastid:28334 lastts:2940772
+2940.972900:BASE        : SNR: -6 RSSI: -120 Freq ERROR: -6165
+2941.271973:BASE        : Discontinuation at id: 28339 at ts: 2941272, lastid:28337 lastts:2941072
+2941.272949:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6685
+2941.572021:BASE        : Discontinuation at id: 28342 at ts: 2941572, lastid:28340 lastts:2941372
+2941.572998:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6769
+2941.972900:BASE        : Discontinuation at id: 28346 at ts: 2941972, lastid:28344 lastts:2941772
+2941.972900:BASE        : SNR: -2 RSSI: -116 Freq ERROR: -6736
+2942.471924:BASE        : Discontinuation at id: 28351 at ts: 2942472, lastid:28349 lastts:2942273
+2942.472900:BASE        : SNR: -8 RSSI: -123 Freq ERROR: -6702
+2943.172119:BASE        : Discontinuation at id: 28358 at ts: 2943172, lastid:28356 lastts:2942972
+2943.172119:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6736
+2943.673096:BASE        : Discontinuation at id: 28363 at ts: 2943672, lastid:28361 lastts:2943472
+2943.673096:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6752
+2943.971924:BASE        : Discontinuation at id: 28366 at ts: 2943972, lastid:28363 lastts:2943672
+2943.972900:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6736
+2944.372070:BASE        : Discontinuation at id: 28370 at ts: 2944372, lastid:28368 lastts:2944172
+2944.372070:BASE        : SNR: -3 RSSI: -118 Freq ERROR: -6769
+2945.072021:BASE        : Discontinuation at id: 28377 at ts: 2945072, lastid:28375 lastts:2944872
+2945.072998:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6786
+2945.971924:BASE        : Discontinuation at id: 28386 at ts: 2945972, lastid:28384 lastts:2945773
+2945.972900:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6736
+2947.173096:BASE        : Discontinuation at id: 28398 at ts: 2947172, lastid:28396 lastts:2946972
+2947.173096:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6736
+2947.372070:BASE        : Discontinuation at id: 28400 at ts: 2947372, lastid:28398 lastts:2947172
+2947.373047:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6769
+2947.672119:BASE        : Discontinuation at id: 28403 at ts: 2947672, lastid:28401 lastts:2947472
+2947.673096:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6685
+2947.971924:BASE        : Discontinuation at id: 28406 at ts: 2947972, lastid:28404 lastts:2947772
+2947.972900:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6736
+2949.072021:BASE        : Discontinuation at id: 28417 at ts: 2949072, lastid:28415 lastts:2948872
+2949.072021:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6182
+2949.572021:BASE        : Discontinuation at id: 28422 at ts: 2949572, lastid:28420 lastts:2949372
+2949.572021:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6215
+2950.373047:BASE        : Discontinuation at id: 28430 at ts: 2950372, lastid:28428 lastts:2950172
+2950.373047:BASE        : SNR: -3 RSSI: -118 Freq ERROR: -6182
+2952.271973:BASE        : Discontinuation at id: 28449 at ts: 2952272, lastid:28447 lastts:2952072
+2952.271973:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6719
+2952.972900:BASE        : Discontinuation at id: 28456 at ts: 2952972, lastid:28454 lastts:2952772
+2952.972900:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6736
+2953.372070:BASE        : Discontinuation at id: 28460 at ts: 2953372, lastid:28458 lastts:2953172
+2953.372070:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6752
+2953.771973:BASE        : Discontinuation at id: 28464 at ts: 2953772, lastid:28462 lastts:2953572
+2953.772949:BASE        : SNR: -1 RSSI: -114 Freq ERROR: -6199
+2954.372070:BASE        : Discontinuation at id: 28470 at ts: 2954372, lastid:28468 lastts:2954172
+2954.373047:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6736
+2954.572021:BASE        : Discontinuation at id: 28472 at ts: 2954572, lastid:28470 lastts:2954372
+2954.572021:BASE        : SNR: 0 RSSI: -111 Freq ERROR: -6719
+2954.872070:BASE        : Discontinuation at id: 28475 at ts: 2954872, lastid:28473 lastts:2954672
+2954.872070:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6819
+2955.373047:BASE        : Discontinuation at id: 28480 at ts: 2955373, lastid:28478 lastts:2955172
+2955.373047:BASE        : SNR: 0 RSSI: -111 Freq ERROR: -6736
+2958.172119:BASE        : Discontinuation at id: 28508 at ts: 2958172, lastid:28506 lastts:2957973
+2958.173096:BASE        : SNR: -10 RSSI: -125 Freq ERROR: -6769
+2959.271973:BASE        : Discontinuation at id: 28519 at ts: 2959272, lastid:28517 lastts:2959072
+2959.272949:BASE        : SNR: -2 RSSI: -117 Freq ERROR: -6736
+2960.471924:BASE        : Discontinuation at id: 28531 at ts: 2960472, lastid:28529 lastts:2960272
+2960.472900:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6719
+2961.173096:BASE        : Discontinuation at id: 28538 at ts: 2961173, lastid:28536 lastts:2960972
+2961.173096:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6215
+2961.572021:BASE        : Discontinuation at id: 28542 at ts: 2961572, lastid:28540 lastts:2961372
+2961.572998:BASE        : SNR: -1 RSSI: -115 Freq ERROR: -6752
+2961.872070:BASE        : Discontinuation at id: 28545 at ts: 2961872, lastid:28543 lastts:2961672
+2961.872070:BASE        : SNR: -2 RSSI: -116 Freq ERROR: -6803
+2962.771973:BASE        : Discontinuation at id: 28554 at ts: 2962772, lastid:28552 lastts:2962572
+2962.772949:BASE        : SNR: 1 RSSI: -108 Freq ERROR: -6215
+2963.872070:BASE        : Discontinuation at id: 28565 at ts: 2963872, lastid:28563 lastts:2963672
+2963.872070:BASE        : SNR: -1 RSSI: -116 Freq ERROR: -6148
+2964.471924:BASE        : Discontinuation at id: 28571 at ts: 2964472, lastid:28569 lastts:2964272
+2964.471924:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6702
+2966.872070:BASE        : Discontinuation at id: 28595 at ts: 2966872, lastid:28593 lastts:2966672
+2966.873047:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6165
+2968.672119:BASE        : Discontinuation at id: 28613 at ts: 2968672, lastid:28611 lastts:2968473
+2968.673096:BASE        : SNR: -5 RSSI: -121 Freq ERROR: -6736
+2969.072021:BASE        : Discontinuation at id: 28617 at ts: 2969072, lastid:28614 lastts:2968772
+2969.072021:BASE        : SNR: -14 RSSI: -130 Freq ERROR: -6182
+2969.272949:BASE        : Discontinuation at id: 28619 at ts: 2969272, lastid:28617 lastts:2969072
+2969.272949:BASE        : SNR: -5 RSSI: -121 Freq ERROR: -6182
+2970.672119:BASE        : Discontinuation at id: 28633 at ts: 2970672, lastid:28631 lastts:2970472
+2970.673096:BASE        : SNR: -6 RSSI: -122 Freq ERROR: -6786
+2971.172119:BASE        : Discontinuation at id: 28638 at ts: 2971172, lastid:28636 lastts:2970972
+2971.173096:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6719
+2971.771973:BASE        : Discontinuation at id: 28644 at ts: 2971772, lastid:28642 lastts:2971572
+2971.772949:BASE        : SNR: -4 RSSI: -119 Freq ERROR: -6752
+2973.072998:BASE        : Discontinuation at id: 28657 at ts: 2973072, lastid:28655 lastts:2972872
+2973.072998:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6769
+2973.471924:BASE        : Discontinuation at id: 28661 at ts: 2973472, lastid:28658 lastts:2973172
+2973.471924:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6769
+2975.271973:BASE        : Discontinuation at id: 28679 at ts: 2975272, lastid:28677 lastts:2975072
+2975.272949:BASE        : SNR: -7 RSSI: -123 Freq ERROR: -6786
+2975.872070:BASE        : Discontinuation at id: 28685 at ts: 2975872, lastid:28683 lastts:2975672
+2975.873047:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6786
+2976.172119:BASE        : Discontinuation at id: 28688 at ts: 2976172, lastid:28686 lastts:2975972
+2976.173096:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6769
+2977.971924:BASE        : Discontinuation at id: 28706 at ts: 2977972, lastid:28704 lastts:2977773
+2977.972900:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6786
+2978.471924:BASE        : Discontinuation at id: 28711 at ts: 2978472, lastid:28708 lastts:2978172
+2978.472900:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6232
+2979.372070:BASE        : Discontinuation at id: 28720 at ts: 2979372, lastid:28717 lastts:2979072
+2979.373047:BASE        : SNR: -8 RSSI: -125 Freq ERROR: -6249
+2979.971924:BASE        : Discontinuation at id: 28726 at ts: 2979972, lastid:28724 lastts:2979773
+2979.972900:BASE        : SNR: -8 RSSI: -123 Freq ERROR: -7876
+2980.471924:BASE        : Discontinuation at id: 28731 at ts: 2980472, lastid:28728 lastts:2980172
+2980.472900:BASE        : SNR: -8 RSSI: -125 Freq ERROR: -6299
+2980.872070:BASE        : Discontinuation at id: 28735 at ts: 2980872, lastid:28733 lastts:2980673
+2980.873047:BASE        : SNR: -7 RSSI: -122 Freq ERROR: -6803
+2982.172119:BASE        : Discontinuation at id: 28748 at ts: 2982172, lastid:28746 lastts:2981972
+2982.172119:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6803
+2983.172119:BASE        : Discontinuation at id: 28758 at ts: 2983172, lastid:28756 lastts:2982972
+2983.173096:BASE        : SNR: -10 RSSI: -127 Freq ERROR: -6836
+2983.971924:BASE        : Discontinuation at id: 28766 at ts: 2983972, lastid:28759 lastts:2983273
+2983.972900:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6249
+2984.972900:BASE        : Discontinuation at id: 28776 at ts: 2984972, lastid:28773 lastts:2984672
+2984.972900:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6249
+2985.471924:BASE        : Discontinuation at id: 28781 at ts: 2985472, lastid:28779 lastts:2985272
+2985.472900:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6752
+2986.672119:BASE        : Discontinuation at id: 28793 at ts: 2986672, lastid:28791 lastts:2986472
+2986.673096:BASE        : SNR: -8 RSSI: -125 Freq ERROR: -6786
+2987.572998:BASE        : Discontinuation at id: 28802 at ts: 2987572, lastid:28800 lastts:2987373
+2987.572998:BASE        : SNR: -11 RSSI: -128 Freq ERROR: -6803
+2988.572021:BASE        : Discontinuation at id: 28812 at ts: 2988572, lastid:28806 lastts:2987972
+2988.572021:BASE        : SNR: -9 RSSI: -124 Freq ERROR: -6249
+2990.672119:BASE        : Discontinuation at id: 28833 at ts: 2990672, lastid:28830 lastts:2990372
+2990.673096:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6819
+2993.173096:BASE        : Discontinuation at id: 28858 at ts: 2993173, lastid:28856 lastts:2992972
+2993.173096:BASE        : SNR: -3 RSSI: -117 Freq ERROR: -6752
+3000.672119:BASE        : Discontinuation at id: 28933 at ts: 3000672, lastid:28928 lastts:3000173
+3000.673096:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6266
+3000.872070:BASE        : Discontinuation at id: 28935 at ts: 3000872, lastid:28933 lastts:3000672
+3000.873047:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6836
+3001.372070:BASE        : Discontinuation at id: 28940 at ts: 3001372, lastid:28937 lastts:3001072
+3001.372070:BASE        : SNR: -12 RSSI: -129 Freq ERROR: -6400
+3001.572998:BASE        : Discontinuation at id: 28942 at ts: 3001572, lastid:28940 lastts:3001372
+3001.572998:BASE        : SNR: -10 RSSI: -127 Freq ERROR: -6752
+3003.072998:BASE        : Discontinuation at id: 28957 at ts: 3003073, lastid:28955 lastts:3002872
+3003.072998:BASE        : SNR: -2 RSSI: -117 Freq ERROR: -6803
+3008.771973:BASE        : Discontinuation at id: 29014 at ts: 3008772, lastid:29012 lastts:3008573
+3008.772949:BASE        : SNR: -14 RSSI: -130 Freq ERROR: -6283
+3008.971924:BASE        : Discontinuation at id: 29016 at ts: 3008972, lastid:29014 lastts:3008772
+3008.972900:BASE        : SNR: -9 RSSI: -126 Freq ERROR: -6266
+3009.872070:BASE        : Discontinuation at id: 29025 at ts: 3009872, lastid:29022 lastts:3009572
+3009.873047:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -6299
+3010.072998:BASE        : Discontinuation at id: 29027 at ts: 3010073, lastid:29025 lastts:3009872
+3010.072998:BASE        : SNR: -10 RSSI: -125 Freq ERROR: -6803
+3010.471924:BASE        : Discontinuation at id: 29031 at ts: 3010472, lastid:29029 lastts:3010272
+3010.472900:BASE        : SNR: -6 RSSI: -122 Freq ERROR: -6786
+3014.972900:BASE        : Discontinuation at id: 29076 at ts: 3014973, lastid:29074 lastts:3014772
+3014.972900:BASE        : SNR: -9 RSSI: -124 Freq ERROR: -6819
+3018.971924:BASE        : Discontinuation at id: 29116 at ts: 3018972, lastid:29114 lastts:3018773
+3018.972900:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -6853
+3019.771973:BASE        : Discontinuation at id: 29124 at ts: 3019772, lastid:29122 lastts:3019572
+3019.772949:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -6819
+3020.173096:BASE        : Discontinuation at id: 29128 at ts: 3020172, lastid:29126 lastts:3019972
+3020.173096:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6283
+3021.771973:BASE        : Discontinuation at id: 29144 at ts: 3021772, lastid:29133 lastts:3020672
+3021.772949:BASE        : SNR: -8 RSSI: -123 Freq ERROR: -6853
+3022.772949:BASE        : Discontinuation at id: 29154 at ts: 3022772, lastid:29149 lastts:3022273
+3022.772949:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6266
+3026.873047:BASE        : Discontinuation at id: 29195 at ts: 3026873, lastid:29180 lastts:3025372
+3026.873047:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6283
+3027.271973:BASE        : Discontinuation at id: 29199 at ts: 3027272, lastid:29197 lastts:3027072
+3027.271973:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6853
+3027.472900:BASE        : Discontinuation at id: 29201 at ts: 3027472, lastid:29199 lastts:3027272
+3027.472900:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6383
+3027.772949:BASE        : Discontinuation at id: 29204 at ts: 3027773, lastid:29202 lastts:3027572
+3027.772949:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6249
+3028.072998:BASE        : Discontinuation at id: 29207 at ts: 3028073, lastid:29205 lastts:3027872
+3028.072998:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6786
+3033.372070:BASE        : Discontinuation at id: 29260 at ts: 3033372, lastid:29256 lastts:3032972
+3033.372070:BASE        : SNR: -14 RSSI: -130 Freq ERROR: -6333
+3034.672119:BASE        : Discontinuation at id: 29273 at ts: 3034672, lastid:29271 lastts:3034473
+3034.673096:BASE        : SNR: -12 RSSI: -129 Freq ERROR: -6836
+3035.572998:BASE        : Discontinuation at id: 29282 at ts: 3035572, lastid:29277 lastts:3035073
+3035.572998:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6853
+3037.471924:BASE        : Discontinuation at id: 29301 at ts: 3037472, lastid:29297 lastts:3037073
+3037.471924:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6870
+3037.673096:BASE        : Discontinuation at id: 29303 at ts: 3037673, lastid:29301 lastts:3037472
+3037.673096:BASE        : SNR: -11 RSSI: -128 Freq ERROR: -6819
+3038.072021:BASE        : Discontinuation at id: 29307 at ts: 3038072, lastid:29304 lastts:3037772
+3038.072998:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -6836
+3039.872070:BASE        : Discontinuation at id: 29325 at ts: 3039872, lastid:29308 lastts:3038172
+3039.873047:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6870
+3040.971924:BASE        : Discontinuation at id: 29336 at ts: 3040972, lastid:29325 lastts:3039872
+3040.972900:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -6283
+3041.472900:BASE        : Discontinuation at id: 29341 at ts: 3041473, lastid:29338 lastts:3041173
+3041.472900:BASE        : SNR: -14 RSSI: -131 Freq ERROR: -6266
+3041.772949:BASE        : Discontinuation at id: 29344 at ts: 3041773, lastid:29342 lastts:3041572
+3041.772949:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6316
+3041.972900:BASE        : Discontinuation at id: 29346 at ts: 3041972, lastid:29344 lastts:3041773
+3041.972900:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6299
+3044.572998:BASE        : Discontinuation at id: 29372 at ts: 3044572, lastid:29370 lastts:3044373
+3044.572998:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6853
+3045.872070:BASE        : Discontinuation at id: 29385 at ts: 3045872, lastid:29383 lastts:3045672
+3045.872070:BASE        : SNR: -6 RSSI: -121 Freq ERROR: -6836
+3047.173096:BASE        : Discontinuation at id: 29398 at ts: 3047172, lastid:29394 lastts:3046772
+3047.173096:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6819
+3048.271973:BASE        : Discontinuation at id: 29409 at ts: 3048272, lastid:29401 lastts:3047472
+3048.272949:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6299
+3050.072021:BASE        : Discontinuation at id: 29427 at ts: 3050072, lastid:29425 lastts:3049873
+3050.072998:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6836
+3050.672119:BASE        : Discontinuation at id: 29433 at ts: 3050672, lastid:29430 lastts:3050372
+3050.673096:BASE        : SNR: -13 RSSI: -125 Freq ERROR: -6333
+3051.072998:BASE        : Discontinuation at id: 29437 at ts: 3051073, lastid:29433 lastts:3050672
+3051.072998:BASE        : SNR: -11 RSSI: -123 Freq ERROR: -6803
+3051.873047:BASE        : Discontinuation at id: 29445 at ts: 3051872, lastid:29437 lastts:3051073
+3051.873047:BASE        : SNR: -7 RSSI: -121 Freq ERROR: -6836
+3053.172119:BASE        : Discontinuation at id: 29458 at ts: 3053172, lastid:29449 lastts:3052272
+3053.173096:BASE        : SNR: -11 RSSI: -122 Freq ERROR: -6786
+3053.373047:BASE        : Discontinuation at id: 29460 at ts: 3053373, lastid:29458 lastts:3053172
+3053.373047:BASE        : SNR: -15 RSSI: -126 Freq ERROR: -6299
+3055.572021:BASE        : Discontinuation at id: 29482 at ts: 3055572, lastid:29460 lastts:3053373
+3055.572998:BASE        : SNR: -11 RSSI: -126 Freq ERROR: -6400
+3065.172119:BASE        : Discontinuation at id: 29578 at ts: 3065172, lastid:29576 lastts:3064973
+3065.173096:BASE        : SNR: -8 RSSI: -120 Freq ERROR: -6887
+3071.271973:BASE        : Discontinuation at id: 29639 at ts: 3071272, lastid:29636 lastts:3070972
+3071.272949:BASE        : SNR: -8 RSSI: -122 Freq ERROR: -6853
+3124.471924:BASE        : Discontinuation at id: 30171 at ts: 3124472, lastid:30169 lastts:3124273
+3124.472900:BASE        : SNR: -5 RSSI: -120 Freq ERROR: -6853
+3129.772949:BASE        : Discontinuation at id: 30224 at ts: 3129772, lastid:30222 lastts:3129573
+3129.772949:BASE        : SNR: -5 RSSI: -119 Freq ERROR: -6853
+3145.472900:BASE        : Discontinuation at id: 30381 at ts: 3145472, lastid:30379 lastts:3145273
+3145.472900:BASE        : SNR: -3 RSSI: -116 Freq ERROR: -6836
+3266.873047:BASE        : Discontinuation at id: 31595 at ts: 3266873, lastid:31593 lastts:3266672
+3266.874023:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6903
+3281.772949:BASE        : Discontinuation at id: 31744 at ts: 3281773, lastid:31738 lastts:3281173
+3281.773926:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6333
+3282.372070:BASE        : Discontinuation at id: 31750 at ts: 3282372, lastid:31748 lastts:3282173
+3282.373047:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6920
+3284.472900:BASE        : Discontinuation at id: 31771 at ts: 3284472, lastid:31768 lastts:3284173
+3284.472900:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6400
+3285.373047:BASE        : Discontinuation at id: 31780 at ts: 3285373, lastid:31772 lastts:3284573
+3285.373047:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6903
+3286.572998:BASE        : Discontinuation at id: 31792 at ts: 3286573, lastid:31786 lastts:3285973
+3286.572998:BASE        : SNR: -14 RSSI: -130 Freq ERROR: -6803
+3288.772949:BASE        : Discontinuation at id: 31814 at ts: 3288772, lastid:31793 lastts:3286673
+3288.772949:BASE        : SNR: -13 RSSI: -130 Freq ERROR: -6383
+3289.572998:BASE        : Discontinuation at id: 31822 at ts: 3289573, lastid:31814 lastts:3288772
+3289.573975:BASE        : SNR: -14 RSSI: -130 Freq ERROR: -6870
+3289.772949:BASE        : Discontinuation at id: 31824 at ts: 3289773, lastid:31822 lastts:3289573
+3289.772949:BASE        : SNR: -14 RSSI: -131 Freq ERROR: -6249
+3318.472900:BASE        : Discontinuation at id: 32111 at ts: 3318472, lastid:32109 lastts:3318273
+3318.472900:BASE        : SNR: -12 RSSI: -124 Freq ERROR: -6551
+3321.572998:BASE        : Discontinuation at id: 32142 at ts: 3321573, lastid:32140 lastts:3321372
+3321.573975:BASE        : SNR: -14 RSSI: -126 Freq ERROR: -6819
+3370.873047:BASE        : Discontinuation at id: 32635 at ts: 3370873, lastid:32631 lastts:3370473
+3370.873047:BASE        : SNR: -3 RSSI: -113 Freq ERROR: -6920
+3372.772949:BASE        : Discontinuation at id: 32654 at ts: 3372773, lastid:32652 lastts:3372573
+3372.773926:BASE        : SNR: -9 RSSI: -120 Freq ERROR: -6400
+3374.472900:BASE        : Discontinuation at id: 32671 at ts: 3374473, lastid:32664 lastts:3373773
+3374.474121:BASE        : SNR: -14 RSSI: -125 Freq ERROR: -6853
+3375.873047:BASE        : Discontinuation at id: 32685 at ts: 3375873, lastid:32673 lastts:3374673
+3375.873047:BASE        : SNR: -9 RSSI: -124 Freq ERROR: -6903
+3376.472900:BASE        : Discontinuation at id: 32691 at ts: 3376473, lastid:32688 lastts:3376173
+3376.474121:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6887
+3377.373047:BASE        : Discontinuation at id: 32700 at ts: 3377373, lastid:32691 lastts:3376473
+3377.374023:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6887
+3377.673096:BASE        : Discontinuation at id: 32703 at ts: 3377673, lastid:32700 lastts:3377373
+3377.674072:BASE        : SNR: -14 RSSI: -129 Freq ERROR: -6383
+3378.472900:BASE        : Discontinuation at id: 32711 at ts: 3378473, lastid:32703 lastts:3377673
+3378.472900:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6937
+3381.072998:BASE        : Discontinuation at id: 32737 at ts: 3381073, lastid:32733 lastts:3380673
+3381.072998:BASE        : SNR: -10 RSSI: -125 Freq ERROR: -6920
+3387.472900:BASE        : Discontinuation at id: 32801 at ts: 3387473, lastid:32797 lastts:3387073
+3387.472900:BASE        : SNR: -12 RSSI: -124 Freq ERROR: -6400
+3388.373047:BASE        : Discontinuation at id: 32810 at ts: 3388373, lastid:32808 lastts:3388173
+3388.374023:BASE        : SNR: -13 RSSI: -126 Freq ERROR: -6920
+3389.072998:BASE        : Discontinuation at id: 32817 at ts: 3389073, lastid:32814 lastts:3388773
+3389.073975:BASE        : SNR: -9 RSSI: -123 Freq ERROR: -6333
+3409.773926:BASE        : Discontinuation at id: 33024 at ts: 3409773, lastid:33022 lastts:3409573
+3409.773926:BASE        : SNR: -12 RSSI: -127 Freq ERROR: -6954
+3411.873047:BASE        : Discontinuation at id: 33045 at ts: 3411873, lastid:33042 lastts:3411573
+3411.873047:BASE        : SNR: -8 RSSI: -122 Freq ERROR: -6853
+3415.273926:BASE        : Discontinuation at id: 33079 at ts: 3415273, lastid:33075 lastts:3414873
+3415.273926:BASE        : SNR: -11 RSSI: -125 Freq ERROR: -6887
+3416.072998:BASE        : Discontinuation at id: 33087 at ts: 3416073, lastid:33081 lastts:3415473
+3416.073975:BASE        : SNR: -14 RSSI: -128 Freq ERROR: -6350
+3423.472900:BASE        : Discontinuation at id: 33161 at ts: 3423473, lastid:33158 lastts:3423173
+3423.472900:BASE        : SNR: -1 RSSI: -111 Freq ERROR: -6366
+3425.072998:BASE        : Discontinuation at id: 33177 at ts: 3425073, lastid:33175 lastts:3424873
+3425.073975:BASE        : SNR: -12 RSSI: -125 Freq ERROR: -6366
+3426.673096:BASE        : Discontinuation at id: 33193 at ts: 3426673, lastid:33191 lastts:3426473
+3426.673096:BASE        : SNR: -3 RSSI: -114 Freq ERROR: -6903
+3427.773926:BASE        : Discontinuation at id: 33204 at ts: 3427773, lastid:33202 lastts:3427573
+3427.773926:BASE        : SNR: -2 RSSI: -112 Freq ERROR: -6887
+3430.472900:BASE        : Discontinuation at id: 33231 at ts: 3430473, lastid:33229 lastts:3430273
+3430.472900:BASE        : SNR: -4 RSSI: -115 Freq ERROR: -6920
+3431.472900:BASE        : Discontinuation at id: 33241 at ts: 3431473, lastid:33237 lastts:3431073
+3431.474121:BASE        : SNR: -7 RSSI: -118 Freq ERROR: -6920
+3431.972900:BASE        : Discontinuation at id: 33246 at ts: 3431973, lastid:33244 lastts:3431773
+3431.974121:BASE        : SNR: -2 RSSI: -112 Freq ERROR: -6920
+3432.474121:BASE        : Discontinuation at id: 33251 at ts: 3432474, lastid:33248 lastts:3432174
+3432.474121:BASE        : SNR: -3 RSSI: -114 Freq ERROR: -6383
+3432.974121:BASE        : Discontinuation at id: 33256 at ts: 3432973, lastid:33254 lastts:3432773
+3432.974121:BASE        : SNR: 0 RSSI: -109 Freq ERROR: -6920
+3435.272949:BASE        : Discontinuation at id: 33279 at ts: 3435273, lastid:33268 lastts:3434174
+3435.273926:BASE        : SNR: -13 RSSI: -127 Freq ERROR: -6954
+3435.472900:BASE        : Discontinuation at id: 33281 at ts: 3435473, lastid:33279 lastts:3435273
+3435.474121:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6987
+3437.472900:BASE        : Discontinuation at id: 33301 at ts: 3437473, lastid:33297 lastts:3437073
+3437.472900:BASE        : SNR: -14 RSSI: -130 Freq ERROR: -6450
+3438.772949:BASE        : Discontinuation at id: 33314 at ts: 3438773, lastid:33303 lastts:3437673
+3438.773926:BASE        : SNR: -10 RSSI: -126 Freq ERROR: -6903
+3440.273926:BASE        : Discontinuation at id: 33329 at ts: 3440273, lastid:33324 lastts:3439773
+3440.273926:BASE        : SNR: -9 RSSI: -125 Freq ERROR: -6870
+3442.173096:BASE        : Discontinuation at id: 33348 at ts: 3442173, lastid:33341 lastts:3441474
+3442.174072:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6887
+3444.272949:BASE        : Discontinuation at id: 33369 at ts: 3444273, lastid:33365 lastts:3443873
+3444.273926:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -6903
+3444.472900:BASE        : Discontinuation at id: 33371 at ts: 3444473, lastid:33369 lastts:3444273
+3444.472900:BASE        : SNR: -13 RSSI: -129 Freq ERROR: -6887
+3446.572998:BASE        : Discontinuation at id: 33392 at ts: 3446573, lastid:33373 lastts:3444674
+3446.573975:BASE        : SNR: -8 RSSI: -124 Freq ERROR: -6870
+3447.673096:BASE        : Discontinuation at id: 33403 at ts: 3447673, lastid:33399 lastts:3447273
+3447.673096:BASE        : SNR: -11 RSSI: -127 Freq ERROR: -6853
+3454.173096:BASE        : Discontinuation at id: 33468 at ts: 3454173, lastid:33458 lastts:3453173
+3454.174072:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6987
+3456.673096:BASE        : Discontinuation at id: 33493 at ts: 3456673, lastid:33482 lastts:3455573
+3456.673096:BASE        : SNR: -13 RSSI: -128 Freq ERROR: -6903
+3469.173096:BASE        : Discontinuation at id: 33618 at ts: 3469173, lastid:33615 lastts:3468873
+3469.173096:BASE        : SNR: -12 RSSI: -128 Freq ERROR: -7004
+3477.773926:BASE        : Discontinuation at id: 33704 at ts: 3477773, lastid:33619 lastts:3469273
+3477.773926:BASE        : SNR: -12 RSSI: -125 Freq ERROR: -6870
+3478.173096:BASE        : Discontinuation at id: 33708 at ts: 3478173, lastid:33705 lastts:3477873
+3478.173096:BASE        : SNR: -11 RSSI: -125 Freq ERROR: -6903
+3478.472900:BASE        : Discontinuation at id: 33711 at ts: 3478473, lastid:33709 lastts:3478273
+3478.472900:BASE        : SNR: -12 RSSI: -126 Freq ERROR: -6920
+3482.673096:BASE        : Discontinuation at id: 33753 at ts: 3482673, lastid:33751 lastts:3482474
+3482.674072:BASE        : SNR: -14 RSSI: -125 Freq ERROR: -6383
+3484.373047:BASE        : Discontinuation at id: 33770 at ts: 3484373, lastid:33755 lastts:3482873
+3484.374023:BASE        : SNR: -14 RSSI: -127 Freq ERROR: -6417
+3485.472900:BASE        : Discontinuation at id: 33781 at ts: 3485473, lastid:33771 lastts:3484473
+3485.472900:BASE        : SNR: -14 RSSI: -126 Freq ERROR: -6316
+~. 47
+Disconnected.
+[17 juin 19:46: zakaria@orojackson: /home/zakaria/workspace/perso/fosm/adastra/bgc/firmware/telemetry/host -(andromede)-]
+ $
+[17 juin 19:46: zakaria@orojackson: /home/zakaria/workspace/perso/fosm/adastra/bgc/firmware/telemetry/host -(andromede)-]
+ $ ^C
+[17 juin 19:46: zakaria@orojackson: /home/zakaria/workspace/perso/fosm/adastra/bgc/firmware/telemetry/host -(andromede)-]
+ $
+
