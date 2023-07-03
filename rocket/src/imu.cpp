@@ -67,6 +67,10 @@ static int initICM20600 ()
 {
     myImuAux.initialize();
     myImuAux.reset();
+    //after reset the range will be set default (+-2G)
+    //equivalent to: myImuAux.setAccScaleRange(RANGE_2G);
+
+    //TODO Set the rate sampling to 10 Hz
 
     return true;
 }
@@ -108,6 +112,7 @@ void loopIMU ()
         imuraw_t g[] = {agmt.gyr.axes.x, agmt.gyr.axes.y, agmt.gyr.axes.z};
 
         fxtm_setimu(a, m, g);
+        //TODO save temperature of imu in the sdcard.
     } else {
         fxtm_seterror(FXTM_ERROR_IMU);
     }
@@ -119,4 +124,5 @@ void loopIMU ()
     };
 
     fxtm_setimu2(a2);
+    //TODO save imu2 gyro in the sdcard.
 }

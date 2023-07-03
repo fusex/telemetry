@@ -19,12 +19,12 @@ extern "C"
 #define PACKED
 #endif
 
-#define FXTM_ERROR(x)                   (x>>3)
-#define FXTM_ERROR_FLASH                (1<<3)
-#define FXTM_ERROR_GPS                  (1<<4)
-#define FXTM_ERROR_IMU                  (1<<5)
-#define FXTM_ERROR_RADIO                (1<<6)
-#define FXTM_ERROR_SDCARD               (1<<7)
+#define FXTM_ERROR(x)             (x>>3)
+#define FXTM_FLASH                (1<<0)
+#define FXTM_GPS                  (1<<1)
+#define FXTM_IMU                  (1<<2)
+#define FXTM_RADIO                (1<<3)
+#define FXTM_SDCARD               (1<<4)
 
 #define FXTM_FLIGHTSTATUS_MASK          7
 #define FXTM_FLIGHTSTATUS(x)            (x&FXTM_FLIGHTSTATUS_MASK)
@@ -57,10 +57,6 @@ extern "C"
 
 #define TRAME_VERSION         "BGC0"
 #define TRAME_VERSION_SIZE    (sizeof(TRAME_VERSION)- 1)
-
-/* Set Paris as reference for gpsdelta_t */ 
-#define GPS_REF_LAT      488252593
-#define GPS_REF_LON      23666452
 
 #if 0
 typedef short myaccum myfloat;
@@ -197,6 +193,7 @@ size_t   fxtm_tojson(uint8_t* data, char* buf, size_t bufsize);
 
 void fxtm_getimu(fxtm_data_t* tm, imuraw_t* imu);
 void fxtm_getgps(fxtm_data_t* tm, gpsdelta_t* pLatitude, gpsdelta_t* pLongitude);
+void fxtm_getabsgps(fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude);
 void fxtm_getpressure(fxtm_data_t* tm, uint16_t* ppressure);
 void fxtm_gettxts(fxtm_block_t* data, uint32_t* pts);
 void fxtm_getrxts(fxtm_block_t* data, uint32_t* pts);

@@ -112,7 +112,9 @@ void setup (void)
 
     setupExec();
 
+#ifndef CONFIG_DONT_WAIT
     Init_Finish();
+#endif
 
     BOOTTRACE("#########################\n\r");
     BOOTTRACE("Start transfer fxtm_data size:%d\n\r", fxtm_getdatasize());

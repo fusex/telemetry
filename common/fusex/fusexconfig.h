@@ -27,7 +27,6 @@
 #define CONFIG_DONT_WAIT
 #endif
 
-#define CONFIG_PACKETNUMBER 1
 #define CONFIG_SDCARD
 #define CONFIG_RADIO
 #define CONFIG_IMU

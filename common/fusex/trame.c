@@ -6,11 +6,11 @@
 #include "trame.h"
 
 #define FXTM_ERROR_STRING(x) (\
-    x&FXTM_ERROR_GPS?"GPS":\
-    x&FXTM_ERROR_IMU?"IMU":\
-    x&FXTM_ERROR_RADIO?"RADIO":\
-    x&FXTM_ERROR_SDCARD?"SDCARD":\
-    x&FXTM_ERROR_FLASH?"FLASH":\
+    FXTM_ERROR(x)&FXTM_GPS?"GPS":\
+    FXTM_ERROR(x)&FXTM_IMU?"IMU":\
+    FXTM_ERROR(x)&FXTM_RADIO?"RADIO":\
+    FXTM_ERROR(x)&FXTM_SDCARD?"SDCARD":\
+    FXTM_ERROR(x)&FXTM_FLASH?"FLASH":\
     "NONE")
 
 #define FXTM_FLIGHTSTATUS_STRING(x) (\
@@ -181,7 +181,7 @@ void fxtm_getgps (fxtm_data_t* tm, gpsdelta_t* pLatitude, gpsdelta_t* pLongitude
     *pLatitude  = tm->gps.lat;
 }
 
-void fxtm_getrealgps (fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude)
+void fxtm_getabsgps (fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude)
 {
     if (tm == NULL) {
         tm = &fxtmblock.data;
@@ -332,17 +332,17 @@ size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
               FXTM_FLIGHTSTATUS_STRING(tm->flightStatus), FXTM_FLIGHTSTATUS(tm->flightStatus));
     STRINGIFY("\terrors:%s (0x%x)\r\n",
               FXTM_ERROR_STRING(tm->flightStatus), FXTM_ERROR(tm->flightStatus));
-    STRINGIFY("\tpressure:%u pa, diffpressure:%u pa\r\n", tm->pressure, tm->diffpressure);
+    STRINGIFY("\tpressure:%u hPa, diffpressure:%u ??\r\n", tm->pressure, tm->diffpressure);
     STRINGIFY("\ttemperature:%d C, humidity:%u %%\r\n", tm->temperature, tm->humidity);
-    STRINGIFY("\t accel[x]:%6d,  accel[y]:%6d,  accel[z]:%6d\r\n", a[0], a[1], a[2]);
+    STRINGIFY("\t accel[x]:%6d,  accel[y]:%6d,  accel[z]:%6d (mg)\r\n", a[0], a[1], a[2]);
 
 #if 0
     STRINGIFY("\tsound level: %u\r\n",tm->soundLevel);
 #endif
 
-    STRINGIFY("\t  gyro[x]:%6d,   gyro[y]:%6d,   gyro[z]:%6d\r\n", g[0], g[1], g[2]);
-    STRINGIFY("\t  magn[x]:%6d,   magn[y]:%6d,   magn[z]:%6d\r\n", m[0], m[1], m[2]);
-    STRINGIFY("\taccel2[x]:%6d, accel2[y]:%6d, accel2[z]:%6d\r\n", a2[0], a2[1], a2[2]);
+    STRINGIFY("\t  gyro[x]:%6d,   gyro[y]:%6d,   gyro[z]:%6d (dps)\r\n", g[0], g[1], g[2]);
+    STRINGIFY("\t  magn[x]:%6d,   magn[y]:%6d,   magn[z]:%6d (uT)\r\n", m[0], m[1], m[2]);
+    STRINGIFY("\taccel2[x]:%6d, accel2[y]:%6d, accel2[z]:%6d (mg)\r\n", a2[0], a2[1], a2[2]);
     STRINGIFY("\r\n");
 
     return totalwrote;
@@ -421,7 +421,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
 
     fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (data + fxtm_getdatasize());
 
-    fxtm_getrealgps(tm, &gps[0], &gps[1]);
+    fxtm_getabsgps(tm, &gps[0], &gps[1]);
 
     IMU_SENSOR_GET(accel,  tm, a[0],  a[1],  a[2]);
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
@@ -430,7 +430,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
 
     STRINGIFY("{");
     STRINGIFY("\"id\":%u, ", tm->id);
-    STRINGIFY("\"pressure\":%u, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
+    STRINGIFY("\"pressure\":%u Pa, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
     STRINGIFY("\"temperature\":%d, \"humidity\":%u, ", tm->temperature, tm->humidity);
     STRINGIFY("\"longitude\":%d, \"latitude\":%d, ", gps[0], gps[1]);
     STRINGIFY("\"accelx\":%d, \"accely\":%d, \"accelz\":%d, ", a[0], a[1], a[2]);

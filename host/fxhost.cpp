@@ -271,7 +271,7 @@ void thread_conso(logger* log)
             if (sendto(fxh.sockfd, (const uint8_t *)bufJSON, jsize, 0,
                     (const struct sockaddr *) &server, sizeof(server)) < 0) {
                 printf("Error from sendto %s\n", strerror(errno));
-                finish = true;
+                //finish = true;
             }
         }
     } while (!finish && !asktoterm);

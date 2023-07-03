@@ -1,30 +1,15 @@
-/*
-* =====================================================================================
-*
-*       Filename:  radioparam.h
-*
-*    Description:  
-*
-*        Version:  1.0
-*        Created:  17/07/2017 16:52:45
-*       Revision:  none
-*       Compiler:  gcc
-*
-*         Author:  Zakaria ElQotbi (zakariae), zakaria.elqotbi@derbsellicon.com
-*        Company:  Derb.io
-*
-* =====================================================================================
-*/
-
 #ifndef _RADIOPARAM_H
 #define _RADIOPARAM_H
 #include <RH_RF95.h>
+
+#include "fusexcommon.h"
 
 #if 1
 #define FX_SF           9
 #else
 #define FX_SF          10
 #endif
+
 //SF 6 does not works properly
 //SF 7 8 works properly
 //SF 9 work with errors for 125khz and properly for 500khz!
@@ -33,11 +18,8 @@
 //SF 12 does not works properly for either 125khz and 500khz
 
 #define FX_TXPOWER      20
-#if 1
-#define FX_FREQUENCY    869.4
-#else
-#define FX_FREQUENCY    434.0
-#endif
+#define FX_FREQUENCY    RADIO_FREQ
+
 #define FX_MODEMCONFIG  RH_RF95::Bw500Cr45Sf128
 
 RH_RF95::ModemConfig modem_config = {
