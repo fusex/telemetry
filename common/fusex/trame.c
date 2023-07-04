@@ -406,7 +406,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
 
     STRINGIFY("{");
     STRINGIFY("\"id\":%u, ", tm->id);
-    STRINGIFY("\"pressure\":%u Pa, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
+    STRINGIFY("\"pressure\":%u, \"diffpressure\":%u, ", tm->pressure, tm->diffpressure);
     STRINGIFY("\"temperature\":%d, \"humidity\":%u, ", tm->temperature, tm->humidity);
     STRINGIFY("\"longitude\":%d, \"latitude\":%d, ", gps[0], gps[1]);
     STRINGIFY("\"accelx\":%d, \"accely\":%d, \"accelz\":%d, ", a[0], a[1], a[2]);
@@ -414,6 +414,7 @@ size_t fxtm_tojson (uint8_t* data, char* buf, size_t bufsize)
     STRINGIFY("\"magnx\":%d, \"magny\":%d, \"magnz\":%d, ", m[0], m[1], m[2]);
     STRINGIFY("\"accel2x\":%d, \"accel2y\":%d, \"accel2z\":%d, ", a2[0], a2[1], a2[2]);
     STRINGIFY("\"flightstatus\":\"%s\", ", FXTM_FLIGHTSTATUS_STRING(tm->flightStatus));
+    STRINGIFY("\"errors\":\"%s\", ", FXTM_ERROR_STRING(tm->flightStatus));
     STRINGIFY("\"ts\":%u, ", rxf->timestamp);
     STRINGIFY("\"rssi\":%d, ", rxf->rssi);
     STRINGIFY("\"snr\":%d, ", rxf->snr);
