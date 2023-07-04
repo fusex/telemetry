@@ -47,12 +47,12 @@
 //TODO
 #warning to remove
 static fxtm_block_t fxtmblock;
-static fxreal_data_t fxtmreal;
+static fxreal_data_t fxrealdata;
 
 void fxreal_new ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
     fxtm_rxfooter_t* rxf = &fxtmblock.rxf;
 
     memset(rocket, 0, sizeof(fxreal_data_t));
@@ -63,7 +63,7 @@ void fxreal_new ()
 void fxreal_setaccel ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
     imuraw_t     a[3] = {0,0,0};
 
     IMU_SENSOR_GET(accel, tm, a[0], a[1], a[2]);
@@ -77,7 +77,7 @@ void fxreal_setaccel ()
 void fxreal_setgps ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
     gpsraw_t     gps[2] = {0,0};
 
     fxtm_getabsgps(tm, &gps[0], &gps[1]);
@@ -89,7 +89,7 @@ void fxreal_setgps ()
 void fxreal_setaccel2 ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
     imuraw_t     a2[3] = {0,0,0};
 
     IMU_SENSOR_GET(accel2, tm, a2[0], a2[1], a2[2]);
@@ -103,7 +103,7 @@ void fxreal_setaccel2 ()
 void fxreal_setgyro ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
     imuraw_t     g[3] = {0,0,0};
 
     IMU_SENSOR_GET(gyro, tm, g[0], g[1], g[2]);
@@ -115,7 +115,7 @@ void fxreal_setgyro ()
 void fxreal_setmagn ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
     imuraw_t     m[3] = {0,0,0};
 
     IMU_SENSOR_GET(magn, tm, m[0], m[1], m[2]);
@@ -127,7 +127,7 @@ void fxreal_setmagn ()
 void fxreal_setatmos ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
 
     rocket->atmos.pressure = tm->pressure;
     rocket->atmos.humidity = tm->humidity;
@@ -137,7 +137,7 @@ void fxreal_setatmos ()
 void fxreal_setradio ()
 {
     fxtm_rxfooter_t* rxf = &fxtmblock.rxf;
-    fxreal_data_t*     rocket = &fxtmreal;
+    fxreal_data_t*     rocket = &fxrealdata;
 
     rocket->radio.rssi = rxf->rssi;
     rocket->radio.snr  = rxf->snr;
@@ -148,7 +148,7 @@ void fxreal_setradio ()
 void fxreal_setpitot ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
 
     //TODO
     rocket->diffpressure = tm->diffpressure;
@@ -157,7 +157,7 @@ void fxreal_setpitot ()
 void fxreal_setflightstatus ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
 
     rocket->flightStatus = FXTM_FLIGHTSTATUS(tm->flightStatus);
 }
@@ -165,7 +165,7 @@ void fxreal_setflightstatus ()
 void fxreal_seterror ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
 
     rocket->errors = FXTM_ERROR(tm->flightStatus);
 }
@@ -173,14 +173,14 @@ void fxreal_seterror ()
 void fxreal_setbattlevel ()
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
 
     rocket->battLevel = tm->battLevel;
 }
 
 void fxreal_finish ()
 {
-    fxreal_data_t* rocket = &fxtmreal;
+    fxreal_data_t* rocket = &fxrealdata;
 
     rocket->altitude = 44330 *
         (1.0 - pow(rocket->atmos.pressure/PRESSURE_SEALEVEL_REF, 0.1903));
