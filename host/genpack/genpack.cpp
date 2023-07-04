@@ -58,14 +58,14 @@ int main (int argc, char** argv)
 
         //memset(buf,0,bs);
 	
-        float x = (float)((i*10)+i)/10;
-	float y = (float)((i*10)-i)/10;
-	float z = (float)i;
+        imuraw_t x = (imuraw_t)((i*10)+i)/10;
+        imuraw_t y = (imuraw_t)((i*10)-i)/10;
+        imuraw_t z = (imuraw_t)i;
 
-	float accel[3] = {x,y,z};
-	float magn[3]  = {y,x,z};
-	float gyr[3]   = {z,y,x};
-	float accel2[3]= {y,z,x};
+        imuraw_t accel[3] = {x,y,z};
+        imuraw_t magn[3]  = {y,x,z};
+        imuraw_t gyr[3]   = {z,y,x};
+        imuraw_t accel2[3]= {y,z,x};
 
         tm->id = i;
 

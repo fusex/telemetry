@@ -10,7 +10,7 @@ COMMON := $(BUILDDIR)/trame.o
 
 all: $(BUILDDIR)/$(BIN)
 
-$(BUILDDIR)/trame.o: ../trame.cpp
+$(BUILDDIR)/trame.o: ../trame.c
 	@mkdir -p $(BUILDDIR)
 	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
