@@ -149,7 +149,7 @@ void loopGps ()
 
     /* Annonce a gps errors after several successif retries */
     if (gps_error > RETRYMAX) {
-        fxtm_seterror(FXTM_ERROR_GPS);
+        fxtm_seterror(FXTM_GPS);
     }
 
     if (gps.overrun()) {

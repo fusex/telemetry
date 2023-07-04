@@ -117,6 +117,6 @@ void setupSdcard ()
 void loopSdcard ()
 {
     if (0 != SD_RecordBinFile()) {
-        fxtm_seterror(FXTM_ERROR_SDCARD);
+        fxtm_seterror(FXTM_SDCARD);
     }
 }

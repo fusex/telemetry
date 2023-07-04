@@ -19,13 +19,16 @@ extern "C"
 #define PACKED
 #endif
 
-#define FXTM_ERROR(x)             (x>>3)
+#define FXTM_ERROR_REG            (3)
+#define FXTM_ERROR_MASK           (0x1f)
+#define FXTM_ERROR(x)             (x>>FXTM_ERROR_REG)
 #define FXTM_FLASH                (1<<0)
 #define FXTM_GPS                  (1<<1)
 #define FXTM_IMU                  (1<<2)
 #define FXTM_RADIO                (1<<3)
 #define FXTM_SDCARD               (1<<4)
 
+#define FXTM_FLIGHTSTATUS_REG           0
 #define FXTM_FLIGHTSTATUS_MASK          7
 #define FXTM_FLIGHTSTATUS(x)            (x&FXTM_FLIGHTSTATUS_MASK)
 #define FXTM_FLIGHTSTATUS_LAUNCHPAD     0

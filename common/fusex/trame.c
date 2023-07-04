@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "fusexcommon.h"
 #include "trame.h"
 
 #define FXTM_ERROR_STRING(x) (\
@@ -82,7 +83,7 @@ void fxtm_setgps (gpsraw_t latitude, gpsraw_t longitude)
 void fxtm_seterror (uint8_t error)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->flightStatus |= error;
+    tm->flightStatus |= error<<FXTM_ERROR_REG;
 }
 
 void fxtm_setflightstatus (uint8_t flightStatus)

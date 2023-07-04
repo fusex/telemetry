@@ -38,7 +38,7 @@ void setupAtmos ()
     module_setup(TAG, FXTM_SUCCESS);
 }
 
-void dumpAtmos()
+void dumpAtmos(bool isConsole)
 {
     float bmptemperature  = bmp.readTemperature();
     float pressure        = bmp.readPressure();

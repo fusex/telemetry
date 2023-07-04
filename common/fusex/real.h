@@ -7,6 +7,7 @@
 #ifdef __cplusplus
 extern "C"
 {
+#endif
 
 typedef float imureal_t;
 

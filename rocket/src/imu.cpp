@@ -114,7 +114,7 @@ void loopIMU ()
         fxtm_setimu(a, m, g);
         //TODO save temperature of imu in the sdcard.
     } else {
-        fxtm_seterror(FXTM_ERROR_IMU);
+        fxtm_seterror(FXTM_IMU);
     }
 
     imuraw_t a2[] = {

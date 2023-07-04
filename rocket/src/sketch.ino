@@ -39,7 +39,7 @@ static void acquire_fake (void)
     fxtm_setdiffpressure(200);
     fxtm_settemperature(-5);
     fxtm_sethumidity(98);
-    fxtm_seterror(FXTM_ERROR_SDCARD);
+    fxtm_seterror(FXTM_SDCARD);
     imuraw_t a[]  = { 111,  222,  333};
     imuraw_t m[]  = { 444,  555,  666};
     imuraw_t g[]  = { 777,  888,  999};

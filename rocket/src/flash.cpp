@@ -177,7 +177,7 @@ void setupFlash ()
 void loopFlash ()
 {
     if (flash_initialized == false || flash_slice_initialized == false) {
-        fxtm_seterror(FXTM_ERROR_FLASH);
+        fxtm_seterror(FXTM_FLASH);
         return;
     }
 
@@ -185,7 +185,7 @@ void loopFlash ()
                              (uint8_t *)fxtm_getblock(),
                              fxtm_gettxdatasize(),
                              false)) {
-        fxtm_seterror(FXTM_ERROR_FLASH);
+        fxtm_seterror(FXTM_FLASH);
         return;
     }
 

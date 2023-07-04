@@ -30,7 +30,7 @@ static boolean previous_failure = false;
 void loopRadio ()
 {
     if (true == previous_failure) {
-        fxtm_seterror(FXTM_ERROR_RADIO);
+        fxtm_seterror(FXTM_RADIO);
         previous_failure = false;
     }
 
