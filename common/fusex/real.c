@@ -201,3 +201,56 @@ void fxreal_finish ()
     rocket->position.py = 0;
     rocket->position.pz = 0;
 }
+
+size_t fxreal_tojson (uint8_t* data, char* buf, size_t bufsize)
+{
+    size_t wrote = 0;
+    size_t totalwrote = 0;
+    size_t remaining = bufsize;
+
+    if (data == NULL) {
+        data = (uint8_t*) &fxrealdata;
+    }
+
+    fxreal_data_t* rocket = (fxreal_data_t*) data;
+
+    STRINGIFY("{");
+    STRINGIFY("\"id\":%u, ", rocket->id);
+    STRINGIFY("\"ts\":%u, ", rocket->timestamp);
+    STRINGIFY("\"diffpressure\":%u, ", rocket->diffpressure);
+    STRINGIFY("\"battLevel\":%u, ", rocket->battLevel);
+
+    STRINGIFY("\"pressure\":%u, \"temperature\":%d, \"humidity\":%u, ",
+                                                       rocket->atmos.pressure,
+                                                       rocket->atmos.temperature,
+                                                       rocket->atmos.humidity);
+
+    STRINGIFY("\"longitude\":%f, \"latitude\":%f, ", rocket->gps.lon,
+                                                     rocket->gps.lat);
+
+    STRINGIFY("\"accelx\":%f, \"accely\":%f, \"accelz\":%f, ", rocket->accel.x,
+                                                               rocket->accel.y,
+                                                               rocket->accel.z);
+
+    STRINGIFY("\"gyrox\":%f, \"gyroy\":%f, \"gyroz\":%f, ", rocket->gyro.x,
+                                                            rocket->gyro.y,
+                                                            rocket->gyro.z);
+
+    STRINGIFY("\"magnx\":%f, \"magny\":%f, \"magnz\":%f, ", rocket->magn.x,
+                                                            rocket->magn.y,
+                                                            rocket->magn.z);
+
+    STRINGIFY("\"accel2x\":%f, \"accel2y\":%f, \"accel2z\":%f, ", rocket->accel2.x,
+                                                                  rocket->accel2.y,
+                                                                  rocket->accel2.z);
+
+    STRINGIFY("\"flightstatus\":\"%s\", ", FXTM_FLIGHTSTATUS_STRING(rocket->flightStatus));
+    STRINGIFY("\"errors\":\"%s\", ", FXTM_ERROR_STRING(rocket->errors));
+    STRINGIFY("\"rssi\":%d, ", rocket->radio.rssi);
+    STRINGIFY("\"snr\":%d, ", rocket->radio.snr);
+    STRINGIFY("\"frequency\":%f", rocket->radio.frequency);
+    STRINGIFY("\"frequencyError\":%d", rocket->radio.frequencyError);
+    STRINGIFY("}");
+
+    return totalwrote;
+}
