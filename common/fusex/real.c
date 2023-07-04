@@ -1,4 +1,5 @@
 #include <string.h>
+#include <math.h>
 
 #include "fusexcommon.h"
 #include "real.h"

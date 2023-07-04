@@ -8,7 +8,7 @@ LDFLAGS := -lm -lpthread
 CC := clang
 LD := clang++
 
-COMMON := $(BUILDDIR)/logger.o $(BUILDDIR)/trame.o
+COMMON := $(BUILDDIR)/logger.o $(BUILDDIR)/trame.o $(BUILDDIR)/real.o
 # $(BUILDDIR)/fusexutil.o
 
 all: $(BUILDDIR)/$(BIN)

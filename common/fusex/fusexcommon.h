@@ -1,6 +1,8 @@
 #ifndef _FUSEXCOMMON_H
 #define _FUSEXCOMMON_H
 
+#include <stdio.h>
+
 #define ACCEL_RANGE            (16)
 #define ACCEL2_RANGE           (2)
 #define GYRO_RANGE             (500)
@@ -18,5 +20,13 @@
 
 /* Reference to calculate Altitude */
 #define PRESSURE_SEALEVEL_REF  (1013.25)
+
+#define STRINGIFY(f, ...) do { \
+    if (remaining>0) { \
+        wrote = snprintf(buf+totalwrote, remaining, f,  ##__VA_ARGS__); \
+        totalwrote += wrote; \
+        remaining -= wrote;  \
+    } \
+} while(0);
 
 #endif // _FUSEXCOMMON_H

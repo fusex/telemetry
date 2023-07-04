@@ -6,23 +6,6 @@
 #include "fusexcommon.h"
 #include "trame.h"
 
-#define FXTM_ERROR_STRING(x) (\
-    FXTM_ERROR(x)&FXTM_GPS?"GPS":\
-    FXTM_ERROR(x)&FXTM_IMU?"IMU":\
-    FXTM_ERROR(x)&FXTM_RADIO?"RADIO":\
-    FXTM_ERROR(x)&FXTM_SDCARD?"SDCARD":\
-    FXTM_ERROR(x)&FXTM_FLASH?"FLASH":\
-    "NONE")
-
-#define FXTM_FLIGHTSTATUS_STRING(x) (\
-    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_LAUNCHPAD?"LAUNCHPAD":\
-    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_LIFTOFF?"LIFTOFF":\
-    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_BURNOUT?"BURNOUT":\
-    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_SEPARATION?"SEPARATION":\
-    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_RECOVERY?"RECOVERY":\
-    (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":\
-    "ERROR")
-
 static fxtm_block_t fxtmblock;
 static uint16_t     idCounter = 0;
 
@@ -293,14 +276,6 @@ uint16_t fxtm_check (fxtm_data_t* tm, uint16_t* plastid, uint32_t* plastts)
 
     return ret;
 }
-
-#define STRINGIFY(f, ...) do { \
-    if (remaining>0) { \
-        wrote = snprintf(buf+totalwrote, remaining, f,  ##__VA_ARGS__); \
-        totalwrote += wrote; \
-        remaining -= wrote;  \
-    } \
-} while(0);
 
 size_t fxtm_dumpdata (fxtm_data_t* tm, char* buf, size_t bufsize)
 {
