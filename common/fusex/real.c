@@ -47,23 +47,10 @@
 
 //TODO
 #warning to remove
-static fxtm_block_t fxtmblock;
 static fxreal_data_t fxrealdata;
 
-void fxreal_new ()
+void fxreal_setaccel (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
-    fxreal_data_t* rocket = &fxrealdata;
-    fxtm_rxfooter_t* rxf = &fxtmblock.rxf;
-
-    memset(rocket, 0, sizeof(fxreal_data_t));
-    rocket->timestamp = rxf->timestamp;
-    rocket->id = tm->id;
-}
-
-void fxreal_setaccel ()
-{
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
     imuraw_t     a[3] = {0,0,0};
 
@@ -75,9 +62,8 @@ void fxreal_setaccel ()
     rocket->accel.r = ACCEL_RANGE;
 }
 
-void fxreal_setgps ()
+void fxreal_setgps (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
     gpsraw_t     gps[2] = {0,0};
 
@@ -87,9 +73,8 @@ void fxreal_setgps ()
     rocket->gps.lon = ((float)gps[1])/GPS_COEF;
 }
 
-void fxreal_setaccel2 ()
+void fxreal_setaccel2 (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
     imuraw_t     a2[3] = {0,0,0};
 
@@ -101,9 +86,8 @@ void fxreal_setaccel2 ()
     rocket->accel2.r = ACCEL2_RANGE;
 }
 
-void fxreal_setgyro ()
+void fxreal_setgyro (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
     imuraw_t     g[3] = {0,0,0};
 
@@ -113,9 +97,8 @@ void fxreal_setgyro ()
     rocket->gyro.z = ((float)g[2])/GYRO_COEF;
 }
 
-void fxreal_setmagn ()
+void fxreal_setmagn (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
     imuraw_t     m[3] = {0,0,0};
 
@@ -125,9 +108,8 @@ void fxreal_setmagn ()
     rocket->magn.z = ((float)m[2])*MAG_COEF;
 }
 
-void fxreal_setatmos ()
+void fxreal_setatmos (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
 
     rocket->atmos.pressure = tm->pressure;
@@ -135,10 +117,10 @@ void fxreal_setatmos ()
     rocket->atmos.temperature = tm->temperature;
 }
 
-void fxreal_setradio ()
+void fxreal_setradio (fxtm_data_t* tm)
 {
-    fxtm_rxfooter_t* rxf = &fxtmblock.rxf;
-    fxreal_data_t*     rocket = &fxrealdata;
+    fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (tm + sizeof(fxtm_data_t));
+    fxreal_data_t*   rocket = &fxrealdata;
 
     rocket->radio.rssi = rxf->rssi;
     rocket->radio.snr  = rxf->snr;
@@ -146,34 +128,30 @@ void fxreal_setradio ()
     rocket->radio.frequency = RADIO_FREQ;
 }
 
-void fxreal_setpitot ()
+void fxreal_setpitot (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
 
     //TODO
     rocket->diffpressure = tm->diffpressure;
 }
 
-void fxreal_setflightstatus ()
+void fxreal_setflightstatus (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
 
     rocket->flightStatus = FXTM_FLIGHTSTATUS(tm->flightStatus);
 }
 
-void fxreal_seterror ()
+void fxreal_seterror (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
 
     rocket->errors = FXTM_ERROR(tm->flightStatus);
 }
 
-void fxreal_setbattlevel ()
+void fxreal_setbattlevel (fxtm_data_t* tm)
 {
-    fxtm_data_t* tm = &fxtmblock.data;
     fxreal_data_t* rocket = &fxrealdata;
 
     rocket->battLevel = tm->battLevel;
@@ -200,6 +178,28 @@ void fxreal_finish ()
     rocket->position.px = 0;
     rocket->position.py = 0;
     rocket->position.pz = 0;
+}
+
+void fxreal_new (fxtm_data_t* tm)
+{
+    fxreal_data_t* rocket = &fxrealdata;
+    fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (tm + sizeof(fxtm_data_t));
+
+    memset(rocket, 0, sizeof(fxreal_data_t));
+    rocket->timestamp = rxf->timestamp;
+    rocket->id = tm->id;
+    fxreal_setaccel(tm);
+    fxreal_setgps(tm);
+    fxreal_setaccel2(tm);
+    fxreal_setgyro(tm);
+    fxreal_setmagn(tm);
+    fxreal_setatmos(tm);
+    fxreal_setradio(tm);
+    fxreal_setpitot(tm);
+    fxreal_setflightstatus(tm);
+    fxreal_seterror(tm);
+    fxreal_setbattlevel(tm);
+    fxreal_finish();
 }
 
 size_t fxreal_tojson (uint8_t* data, char* buf, size_t bufsize)
@@ -250,7 +250,7 @@ size_t fxreal_tojson (uint8_t* data, char* buf, size_t bufsize)
     STRINGIFY("\"snr\":%d, ", rocket->radio.snr);
     STRINGIFY("\"frequency\":%f", rocket->radio.frequency);
     STRINGIFY("\"frequencyError\":%d", rocket->radio.frequencyError);
-    STRINGIFY("}");
+    STRINGIFY("}\n");
 
     return totalwrote;
 }

@@ -16,6 +16,7 @@
 
 #include "fusexutilpc.h"
 #include "trame.h"
+#include "real.h"
 #include "logger.h"
 
 #if 0
@@ -65,6 +66,12 @@
 #define SERVER_UDPPORT  54321
 #define SERVER_IPADDR   "127.0.0.1"
 #define BGC_ACQ_PERIOD  (100*1000)
+
+#if 1
+#define debug_printf(f, ...) do{}while(0)
+#else
+#define debug_printf(f, ...) printf(f,  ##__VA_ARGS__)
+#endif
 
 typedef struct {
     int         fd;
@@ -263,11 +270,13 @@ void thread_conso(logger* log)
         if (rd > 0) {
             fxhost_dump(buf, rd);
             fxhost_check(buf);
-
-            size_t jsize = fxtm_tojson(buf, bufJSON, sizeof(bufJSON));
+            fxreal_new((fxtm_data_t*)buf);
 #if 0
-            printf("wrote json size of:%ld\n",jsize);
+            size_t jsize = fxtm_tojson(buf, bufJSON, sizeof(bufJSON));
+#else
+            size_t jsize = fxreal_tojson(NULL, bufJSON, sizeof(bufJSON));
 #endif
+            debug_printf("wrote json size of:%ld\n",jsize);
             if (sendto(fxh.sockfd, (const uint8_t *)bufJSON, jsize, 0,
                     (const struct sockaddr *) &server, sizeof(server)) < 0) {
                 printf("Error from sendto %s\n", strerror(errno));

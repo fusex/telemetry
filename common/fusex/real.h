@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "trame.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -28,7 +30,7 @@ typedef struct {
 typedef struct {
     float    speedx;
     float    speedy;
-} speed_t;
+} gspeed_t;
 
 typedef struct {
     float    qx;
@@ -78,12 +80,30 @@ typedef struct {
     imureal_sensor_t  gyro;
     imureal_sensor_t  magn;
     imureal_sensor_t  accel2;
-    speed_t           groundspeed;
+    gspeed_t          groundspeed;
     quaternion_t      orientation;
     position_t        position;
 
     radio_t           radio;
 } fxreal_data_t;
+
+
+void fxreal_new(fxtm_data_t* tm);
+void fxreal_setaccel(fxtm_data_t* tm);
+void fxreal_setgps(fxtm_data_t* tm);
+void fxreal_setaccel2(fxtm_data_t* tm);
+void fxreal_setgyro(fxtm_data_t* tm);
+void fxreal_setmagn(fxtm_data_t* tm);
+void fxreal_setatmos(fxtm_data_t* tm);
+void fxreal_setradio(fxtm_data_t* tm);
+void fxreal_setpitot(fxtm_data_t* tm);
+void fxreal_setflightstatus(fxtm_data_t* tm);
+void fxreal_seterror(fxtm_data_t* tm);
+void fxreal_setbattlevel(fxtm_data_t* tm);
+void fxreal_finish();
+void fxreal_new(fxtm_data_t* tm);
+size_t fxreal_tojson(uint8_t* data, char* buf, size_t bufsize);
+
 
 #ifdef __cplusplus
 }
