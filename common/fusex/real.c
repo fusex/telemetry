@@ -69,8 +69,8 @@ void fxreal_setgps (fxtm_data_t* tm)
 
     fxtm_getabsgps(tm, &gps[0], &gps[1]);
 
-    rocket->gps.lat = ((float)gps[0])/GPS_COEF;
-    rocket->gps.lon = ((float)gps[1])/GPS_COEF;
+    rocket->gps.lat = ((float)gps[0])*GPS_COEF;
+    rocket->gps.lon = ((float)gps[1])*GPS_COEF;
 }
 
 void fxreal_setaccel2 (fxtm_data_t* tm)
