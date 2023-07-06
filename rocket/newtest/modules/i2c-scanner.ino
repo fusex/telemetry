@@ -40,7 +40,31 @@ void setup()
     Serial.println("\nI2C Scanner");
 }
      
-     
+uint8_t i2c_read (uint8_t address, uint8_t reg)
+{
+    uint8_t value = 0xff;
+
+    Wire.begin();
+    Wire.beginTransmission(address);
+    Wire.write(reg);
+    Wire.endTransmission(false);
+    Wire.requestFrom(address, (uint8_t)1);
+    if(Wire.available()){
+        value = Wire.read();
+    }
+    return value;
+}
+
+void i2c_write (uint8_t address, uint8_t reg, uint8_t value)
+{
+    Wire.begin();
+
+    Wire.beginTransmission(address);
+    Wire.write(reg);
+    Wire.write(value);
+    Wire.endTransmission();
+}
+
 void loop()
 {
     byte error, address;
@@ -54,8 +78,11 @@ void loop()
         // The i2c_scanner uses the return value of
         // the Write.endTransmisstion to see if
         // a device did acknowledge to the address.
+        Serial.println("p1");
         Wire.beginTransmission(address);
+        Serial.println("p2");
         error = Wire.endTransmission();
+        Serial.println("p3");
 
         if (error == 0)
         {
@@ -73,6 +100,10 @@ void loop()
             if (address<16)
                 Serial.print("0");
             Serial.println(address,HEX);
+        }
+        else {
+            Serial.print(address,HEX);
+            Serial.print(".. ");
         }
     }
     if (nDevices == 0)
