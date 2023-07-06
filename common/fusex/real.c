@@ -119,7 +119,8 @@ void fxreal_setatmos (fxtm_data_t* tm)
 
 void fxreal_setradio (fxtm_data_t* tm)
 {
-    fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (tm + sizeof(fxtm_data_t));
+    fxtm_rxfooter_t* rxf =
+        (fxtm_rxfooter_t*) ((uint8_t*)tm + fxtm_getdatasize());
     fxreal_data_t*   rocket = &fxrealdata;
 
     rocket->radio.rssi = rxf->rssi;
@@ -183,7 +184,8 @@ void fxreal_finish ()
 void fxreal_new (fxtm_data_t* tm)
 {
     fxreal_data_t* rocket = &fxrealdata;
-    fxtm_rxfooter_t* rxf = (fxtm_rxfooter_t*) (tm + sizeof(fxtm_data_t));
+    fxtm_rxfooter_t* rxf =
+        (fxtm_rxfooter_t*) ((uint8_t*)tm + fxtm_getdatasize());
 
     memset(rocket, 0, sizeof(fxreal_data_t));
     rocket->timestamp = rxf->timestamp;
@@ -248,7 +250,7 @@ size_t fxreal_tojson (uint8_t* data, char* buf, size_t bufsize)
     STRINGIFY("\"errors\":\"%s\", ", FXTM_ERROR_STRING(rocket->errors));
     STRINGIFY("\"rssi\":%d, ", rocket->radio.rssi);
     STRINGIFY("\"snr\":%d, ", rocket->radio.snr);
-    STRINGIFY("\"frequency\":%f", rocket->radio.frequency);
+    STRINGIFY("\"frequency\":%f, ", rocket->radio.frequency);
     STRINGIFY("\"frequencyError\":%d", rocket->radio.frequencyError);
     STRINGIFY("}\n");
 
