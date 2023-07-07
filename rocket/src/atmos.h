@@ -3,5 +3,6 @@
 
 void setupAtmos();
 void loopAtmos();
+void dumpAtmos(bool isConsole);
 
 #endif //_ATMOS_H

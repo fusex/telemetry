@@ -6,10 +6,10 @@
 #include "trame.h"
 
 /* ICM20948 */
-#define ACCEL_2G_RANGE_COEF  16.384 /* For +-2g */
-#define ACCEL_4G_RANGE_COEF   8.192 /* For +-4g */
-#define ACCEL_8G_RANGE_COEF   4.096 /* For +-8g */
-#define ACCEL_16G_RANGE_COEF  2.048 /* For +-16g */
+#define ACCEL_2G_RANGE_COEF  (16.384) /* For +-2g */
+#define ACCEL_4G_RANGE_COEF   (8.192) /* For +-4g */
+#define ACCEL_8G_RANGE_COEF   (4.096) /* For +-8g */
+#define ACCEL_16G_RANGE_COEF  (2.048) /* For +-16g */
 
 #define GYRO_DPS250_COEF     (131)
 #define GYRO_DPS500_COEF     (65.5)

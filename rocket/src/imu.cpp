@@ -101,6 +101,26 @@ void setupIMU ()
     }
 }
 
+void dumpIMU(bool isConsole)
+{
+    MYTRACE("IMU : accX %f mg\r\n", myImu.accX());
+    MYTRACE("IMU : accY %f mg\r\n", myImu.accY());
+    MYTRACE("IMU : accZ %f mg\r\n", myImu.accZ());
+    MYTRACE("IMU : gyrX %f dps\r\n", myImu.gyrX());
+    MYTRACE("IMU : gyrY %f dps\r\n", myImu.gyrY());
+    MYTRACE("IMU : gyrZ %f dps\r\n", myImu.gyrZ());
+    MYTRACE("IMU : magX %f uT\r\n", myImu.magX());
+    MYTRACE("IMU : magY %f uT\r\n", myImu.magY());
+    MYTRACE("IMU : magZ %f uT\r\n", myImu.magZ());
+    MYTRACE("IMU : temp %f C \r\n", myImu.temp());
+    MYTRACE("IMU : acc2X %d mg\r\n", myImuAux.getAccelerationX());
+    MYTRACE("IMU : acc2Y %d mg\r\n", myImuAux.getAccelerationY());
+    MYTRACE("IMU : acc2Z %d mg\r\n", myImuAux.getAccelerationZ());
+}
+
+uint32_t max_abs_acc=0;
+uint32_t min_abs_acc=0;
+
 void loopIMU ()
 {
     if (myImu.dataReady())
@@ -113,6 +133,7 @@ void loopIMU ()
 
         fxtm_setimu(a, m, g);
         //TODO save temperature of imu in the sdcard.
+	fxstatus_setacc(a);
     } else {
         fxtm_seterror(FXTM_IMU);
     }
@@ -125,4 +146,5 @@ void loopIMU ()
 
     fxtm_setimu2(a2);
     //TODO save imu2 gyro in the sdcard.
+
 }

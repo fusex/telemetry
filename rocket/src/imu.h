@@ -3,5 +3,6 @@
 
 void setupIMU();
 void loopIMU();
+void dumpIMU(bool isConsole);
 
 #endif //_IMU_H

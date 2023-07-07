@@ -15,6 +15,8 @@
 #include "sdcard.h"
 #include "gps.h"
 #include "flash.h"
+#include "atmos.h"
+#include "imu.h"
 
 static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
@@ -154,6 +156,20 @@ static int flashDump (int /*argc*/ = 0, char** /*argv*/ = NULL)
     return 0;
 }
 
+static int atmosDump (int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    dumpAtmos(true);
+
+    return 0;
+}
+
+static int imuDump (int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    dumpIMU(true);
+
+    return 0;
+}
+
 static int flashRead (int argc, char** argv)
 {
     uint32_t addr = 0;
@@ -238,6 +254,8 @@ void setupShell ()
     shell.addCommand(F("flash-write"), flashWrite);
     shell.addCommand(F("flash-erase"), flashErase);
     shell.addCommand(F("flash-slice-setup"), flashSlice_setup);
+    shell.addCommand(F("atmos"), atmosDump);
+    shell.addCommand(F("imu"), imuDump);
 
     module_setup(TAG, FXTM_SUCCESS);
 }
