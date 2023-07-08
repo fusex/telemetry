@@ -11,6 +11,7 @@
 #include <ICM20600.h>
 
 #include "init.h"
+#include "fxstatus.h"
 
 #define isAD0(x) (x&1)
 
@@ -117,9 +118,6 @@ void dumpIMU(bool isConsole)
     MYTRACE("IMU : acc2Y %d mg\r\n", myImuAux.getAccelerationY());
     MYTRACE("IMU : acc2Z %d mg\r\n", myImuAux.getAccelerationZ());
 }
-
-uint32_t max_abs_acc=0;
-uint32_t min_abs_acc=0;
 
 void loopIMU ()
 {
