@@ -56,9 +56,9 @@ static void acquire (void)
 {
     fxtm_reset(_mymillis());
     loopRTC();
-    loopPitot();
     loopAtmos();
     loopIMU();
+    loopPitot();
 #ifdef ENABLE_GPS
     loopGps();
 #endif
