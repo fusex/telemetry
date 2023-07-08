@@ -2,6 +2,7 @@
 #define _TRAME_H
 
 #include <stdint.h>
+#include <stddef.h>
 #include <stdbool.h>
 
 #ifdef __cplusplus
@@ -227,6 +228,7 @@ void fxtm_getid(fxtm_data_t* tm, uint16_t* pid);
 void fxtm_getsoundlvl(fxtm_data_t* tm, uint8_t* psndlvl);
 void fxtm_gettemperature(fxtm_data_t* tm, int8_t* ptemp);
 void fxtm_gethumidity(fxtm_data_t* tm, uint8_t* phumidity);
+void fxtm_getflightstatus(fxtm_data_t* tm, uint8_t* pFlightStatus);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
