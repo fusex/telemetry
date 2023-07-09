@@ -12,14 +12,14 @@ static float max_acc = 0;
 static float min_acc = MAX_ACC;
 static float acc = 0;
 
-#define Gr 			  (18) //in RAW 
+#define Gr 			(18) //in RAW
 
-#define THRESHOLD_LIFTOFF_ACC   (3*Gr)
-#define THRESHOLD_BURNOUT_ACC   (8*Gr)
-#define THRESHOLD_APOGEE_ACC    (1*Gr)
-#define THRESHOLD_BALISTIC_ACC  (4*Gr)
-#define THRESHOLD_RECOVERY_ACC  (2*Gr)
-#define THRESHOLD_TOUCHDOWN_ACC (1*Gr)
+#define THRESHOLD_LIFTOFF_ACC   (3*Gr) //OK
+#define THRESHOLD_BURNOUT_ACC   (3*Gr) //OK
+#define THRESHOLD_APOGEE_ACC    (1*Gr) //OK
+#define THRESHOLD_BALISTIC_ACC  (1*Gr) //??
+#define THRESHOLD_RECOVERY_ACC  (0.5*Gr)//??
+#define THRESHOLD_TOUCHDOWN_ACC (1*Gr)//??
 
 void fxstatus_setacc(imuraw_t a[])
 {
