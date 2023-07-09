@@ -75,11 +75,12 @@
 # if defined(__AVR_ATmega2560__)
 #  define PCdevice Serial
 //#  define _IS_ROCKET 1
+//#  define _IS_BASE 1
 //#pragma message ("this is the Mega board")
 #  define DEBUGdevice     BGC_SerialDEBUG
 #  define SHELLdevice     BGC_SerialSHELL
 # elif defined(__AVR_ATmega328P__)
-#  define _IS_BASE 1
+//#  define _IS_BASE 1
 //#pragma message ("this is the UNO board")
 #  define PCdevice    Serial //TODO is this should be here ?
 #  define DEBUGdevice SWSerial
@@ -87,7 +88,7 @@
 #  define DEBUGdevice Serial
 #  define PCdevice    SerialUSB //TODO is this should be here ?
 #  define SHELLdevice Serial2 
-#  define _IS_BASE 1
+//#  define _IS_BASE 1
 # elif defined(__i386__) || defined( __x86_64__)
 #  define _IS_HOST 1
 # else
