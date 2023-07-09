@@ -164,6 +164,9 @@ int head = 0;
 
 typedef struct {
     uint32_t     timestamp;
+    float        min_acc;
+    float        max_acc;
+    float        curr_acc;
     uint8_t      padding[64 - sizeof(fxtm_data_t)
                             - sizeof(uint32_t)];
 } PACKED fxtm_txheader_t;
