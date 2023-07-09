@@ -303,6 +303,17 @@ int main(int argc, char** argv)
     char logfilename[128];
     fxh.simu = false;
 
+    memset(logfilename,0,128);
+#if 0
+    if (argc > 1 && !strncmp("-w",argv[1],2)) {
+	strncpy(logfilename, argv[2], 128);
+    } else 
+#else
+    {
+	getlogfile(logfilename);
+    }
+#endif
+
     if (argc > 1 && !strncmp("-r",argv[1],2)) {
         fxh.fd = openregular(argc,argv);
         fxh.simu = true;
@@ -314,8 +325,6 @@ int main(int argc, char** argv)
 
     if (fxh.fd<0) return -1;
 
-    memset(logfilename,0,128);
-    getlogfile(logfilename);
     assert(strlen(logfilename)>0);
 
     fxh.sockfd = opensocket(&server);
