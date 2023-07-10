@@ -214,12 +214,15 @@ static int flashErase (int argc, char** argv)
     uint32_t addr = 0;
 
     if (argc > 0) {
-	addr = strtoul(argv[1], NULL, 16);
+        addr = strtoul(argv[1], NULL, 16);
     }
 
     _SHELLTRACE("Flash erase chip ...", addr);
     eraseFlash(addr);
     _SHELLTRACE(" done\n\r");
+    _SHELLTRACE("Warning: It's highly recommanded to reset the board "
+                "(throught reset button or reset shell command) to "
+                "re-initialize flash slice and pointers!\r\n");
 
     return 0;
 }
