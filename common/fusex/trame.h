@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -60,7 +61,6 @@ extern "C"
     (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_BALISTIC?"BALTISTIC":\
     (x&FXTM_FLIGHTSTATUS_MASK) == FXTM_FLIGHTSTATUS_TOUCHDOWN?"TOUCHDOWN":\
     "ERROR")
-
 
 #define MAX_SOUND_LEVEL 1024
 #define MAX_TEMPERATURE  256
@@ -162,14 +162,15 @@ int head = 0;
 #define NEXT() {head++; if(head==3) head = 0; }
 #endif
 
-typedef struct {
+#define ALIGN(x) __attribute__((aligned(x)))
+
+typedef struct ALIGN(128) {
     uint32_t     timestamp;
     float        min_acc;
     float        max_acc;
     float        curr_acc;
-    uint8_t      padding[64 - sizeof(fxtm_data_t)
-                            - sizeof(uint32_t)];
 } PACKED fxtm_txheader_t;
+static_assert(sizeof(fxtm_txheader_t) == 128, "fxtm_txheader_t must be 128 bytes");
 
 typedef struct {
     uint32_t    timestamp;
@@ -178,16 +179,13 @@ typedef struct {
     int16_t     frequencyError;
 } PACKED fxtm_rxfooter_t;
 
-typedef struct {
+typedef struct ALIGN(512) {
     fxtm_txheader_t  txh;
     fxtm_data_t      data;
     fxtm_rxfooter_t  rxf;
-    uint8_t          padding[512 - sizeof(fxtm_data_t)
-                                 - sizeof(fxtm_txheader_t)
-                                 - sizeof(fxtm_rxfooter_t)];
 } PACKED fxtm_block_t;
+static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
 
-//static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
 void fxtm_reset(uint32_t ts);
 void fxtm_gendata(void);
 void fxtm_setsoundlvl(unsigned int level);
