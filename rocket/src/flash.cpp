@@ -195,4 +195,8 @@ void loopFlash ()
     if (flash_address >= MAX_SLICE_LAST_ADDR) {
         flash_slice_initialized = false;
     }
+
+    fxtm_txheader_t* txh = fxtm_gettxheader();
+    txh->curr_slice = slice_current;
+    txh->flash_address = flash_address;
 }

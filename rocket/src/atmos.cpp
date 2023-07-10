@@ -56,14 +56,21 @@ void dumpAtmos(bool isConsole)
 void loopAtmos ()
 {
 #ifdef CONFIG_TEMPERATURE_FROM_BMP
-    float temperature = bmp.readTemperature();
+    float temperature  = bmp.readTemperature();
+    float temperature2 = hdc1080.readTemperature();
 #else
-    float temperature = hdc1080.readTemperature();
+    float temperature  = hdc1080.readTemperature();
+    float temperature2 = bmp.readTemperature();
 #endif
     float humidity   = hdc1080.readHumidity();
     float pressure   = bmp.readPressure();
+    float altitude   = bmp.readAltitude(PRESSURE_SEALEVEL_REF);
 
     fxtm_settemperature(temperature);
     fxtm_setpressure(pressure/100);
     fxtm_sethumidity(humidity);
+
+    fxtm_txheader_t* txh = fxtm_gettxheader();
+    txh->altitude     = altitude;
+    txh->temperature2 = temperature2;
 }

@@ -94,13 +94,13 @@ void fxstatus_setacc(imuraw_t a[])
     acc = new_acc;
     /* Save param in the sdcard */
     fxtm_txheader_t* txh = fxtm_gettxheader();
-    txh->min_acc = min_acc;
-    txh->max_acc = max_acc;
     txh->curr_acc = acc;
 }
 
 void dumxFxstatus (bool isConsole)
 {
+    fxtm_data_t* tm = fxtm_getdata();
+
     MYTRACE("FXSTATUS min_acc: %f\r\n", min_acc);
     MYTRACE("FXSTATUS max_acc: %f\r\n", max_acc);
     MYTRACE("FXSTATUS curr_acc: %f\r\n", acc);

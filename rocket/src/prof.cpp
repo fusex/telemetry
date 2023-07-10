@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include <fusexutil.h>
+#include "trame.h"
 
 #ifdef CONFIG_PROFILING
 static uint32_t prof_time;
@@ -35,6 +36,9 @@ void prof_report ()
 
     if (prof_last>prof_max) prof_max = prof_last;
     prof_avg = prof_cumul/10;
+
+    fxtm_txheader_t* txh = fxtm_gettxheader();
+    txh->curr_prof = prof_last;
 
 #if DEBUG
     TTRACE("Loop in:%lu (avg:%lu, max:%lu)\r\n", 

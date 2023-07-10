@@ -15,6 +15,12 @@
 
 #define isAD0(x) (x&1)
 
+#if 1
+#define IMU_DMP 1
+#endif
+
+static int8_t dmp_error = -1;
+
 ICM_20948_I2C myImu;
 ICM20600      myImuAux = ICM20600(isAD0(BGC_I2C_AUX_IMU_ADDR));
 
@@ -60,6 +66,47 @@ static bool initICM20948 ()
     myImu.startupMagnetometer();
     if (myImu.status != ICM_20948_Stat_Ok)
         return false;
+
+#ifdef IMU_DMP
+    dmp_error = 0;
+    do {
+        if (myImu.initializeDMP() == ICM_20948_Stat_Ok) {
+            BOOTTRACE("init initializeDMP Failed! skip !!!\r\n");
+            dmp_error = 1;
+            break;
+        }
+        if (myImu.enableDMPSensor(INV_ICM20948_SENSOR_ORIENTATION) == ICM_20948_Stat_Ok) {
+            BOOTTRACE("init enableDMPSensor Failed! skip !!!\r\n");
+            dmp_error = 2;
+            break;
+        }
+        if (myImu.setDMPODRrate(DMP_ODR_Reg_Quat9, 0) == ICM_20948_Stat_Ok) {
+            BOOTTRACE("init setDMPODRrate Failed! skip !!!\r\n");
+            dmp_error = 3;
+            break;
+        }
+        if (myImu.enableFIFO() == ICM_20948_Stat_Ok) {
+            BOOTTRACE("init enableFIFO Failed! skip !!!\r\n");
+            dmp_error = 4;
+            break;
+        }
+        if (myImu.enableDMP() == ICM_20948_Stat_Ok) {
+            BOOTTRACE("init enableDMP Failed! skip !!!\r\n");
+            dmp_error = 5;
+            break;
+        }
+        if (myImu.resetDMP() == ICM_20948_Stat_Ok) {
+            BOOTTRACE("init resetDMP Failed! skip !!!\r\n");
+            dmp_error = 6;
+            break;
+        }
+        if (myImu.resetFIFO() == ICM_20948_Stat_Ok) {
+            BOOTTRACE("init resetFIFO Failed! skip !!!\r\n");
+            dmp_error = 7;
+            break;
+        }
+    } while(0);
+#endif
 
     return true;
 }
@@ -117,10 +164,13 @@ void dumpIMU(bool isConsole)
     MYTRACE("IMU : acc2X %d mg\r\n", myImuAux.getAccelerationX());
     MYTRACE("IMU : acc2Y %d mg\r\n", myImuAux.getAccelerationY());
     MYTRACE("IMU : acc2Z %d mg\r\n", myImuAux.getAccelerationZ());
+    MYTRACE("IMU : dmp_error: %d\r\n", dmp_error);
 }
 
 void loopIMU ()
 {
+    fxtm_txheader_t* txh = fxtm_gettxheader();
+
     if (myImu.dataReady())
     {
         ICM_20948_AGMT_t agmt = myImu.getAGMT();
@@ -130,8 +180,40 @@ void loopIMU ()
         imuraw_t g[] = {agmt.gyr.axes.x, agmt.gyr.axes.y, agmt.gyr.axes.z};
 
         fxtm_setimu(a, m, g);
-        //TODO save temperature of imu in the sdcard.
-	fxstatus_setacc(a);
+        fxstatus_setacc(a);
+
+        txh->temperature3 = myImu.temp();
+
+#ifdef IMU_DMP
+        if (dmp_error == 0)
+        {
+            icm_20948_DMP_data_t data;
+            myImu.readDMPdataFromFIFO(&data);
+            // Was valid data available?
+            if ((myImu.status == ICM_20948_Stat_Ok) ||
+                    (myImu.status == ICM_20948_Stat_FIFOMoreDataAvail))
+            {
+                // We have asked for orientation data so we should receive Quat9
+                if ((data.header & DMP_header_bitmap_Quat9) > 0)
+                {
+                    // Q0 value is computed from this equation: Q0^2 + Q1^2 + Q2^2 + Q3^2 = 1.
+                    // In case of drift, the sum will not add to 1, therefore,
+                    // quaternion data need to be corrected with right bias values.
+                    // The quaternion data is scaled by 2^30.
+
+                    // Scale to +/- 1
+                    // Convert to double. Divide by 2^30
+                    txh->q1 = ((double)data.Quat9.Data.Q1) / 1073741824.0;
+                    txh->q2 = ((double)data.Quat9.Data.Q2) / 1073741824.0;
+                    txh->q3 = ((double)data.Quat9.Data.Q3) / 1073741824.0;
+                    txh->q0 = sqrt(1.0 - ((txh->q1 * txh->q1) +
+                                          (txh->q2 * txh->q2) +
+                                          (txh->q3 * txh->q3)
+                                  ));
+                }
+            }
+        }
+#endif
     } else {
         fxtm_seterror(FXTM_IMU);
     }
@@ -143,6 +225,7 @@ void loopIMU ()
     };
 
     fxtm_setimu2(a2);
-    //TODO save imu2 gyro in the sdcard.
-
+    txh->gyro2X = myImuAux.getGyroscopeX();
+    txh->gyro2Y = myImuAux.getGyroscopeY();
+    txh->gyro2Z = myImuAux.getGyroscopeZ();
 }

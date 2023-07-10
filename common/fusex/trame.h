@@ -166,9 +166,25 @@ int head = 0;
 
 typedef struct ALIGN(128) {
     uint32_t     timestamp;
-    float        min_acc;
-    float        max_acc;
     float        curr_acc;
+    uint32_t     curr_prof;
+    float        altitude;
+    float        temperature2;
+    uint32_t     flash_address;
+    uint32_t     curr_slice;
+    float        gps_speed;
+    float        gps_altitude;
+    float        gps_velocity_e;
+    float        gps_velocity_n;
+    float        gps_velocity_d;
+    float        temperature3;
+    int16_t      gyro2X;
+    int16_t      gyro2Y;
+    int16_t      gyro2Z;
+    double       q0;
+    double       q1;
+    double       q2;
+    double       q3;
 } PACKED fxtm_txheader_t;
 static_assert(sizeof(fxtm_txheader_t) == 128, "fxtm_txheader_t must be 128 bytes");
 

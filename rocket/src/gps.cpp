@@ -16,6 +16,21 @@
   #error You must uncomment GPS_FIX_LOCATION in GPSfix_cfg.h!
 #endif
 
+#if 0
+#if !defined( GPS_FIX_SPEED )
+  #error You must uncomment GPS_FIX_SPEED in GPSfix_cfg.h!
+#endif
+#if !defined( GPS_FIX_HEADING )
+  #error You must uncomment GPS_FIX_HEADING in GPSfix_cfg.h!
+#endif
+#if !defined( GPS_FIX_ALTITUDE )
+  #error You must uncomment GPS_FIX_ALTITUDE in GPSfix_cfg.h!
+#endif
+#if !defined( GPS_FIX_VELNED )
+  #error You must uncomment GPS_FIX_VELNED in GPSfix_cfg.h!
+#endif
+#endif
+
 #if !defined( NMEAGPS_INTERRUPT_PROCESSING )
   #error You must define NMEAGPS_INTERRUPT_PROCESSING in NMEAGPS_cfg.h!
 #endif
@@ -50,6 +65,19 @@ static int receiveGPS ()
             fxtm_setgps(fix.latitudeL(), fix.longitudeL());
             ret = 0; 
         }
+        fxtm_txheader_t* txh = fxtm_gettxheader();
+#ifdef GPS_FIX_SPEED
+        txh->gps_speed = fix.speed();
+#endif
+#ifdef GPS_FIX_ALTITUDE
+        txh->gps_altitude = fix.altitude();
+#endif
+#if defined( GPS_FIX_HEADING ) && defined( GPS_FIX_SPEED ) && defined (GPS_FIX_VELNED )
+        fix.calculateNorthAndEastVelocityFromSpeedAndHeading();
+        txh->gps_velocity_e = fix.velocity_east;
+        txh->gps_velocity_n = fix.velocity_north;
+        txh->gps_velocity_d = fix.velocity_down;
+#endif
     }
 
     return ret;
