@@ -53,7 +53,7 @@
 	url = https://github.com/SlashDevin/NeoHWSerial
 [submodule "common/NeoGPS"]
 	path = common/NeoGPS
-	url = https://github.com/SlashDevin/NeoGPS
+	url = git@github.com:zskdan/NeoGPS.git
 [submodule "common/SparkFun_ICM_20948"]
 	path = common/SparkFun_ICM_20948
 	url = https://github.com/sparkfun/SparkFun_ICM-20948_ArduinoLibrary
