@@ -104,4 +104,7 @@ void dumxFxstatus (bool isConsole)
     MYTRACE("FXSTATUS min_acc: %f\r\n", min_acc);
     MYTRACE("FXSTATUS max_acc: %f\r\n", max_acc);
     MYTRACE("FXSTATUS curr_acc: %f\r\n", acc);
+    MYTRACE("FXSTATUS status:%s (%3u)\r\n",
+	    FXTM_FLIGHTSTATUS_STRING(tm->flightStatus),
+	    FXTM_FLIGHTSTATUS(tm->flightStatus));
 }
