@@ -14,7 +14,7 @@ static float acc = 0;
 
 #define Gr 			(18) //in RAW
 
-#define THRESHOLD_LIFTOFF_ACC   (3*Gr) //OK
+#define THRESHOLD_LIFTOFF_ACC   (2*Gr) //OK
 #define THRESHOLD_BURNOUT_ACC   (3*Gr) //OK
 #define THRESHOLD_APOGEE_ACC    (1*Gr) //OK
 #define THRESHOLD_BALISTIC_ACC  (1*Gr) //??
