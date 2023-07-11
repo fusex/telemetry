@@ -43,6 +43,19 @@ static int readI2c (int argc, char** argv)
     return 0;
 }
 
+static int dumpI2c (int argc, char** argv)
+{
+    if (argc != 2) {
+        _SHELLTRACE("bad argument count\n\r");
+        return -1;
+    }
+
+    uint8_t adr = strtol(argv[1], NULL, 16);
+    i2c_dump(true, adr);
+
+    return 0;
+}
+
 static int writeI2c (int argc, char** argv)
 {
     if (argc != 4) {
@@ -241,6 +254,7 @@ void setupShell ()
     shell.addCommand(F("i2c-scan"), scanI2c);
     shell.addCommand(F("i2c-read"), readI2c);
     shell.addCommand(F("i2c-write"), writeI2c);
+    shell.addCommand(F("i2c-dump"), dumpI2c);
     shell.addCommand(F("reset"), resetBoard);
     shell.addCommand(F("fxtm"), fxtmStatus);
     shell.addCommand(F("prof"), profStatus);

@@ -2,6 +2,7 @@
 
 #include <fusexutil.h>
 #include <Arduino.h>
+#include <Wire.h>
 #include <avr/wdt.h>
 #include <stdbool.h>
 #include <trame.h>
@@ -40,6 +41,8 @@ void setupInit ()
 
     pinMode(BGC_SPIFLASH_CS, OUTPUT);
     digitalWrite(BGC_SPIFLASH_CS, HIGH);
+
+    Wire.setClock(400000);
 
     BOOTTRACE("#######################\r\n");
     BOOTTRACE("Rocket init Start\r\n");

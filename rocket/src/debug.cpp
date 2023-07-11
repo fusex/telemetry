@@ -42,7 +42,10 @@ uint8_t i2c_read (bool isConsole, uint8_t address, uint8_t reg)
     Wire.requestFrom(address, 1);
     if(Wire.available()){
         value = Wire.read();
+    } else {
+        MYTRACE("RR");
     }
+
     return value;
 }
 
@@ -70,3 +73,15 @@ void hexdump (bool isConsole, uint32_t addr, const uint8_t* buf, size_t len)
     MYTRACE("\n\r");
 }
 
+void i2c_dump (bool isConsole, uint8_t address)
+{
+    MYTRACE("%02lx:", 0);
+    for (byte reg = 0; reg < 255; ++reg) {
+        uint8_t val = i2c_read (isConsole, address, reg);
+        MYTRACE(" %02x", val);
+        if (!(reg%8)) {
+            MYTRACE("\n\r %02x:", reg);
+        }
+    }
+    MYTRACE("\n\r");
+}
