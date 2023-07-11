@@ -97,7 +97,7 @@ void fxstatus_setacc(imuraw_t a[])
     txh->curr_acc = acc;
 }
 
-void dumxFxstatus (bool isConsole)
+void dumpFxstatus (bool isConsole)
 {
     fxtm_data_t* tm = fxtm_getdata();
 

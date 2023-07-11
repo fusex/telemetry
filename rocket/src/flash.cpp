@@ -65,6 +65,7 @@ static bool flashSlice_init ()
         flash_address = SLICE_START_ADDR(slice_current);
         memset(buffer, 0, SPI_PAGESIZE);
         flash.readByteArray(flash_address, buffer, SPI_PAGESIZE);
+	BOOTTRACE("FLASH: %6lu/%6lu\r", slice_current, MAX_SLICES);
 
         for (int i=0; i<SPI_PAGESIZE; i++) {
             if (buffer[i] != 0xff) {

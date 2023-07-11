@@ -16,7 +16,7 @@
   #error You must uncomment GPS_FIX_LOCATION in GPSfix_cfg.h!
 #endif
 
-#if 0
+#if 1
 #if !defined( GPS_FIX_SPEED )
   #error You must uncomment GPS_FIX_SPEED in GPSfix_cfg.h!
 #endif
@@ -87,6 +87,15 @@ void dumpGPS (bool isConsole)
 {
     MYTRACE("GPS:\r\n");
     Serial.println( gps.string_for( gps.nmeaMessage ) );
+    gps_fix fix = gps.read();
+
+    fix.calculateNorthAndEastVelocityFromSpeedAndHeading();
+    MYTRACE("Latitude: %f\r\n", fix.latitude());
+    MYTRACE("Longitude: %f\r\n", fix.longitude());
+    MYTRACE("Speed: %f\r\n", fix.speed());
+    MYTRACE("Altitude: %f\r\n", fix.altitude());
+    MYTRACE("VelocityE: %f VelocityN: %f VelocityD: %f\r\n",
+	    fix.velocity_east, fix.velocity_north, fix.velocity_down);
 }
 
 const unsigned char ubxRate5Hz[] PROGMEM =
@@ -104,6 +113,9 @@ const unsigned char ubxDisableVTG[] PROGMEM =
   { 0x06,0x01,0x08,0x00,0xF0,0x05,0x00,0x00,0x00,0x00,0x00,0x01 };
 const unsigned char ubxDisableZDA[] PROGMEM =
   { 0x06,0x01,0x08,0x00,0xF0,0x08,0x00,0x00,0x00,0x00,0x00,0x01 };
+const unsigned char ubxDisableGLL[] PROGMEM = 
+  { 0x06,0x01,0x08,0x00,0xF0,0x01,0x00,0x00,0x00,0x00,0x00,0x01 };
+
 const uint32_t COMMAND_DELAY = 250;
 
 void sendUBX (const unsigned char *progmemBytes, size_t len)
@@ -130,8 +142,10 @@ static void configureUblox ()
     sendUBX( ubxDisableRMC, sizeof(ubxDisableRMC) );
     sendUBX( ubxDisableGSV, sizeof(ubxDisableGSV) );
     sendUBX( ubxDisableGSA, sizeof(ubxDisableGSA) );
+#if 0
     sendUBX( ubxDisableGGA, sizeof(ubxDisableGGA) );
     sendUBX( ubxDisableVTG, sizeof(ubxDisableVTG) );
+#endif
     sendUBX( ubxDisableZDA, sizeof(ubxDisableZDA) );
     sendUBX( ubxRate5Hz, sizeof(ubxRate5Hz) );
 }
