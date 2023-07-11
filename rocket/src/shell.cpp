@@ -17,6 +17,7 @@
 #include "flash.h"
 #include "atmos.h"
 #include "imu.h"
+#include "fxstatus.h"
 
 static int showID (int /*argc*/ = 0, char** /*argv*/ = NULL)
 {
@@ -240,6 +241,12 @@ static int flashErase (int argc, char** argv)
     return 0;
 }
 
+static int fxstatusDump (int /*argc*/ = 0, char** /*argv*/ = NULL)
+{
+    dumpFxstatus(true);
+    return 0;
+}
+
 /* #########################################
                     Public
    ######################################### */
@@ -273,6 +280,7 @@ void setupShell ()
     shell.addCommand(F("flash-slice-setup"), flashSlice_setup);
     shell.addCommand(F("atmos"), atmosDump);
     shell.addCommand(F("imu"), imuDump);
+    shell.addCommand(F("fxstatus"), fxstatusDump);
 
     module_setup(TAG, FXTM_SUCCESS);
 }
