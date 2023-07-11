@@ -25,6 +25,11 @@ void setupAtmos ()
         Init_SetFailed();
         return;
     }
+    bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
+            Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
+            Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
+            Adafruit_BMP280::FILTER_X16,      /* Filtering. */
+            Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
 
     hdc1080.begin(BGC_I2C_TEMP_HUM_ADDR);
     if (hdc1080.readManufacturerId() != 0x5449 ||
