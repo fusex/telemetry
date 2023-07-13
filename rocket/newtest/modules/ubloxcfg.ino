@@ -303,7 +303,7 @@ void setup()
   DEBUG_PORT.begin(115200);
   while (!DEBUG_PORT)
     ;
-  delay(15000);
+  //delay(15000);
   DEBUG_PORT.println( F("ubloxRate.INO: started\r\n"
                         "Looking for GPS device on " GPS_PORT_NAME "\r\n"
                         "Enter '?' for help.") );
@@ -347,6 +347,20 @@ void setup()
   DEBUG_PORT.flush();
 
   gpsPort.begin( 9600 );
+  delay(5000);
+          gps.send_P( &tee, (const __FlashStringHelper *) enableRMC );
+          delay( COMMAND_DELAY );
+          gps.send_P( &tee, (const __FlashStringHelper *) enableGLL );
+          delay( COMMAND_DELAY );
+          gps.send_P( &tee, (const __FlashStringHelper *) enableGSV );
+          delay( COMMAND_DELAY );
+          gps.send_P( &tee, (const __FlashStringHelper *) enableGSA );
+          delay( COMMAND_DELAY );
+          gps.send_P( &tee, (const __FlashStringHelper *) enableGGA );
+          delay( COMMAND_DELAY );
+          gps.send_P( &tee, (const __FlashStringHelper *) enableVTG );
+          delay( COMMAND_DELAY );
+          gps.send_P( &tee, (const __FlashStringHelper *) enableZDA );
 }
 
 void loop()
