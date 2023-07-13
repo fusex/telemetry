@@ -90,12 +90,13 @@ void dumpGPS (bool isConsole)
     gps_fix fix = gps.read();
 
     fix.calculateNorthAndEastVelocityFromSpeedAndHeading();
+    MYTRACE("gps_rror: %d\r\n", gps_error);
     MYTRACE("Latitude: %f\r\n", fix.latitude());
     MYTRACE("Longitude: %f\r\n", fix.longitude());
     MYTRACE("Speed: %f\r\n", fix.speed());
     MYTRACE("Altitude: %f\r\n", fix.altitude());
     MYTRACE("VelocityE: %f VelocityN: %f VelocityD: %f\r\n",
-	    fix.velocity_east, fix.velocity_north, fix.velocity_down);
+            fix.velocity_east, fix.velocity_north, fix.velocity_down);
 }
 
 const unsigned char ubxRate5Hz[] PROGMEM =
@@ -139,6 +140,7 @@ void sendUBX (const unsigned char *progmemBytes, size_t len)
 
 static void configureUblox ()
 {
+     //we should not disable GLL
     sendUBX( ubxDisableRMC, sizeof(ubxDisableRMC) );
     sendUBX( ubxDisableGSV, sizeof(ubxDisableGSV) );
     sendUBX( ubxDisableGSA, sizeof(ubxDisableGSA) );
