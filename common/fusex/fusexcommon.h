@@ -14,9 +14,29 @@
 #define RADIO_FREQ             (434.0)
 #endif
 
+
+//TODO read that from sdcard!
+#if 0
 /* Set Paris as reference for gpsdelta_t */ 
 #define GPS_REF_LAT            (488252593)
 #define GPS_REF_LON            (23666452)
+#warning PARIS is used as center of gps telem
+#else
+#define GPS_REF_LAT            (43.2085793)
+#define GPS_REF_LON            (-0.06237763)
+#warning CAMPS of GER is used! to be confirmed!
+#endif
+
+#if 1
+/* about 4.7 km of radius */
+#define GPS_PRECISION_FACTOR    (10)
+#elif 0
+/* about 470 meters of radius */
+#define GPS_PRECISION_FACTOR    (1)
+#elif 0
+/* about 47 km of radius */
+#define GPS_PRECISION_FACTOR    (100)
+#endif
 
 /* Reference to calculate Altitude */
 #define PRESSURE_SEALEVEL_REF  (1013.25)

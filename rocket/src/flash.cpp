@@ -160,6 +160,7 @@ void setupFlash ()
     }
 
     if (setupSuccess) {
+        //TODO if a file is present in the sdcard skip the following
         if (flashSlice_init() == true) {
             flash_slice_initialized = true;
         }

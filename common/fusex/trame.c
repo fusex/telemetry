@@ -59,8 +59,8 @@ void fxtm_sethumidity (uint8_t humidity)
 void fxtm_setgps (gpsraw_t latitude, gpsraw_t longitude)
 {
     fxtm_data_t* tm = &fxtmblock.data;
-    tm->gps.lat = latitude - GPS_REF_LAT;
-    tm->gps.lon = longitude - GPS_REF_LON;
+    tm->gps.lat = (latitude/GPS_PRECISION_FACTOR) - GPS_REF_LAT;
+    tm->gps.lon = (longitude/GPS_PRECISION_FACTOR) - GPS_REF_LON;
 }
 
 void fxtm_seterror (uint8_t error)
@@ -165,14 +165,15 @@ void fxtm_getgps (fxtm_data_t* tm, gpsdelta_t* pLatitude, gpsdelta_t* pLongitude
     *pLatitude  = tm->gps.lat;
 }
 
+/* about 4.7 km of radius */
 void fxtm_getabsgps (fxtm_data_t* tm, gpsraw_t* pLatitude, gpsraw_t* pLongitude)
 {
     if (tm == NULL) {
         tm = &fxtmblock.data;
     }
 
-    *pLongitude = tm->gps.lon + GPS_REF_LON;
-    *pLatitude  = tm->gps.lat + GPS_REF_LAT;
+    *pLongitude = ((gpsraw_t)tm->gps.lon*GPS_PRECISION_FACTOR) + GPS_REF_LON;
+    *pLatitude  = ((gpsraw_t)tm->gps.lat*GPS_PRECISION_FACTOR) + GPS_REF_LAT;
 }
 
 void fxtm_getpressure (fxtm_data_t* tm, uint16_t* ppressure)

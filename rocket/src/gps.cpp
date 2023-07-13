@@ -50,6 +50,8 @@ static NMEAGPS gps; // This parses the GPS characters
 
 #define GPSdevice NAME(BGC_SerialGPS)
 
+static uint8_t gps_error = 0;
+
 static void GPSisr (uint8_t c)
 {
     gps.handle( c );
@@ -180,8 +182,6 @@ void setupGps ()
         module_setup(TAG, FXTM_SUCCESS);
     }
 }
-
-static uint8_t gps_error = 0;
 
 void loopGps ()
 {
