@@ -178,6 +178,7 @@ typedef struct {
     float        gps_velocity_n;
     float        gps_velocity_d;
     float        temperature3;
+    uint16_t     temperature4;
     int16_t      gyro2X;
     int16_t      gyro2Y;
     int16_t      gyro2Z;

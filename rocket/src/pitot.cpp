@@ -72,6 +72,9 @@ void loopPitot ()
             fxtm_settemperature(Tc);
 #endif
             fxtm_setdiffpressure(Pc);
+
+            fxtm_txheader_t* txh = fxtm_gettxheader();
+            txh->temperature4    = Tc;
         } else {
             DYNTTRACE(" Error PitotStatus:0x%x\r\n", PitotStatus);
         }
