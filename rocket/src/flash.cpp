@@ -40,6 +40,7 @@ static uint32_t flash_address = FIRST_SLICE_START_ADDR;
 static uint32_t slice_current = 0;
 static bool     flash_initialized = false;
 static bool     flash_slice_initialized = false;
+static bool     flash_skipped = false;
 
 static bool flash_getInfos ()
 {
@@ -85,6 +86,7 @@ static bool flashSlice_init ()
 void dumpFlash (bool isConsole)
 {
     MYTRACE("Flash init:           %s\r\n", flash_initialized?"true":"false");
+    MYTRACE("Flash skipped:        %s\r\n", flash_skipped?"true":"false");
     MYTRACE("Flash JEDEC ID:       %lx\r\n", flash_jedec_id);
     MYTRACE("Flash UNIQUE ID:      %lx %lx\r\n", (uint32_t)(flash_unique_id>>32),
                                                 (uint32_t)flash_unique_id);
@@ -113,6 +115,11 @@ void readFlash (bool isConsole, uint32_t address)
 void writeFlash (uint32_t addr, uint32_t value)
 {
     flash.writeULong(addr, value);
+}
+
+void skipFlash ()
+{
+    flash_skipped = true;
 }
 
 void setupFlashSlice()
@@ -157,6 +164,12 @@ void setupFlash ()
         if (flash_getInfos() == false) {
             setupSuccess = false;
         }
+    }
+
+    if (flash_skipped == true) {
+        // we do only basic initialization
+        module_setup(TAG, FXTM_SKIP);
+        return;
     }
 
     if (setupSuccess) {

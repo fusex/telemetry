@@ -66,8 +66,8 @@ static void acquire (void)
 
 static void log (void)
 {
-    loopFlash();
     loopSdcard();
+    loopFlash();
 }
 
 static void send (void)

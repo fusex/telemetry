@@ -11,6 +11,7 @@
 #include <TimeLib.h>        // https://www.pjrc.com/teensy/td_libs_DS1307RTC.html
 
 #include "init.h"
+#include "flash.h"
 #include "sdcard.h"
 
 #define LOGFILENAME "fusexlog"
@@ -51,6 +52,13 @@ static void SD_CreateBinFile ()
     }
 
     bn = 0;
+}
+
+static void SD_CheckFlashFile ()
+{
+    if (SD.exists("NOFLASH")) {
+	skipFlash();
+    }
 }
 
 #define SPI_CLOCK SD_SCK_MHZ(8)
@@ -110,6 +118,7 @@ void setupSdcard ()
         Init_SetSemiFatal();
     } else {
         SD_CreateBinFile();
+        SD_CheckFlashFile();
         module_setup(TAG, FXTM_SUCCESS);
     }
 }
