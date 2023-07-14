@@ -59,6 +59,10 @@ static void SD_CheckFlashFile ()
     if (SD.exists("NOFLASH")) {
 	skipFlash();
     }
+    if (SD.exists("SETUPFLASH")) {
+	setupOnBootFlash();
+	SD.remove("SETUPFLASH");
+    }
 }
 
 #define SPI_CLOCK SD_SCK_MHZ(8)

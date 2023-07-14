@@ -41,6 +41,7 @@ static uint32_t slice_current = 0;
 static bool     flash_initialized = false;
 static bool     flash_slice_initialized = false;
 static bool     flash_skipped = false;
+static bool     flash_setupOnBoot = false;
 
 static bool flash_getInfos ()
 {
@@ -87,6 +88,7 @@ void dumpFlash (bool isConsole)
 {
     MYTRACE("Flash init:           %s\r\n", flash_initialized?"true":"false");
     MYTRACE("Flash skipped:        %s\r\n", flash_skipped?"true":"false");
+    MYTRACE("Flash setupOnBoot:    %s\r\n", flash_setupOnBoot?"true":"false");
     MYTRACE("Flash JEDEC ID:       %lx\r\n", flash_jedec_id);
     MYTRACE("Flash UNIQUE ID:      %lx %lx\r\n", (uint32_t)(flash_unique_id>>32),
                                                 (uint32_t)flash_unique_id);
@@ -120,6 +122,11 @@ void writeFlash (uint32_t addr, uint32_t value)
 void skipFlash ()
 {
     flash_skipped = true;
+}
+
+void setupOnBootFlash ()
+{
+    flash_setupOnBoot = true;
 }
 
 void setupFlashSlice()
@@ -182,6 +189,9 @@ void setupFlash ()
     if (setupSuccess) {
         flash_initialized = true;
         module_setup(TAG, FXTM_SUCCESS);
+        if (flash_setupOnBoot == true) {
+            setupFlashSlice();
+        }
     } else {
         BOOTTRACE("FLASH: %s\n\r", flash.error(VERBOSE));
         module_setup(TAG, FXTM_FAILURE);
