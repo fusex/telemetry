@@ -22,9 +22,10 @@
 #define GPS_REF_LON            (23666452)
 #warning PARIS is used as center of gps telem
 #else
-#define GPS_REF_LAT            (43.2085793)
-#define GPS_REF_LON            (-0.06237763)
-#warning CAMPS of GER is used! to be confirmed!
+#define GPS_REF_LAT            (432184361)
+#define GPS_REF_LON            (-004733333)
+
+#warning CAMP of GER GPS coordonate is used!
 #endif
 
 #if 1
