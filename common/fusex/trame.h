@@ -164,7 +164,7 @@ int head = 0;
 
 #define ALIGN(x) __attribute__((aligned(x)))
 
-typedef struct ALIGN(128) {
+typedef struct {
     uint32_t     timestamp;
     float        curr_acc;
     uint32_t     curr_prof;
@@ -186,7 +186,7 @@ typedef struct ALIGN(128) {
     double       q2;
     double       q3;
 } PACKED fxtm_txheader_t;
-static_assert(sizeof(fxtm_txheader_t) == 128, "fxtm_txheader_t must be 128 bytes");
+static_assert(sizeof(fxtm_txheader_t) + sizeof(fxtm_data_t) <= 128, "fxtm_txheader_t + fxtm_data_t must be less than 128 bytes");
 
 typedef struct {
     uint32_t    timestamp;
@@ -196,8 +196,10 @@ typedef struct {
 } PACKED fxtm_rxfooter_t;
 
 typedef struct ALIGN(512) {
+struct ALIGN (128) {
     fxtm_txheader_t  txh;
     fxtm_data_t      data;
+};
     fxtm_rxfooter_t  rxf;
 } PACKED fxtm_block_t;
 static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
