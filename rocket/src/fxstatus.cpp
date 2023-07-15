@@ -11,15 +11,17 @@
 static float max_acc = 0;
 static float min_acc = MAX_ACC;
 static float acc = 0;
+static boolean preburnout = false;
 
-#define Gr 			(18) //in RAW
+#define Gr 			 (18) //in RAW
 
-#define THRESHOLD_LIFTOFF_ACC   (2*Gr) //OK
-#define THRESHOLD_BURNOUT_ACC   (3*Gr) //OK
-#define THRESHOLD_APOGEE_ACC    (1*Gr) //OK
-#define THRESHOLD_BALISTIC_ACC  (1*Gr) //??
-#define THRESHOLD_RECOVERY_ACC  (0.5*Gr)//??
-#define THRESHOLD_TOUCHDOWN_ACC (1*Gr)//??
+#define THRESHOLD_LIFTOFF_ACC    (1.5*Gr) //OK
+#define THRESHOLD_PREBURNOUT_ACC (0.5*Gr) //OK
+#define THRESHOLD_BURNOUT_ACC    (2*Gr) //OK
+#define THRESHOLD_APOGEE_ACC     (1*Gr) //OK
+#define THRESHOLD_BALISTIC_ACC   (1*Gr) //??
+#define THRESHOLD_RECOVERY_ACC   (0.2*Gr)//??
+#define THRESHOLD_TOUCHDOWN_ACC  (1*Gr)//??
 
 void fxstatus_setacc(imuraw_t a[])
 {
@@ -52,7 +54,10 @@ void fxstatus_setacc(imuraw_t a[])
             //OK
 
         case FXTM_FLIGHTSTATUS_LIFTOFF:
-            if (new_acc < THRESHOLD_BURNOUT_ACC) {
+            if (new_acc < THRESHOLD_PREBURNOUT_ACC) {
+                preburnout = true;
+            }
+            if (preburnout && (new_acc > THRESHOLD_BURNOUT_ACC)) {
                 fxtm_setflightstatus(FXTM_FLIGHTSTATUS_BURNOUT);
             }
             break;
@@ -84,7 +89,7 @@ void fxstatus_setacc(imuraw_t a[])
         case FXTM_FLIGHTSTATUS_BALISTIC:
             //fall-trough
         case FXTM_FLIGHTSTATUS_RECOVERY:
-            if (new_acc < THRESHOLD_TOUCHDOWN_ACC) {
+            if (new_acc > THRESHOLD_TOUCHDOWN_ACC) {
                 fxtm_setflightstatus(FXTM_FLIGHTSTATUS_TOUCHDOWN);
             }
             break;
