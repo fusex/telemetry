@@ -1,6 +1,7 @@
 SUBPROJECTS :=  \
 	base \
 	rocket \
+	host/simuvol \
 	host/genpack \
 	host/logger \
 	host
