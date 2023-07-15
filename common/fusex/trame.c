@@ -72,6 +72,7 @@ void fxtm_seterror (uint8_t error)
 void fxtm_setflightstatus (uint8_t flightStatus)
 {
     fxtm_data_t* tm = &fxtmblock.data;
+    tm->flightStatus &= (FXTM_ERROR_MASK<<FXTM_ERROR_REG);
     tm->flightStatus |= flightStatus;
 }
 
