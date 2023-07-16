@@ -220,7 +220,7 @@ void getlogfile(char* filename)
     struct tm *t;
     time_t now = time(NULL);
     t = gmtime(&now);
-    strftime(filename, 128, "fusexlog-%Y-%m-%d", t);
+    strftime(filename, 128, "fusexlog-%F-%Hh%Mm%Ss", t);
 }
 
 static uint32_t chunkcounter = 0;
