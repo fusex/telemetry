@@ -179,19 +179,19 @@ void setupFlash ()
         return;
     }
 
+    if (flash_setupOnBoot == true) {
+	setupFlashSlice();
+    }
+
     if (setupSuccess) {
-        //TODO if a file is present in the sdcard skip the following
-        if (flashSlice_init() == true) {
-            flash_slice_initialized = true;
-        }
+	if (flashSlice_init() == true) {
+	    flash_slice_initialized = true;
+	}
     }
 
     if (setupSuccess) {
         flash_initialized = true;
         module_setup(TAG, FXTM_SUCCESS);
-        if (flash_setupOnBoot == true) {
-            setupFlashSlice();
-        }
     } else {
         BOOTTRACE("FLASH: %s\n\r", flash.error(VERBOSE));
         module_setup(TAG, FXTM_FAILURE);
