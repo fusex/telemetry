@@ -182,10 +182,10 @@ typedef struct {
     int16_t      gyro2X;
     int16_t      gyro2Y;
     int16_t      gyro2Z;
-    double       q0;
-    double       q1;
-    double       q2;
-    double       q3;
+    float        q0;
+    float        q1;
+    float        q2;
+    float        q3;
 } PACKED fxtm_txheader_t;
 static_assert(sizeof(fxtm_txheader_t) + sizeof(fxtm_data_t) <= 128, "fxtm_txheader_t + fxtm_data_t must be less than 128 bytes");
 
