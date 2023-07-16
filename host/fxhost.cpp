@@ -233,12 +233,6 @@ void thread_acquisition(int fd, logger* log)
 
     assert(chunksize>0);
 
-    printf("chunksize is set to:%ld\n", chunksize);
-    printf("sizeof tmdata:%ld\n", fxtm_getdatasize());
-    printf("sizeof tmblock:%ld\n", fxtm_getblocksize());
-    printf("sizeof myfloat:%ld vs float:%ld\n",
-            fxtm_getfloatsize(), sizeof(float));
-
     do {
         size_t rdlen = 0;
         rdlen = fread(fxtm_getdata(), chunksize, 1, file);
@@ -302,6 +296,15 @@ int main(int argc, char** argv)
 {
     char logfilename[128];
     fxh.simu = false;
+
+    printf("chunksize is set to:%ld\n", chunksize);
+    printf("sizeof tmblock:%ld\n", fxtm_getblocksize());
+    printf("sizeof tmdata:%ld\n", fxtm_getdatasize());
+    printf("sizeof tmtx_data:%ld\n", fxtm_gettxdatasize());
+    printf("sizeof tmtx_header:%ld\n", fxtm_gettxheadersize());
+    printf("sizeof myfloat:%ld vs float:%ld\n",
+            fxtm_getfloatsize(), sizeof(float));
+
 
     memset(logfilename,0,128);
 #if 0
