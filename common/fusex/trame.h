@@ -200,8 +200,8 @@ typedef struct ALIGN(512) {
 struct ALIGN (128) {
     fxtm_txheader_t  txh;
     fxtm_data_t      data;
-};
     fxtm_rxfooter_t  rxf;
+} PACKED;
 } PACKED fxtm_block_t;
 static_assert(sizeof(fxtm_block_t) == 512, "fxtm_block_t must be 512 bytes");
 
