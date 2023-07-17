@@ -1,23 +1,5 @@
 #define TAG "MAIN"
 
-#include <fusexutil.h>
-#include <trame.h>
-
-#include "init.h"
-#include "imu.h"
-#include "atmos.h"
-#include "pitot.h"
-#include "radio.h"
-#include "gps.h"
-#include "sdcard.h"
-#include "rtc.h"
-#include "prof.h"
-#include "sdcard.h"
-#include "debug.h"
-#include "shell.h"
-#include "exec.h"
-#include "flash.h"
-
 #if 1
 #define ENABLE_GPS
 #endif
@@ -26,6 +8,35 @@
 #define ENABLE_FAKE
 #endif
 
+#if 1
+#define ENABLE_BACKUP
+#endif
+
+#include <fusexutil.h>
+#include <trame.h>
+
+#ifndef ENABLE_FAKE
+#include "imu.h"
+#include "atmos.h"
+#include "pitot.h"
+#include "gps.h"
+#include "rtc.h"
+#endif
+
+#include "init.h"
+#include "prof.h"
+#include "debug.h"
+#include "shell.h"
+#include "exec.h"
+
+#include "radio.h"
+
+#ifdef ENABLE_BACKUP
+#include "sdcard.h"
+#include "flash.h"
+#endif
+
+#ifdef ENABLE_FAKE
 static void acquire_fake (void)
 {
 #if 0
@@ -51,8 +62,8 @@ static void acquire_fake (void)
     fxtm_reset(_mymillis());
 #endif
 }
-
-static void acquire (void)
+#else
+static void acquire_real (void)
 {
     fxtm_reset(_mymillis());
     loopRTC();
@@ -63,11 +74,23 @@ static void acquire (void)
     loopGps();
 #endif
 }
+#endif
+
+static void acquire (void)
+{
+#ifndef ENABLE_FAKE
+    acquire_real();
+#else
+    acquire_fake();
+#endif
+}
 
 static void log (void)
 {
+#ifdef ENABLE_BACKUP
     loopSdcard();
     loopFlash();
+#endif
 }
 
 static void send (void)
@@ -79,12 +102,7 @@ void subLoop (void)
 {
     prof_start();
 
-#ifndef ENABLE_FAKE
     acquire();
-#else
-    acquire_fake();
-#endif
-
     log();
     send();
 
@@ -101,13 +119,17 @@ void setup (void)
     setupPitot();
     setupAtmos();
     setupIMU();
+#endif
+
 #ifdef ENABLE_GPS
     setupGps();
 #endif
-#endif
 
+#ifdef ENABLE_BACKUP
     setupSdcard();
     setupFlash();
+#endif
+
     setupRadio();
 
     setupExec();
